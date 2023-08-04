@@ -21,8 +21,7 @@ type GalleryImage = {
 };
 
 const Media: React.FC = () => {
-  const { currentStep, updateFormValues, formValues } = useStepContext();
-  console.log(formValues)
+  const { currentStep, updateFormValues } = useStepContext();
   const [selectedImages, setSelectedImages] = useState<GalleryImage[]>([]);
   const handleDragEnd = (result: DropResult) => {
     if (!result.destination) return;
@@ -83,7 +82,6 @@ const Media: React.FC = () => {
         file: files,
       }));
 
-      // Check for duplicates before adding images
       const updatedImages = [...selectedImages];
       newImages.forEach((newImage) => {
         const isDuplicate = selectedImages.some(

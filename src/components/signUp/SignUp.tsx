@@ -117,7 +117,7 @@ export default function SignUp() {
                                     <Typography component="h1" fontSize="xl2" fontWeight="lg">
                                         Sign Up to your account
                                     </Typography>
-                                    <Typography level="body1" sx={{ my: 1, mb: 1 }}>
+                                    <Typography level="body-lg" sx={{ my: 1, mb: 1 }}>
                                         Enter your credentials to continue
                                     </Typography>
                                 </div>
@@ -265,7 +265,7 @@ export default function SignUp() {
                                 <ContinueGoogle />
                             </Box>
                             <Box component="footer" sx={{ pb: 3 }}>
-                                <Typography level="body3" textAlign="center">
+                                <Typography level="body-lg" textAlign="center">
                                     © DiTour {new Date().getFullYear()}
                                 </Typography>
                             </Box>

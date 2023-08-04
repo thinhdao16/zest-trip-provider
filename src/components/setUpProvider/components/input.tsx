@@ -1,9 +1,6 @@
 import { FormControl } from '@mui/joy';
-import { InputAdornment, TextField, TextFieldProps } from '@mui/material';
-import FormLabel from "@mui/joy/FormLabel";
+import { FormLabel, InputAdornment, TextField, TextFieldProps } from '@mui/material';
 
-import clsx from 'clsx';
-import { FormEvent } from 'react';
 import React, { FC, ChangeEventHandler, ReactNode } from 'react';
 
 interface InputProps extends Omit<TextFieldProps, 'onChange'> {
@@ -19,8 +16,8 @@ export const Input = ({
 	...rest
 }: InputProps) => {
 	return (
-		<FormControl required>
-			<FormLabel>{labels}</FormLabel>
+		<FormControl required style={{marginBottom:"20px"}}>
+			<FormLabel style={{fontWeight:600, color:"black"}}>{labels}</FormLabel>
 			<TextField
 				required
 				InputProps={{
