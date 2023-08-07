@@ -12,12 +12,15 @@ export interface BoxData {
     fromTime: string;
     toTime: string;
 }
+interface NestedData {
+    boxes: BoxData[];
+}
 const Title: React.FC = () => {
     const { currentStep, updateFormValues } = useStepContext()
     const [capacity, setCapacity] = useState('');
     const [modalOpen, setModalOpen] = useState(false);
-    const [formEntries, setFormEntries] = useState<BoxData[]>([]);
-    console.log(formEntries)
+    const [nestedDataArray, setNestedDataArray] = useState<NestedData[]>([]);
+    console.log(nestedDataArray)
     const handleModalOpen = () => {
         setModalOpen(true);
     };
@@ -26,11 +29,13 @@ const Title: React.FC = () => {
         setModalOpen(false);
     };
 
-    const handleFormSubmit = (data: BoxData[]) => {
-        // Process the data or update state as needed
-        console.log(data); // This should be an array of BoxData
-        setFormEntries([...formEntries, ...data]);
+    const handleFormSubmit = (boxes: BoxData[]) => {
+        const newNestedData: NestedData = {
+            boxes: boxes
+        };
+        setNestedDataArray(prevData => [...prevData, newNestedData]);
     };
+
 
     const handlePersonalInfo = (e: ChangeEvent<HTMLInputElement>) => {
         const inputData = e.target.value;
@@ -80,11 +85,16 @@ const Title: React.FC = () => {
                     <Card style={{ border: "1px solid", padding: "50px" }} >
                         <div>
                             <Grid container spacing={2}>
-                                {formEntries.map((data, index) => (
-                                    <Grid item xs={6}>
+                                {nestedDataArray.map((data, index) => (
+                                    <Grid item xs={6} key={index}>
                                         <IoAddCircleOutline />
-                                        <div key={index}>{index+1}</div>
-                                        <div key={index}>{data?.fromTime}</div>
+                                        {data.boxes.map((data, index) => (
+                                            <div key={index}>
+                                                <div key={index}>{data?.toTime}</div>
+                                                <div key={index}>{data?.fromTime}</div>
+                                                <div key={index}>{data?.data}</div>
+                                            </div>
+                                        ))}
                                     </Grid>
                                 ))}
                                 <Grid item xs={6}>

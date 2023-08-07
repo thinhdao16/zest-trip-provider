@@ -8,7 +8,7 @@ import { IoAddCircleOutline } from "react-icons/io5";
 interface FormModalProps {
     open: boolean;
     onClose: () => void;
-    onSubmit: (data: BoxData[]) => void; // Fix the type here
+    onSubmit: (boxes: BoxData[]) => void; 
 }
 
 const style = {
@@ -29,11 +29,12 @@ interface BoxData {
     toTime: string;
 }
 
+
 const FormModal: React.FC<FormModalProps> = ({ open, onClose, onSubmit }) => {
     const [formData, setFormData] = useState("");
     const [fromTime, setFromTime] = useState("00:00");
     const [toTime, setToTime] = useState("00:00");
-    const [boxes, setBoxes] = useState<BoxData[]>([]);
+    const [formEntries, setFormEntries] = useState<BoxData[]>([]);
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setFormData(event.target.value);
     };
@@ -52,17 +53,20 @@ const FormModal: React.FC<FormModalProps> = ({ open, onClose, onSubmit }) => {
             fromTime: fromTime,
             toTime: toTime
         };
-        setBoxes(prevBoxes => [...prevBoxes, newBox]);
+
+        setFormEntries(prevBoxes => [...prevBoxes, newBox]);
         setFormData("");
         setFromTime("00:00");
         setToTime("00:00");
     };
 
     const handleSubmit = () => {
-        onSubmit(boxes); // Pass the array directly
+        onSubmit(formEntries)
+        setFormEntries([]);
         setFormData("");
+        setFromTime("00:00");
+        setToTime("00:00");
         onClose();
-        setBoxes([]);
     };
 
     return (
@@ -100,11 +104,9 @@ const FormModal: React.FC<FormModalProps> = ({ open, onClose, onSubmit }) => {
                         />
                         <IoAddCircleOutline onClick={handleAddBox} />
                     </Box>
-                    {boxes.map((boxData, index) => (
+                    {formEntries.map((boxData, index) => (
                         <div key={index}>
-                            <p>Data: {boxData.data}</p>
-                            <p>From Time: {boxData.fromTime}</p>
-                            <p>To Time: {boxData.toTime}</p>
+                            {boxData?.data}
                         </div>
                     ))}
                     <button onClick={handleSubmit}>Submit</button>
