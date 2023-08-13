@@ -14,8 +14,9 @@ import Capacity from "./components/Capacity";
 import Price from "./components/Price";
 import Media from "./components/Media";
 import Title from "./components/Title";
+import Review from "./components/Review";
 
-const steps = [Welcome, Tourtype, TransportType, AccomType,Location, DurationCheckIn, Capacity, Price,Media,Title];
+const steps = [Welcome, Tourtype, TransportType, AccomType,Location, DurationCheckIn, Capacity, Price,Media,Title,Review];
 
 const CreateTour: React.FC = () => {
     return (

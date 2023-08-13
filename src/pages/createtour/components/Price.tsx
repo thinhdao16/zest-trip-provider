@@ -14,7 +14,7 @@ interface PriceData {
 }
 
 const Price: React.FC = () => {
-    const { currentStep, updateFormValues, formValues } = useStepContext()
+    const { currentStep, updateFormValues } = useStepContext()
     const initialInputValues: InputValue[] = dataTypePrice.map(data => ({ labelMain: data.labelMain, value: '' }));
     const [inputValues, setInputValues] = useState<InputValue[]>(initialInputValues);
 
@@ -30,7 +30,7 @@ const Price: React.FC = () => {
                 data[input.labelMain] = input.value;
                 return data;
             }, {} as PriceData);
-            updateFormValues(6, priceData);
+            updateFormValues(6,  priceData);
         }
     }, [ inputValues]);
     

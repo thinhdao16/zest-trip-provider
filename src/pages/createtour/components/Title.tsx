@@ -17,10 +17,10 @@ interface NestedData {
 }
 const Title: React.FC = () => {
     const { currentStep, updateFormValues } = useStepContext()
-    const [capacity, setCapacity] = useState('');
+    const [title , setTitle] = useState('')
+    const [description , setDescription] = useState('')
     const [modalOpen, setModalOpen] = useState(false);
     const [nestedDataArray, setNestedDataArray] = useState<NestedData[]>([]);
-    console.log(nestedDataArray)
     const handleModalOpen = () => {
         setModalOpen(true);
     };
@@ -37,17 +37,17 @@ const Title: React.FC = () => {
     };
 
 
-    const handlePersonalInfo = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleTitle = (e: ChangeEvent<HTMLInputElement>) => {
         const inputData = e.target.value;
-        setCapacity(inputData);
+        setTitle(inputData);
     };
-    const handlePersonalInfos = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    const handleDescription = (e: ChangeEvent<HTMLTextAreaElement>) => {
         const inputData = e.target.value;
-        setCapacity(inputData);
+        setDescription(inputData);
     };
     React.useEffect(() => {
-        updateFormValues(8, { Capacity: capacity });
-    }, [capacity]);
+        updateFormValues(8, { Title: [title, description , nestedDataArray] });
+    }, [title, description , nestedDataArray]);
 
     if (currentStep !== 10) {
         return null;
@@ -67,11 +67,11 @@ const Title: React.FC = () => {
                         placeholder="e.g. Stephen King"
                         icon={<AiOutlineLock />}
                         // showRequired={ userInfo.nameCompany}
-                        onChange={handlePersonalInfo} />
+                        onChange={handleTitle} />
 
                     <InputArea
                         label="Description"
-                        onChange={handlePersonalInfos}
+                        onChange={handleDescription}
                         icon={<AiOutlineLock />}
                         placeholder="Description"
                         maxLength={500}
