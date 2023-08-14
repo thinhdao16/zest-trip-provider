@@ -26,7 +26,7 @@ const AccomType: React.FC = () => {
         const selectedData = dataType.filter((item) =>
             selectedCards.includes(item.id)
         );
-        updateFormValues(2, { TransportType: selectedData });
+        updateFormValues(2, { AccomType: selectedData });
     }, [selectedCards]);
     if (currentStep !== 4) {
         return null;

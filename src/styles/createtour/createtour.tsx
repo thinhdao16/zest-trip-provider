@@ -33,6 +33,13 @@ export const BannerContentHaveImage = styled(Box)(() => ({
   maxWidth: "48vw",
   padding: "30px",
 }));
+export const BannerContentReview = styled(Box)(() => ({
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  maxWidth: "78vw",
+  padding: "30px",
+}));
 export const BannerImage = styled("img")(({ src, theme }) => ({
   src: `url(${src})`,
   width: "500px",
