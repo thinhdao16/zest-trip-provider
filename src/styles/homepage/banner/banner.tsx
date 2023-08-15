@@ -1,36 +1,34 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Tab, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { Colors } from "../theme/theme";
 
 export const BannerContainer = styled(Box)(({ theme }) => ({
   display: "flex",
-  justifyContent: "center",
-  width: "100%",
+  width: "100vw",
   height: "100%",
-  padding: "0px 0px",
-  background: Colors.light_gray,
+  padding: "0px 50px",
   [theme.breakpoints.down("sm")]: {
     flexDirection: "column",
     alignItems: "center",
   },
-  // backgroundImage: `url(/images/banner/banner.png)`,
-  // backgroundRepeat: "no-repeat",
-  // backgroundPosition: "center",
 }));
 
 export const BannerContent = styled(Box)(() => ({
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "center",
-  maxWidth: 420,
-  padding: "30px",
+  width: "100%",
+  padding: "0 60px",
 }));
 
+export const BannerHomePageList = styled(Box)(() => ({
+  maxWidth: "100vw",
+  padding: "64px 0 64px 0",
+}));
+
+export const BannerHomePageListFirst = styled(Box)(() => ({
+  maxWidth: "100vw",
+  paddingTop: "64px",
+}));
 export const BannerImage = styled("img")(({ src, theme }) => ({
   src: `url(${src})`,
-  // backgroundImage: `url(${src})`,
-  // backgroundRepeat: "no-repeat",
-  // backgroundPosition: "center",
   width: "500px",
   [theme.breakpoints.down("md")]: {
     width: "350px",
@@ -42,9 +40,19 @@ export const BannerImage = styled("img")(({ src, theme }) => ({
 }));
 
 export const BannerTitle = styled(Typography)(({  theme }) => ({
-  lineHeight: 1.5,
-  fontSize: "72px",
-  marginBottom: "20px",
+  lineHeight: "36px",
+  fontSize: "32px",
+  fontWeight:"600",
+  [theme.breakpoints.down('sm')]: {
+    fontSize: '42px',    
+  }
+}));
+
+
+export const BannerTitleList = styled(Typography)(({  theme }) => ({
+  lineHeight: "30px",
+  fontSize: "26px",
+  fontWeight:"600",
   [theme.breakpoints.down('sm')]: {
     fontSize: '42px',    
   }
@@ -62,11 +70,9 @@ export const BannerDescription = styled(Typography)(({ theme }) => ({
 }));
 
 export const BannerShopButton = styled(Button, {
-  // Configure which props should be forwarded on DOM
   shouldForwardProp: (prop) => prop !== "color",
   name: "MyShopButton",
   slot: "Root",
-  // We are specifying here how the styleOverrides are being applied based on props
   overridesResolver: (props, styles) => [
     styles.root,
     props.color === "primary" && styles.primary,
@@ -82,3 +88,26 @@ export const BannerShopButton = styled(Button, {
     fontSize: "14px",
   },
 }));
+export const BannerHomePageButtonList = styled(Button)(() => ({
+  padding: "4px 16px",
+  borderRadius:"25px",
+  borderStyle:"solid",
+  border:"1px solid #e6e6e6",
+  fontSize:"15px",
+  textTransform:"none",
+  color:"black",
+  fontWeight:"300",
+  textAlign:"center",
+}));
+export const BannerHomePageButtonListTab = styled(Tab)(() => ({
+  padding: "4px 16px",
+  borderRadius:"25px",
+  borderStyle:"solid",
+  border:"1px solid #e6e6e6",
+  fontSize:"15px",
+  textTransform:"none",
+  color:"black",
+  fontWeight:"300",
+  textAlign:"center",
+}));
+

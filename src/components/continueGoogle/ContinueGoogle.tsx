@@ -1,11 +1,10 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { Button } from '@mui/joy'
 import GoogleIcon from './GoogleIcon'
-import { auth } from '../managementState/firebase/firebase';
 import axios from 'axios';
-import { DataContext } from '../managementState/dataContext/DataContext';
 import clientId from "../continueGoogle/client_secret_624291541261-vsnpuqvrn48tah5ju43l048ug23a3hre.apps.googleusercontent.com.json"
+import { DataContext } from '../../store/dataContext/DataContext';
+import { auth } from '../../store/firebase/firebase';
 function ContinueGoogle() {
     const { googleSignIn, accessToken } = React.useContext(DataContext)
     // const navigate = useNavigate();

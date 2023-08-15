@@ -121,7 +121,7 @@ function SetUpProvider() {
                                 fontWeight="lg"
                                 sx={{ mb: 5, display: 'flex' }}
                             >
-                                <AiOutlineShop style={{ margin: "8px 8px 0 0 " }} /> DiTour
+                                <AiOutlineShop style=   {{ margin: "8px 8px 0 0 " }} /> DiTour
                             </Typography>
                             <Sidebar currentStep={step} handleNextStep={nextStep} />
                             {step < 5 && (
@@ -184,7 +184,7 @@ function SetUpProvider() {
                                         <Typography component="h1" fontSize="xl2" fontWeight="lg">
                                             Sign in to your account
                                         </Typography>
-                                        <Typography level="body1" sx={{ my: 1, mb: 1 }}>
+                                        <Typography level="body-xs" sx={{ my: 1, mb: 1 }}>
                                             Enter your credentials to continue
                                         </Typography>
                                     </div>
@@ -222,7 +222,7 @@ function SetUpProvider() {
                             </Box >
                             <div style={{ marginTop: "auto" }}>
                                 <Box component="footer" sx={{ pb: 3 }}>
-                                    <Typography level="body3" textAlign="center">
+                                    <Typography level="body-lg" textAlign="center">
                                         © DiTour {new Date().getFullYear()}
                                     </Typography>
                                 </Box>

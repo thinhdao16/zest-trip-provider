@@ -1,15 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
-import PropTypes from "prop-types";
 import { Col, Row } from "antd";
 import Box from "@mui/joy/Box";
-import Button from "@mui/joy/Button";
-import FormControl from "@mui/joy/FormControl";
 import FormLabel, { formLabelClasses } from "@mui/joy/FormLabel";
-import Link from "@mui/joy/Link";
 import Typography from "@mui/joy/Typography";
 import { AiOutlinePhone, AiOutlineLock, AiOutlineShop } from 'react-icons/ai';
-import { InputAdornment, TextField } from "@mui/material";
+import { Button, FormControl, InputAdornment, TextField } from "@mui/material";
 import ContinueGoogle from "../continueGoogle/ContinueGoogle";
 
 interface FormElements extends HTMLFormControlsCollection {
@@ -23,23 +19,6 @@ interface SignInFormElement extends HTMLFormElement {
 
 
 const Main: React.FC = () => {
-  // const signInButtonRef = useRef(null);
-  // const handleCallbackResponse = (response: google.accounts.id.CallbackResponse) => {
-  //   console.log("Encode JWT ID token" + response.credential);
-  //   const userObject = jwt_decode(response.credential);
-  //   console.log(userObject);
-  // };
-  // useEffect(() => {
-  //   (window as any).google.accounts.id.initialize({
-  //     client_id: "475648005655-d7beajj7umpfat7d98dqcnpr81u7n0j5.apps.googleusercontent.com",
-  //     callback: handleCallbackResponse
-  //   });
-
-  //   (window as any).google.accounts.id.renderButton(
-  //     signInButtonRef.current,
-  //     { theme: "outline", size: "large" }
-  //   );
-  // }, []);
 
   return (
     <React.Fragment>
@@ -124,7 +103,7 @@ const Main: React.FC = () => {
                 <Typography component="h1" fontSize="xl2" fontWeight="lg">
                   Sign in to your account
                 </Typography>
-                <Typography level="body1" sx={{ my: 1, mb: 1 }}>
+                <Typography level="body-xs" sx={{ my: 1, mb: 1 }}>
                   Enter your credentials to continue
                 </Typography>
               </div>
@@ -175,13 +154,13 @@ const Main: React.FC = () => {
                     alignItems: "center",
                   }}
                 >
-                  <Link
+                  {/* <Link
                     fontSize="sm"
                     href="#replace-with-a-link"
                     fontWeight="lg"
                   >
                     Forgot your password
-                  </Link>
+                  </Link> */}
                 </Box>
                 <Button type="submit" fullWidth>
                   Sign in
@@ -205,7 +184,7 @@ const Main: React.FC = () => {
               <ContinueGoogle />
             </Box>
             <Box component="footer" sx={{ py: 3 }}>
-              <Typography level="body3" textAlign="center">
+              <Typography level="body-md" textAlign="center">
                 © DiTour {new Date().getFullYear()}
               </Typography>
             </Box>

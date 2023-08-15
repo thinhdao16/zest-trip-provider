@@ -15,8 +15,9 @@ import Price from "./components/Price";
 import Media from "./components/Media";
 import Title from "./components/Title";
 import Review from "./components/Review";
+import Congratulation from "./components/Congratulation";
 
-const steps = [Welcome, Tourtype, TransportType, AccomType,Location, DurationCheckIn, Capacity, Price,Media,Title,Review];
+const steps = [Welcome, Tourtype, TransportType, AccomType, Location, DurationCheckIn, Capacity, Price, Media, Title, Review, Congratulation];
 
 const CreateTour: React.FC = () => {
     return (
@@ -40,6 +41,7 @@ const StepRenderer: React.FC = () => {
         isNextClicked,
         goToPreviousStep,
     } = useStepContext();
+    const isLastStep = currentStep === totalSteps;
     const StepsToRender = (
         <>
             {steps.map(
@@ -48,35 +50,50 @@ const StepRenderer: React.FC = () => {
             )}
         </>
     );
+    const handleFormSubmit = () => {
+        console.log("first")
+        goToNextStep()
+    };
     return (
         <>
-            <Headers />
+            {!isLastStep && <Headers />}
             {StepsToRender}
             <div style={{ position: 'fixed', bottom: '0', left: '0', right: '0', background: "white" }}>
-                <LinearProgress determinate value={(currentStep / totalSteps) * 100} />
-                {currentStep === totalSteps ? (
-                    <>
-                        <Button onClick={goToPreviousStep} disabled={currentStep !== totalSteps}>
-                            Previous Step
-                        </Button>
-                        <Button onClick={goToPreviousStep} disabled={currentStep !== totalSteps}>
-                            Get Started
-                        </Button>
-                    </>
-                ) : currentStep === 1 ? (
-                    <Button onClick={goToNextStep} disabled={currentStep === totalSteps}>
-                        Next Step
-                    </Button>
-                ) : (
-                    <>
-                        <Button onClick={goToPreviousStep} disabled={currentStep === totalSteps}>
-                            Previous Step
-                        </Button>
-                        <Button onClick={goToNextStep} disabled={currentStep === totalSteps}>
-                            Next Step
-                        </Button>
-                    </>
-                )}
+                {!isLastStep && <LinearProgress determinate value={((currentStep + 1) / totalSteps) * 100} />}
+                {
+                    currentStep === totalSteps ? (
+                        <>
+                            <Button onClick={goToPreviousStep} disabled={currentStep !== totalSteps}>
+                                Previous Step
+                            </Button>
+                            <Button onClick={handleFormSubmit} disabled={currentStep !== totalSteps}>
+                                Start
+                            </Button>
+                        </>
+                    ) :
+                        currentStep === 11 ? (
+                            <>
+                                <Button onClick={goToPreviousStep} disabled={currentStep === totalSteps}>
+                                    Previous Step
+                                </Button>
+                                <Button onClick={handleFormSubmit} disabled={currentStep === totalSteps}>
+                                    Get Started
+                                </Button>
+                            </>
+                        ) : currentStep === 1 ? (
+                            <Button onClick={goToNextStep} disabled={currentStep === totalSteps}>
+                                Next Step
+                            </Button>
+                        ) : (
+                            <>
+                                <Button onClick={goToPreviousStep} disabled={currentStep === totalSteps}>
+                                    Previous Step
+                                </Button>
+                                <Button onClick={goToNextStep} disabled={currentStep === totalSteps}>
+                                    Next Step
+                                </Button>
+                            </>
+                        )}
             </div>
         </>
     );

@@ -1,5 +1,5 @@
-import { FormControl } from '@mui/joy';
-import { FormLabel, InputAdornment, TextField, TextFieldProps } from '@mui/material';
+import { FormControl, FormLabel } from '@mui/joy';
+import {  InputAdornment, TextField, TextFieldProps } from '@mui/material';
 
 import React, { FC, ChangeEventHandler, ReactNode } from 'react';
 
@@ -16,7 +16,7 @@ export const Input = ({
 	...rest
 }: InputProps) => {
 	return (
-		<FormControl required style={{marginBottom:"20px"}}>
+		<FormControl required style={{marginBottom:"0"}}>
 			<FormLabel style={{fontWeight:600, color:"black"}}>{labels}</FormLabel>
 			<TextField
 				required

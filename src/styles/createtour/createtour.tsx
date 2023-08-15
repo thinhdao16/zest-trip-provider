@@ -98,9 +98,6 @@ export const WelcomTitle = styled(Typography)(({ theme }) => ({
   fontSize: "48px",
   marginBottom: "20px",
   color: "black",
-  [theme.breakpoints.down("sm")]: {
-    fontSize: "42px",
-  },
 }));
 export const CreateDescription = styled(Typography)(({ theme }) => ({
   lineHeight: "24px",
@@ -108,9 +105,7 @@ export const CreateDescription = styled(Typography)(({ theme }) => ({
   fontWeight: "500",
   marginBottom: "30px",
   color: "#717171",
-  [theme.breakpoints.down("sm")]: {
-    fontSize: "18px",
-  },
+
 }));
 export const CreateTitle = styled(Typography)(({ theme }) => ({
   lineHeight: "normal",

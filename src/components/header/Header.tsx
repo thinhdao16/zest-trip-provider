@@ -1,13 +1,41 @@
-import Login from '../login/Login'
-import SignUp from '../signUp/SignUp'
-import SetUpProvider from '../setUpProvider/SetUpProvider'
-
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
 function Header() {
     return (
         <>
-            <Login />
+
+            <Box sx={{ flexGrow: 1, width: "100vw" }}>
+                <AppBar position="static" style={{ backgroundColor: "white",boxShadow:"none", borderBottom:"1px solid #e4e4e4 " }}>
+                    <Toolbar>
+                        <Box sx={{ flexGrow: 1 }}>
+                            <IconButton
+                                size="large"
+                                edge="start"
+                                color="error"
+                                aria-label="menu"
+                                sx={{ color: "black" }}
+                            />
+                        </Box>
+
+                        <Box sx={{ flexGrow: 1, textAlign: "center" }}>
+                            <Button color="inherit" style={{ color: "black" }}>Button 1</Button>
+                            <Button color="inherit" style={{ color: "black" }}>Button 2</Button>
+                            <Button color="inherit" style={{ color: "black" }}>Button 3</Button>
+                            <Button color="inherit" style={{ color: "black" }}>Button 4</Button>
+                        </Box>
+                        <Box sx={{ flexGrow: 1, textAlign: "right" }}>
+                            3
+                        </Box>
+                        {/* <Login />
             <SignUp />
-            <SetUpProvider/>
+            <SetUpProvider /> */}
+                    </Toolbar>
+                </AppBar>
+            </Box>
+
         </>
     )
 }

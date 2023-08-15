@@ -1,5 +1,5 @@
 import React from 'react';
-import { BannerContainer, BannerContentHaveImage, BannerContentReview, CreateDescription, CreateTitleNullDes, TitleCardOptions } from '../../../styles/createtour/createtour';
+import { BannerContainer, BannerContentReview, CreateDescription, CreateTitleNullDes, TitleCardOptions } from '../../../styles/createtour/createtour';
 import { useStepContext } from '../context/ui/useStepContext';
 import { Box, Card, CardContent, Grid, Typography } from '@mui/material';
 import { Carousel } from 'react-responsive-carousel';
@@ -7,10 +7,6 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 const Review: React.FC = () => {
     const { currentStep, formValues } = useStepContext()
-    console.log(formValues)
-
-
-
     if (currentStep !== 11) {
         return null;
     }

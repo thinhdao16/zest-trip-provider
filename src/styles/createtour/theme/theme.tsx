@@ -53,14 +53,14 @@ interface CustomComponents extends Components {
 }
 
 const theme = createTheme({
-    palette: {
-        primary: {
-            main: Colors.primary,
-        },
-        secondary: {
-            main: Colors.secondary,
-        },
-    },
+    // palette: {
+    //     primary: {
+    //         main: Colors.primary,
+    //     },
+    //     secondary: {
+    //         main: Colors.secondary,
+    //     },
+    // },
 
     components: {
         MuiButton: {

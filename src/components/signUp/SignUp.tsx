@@ -1,12 +1,11 @@
 import React from "react";
 import { Col, Modal, Row } from "antd";
 import Box from "@mui/joy/Box";
-import Button from "@mui/joy/Button";
 import FormControl from "@mui/joy/FormControl";
 import FormLabel, { formLabelClasses } from "@mui/joy/FormLabel";
 import Typography from "@mui/joy/Typography";
 import { AiOutlinePhone, AiOutlineShop, AiOutlineLock } from 'react-icons/ai';
-import { InputAdornment, TextField, Grid, MenuItem, Select } from "@mui/material";
+import { InputAdornment, TextField, Grid, MenuItem, Select, Button } from "@mui/material";
 import { IoEarthOutline, IoPersonOutline, IoTransgenderOutline, IoAlertCircleOutline } from "react-icons/io5"
 import "./signUp.scss"
 import ContinueGoogle from '../continueGoogle/ContinueGoogle';
@@ -25,7 +24,7 @@ export default function SignUp() {
 
     return (
         <React.Fragment>
-            <Button type="primary" onClick={() => setOpen(true)}>
+            <Button onClick={() => setOpen(true)}>
                 Open Modal of 1000px width
             </Button>
             <Modal
@@ -114,7 +113,7 @@ export default function SignUp() {
                                 }}
                             >
                                 <div>
-                                    <Typography component="h1" fontSize="xl2" fontWeight="lg">
+                                    <Typography component="h1"  fontWeight="lg">
                                         Sign Up to your account
                                     </Typography>
                                     <Typography level="body-lg" sx={{ my: 1, mb: 1 }}>

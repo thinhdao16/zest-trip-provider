@@ -1,6 +1,5 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import PropTypes from "prop-types";
 import HomePage from "../../pages/homepage/HomePage";
 import Header from "../../components/header/Header";
 import CreateTour from "../../pages/createtour/CreateTour";

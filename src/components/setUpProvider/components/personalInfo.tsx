@@ -2,7 +2,6 @@ import { FormEvent } from 'react';
 import { Input } from './input';
 import { UserInfo } from 'AppTypes';
 import { AiOutlineLock } from 'react-icons/ai';
-import Typography from "@mui/joy/Typography";
 
 interface PersonalInfoProps {
 	userInfo: UserInfo;
