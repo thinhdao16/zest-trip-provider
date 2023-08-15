@@ -21,10 +21,10 @@ function Header() {
                         </Box>
 
                         <Box sx={{ flexGrow: 1, textAlign: "center" }}>
-                            <Button color="inherit" style={{ color: "black" }}>Button 1</Button>
-                            <Button color="inherit" style={{ color: "black" }}>Button 2</Button>
-                            <Button color="inherit" style={{ color: "black" }}>Button 3</Button>
-                            <Button color="inherit" style={{ color: "black" }}>Button 4</Button>
+                            <Button color="inherit" style={{ color: "black" }}>Button 12</Button>
+                            <Button color="inherit" style={{ color: "black" }}>Button 23</Button>
+                            <Button color="inherit" style={{ color: "black" }}>Button 35</Button>
+                            <Button color="inherit" style={{ color: "black" }}>Button 44</Button>
                         </Box>
                         <Box sx={{ flexGrow: 1, textAlign: "right" }}>
                             3
