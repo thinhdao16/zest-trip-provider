@@ -1,31 +1,18 @@
 import { Box, Button, Tab, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { Colors } from "../theme/theme";
-
-export const BannerContainer = styled(Box)(({ theme }) => ({
-  display: "flex",
-  width: "100vw",
-  // height: "100%",
-  padding: "0px 50px",
-  [theme.breakpoints.down("sm")]: {
-    flexDirection: "column",
-    alignItems: "center",
-  },
-}));
-
-export const BannerContent = styled(Box)(() => ({
-  width: "100%",
-  padding: "0 60px",
-}));
+import { Colors } from "../homepage/theme/theme";
 
 export const BannerHomePageList = styled(Box)(() => ({
   maxWidth: "100vw",
   padding: "64px 0 64px 0",
 }));
-
+export const BannerTitleExtra = styled(Box)(() => ({
+  display: "flex",
+  padding:"10px 0",
+}));
 export const BannerHomePageListFirst = styled(Box)(() => ({
   maxWidth: "100vw",
-  paddingTop: "64px",
+//   paddingTop: "24px",
 }));
 export const BannerImage = styled("img")(({ src, theme }) => ({
   src: `url(${src})`,
@@ -39,29 +26,30 @@ export const BannerImage = styled("img")(({ src, theme }) => ({
   },
 }));
 
-export const BannerTitle = styled(Typography)(({  theme }) => ({
+export const BannerTitle = styled(Typography)(({ theme }) => ({
   lineHeight: "36px",
   fontSize: "32px",
-  fontWeight:"600",
-  [theme.breakpoints.down('sm')]: {
-    fontSize: '42px',    
-  }
+  fontWeight: "600",
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "42px",
+  },
 }));
 
-
-export const BannerTitleList = styled(Typography)(({  theme }) => ({
+export const BannerTitleList = styled(Typography)(({ theme }) => ({
   lineHeight: "30px",
   fontSize: "26px",
-  fontWeight:"600",
-  [theme.breakpoints.down('sm')]: {
-    fontSize: '42px',    
-  }
+  fontWeight: "600",
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "42px",
+  },
 }));
 
 export const BannerDescription = styled(Typography)(({ theme }) => ({
   lineHeight: 1.25,
-  letterSpacing: 1.25,
-  marginBottom: "3em",
+  letterSpacing: 0.7,
+  color:"#7d868f",
+  fontSize:"14px",
+  fontWeight:"500",
   [theme.breakpoints.down("md")]: {
     lineHeight: 1.15,
     letterSpacing: 1.15,
@@ -90,25 +78,23 @@ export const BannerShopButton = styled(Button, {
 }));
 export const BannerHomePageButtonList = styled(Button)(() => ({
   padding: "4px 16px",
-  borderRadius:"25px",
-  borderStyle:"solid",
-  border:"1px solid #e6e6e6",
-  fontSize:"15px",
-  textTransform:"none",
-  color:"black",
-  fontWeight:"300",
-  textAlign:"center",
+  borderRadius: "25px",
+  borderStyle: "solid",
+  border: "1px solid #e6e6e6",
+  fontSize: "15px",
+  textTransform: "none",
+  color: "black",
+  fontWeight: "300",
+  textAlign: "center",
 }));
 export const BannerHomePageButtonListTab = styled(Tab)(() => ({
-  padding: "-10px 14px !important",
-  borderRadius:"25px",
-  borderStyle:"solid",
-  border:"1px solid #e6e6e6",
-  fontSize:"15px",
-  textTransform:"none",
-  color:"black",
-  fontWeight:"300",
-  textAlign:"center",
-  marginRight:"25px",
+  padding: "4px 16px",
+  borderRadius: "25px",
+  borderStyle: "solid",
+  border: "1px solid #e6e6e6",
+  fontSize: "15px",
+  textTransform: "none",
+  color: "black",
+  fontWeight: "300",
+  textAlign: "center",
 }));
-

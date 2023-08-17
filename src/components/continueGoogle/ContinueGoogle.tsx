@@ -19,7 +19,7 @@ function ContinueGoogle() {
                     const idToken = await user.getIdToken();
                     const accessToken = await user.getIdToken(true);
                     const response = await axios.post(
-                        "https://fhome2-be.vercel.app/login",
+                        "https://tour-ecom-cllh63fgua-df.a.run.app/auth/google-login",
                         { accessToken: accessToken },
                         {
                             headers: {
@@ -31,9 +31,10 @@ function ContinueGoogle() {
                     if ((response.status === 200)) {
                         // const data = await response.json();
                         if (
-                            response !== undefined &&
-                            response.data.data.user.roleName !== "admin" &&
-                            response.data.data.user.status.user !== true
+                            response !== undefined 
+                            // &&
+                            // response.data.data.user.roleName !== "admin" &&
+                            // response.data.data.user.status.user !== true
                         ) {
                             localStorage.setItem(
                                 "access_token",

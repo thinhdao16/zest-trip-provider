@@ -91,4 +91,23 @@
 #root{
 font-family:"inherit";
 }
+.tab-list-mui .css-1aquho2-MuiTabs-indicator{
+  background-color: #8fcaf7;
+  height: 0;
+}
+.tab-list-mui .Mui-selected{
+  color: #8fcaf7 !important;
+  border:1px solid #8fcaf7 !important;
+
+}
+.tab-list-mui .css-1h9z7r5-MuiButtonBase-root-MuiTab-root{
+  padding: 12px 32px 16px 0 !important;
+}
+.tab-list-mui .css-6j6zy9-MuiButtonBase-root-MuiTab-root{
+  height: 38px !important;
+  min-height: 38px !important;
+}
+.tab-list-data-mui .css-13xfq8m-MuiTabPanel-root{
+  padding: 24px 0;
+}
 /*end*/

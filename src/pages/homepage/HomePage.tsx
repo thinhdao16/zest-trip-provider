@@ -1,18 +1,13 @@
-import Banner from './banner/Banner'
-import { Container, Stack, ThemeProvider } from '@mui/material'
-import theme from '../../styles/homepage/theme/theme'
-
+import Banner from "./banner/Banner";
 
 function HomePage() {
-    return (
-        <>
-  
-                        <Banner />
-
-        </>
-    )
+  return (
+    <>
+      <Banner />
+    </>
+  );
 }
 
-HomePage.propTypes = {}
+HomePage.propTypes = {};
 
-export default HomePage
+export default HomePage;
