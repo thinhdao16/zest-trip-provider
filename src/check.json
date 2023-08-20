@@ -1,0 +1,28 @@
+{
+    "name": "Uncharted Expedition",
+    "description": "Embark on an exhilarating journey to discover new horizons and create unforgettable memories.",
+    "footnote": "For any inquiries, feel free to contact us anytime!",
+    "tour_images": [
+      "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg",  
+      "https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-1080x675.jpg"
+        ],
+    "price": 120.50,
+    "duration_day": 6,
+    "duration_night": 5,
+    "location": "Spectacular Natural Oasis",
+    "id_tags": [8, 12, 19, 1],
+    "TourComponent": [
+      {
+        "title": "Day 1",
+        "description": "Commence your extraordinary adventure with a warm welcome and an engaging introductory session."
+      },
+      {
+        "title": "Day 2",
+        "description": "Embark on a guided tour to immerse yourself in the local culture, explore historical landmarks, and savor authentic cuisine."
+      },
+      {
+        "title": "Day 3",
+        "description": "Discover hidden gems off the beaten path and experience the local way of life."
+      }
+    ]
+  }

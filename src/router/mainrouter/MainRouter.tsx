@@ -4,6 +4,8 @@ import HomePage from "../../pages/homepage/HomePage";
 import Header from "../../components/header/Header";
 import CreateTour from "../../pages/createtour/CreateTour";
 import SinglePage from "../../pages/homepage/singlepage/SinglePage";
+import ListWork from "../../pages/managementtour/listwork/ListWork";
+import Login from "../../components/login/Login";
 
 function MainRouter() {
   return (
@@ -16,7 +18,9 @@ function MainRouter() {
             <React.Fragment>
               <Header />
               <Routes>
-                <Route path="/" element={<HomePage />} />
+                <Route path="" element={<ListWork />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/listtour" element={<HomePage />} />
                 <Route path="/:index" element={<SinglePage />} />
                 <Route path="/createtour" element={<CreateTour />} />
               </Routes>

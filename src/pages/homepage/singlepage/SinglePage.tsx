@@ -9,7 +9,6 @@ import {
   BannerDescription,
   BannerHomePageListFirst,
   BannerTitleExtra,
-  BannerTitleList,
 } from "../../../styles/singlepage/singlepage";
 import {
   Box,
@@ -26,14 +25,17 @@ import { AiFillHome, AiFillStar } from "react-icons/ai";
 import TabContext from "@mui/lab/TabContext/TabContext";
 import TabList from "@mui/lab/TabList/TabList";
 import TabPanel from "@mui/lab/TabPanel/TabPanel";
-
+import { BannerHomePageButtonListTab } from "../../../styles/global/StyleGlobal";
+import { useSelector } from "react-redux";
+import { FiMoon, FiSun } from "react-icons/fi";
 function SinglePage() {
   const [value, setValue] = React.useState("1");
   const { index } = useParams();
-
+  const tourDetail = useSelector((state: any) => state.tour.tourDetail);
+  console.log(tourDetail);
   function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     event.preventDefault();
-    console.info('You clicked a breadcrumb.');
+    console.info("You clicked a breadcrumb.");
   }
 
   // Add an event listener to handle browser back navigation
@@ -56,43 +58,42 @@ function SinglePage() {
     <BannerContainer>
       <BannerContent>
         <BannerHomePageListFirst>
-        <div role="presentation" onClick={handleClick}>
-      <Breadcrumbs aria-label="breadcrumb" sx={{mb:1}}>
-        <Link
-          underline="hover"
-          sx={{ display: 'flex', alignItems: 'center' }}
-          color="inherit"
-          href="/"
-        >
-          <AiFillHome sx={{ mr: 0.5 }} fontSize="inherit" />
-          MUI
-        </Link>
-        <Link
-          underline="hover"
-          sx={{ display: 'flex', alignItems: 'center' }}
-          color="inherit"
-          href="/material-ui/getting-started/installation/"
-        >
-          <AiFillHome sx={{ mr: 0.5 }} fontSize="inherit" />
-          Core
-        </Link>
-        <Typography
-          sx={{ display: 'flex', alignItems: 'center' }}
-          color="text.primary"
-        >
-          <AiFillHome sx={{ mr: 0.5 }} fontSize="inherit" />
-          Breadcrumb
-        </Typography>
-      </Breadcrumbs>
-      
-    </div>
-  
+          <div role="presentation" onClick={handleClick}>
+            <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 1 }}>
+              <Link
+                underline="hover"
+                sx={{ display: "flex", alignItems: "center" }}
+                color="inherit"
+                href="/"
+              >
+                <AiFillHome sx={{ mr: 0.5 }} fontSize="inherit" />
+                MUI
+              </Link>
+              <Link
+                underline="hover"
+                sx={{ display: "flex", alignItems: "center" }}
+                color="inherit"
+                href="/material-ui/getting-started/installation/"
+              >
+                <AiFillHome sx={{ mr: 0.5 }} fontSize="inherit" />
+                Core
+              </Link>
+              <Typography
+                sx={{ display: "flex", alignItems: "center" }}
+                color="text.primary"
+              >
+                <AiFillHome sx={{ mr: 0.5 }} fontSize="inherit" />
+                Breadcrumb
+              </Typography>
+            </Breadcrumbs>
+          </div>
+
           <Grid container spacing={0} style={{ maxHeight: "30vư" }}>
             {/* Add spacing prop here */}
             <Grid item xs={5}>
               {/* Add item prop here */}
               <img
-                src="https://a0.muscache.com/im/pictures/ae441b77-ba8a-4cb3-b4b1-647b6376d776.jpg?im_w=1200"
+                src={tourDetail?.tour_images[0]}
                 alt="alt"
                 style={{
                   width: "34vw",
@@ -104,28 +105,29 @@ function SinglePage() {
             </Grid>
             <Grid item xs={7}>
               <BannerHomePageListFirst>
-                <BannerTitle>
-                  Thưởng thức thiên nhiên trong nhà chứa/nhà tre độc đáo
-                </BannerTitle>
+                <BannerTitle>{tourDetail?.name} </BannerTitle>
                 <BannerTitleExtra>
                   <AiFillStar />
-                  <Typography>5,0</Typography>·<Typography>5 rate</Typography>.
-                  <Typography>Vietnam</Typography>
+                  <Typography>5,0</Typography> ·{" "}
+                  <Typography> 5 rate </Typography>.
+                  <Typography>{tourDetail?.location}</Typography>
                 </BannerTitleExtra>
               </BannerHomePageListFirst>{" "}
-              <Box style={{ display: "flex" , margin:"5px 0 10px 0"}}>
-                <Typography>$120</Typography>
+              <Box
+                style={{
+                  display: "flex",
+                  margin: "5px 0 10px 0",
+                  fontSize: "20px",
+                  fontWeight: "600",
+                }}
+              >
+                <Typography>${tourDetail?.price}</Typography>
                 <Typography>/adults</Typography>
               </Box>
-              <Box>
-                <BannerDescription>
-                  Một cơ hội đặc biệt để khám phá khu vực nông thôn miền Bắc
-                  Thái Lan. Ở nơi hoang dã, giữa cánh đồng lúa và cách xa các
-                  địa điểm du lịch. Chỗ ở này nằm ở vị trí lý tưởng giữa hai địa
-                  điểm tham quan phổ biến, Chiang Mai và Pai.f
-                  </BannerDescription>
+              <Box style={{ margin: "5px 0 10px 0" }}>
+                <BannerDescription>{tourDetail?.description}</BannerDescription>
               </Box>
-              <Box style={{ display: "flex" }}>
+              <Box style={{ display: "flex", margin: "5px 0 15px 0 " }}>
                 <Typography>abc</Typography>
                 <Typography>bcd</Typography>
               </Box>
@@ -135,21 +137,29 @@ function SinglePage() {
                     <TabList
                       onChange={handleChange}
                       aria-label="lab API tabs example"
+                      className="tab-list-mui"
                     >
-                      <Tab label="Item One" value="1" />
-                      <Tab label="Item Two" value="2" />
-                      <Tab label="Review" value="3" />
+                      <BannerHomePageButtonListTab label="Item One" value="1" />
+                      <BannerHomePageButtonListTab label="Duration" value="2" />
+                      <BannerHomePageButtonListTab label="Review" value="3" />
                     </TabList>
                   </Box>
-                  <Box>
+                  <Box className="tab-list-data-mui">
                     <TabPanel value="1"></TabPanel>
                     <TabPanel value="2">
-                      {/* <TransitionGroup component={Grid} container spacing={2}> */}
-
-                      {/* Add more Grid items for content under TabPanel value="2" */}
-                      {/* </TransitionGroup> */}
+                      <Box style={{display:"flex", alignItems:"center"}}>
+                        <FiSun />
+                        <Typography>Duration_day: {tourDetail?.duration_day}</Typography>
+                      </Box>
+                      <Box style={{display:"flex"}}>
+                        <FiMoon />
+                        <Typography>Duration_night: {tourDetail?.duration_night}</Typography>
+                      </Box>
                     </TabPanel>
-                    <TabPanel value="3" style={{maxHeight:"250px", overflowY:"auto"}}>
+                    <TabPanel
+                      value="3"
+                      style={{ maxHeight: "250px", overflowY: "auto" }}
+                    >
                       <Card>
                         <CardContent>
                           <Grid container>

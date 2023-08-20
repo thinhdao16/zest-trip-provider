@@ -9,6 +9,8 @@ export const BannerHomePageList = styled(Box)(() => ({
 export const BannerTitleExtra = styled(Box)(() => ({
   display: "flex",
   padding:"10px 0",
+  alignItems:"center",
+  
 }));
 export const BannerHomePageListFirst = styled(Box)(() => ({
   maxWidth: "100vw",

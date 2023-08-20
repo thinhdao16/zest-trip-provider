@@ -1,4 +1,4 @@
-import { Box, Button, Tab, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { Colors } from "../theme/theme";
 
@@ -49,14 +49,7 @@ export const BannerTitle = styled(Typography)(({  theme }) => ({
 }));
 
 
-export const BannerTitleList = styled(Typography)(({  theme }) => ({
-  lineHeight: "30px",
-  fontSize: "26px",
-  fontWeight:"600",
-  [theme.breakpoints.down('sm')]: {
-    fontSize: '42px',    
-  }
-}));
+
 
 export const BannerDescription = styled(Typography)(({ theme }) => ({
   lineHeight: 1.25,
@@ -99,16 +92,5 @@ export const BannerHomePageButtonList = styled(Button)(() => ({
   fontWeight:"300",
   textAlign:"center",
 }));
-export const BannerHomePageButtonListTab = styled(Tab)(() => ({
-  padding: "-10px 14px !important",
-  borderRadius:"25px",
-  borderStyle:"solid",
-  border:"1px solid #e6e6e6",
-  fontSize:"15px",
-  textTransform:"none",
-  color:"black",
-  fontWeight:"300",
-  textAlign:"center",
-  marginRight:"25px",
-}));
+
 

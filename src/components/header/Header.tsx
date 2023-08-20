@@ -4,6 +4,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import { Link } from "react-router-dom";
+import { AiFillHome } from "react-icons/ai";
 function Header() {
   return (
     <>
@@ -13,38 +14,40 @@ function Header() {
           style={{
             backgroundColor: "white",
             boxShadow: "none",
-            // borderBottom: "1px solid #e4e4e4 ",
-            // padding:35  
+            borderBottom: "1px solid #e4e4e4 ",
+            padding: 0,
           }}
         >
           <Toolbar>
             <Box sx={{ flexGrow: 1 }}>
-              <IconButton
-                size="large"
-                edge="start"
-                color="error"
-                aria-label="menu"
-                sx={{ color: "black" }}
-              />
+              <Link to="" style={{ textDecoration: "none", color: "black" }}>
+                <AiFillHome style={{ color: "black " }} />
+              </Link>
             </Box>
 
             <Box sx={{ flexGrow: 1, textAlign: "center" }}>
-            <Button color="inherit" style={{ color: "black" }}>
               <Link to="/createtour" style={{ textDecoration: "none" }}>
-                Create tour
+                <Button color="inherit" style={{ color: "black" }}>
+                  Create tour
+                </Button>
               </Link>
-            </Button>
-              <Button color="inherit" style={{ color: "black" }}>
-                Button 23
-              </Button>
-              <Button color="inherit" style={{ color: "black" }}>
-                Button 35
-              </Button>
+              <Link to="/listtour" style={{ textDecoration: "none" }}>
+                <Button color="inherit" style={{ color: "black" }}>
+                  list tour
+                </Button>
+              </Link>
+              <Link to="/login" style={{ textDecoration: "none" }}>
+                <Button color="inherit" style={{ color: "black" }}>
+                  Login
+                </Button>
+              </Link>
               <Button color="inherit" style={{ color: "black" }}>
                 Button 44
               </Button>
             </Box>
-            <Box sx={{ flexGrow: 1, textAlign: "right" ,color:"black"}}>3</Box>
+            <Box sx={{ flexGrow: 1, textAlign: "right", color: "black" }}>
+              3
+            </Box>
             {/* <Login />
             <SignUp />
             <SetUpProvider /> */}
@@ -54,6 +57,5 @@ function Header() {
     </>
   );
 }
-
 
 export default Header;
