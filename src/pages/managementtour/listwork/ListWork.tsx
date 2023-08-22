@@ -10,6 +10,7 @@ import TabContext from "@mui/lab/TabContext/TabContext";
 import TabList from "@mui/lab/TabList/TabList";
 import TabPanel from "@mui/lab/TabPanel/TabPanel";
 import { BannerHomePageButtonListTab } from "../../../styles/global/StyleGlobal";
+import Header from "../../../components/header/Header";
 
 function ListWork() {
   const [value, setValue] = React.useState("1");
@@ -17,6 +18,8 @@ function ListWork() {
     setValue(newValue);
   };
   return (
+   <>
+   <Header />
     <BannerContainer>
       <BannerContent>
         <BannerHomePageList>
@@ -160,6 +163,7 @@ function ListWork() {
         </BannerHomePageList>
       </BannerContent>
     </BannerContainer>
+   </>
   );
 }
 

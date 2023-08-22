@@ -19,6 +19,7 @@ const initialState = {
   tourDetail: [],
 };
 
+
 // Create an async thunk to fetch the list of tours
 export const fetchTours = createAsyncThunk("tour/fetchTours", async () => {
   const token = getTokenFromLocalStorage()?.data?.access_token;
@@ -38,17 +39,20 @@ export const fetchTours = createAsyncThunk("tour/fetchTours", async () => {
 });
 
 // Create another async thunk to fetch other data
-export const fetchOtherData = createAsyncThunk(
-  "tour/fetchOtherData",
-  async () => {
-    const token = getTokenFromLocalStorage();
-
+export const postCreateTour = createAsyncThunk(
+  "tour/postCreateTour", // Slice name: "tour"
+  async (requestData: any) => {
+    const token = getTokenFromLocalStorage()?.data?.access_token;
     try {
-      const response = await axios.post("https://your-other-api-url", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.post(
+        "https://manager-ecom-cllh63fgua-df.a.run.app/tour",
+        requestData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       return response.data;
     } catch (error) {
       throw new Error("Failed to fetch other data");
@@ -79,16 +83,16 @@ const tourSlice = createSlice({
         state.loading = false;
         state.error = action.error.message;
       })
-      .addCase(fetchOtherData.pending, (state) => {
+      .addCase(postCreateTour.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchOtherData.fulfilled, (state, action) => {
+      .addCase(postCreateTour.fulfilled, (state, action) => {
         state.loading = false;
         state.otherData = action.payload;
         state.error = null;
       })
-      .addCase(fetchOtherData.rejected, (state: any, action) => {
+      .addCase(postCreateTour.rejected, (state: any, action) => {
         state.loading = false;
         state.error = action.error.message;
       });

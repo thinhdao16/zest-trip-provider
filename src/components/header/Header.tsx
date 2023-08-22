@@ -2,7 +2,6 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
 import { Link } from "react-router-dom";
 import { AiFillHome } from "react-icons/ai";
 function Header() {
@@ -41,9 +40,11 @@ function Header() {
                   Login
                 </Button>
               </Link>
-              <Button color="inherit" style={{ color: "black" }}>
-                Button 44
-              </Button>
+              <Link to="/signup" style={{ textDecoration: "none" }}>
+                <Button color="inherit" style={{ color: "black" }}>
+                  Login
+                </Button>
+              </Link>
             </Box>
             <Box sx={{ flexGrow: 1, textAlign: "right", color: "black" }}>
               3

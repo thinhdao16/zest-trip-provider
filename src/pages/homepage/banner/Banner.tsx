@@ -75,8 +75,8 @@ export default function Banner() {
               <Box className="tab-list-data-mui">
                 <TabPanel value="1">
                   <Grid container spacing={5}>
-                    {tours?.map((data: any) => (
-                      <Grid item xs={4}>
+                    {tours?.map((data: any, index:any) => (
+                      <Grid item xs={4} key={index}>
                         <Link
                           to={`/${data?.id}`}
                           key={data}

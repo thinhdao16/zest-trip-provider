@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { BannerContainer, BannerContent, CreateChooseContent, CreateDescription, CreateDurationContent, CreateKnotHidden, CreateKnotPre, CreateTitleNullDes } from '../../../styles/createtour/createtour';
 import { useStepContext } from '../context/ui/useStepContext';
-import { Box, Typography } from '@mui/material';
+import {  Typography } from '@mui/material';
 import { GoNoEntry, GoPlusCircle } from 'react-icons/go';
 import { dataTypeDuration } from '../dataFake';
 
 const DurationCheckIn: React.FC = () => {
-    const { currentStep, updateFormValues, formValues } = useStepContext()
+    const { currentStep, updateFormValues } = useStepContext()
     const [dataDuration, setDataDuration] = useState(dataTypeDuration);
     const handleIncrement = (id: number) => {
         const updatedData = dataDuration.map((item) =>
@@ -36,7 +36,7 @@ const DurationCheckIn: React.FC = () => {
                     Your address is only shared with guests after they have successfully.
                 </CreateDescription>
                 {dataDuration.map((data) => (
-                    <CreateDurationContent>
+                    <CreateDurationContent key={data?.id}>
                         <CreateChooseContent>
                             <Typography>{data?.title}</Typography>
                             <div>

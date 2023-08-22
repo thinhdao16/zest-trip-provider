@@ -5,9 +5,10 @@ import axios from 'axios';
 import clientId from "../continueGoogle/client_secret_624291541261-vsnpuqvrn48tah5ju43l048ug23a3hre.apps.googleusercontent.com.json"
 import { DataContext } from '../../store/dataContext/DataContext';
 import { auth } from '../../store/firebase/firebase';
+import { useNavigate } from 'react-router-dom';
 function ContinueGoogle() {
     const { googleSignIn, accessToken } = React.useContext(DataContext)
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
 
     const handleGoogleSignIn = async () => {
         try {
@@ -32,15 +33,12 @@ function ContinueGoogle() {
                         // const data = await response.json();
                         if (
                             response !== undefined 
-                            // &&
-                            // response.data.data.user.roleName !== "admin" &&
-                            // response.data.data.user.status.user !== true
                         ) {
                             localStorage.setItem(
                                 "access_token",
                                 JSON.stringify(response.data)
                             );
-                            // navigate("/home");
+                            navigate("/listwork");
                             //         }
                         } else {
                             console.log("first")

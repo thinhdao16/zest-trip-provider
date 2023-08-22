@@ -1,4 +1,4 @@
-import { useContext, createContext, useEffect, useState } from "react";
+import {  createContext, useEffect, useState } from "react";
 import {
   GoogleAuthProvider,
   signInWithPopup,
@@ -6,25 +6,33 @@ import {
   onAuthStateChanged,
 } from "firebase/auth";
 import { auth } from "../firebase/firebase";
-import axios from "axios";
 
 interface User {
   email: string | null; // Update the type of 'email' property to include 'null'
   // Add other properties as needed
 }
-
+type RefeshLogin = boolean;
 interface AuthContextValue {
   googleSignIn: () => Promise<void>;
   accessToken: string;
-  abc : string
+  abc: string;
+  refeshLogin: RefeshLogin | null;
+  setRefeshLogin: React.Dispatch<React.SetStateAction<RefeshLogin | null>>;
 }
 
-export const DataContext = createContext<AuthContextValue>({} as AuthContextValue);
+export const DataContext = createContext<AuthContextValue>(
+  {} as AuthContextValue
+);
 
-export function DataContextProvider({ children }: { children: React.ReactNode }) {
+export function DataContextProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const [user, setUser] = useState<User | null>(null);
   const [accessToken, setAccessToken] = useState("");
-  const abc = "abe"
+  const [refeshLogin, setRefeshLogin] = useState<RefeshLogin | null>(null);
+  const abc = "abe";
   const googleSignIn = async () => {
     const provider = new GoogleAuthProvider();
     const result = await signInWithPopup(auth, provider);
@@ -50,14 +58,15 @@ export function DataContextProvider({ children }: { children: React.ReactNode })
       }
     });
 
-
     return () => {
       unsubscribe();
     };
   }, []);
 
   return (
-    <DataContext.Provider value={{ googleSignIn, accessToken , abc }}>
+    <DataContext.Provider
+      value={{ googleSignIn, accessToken, abc, refeshLogin, setRefeshLogin }}
+    >
       {children}
     </DataContext.Provider>
   );

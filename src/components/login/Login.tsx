@@ -21,36 +21,70 @@ interface SignInFormElement extends HTMLFormElement {
   readonly elements: FormElements;
 }
 import "./login.scss";
+import {
+  ButtonGlobal,
+  ContainerPageFullHalf,
+  ContainerPageFullHalfContent,
+} from "../../styles/global/StyleGlobal";
+import { Link, useNavigate } from "react-router-dom";
+import jwt_decode from "jwt-decode";
+import { DataContext } from "../../store/dataContext/DataContext";
+
 function Login() {
+  const navigate = useNavigate();
+  const { refeshLogin, setRefeshLogin } = React.useContext(DataContext);
+  const checkAccessToken = () => {
+    const accessToken = localStorage.getItem("access_token");
+    if (accessToken !== null) {
+      const decodedToken: any = jwt_decode(
+        JSON.parse(accessToken)?.data?.access_token
+      );
+      const expTimestamp = decodedToken.exp;
+      if (accessToken && expTimestamp > Date.now() / 1000) {
+        setRefeshLogin((prev) => !prev);
+        navigate("/listtour"); // Điều hướng nếu có accessToken còn hạn
+      } else {
+        // refreshToken(); // Gọi refreshToken nếu không có accessToken hoặc hết hạn
+      }
+    } else {
+      setRefeshLogin((prev) => !prev);
+      navigate("/login");
+    }
+  };
+  // const refreshToken = async () => {
+  //   // Gọi API refreshToken ở đây
+  //   try {
+  //     const response = "aabc"
+  //     // const newAccessToken = response.data.accessToken;
+  //     const newAccessTokenExp = response.data.accessTokenExp;
+
+  //     localStorage.setItem('accessToken', newAccessToken);
+  //     localStorage.setItem('accessTokenExp', newAccessTokenExp);
+
+  //     navigate('/listtour'); // Điều hướng sau khi refreshToken thành công
+  //   } catch (error) {
+  //     // Xử lý lỗi refreshToken
+  //     console.error('Error refreshing token:', error);
+  //   }
+  // };
+
+  React.useEffect(() => {
+    checkAccessToken();
+  }, [refeshLogin]);
   return (
     <>
-      {/* <Button type="primary" onClick={() => setOpen(true)}>
-				Open Modal of 1000px width
-			</Button>
-			<Modal
-				centered
-				open={open}
-				onOk={() => setOpen(false)}
-				onCancel={() => setOpen(false)}
-				width={1000}
-				footer={null}
-				className="login-modal-content"
-			>
-				<main>
-					<Main />
-				</main>
-			</Modal> */}
-      <Box style={{ maxHeight: "50vw" }}>
+      <ContainerPageFullHalf>
         <Grid container>
           <Grid
             item
-            xs={8}
+            xs={6}
             style={{
               backgroundColor: "#f9fbfc",
               borderRadius: "8px 0 0 8px",
               padding: "30px",
               display: "flex",
               flexDirection: "column",
+              height: "100vh",
             }}
           >
             <Typography
@@ -68,33 +102,22 @@ function Login() {
               <li>⨀ Save details for next up </li>
             </ul>
             <div style={{ marginTop: "auto" }}>
-              <Button
-                fullWidth
-                style={{
-                  backgroundColor: "white",
-                  border: "1px solid #e7e7eb",
-                  color: "black",
-                }}
-              >
-                Don't have an account
-              </Button>
+              <Link to="/signup">
+                <Button
+                  fullWidth
+                  style={{
+                    backgroundColor: "white",
+                    border: "1px solid #e7e7eb",
+                    color: "black",
+                  }}
+                >
+                  Don't have an account
+                </Button>
+              </Link>
             </div>
           </Grid>
-          <Grid item xs={4}>
-            <Box
-              sx={{
-                px: 2,
-              }}
-            >
-              <Box
-                component="header"
-                sx={{
-                  py: 3,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                }}
-              ></Box>
+          <Grid item xs={6}>
+            <ContainerPageFullHalfContent>
               <Box
                 component="main"
                 sx={{
@@ -181,9 +204,9 @@ function Login() {
                     Forgot your password
                   </Link> */}
                   </Box>
-                  <Button type="submit" fullWidth>
+                  <ButtonGlobal type="submit" fullWidth>
                     Sign in
-                  </Button>
+                  </ButtonGlobal>
                 </form>
                 <Box sx={{ position: "relative", margin: 0.5 }}>
                   <span
@@ -209,15 +232,15 @@ function Login() {
                 </Box>
                 <ContinueGoogle />
               </Box>
-              <Box component="footer" sx={{ py: 3 }}>
-                <Typography level="body-md" textAlign="center">
-                  © DiTour {new Date().getFullYear()}
-                </Typography>
-              </Box>
+            </ContainerPageFullHalfContent>
+            <Box component="footer" sx={{ py: 3 }}>
+              <Typography level="body-md" textAlign="center">
+                © DiTour {new Date().getFullYear()}
+              </Typography>
             </Box>
           </Grid>
         </Grid>
-      </Box>
+      </ContainerPageFullHalf>
     </>
   );
 }
