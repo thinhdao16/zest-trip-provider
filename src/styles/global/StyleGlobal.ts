@@ -54,7 +54,7 @@ export const ContainerPageFullHalf = styled(Box)(({ theme }) => ({
 }));
 
 export const ContainerPageFullHalfContent = styled(Box)(({ theme }) => ({
-  height: "87vh",
+  height: "89vh",
   display: "flex",
   flexDirection: "column",
   padding:"12px 0 12px 0 "

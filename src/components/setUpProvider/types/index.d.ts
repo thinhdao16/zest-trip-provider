@@ -12,6 +12,7 @@ declare module 'AppTypes' {
 		address: string;
 		webCompnany: string;
 		mediaSocial: string;
+		file: file;
 	}
 	
 	export interface Plan {

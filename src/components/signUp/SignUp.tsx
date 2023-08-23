@@ -22,7 +22,7 @@ import jwt_decode from "jwt-decode";
 import "./signUp.scss";
 import ContinueGoogle from "../continueGoogle/ContinueGoogle";
 import {
-    ButtonGlobal,
+  ButtonGlobal,
   ContainerPageFullHalf,
   ContainerPageFullHalfContent,
 } from "../../styles/global/StyleGlobal";
@@ -38,46 +38,46 @@ interface SignInFormElement extends HTMLFormElement {
 }
 
 export default function SignUp() {
-    const navigate = useNavigate();
-    const { refeshLogin, setRefeshLogin } = React.useContext(DataContext);
-    const checkAccessToken = () => {
-      const accessToken = localStorage.getItem("access_token");
-      if (accessToken !== null) {
-        const decodedToken: any = jwt_decode(
-          JSON.parse(accessToken)?.data?.access_token
-        );
-        const expTimestamp = decodedToken.exp;
-        if (accessToken && expTimestamp > Date.now() / 1000) {
-          setRefeshLogin((prev) => !prev);
-          navigate("/listtour"); // Điều hướng nếu có accessToken còn hạn
-        } else {
-          // refreshToken(); // Gọi refreshToken nếu không có accessToken hoặc hết hạn
-        }
-      } else {
+  const navigate = useNavigate();
+  const { refeshLogin, setRefeshLogin } = React.useContext(DataContext);
+  const checkAccessToken = () => {
+    const accessToken = localStorage.getItem("access_token");
+    if (accessToken !== null) {
+      const decodedToken: any = jwt_decode(
+        JSON.parse(accessToken)?.data?.access_token
+      );
+      const expTimestamp = decodedToken.exp;
+      if (accessToken && expTimestamp > Date.now() / 1000) {
         setRefeshLogin((prev) => !prev);
-        navigate("/signup");
+        navigate("/listtour"); // Điều hướng nếu có accessToken còn hạn
+      } else {
+        // refreshToken(); // Gọi refreshToken nếu không có accessToken hoặc hết hạn
       }
-    };
-    // const refreshToken = async () => {
-    //   // Gọi API refreshToken ở đây
-    //   try {
-    //     const response = "aabc"
-    //     // const newAccessToken = response.data.accessToken;
-    //     const newAccessTokenExp = response.data.accessTokenExp;
-  
-    //     localStorage.setItem('accessToken', newAccessToken);
-    //     localStorage.setItem('accessTokenExp', newAccessTokenExp);
-  
-    //     navigate('/listtour'); // Điều hướng sau khi refreshToken thành công
-    //   } catch (error) {
-    //     // Xử lý lỗi refreshToken
-    //     console.error('Error refreshing token:', error);
-    //   }
-    // };
-  
-    React.useEffect(() => {
-      checkAccessToken();
-    }, [refeshLogin]);
+    } else {
+      setRefeshLogin((prev) => !prev);
+      navigate("/signup");
+    }
+  };
+  // const refreshToken = async () => {
+  //   // Gọi API refreshToken ở đây
+  //   try {
+  //     const response = "aabc"
+  //     // const newAccessToken = response.data.accessToken;
+  //     const newAccessTokenExp = response.data.accessTokenExp;
+
+  //     localStorage.setItem('accessToken', newAccessToken);
+  //     localStorage.setItem('accessTokenExp', newAccessTokenExp);
+
+  //     navigate('/listtour'); // Điều hướng sau khi refreshToken thành công
+  //   } catch (error) {
+  //     // Xử lý lỗi refreshToken
+  //     console.error('Error refreshing token:', error);
+  //   }
+  // };
+
+  React.useEffect(() => {
+    checkAccessToken();
+  }, [refeshLogin]);
 
   return (
     <ContainerPageFullHalf>
@@ -109,53 +109,52 @@ export default function SignUp() {
           </ul>
           <div style={{ marginTop: "auto" }}>
             <Link to="/login">
-            <Button
-              fullWidth
-              style={{
-                backgroundColor: "white",
-                border: "1px solid #e7e7eb",
-                color: "black",
-              }}
-            >
-              You have account
-            </Button>
+              <Button
+                fullWidth
+                style={{
+                  backgroundColor: "white",
+                  border: "1px solid #e7e7eb",
+                  color: "black",
+                }}
+              >
+                You have account
+              </Button>
             </Link>
-           
           </div>
         </Grid>
         <Grid item xs={6}>
           <ContainerPageFullHalfContent>
             <Box
-            component="main"
-            sx={{
-              my: "auto",
-              py: 2,
-              pb: 5,
-              display: "flex",
-              flexDirection: "column",
-              gap: 2,
-              width: 400,
-              maxWidth: "100%",
-              mx: "auto",
-              borderRadius: "sm",
-              "& form": {
+              component="main"
+              sx={{
+                my: "auto",
+                py: 2,
+                pb: 5,
                 display: "flex",
                 flexDirection: "column",
                 gap: 2,
-              },
-              [`& .${formLabelClasses.asterisk}`]: {
-                visibility: "hidden",
-              },
-            }}
+                width: 400,
+                maxWidth: "100%",
+                mx: "auto",
+                borderRadius: "sm",
+                "& form": {
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 2,
+                },
+                [`& .${formLabelClasses.asterisk}`]: {
+                  visibility: "hidden",
+                },
+              }}
             >
-            <div>
-                  <Typography component="h1" fontSize="xl2" fontWeight="lg">
-                    Sign up to your account
-                  </Typography>
-                  <Typography level="body-xs" sx={{ my: 1, mb: 1 }}>
-                    Enter your credentials to continue
-                  </Typography>
-                </div>
+              <div>
+                <Typography component="h1" fontSize="xl2" fontWeight="lg">
+                  Sign up to your account
+                </Typography>
+                <Typography level="body-xs" sx={{ my: 1, mb: 1 }}>
+                  Enter your credentials to continue
+                </Typography>
+              </div>
               <form
                 onSubmit={(event: React.FormEvent<SignInFormElement>) => {
                   event.preventDefault();
@@ -308,10 +307,10 @@ export default function SignUp() {
             </Box>
           </ContainerPageFullHalfContent>
           <Box component="footer" sx={{ pb: 3 }}>
-              <Typography level="body-lg" textAlign="center">
-                © DiTour {new Date().getFullYear()}
-              </Typography>
-            </Box>
+            <Typography level="body-lg" textAlign="center">
+              © DiTour {new Date().getFullYear()}
+            </Typography>
+          </Box>
         </Grid>
       </Grid>
     </ContainerPageFullHalf>

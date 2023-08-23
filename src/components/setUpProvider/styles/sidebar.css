@@ -1,0 +1,13 @@
+.sidebar-setupPovider-container-chosen{
+    display: flex;
+    align-items: center;
+}
+.sidebar-setupPovider-container-unchosen{
+    display: flex;
+    align-items: center;
+    opacity: .6;
+}
+.sidebar-setup-title{
+    font-weight: 600;
+    padding-left: 12px;
+}
