@@ -1,37 +1,71 @@
-import { Addon } from "AppTypes";
-import { calculatePrice } from "../utils/calculatePrice";
-import { Card } from "./card";
-import clsx from "clsx";
-import { Box } from "@mui/material";
-
-const activeClasses = "border border-primary-purplish-blue bg-neutral-magnolia";
-
-const addons: Addon[] = [
-  {
-    name: "Online service",
-    description: "Access to multiplayer games",
-    monthlyPrice: 1,
-  },
-  {
-    name: "Large storage",
-    description: "Extra 1TB of cloud save",
-    monthlyPrice: 2,
-  },
-  {
-    name: "Customizable profile",
-    description: "Custom theme on your profile",
-    monthlyPrice: 2,
-  },
-];
-
-interface AddonsProps {
-  selectedAddons: Addon[];
-  monthly: boolean;
-  updateAddons: (addon: Addon) => void;
-}
+import { Box, Typography, Grid } from "@mui/material";
+import { policy } from "../../../data/policy";
 
 export const Addons = () => {
-  return <Box>
-	
-  </Box>;
+  console.log(policy);
+  return (
+    <Grid container>
+      <Grid item xs={9} style={{maxHeight:"75vh", overflow:"auto"}}>
+        <Box mt={1}>
+          <Typography
+            style={{
+              fontSize: "1.875rem",
+              lineHeight: "2.25rem",
+              fontWeight: 500,
+            }}
+          >
+            {policy?.main?.titleMain}
+          </Typography>
+          <Typography style={{}}>{policy?.main?.descriptionMain}</Typography>
+        </Box>
+        <Box mt={1}>
+          <Typography
+            style={{
+              fontSize: "1.875rem",
+              lineHeight: "2.25rem",
+              fontWeight: 500,
+            }}
+          >
+            {policy?.title?.titleMain}
+          </Typography>
+          <Box>
+            {policy?.title?.description.map((data) => (
+              <ol style={{ display: "flex" }}>
+                <li style={{ display: "flex" }}>
+                  <Typography style={{ fontWeight: 600 }}>
+                    {data?.title}
+                  </Typography>
+                  {data?.description}
+                </li>
+              </ol>
+            ))}
+          </Box>
+        </Box>
+        <Box mt={1}>
+          {policy?.description?.map((data: any) => (
+            <Box>
+              <Typography
+                style={{
+                  fontSize: "1.875rem",
+                  lineHeight: "2.25rem",
+                  fontWeight: 500,
+                }}
+              >
+                {data?.header}
+              </Typography>
+              <Typography>{data?.title}</Typography>
+              {data?.description?.map((data: any) => (
+                <Box>
+                  <Typography>{data?.list}</Typography>
+                </Box>
+              ))}
+            </Box>
+          ))}
+        </Box>
+      </Grid>
+      <Grid item xs={3}>
+        s
+      </Grid>
+    </Grid>
+  );
 };

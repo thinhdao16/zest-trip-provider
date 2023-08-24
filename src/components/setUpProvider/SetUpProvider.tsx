@@ -150,7 +150,7 @@ console.log(userServiceConfiguration)
                   display: "flex",
                   flexDirection: "column",
                   gap: 2,
-                  width: 400,
+                  minWidth: 400,
                   maxWidth: "100%",
                   mx: "auto",
                   borderRadius: "sm",
