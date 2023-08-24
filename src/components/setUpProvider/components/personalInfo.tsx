@@ -119,6 +119,7 @@ PersonalInfoProps) => {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
+            maxWidth: "400px",
           }}
         >
           {selectedFiles && selectedFiles.length > 0 ? (

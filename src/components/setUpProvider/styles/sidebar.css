@@ -1,13 +1,22 @@
-.sidebar-setupPovider-container-chosen{
+.sidebar-setupPovider-container-chosen {
     display: flex;
     align-items: center;
+    padding: 14px;
+    border-radius: 12px;
+    background: #8fcaf7;
+    border: 1px solid rgb(87, 85, 85)
 }
-.sidebar-setupPovider-container-unchosen{
+
+.sidebar-setupPovider-container-unchosen {
     display: flex;
     align-items: center;
     opacity: .6;
+    padding: 14px;
+    border-radius: 12px;
+    border: 1px solid rgb(87, 85, 85)
 }
-.sidebar-setup-title{
+
+.sidebar-setup-title {
     font-weight: 600;
     padding-left: 12px;
 }

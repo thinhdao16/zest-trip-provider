@@ -1,74 +1,83 @@
-import { UserServiceConfiguration } from 'AppTypes';
-import { calculatePrice } from '../utils/calculatePrice';
-import { Button } from './button';
-
+import { UserServiceConfiguration } from "AppTypes";
+import { AiOutlineAlert } from "react-icons/ai";
+import { InformationSum } from "./informationSum";
+import {
+  FaConnectdevelop,
+  FaEarthEurope,
+  FaHotel,
+  FaLocationDot,
+  FaRegFile,
+  FaRegFileLines,
+  FaServicestack,
+  FaStaylinked,
+} from "react-icons/fa6";
+import { Box, Grid } from "@mui/material";
 interface ServiceSummaryProps {
-	userServiceConfiguration: UserServiceConfiguration;
+  userServiceConfiguration: UserServiceConfiguration;
 }
 
 export const ServiceSummary = ({
-	userServiceConfiguration,
+  userServiceConfiguration,
 }: ServiceSummaryProps) => {
-	const { monthly, addons, selectedPlan } = userServiceConfiguration;
+  const { selectedPlan, userInfo } = userServiceConfiguration;
+  console.log(selectedPlan, userInfo); // for some reason needed to do this work arround bc typescript was crying and bug is not fixed apparently
 
-	// for some reason needed to do this work arround bc typescript was crying and bug is not fixed apparently
-	const totalPrice = (addons as any[]).reduce((acc: number, addon) => {
-		return acc + calculatePrice(addon.monthlyPrice, monthly);
-	}, calculatePrice(selectedPlan?.monthlyPrice ?? 0, monthly));
-
-	return (
-		<section className="flex flex-col gap-4 w-full">
-			<h2>Finishing up</h2>
-			<p>Double-check everyghing looks OK before confirming.</p>
-			<ul className="flex flex-col gap-2 px-4 py-5 bg-neutral-magnolia rounded-lg">
-				<li className="border-b border-neutral-light-gray pb-2">
-					<div className="flex flex-col">
-						<h3>
-							{selectedPlan?.name} (
-							{monthly ? 'Monthly' : 'Yearly'})
-						</h3>
-						<span className="inline-flex justify-between">
-							<Button
-								type="ghost"
-								size="sm"
-								className="hover:text-primary-purplish-blue hover:underline"
-							>
-								Change
-							</Button>
-							<span className="text-primary-marine-blue font-bold">
-								$
-								{calculatePrice(
-									selectedPlan?.monthlyPrice ?? 0,
-									monthly
-								).toLocaleString()}
-								/ {monthly ? 'mo' : 'yr'}
-							</span>
-						</span>
-					</div>
-				</li>
-				{addons.map((addon) => (
-					<li
-						className="inline-flex justify-between"
-						key={addon.name}
-					>
-						<p>{addon.name}</p>
-						<span className="text-primary-marine-blue">
-							+$
-							{calculatePrice(
-								addon.monthlyPrice,
-								monthly
-							).toLocaleString()}
-							/{monthly ? 'mo' : 'yr'}
-						</span>
-					</li>
-				))}
-			</ul>
-			<span className="flex justify-between px-4">
-				<p>Total (per {monthly ? 'month' : 'year'}) </p>
-				<span className="font-bold text-lg text-primary-purplish-blue">
-					+${totalPrice.toLocaleString()}/{monthly ? 'mo' : 'yr'}
-				</span>
-			</span>
-		</section>
-	);
+  return (
+    <Box style={{ width: "60vw" }}>
+      <h2 className="mb-3 font-medium">This is information of you</h2>
+      <Grid container spacing={4}>
+        <Grid item xs={4}>
+          <InformationSum
+            icon={<FaHotel />}
+            title="nameCompany"
+            description={userInfo?.nameCompany}
+          />
+          <InformationSum
+            icon={<FaEarthEurope />}
+            title="region"
+            description={userInfo?.region}
+          />
+          <InformationSum
+            icon={<FaLocationDot />}
+            title="address"
+            description={userInfo?.address}
+          />
+        </Grid>
+        <Grid item xs={4}>
+          <InformationSum
+            icon={<FaConnectdevelop />}
+            title="WebCompany"
+            description={userInfo?.webCompnany}
+          />
+          <InformationSum
+            icon={<FaStaylinked />}
+            title="Media Social"
+            description={userInfo?.mediaSocial}
+          />
+          <InformationSum
+            icon={<FaRegFile />}
+            title="Title"
+            description={userInfo?.file[0]?.name}
+          />
+        </Grid>
+        <Grid item xs={4}>
+          <InformationSum
+            icon={<FaServicestack />}
+            title="Service Type"
+            description={selectedPlan?.serviceType}
+          />
+          <InformationSum
+            icon={<AiOutlineAlert />}
+            description={selectedPlan?.policyCancell}
+            title="Policy Cancell"
+          />
+          <InformationSum
+            icon={<FaRegFileLines />}
+            title="Policy Confirm"
+            description={selectedPlan?.policyConfirm}
+          />
+        </Grid>
+      </Grid>
+    </Box>
+  );
 };

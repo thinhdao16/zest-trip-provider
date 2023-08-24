@@ -2,7 +2,6 @@ import { Box, Grid } from "@mui/material";
 import { policy } from "../../../data/policy";
 
 export const Addons = () => {
-  console.log(policy);
   return (
     <Grid container>
       <Grid item xs={9} style={{ maxHeight: "75vh", overflow: "auto" }}>
@@ -38,7 +37,7 @@ export const Addons = () => {
           </p>
           <Box mt={1}>
             {policy?.title?.description.map((data) => (
-              <ol style={{ display: "flex", marginTop: "5px" }}>
+              <ol key={data?.description} style={{ display: "flex", marginTop: "5px" }}>
                 <li
                   style={{
                     display: "flex",
@@ -62,8 +61,8 @@ export const Addons = () => {
           </Box>
         </Box>
         <Box mt={2}>
-          {policy?.description?.map((data: any) => (
-            <Box>
+          {policy?.description?.map((data: any, index:number) => (
+            <Box key={index}>
               <p
               id={`${data?.header}`}
                 style={{

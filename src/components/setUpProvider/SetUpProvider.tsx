@@ -44,8 +44,6 @@ function SetUpProvider() {
     });
   };
 
-console.log(userServiceConfiguration)
-
   const updateAddons = (addon: Addon) => {
     const addons = userServiceConfiguration.addons;
     const index = addons.findIndex(
@@ -91,55 +89,58 @@ console.log(userServiceConfiguration)
   return (
     <>
       <ContainerPageFullHalf>
+        
         <Grid container>
-          <Grid
-            item
-            xs={4}
-            style={{
-              padding: "13px",
-            }}
-          >
-            <Box
+         
+            <Grid
+              item
+              xs={2.5}
               style={{
-                backgroundColor: "#f9fbfc",
-                borderRadius: "6px",
-                display: "flex",
-                flexDirection: "column",
-                height: "100%",
-                padding: "30px",
+                padding: "13px",
               }}
             >
-              <Link to="/">
-                <Typography
-                  component="h1"
-                  fontSize="xl2"
-                  fontWeight="lg"
-                  sx={{ mb: 5, display: "flex" }}
-                >
-                  <AiOutlineShop style={{ margin: "8px 8px 0 0 " }} /> DiTour
-                </Typography>
-              </Link>
-              <Sidebar currentStep={step} handleNextStep={nextStep} />
-              {step < 5 && (
-                <menu className="flex justify-between p-4 mt-auto">
-                  <li>
-                    <Button type="dashed" onClick={goBack}>
-                      Go Back
-                    </Button>
-                  </li>
-                  <li>
-                    <Button
-                      onClick={() => nextStep()}
-                      type={step !== 4 ? "default" : "primary"}
-                    >
-                      {step !== 4 ? "Next Step" : "Confirm"}
-                    </Button>
-                  </li>
-                </menu>
-              )}
-            </Box>
-          </Grid>
-          <Grid item xs={8}>
+              <Box
+                style={{
+                  backgroundColor: "#f9fbfc",
+                  borderRadius: "6px",
+                  display: "flex",
+                  flexDirection: "column",
+                  height: "100%",
+                  padding: "30px",
+                }}
+              >
+                <Link to="/">
+                  <Typography
+                    component="h1"
+                    fontSize="xl2"
+                    fontWeight="lg"
+                    sx={{ mb: 5, display: "flex" }}
+                  >
+                    <AiOutlineShop style={{ margin: "8px 8px 0 0 " }} /> DiTour
+                  </Typography>
+                </Link>
+                <Sidebar currentStep={step} handleNextStep={nextStep} />
+                {step < 5 && (
+                  <menu className="flex justify-between p-4 mt-auto">
+                    <li>
+                      <Button type="dashed" onClick={goBack}>
+                        Go Back
+                      </Button>
+                    </li>
+                    <li>
+                      <Button
+                        onClick={() => nextStep()}
+                        type={step !== 4 ? "default" : "primary"}
+                      >
+                        {step !== 4 ? "Next Step" : "Confirm"}
+                      </Button>
+                    </li>
+                  </menu>
+                )}
+              </Box>
+            </Grid>
+
+          <Grid item xs={9.5}>
             <ContainerPageFullHalfContent>
               <Box
                 component="main"
@@ -164,14 +165,16 @@ console.log(userServiceConfiguration)
                   },
                 }}
               >
-                <div>
-                  <Typography component="h1" fontSize="xl2" fontWeight="lg">
-                    Sign in to your account
-                  </Typography>
-                  <Typography level="body-xs" sx={{ my: 1, mb: 1 }}>
-                    Enter your credentials to continue
-                  </Typography>
-                </div>
+                {step >= 1 && step <= 4 && (
+                  <div>
+                    <Typography component="h1" fontSize="xl2" fontWeight="lg">
+                      Sign in to your account
+                    </Typography>
+                    <Typography level="body-xs" sx={{ my: 1, mb: 1 }}>
+                      Enter your credentials to continue
+                    </Typography>
+                  </div>
+                )}
                 <form className="">
                   {step === 1 && (
                     <PersonalInfo
@@ -186,19 +189,18 @@ console.log(userServiceConfiguration)
                       updateSelectedPlan={updateSelectedPlan}
                     />
                   )}
-                  {step === 3 && (
-                    <Addons
-                    />
-                  )}
+                  {step === 3 && <Addons />}
                   {step === 4 && (
                     <ServiceSummary
                       userServiceConfiguration={userServiceConfiguration}
                     />
                   )}
-                  {step === 5 && <ThankYou />}
+        {step === 5 && <ThankYou />}
+
                 </form>
               </Box>
             </ContainerPageFullHalfContent>
+
             <Box component="footer" sx={{ py: 3 }}>
               <Typography level="body-md" textAlign="center">
                 © DiTour {new Date().getFullYear()}
@@ -206,6 +208,7 @@ console.log(userServiceConfiguration)
             </Box>
           </Grid>
         </Grid>
+
       </ContainerPageFullHalf>
     </>
   );

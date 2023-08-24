@@ -63,21 +63,19 @@ export const SelectPlan = ({
 
   return (
     <Box>
-      <Box sx={{ minWidth: 120 }}>
+      <Box sx={{ minWidth: 120, marginBottom: "12px" }}>
+        <p style={{ marginBottom: "5px", fontWeight: 500 }}>Service type</p>
         <FormControl fullWidth>
-          <InputLabel
-            id="service-type-label"
-            required // Thêm required ở đây
-          >
-            Service Type
-          </InputLabel>
           <Select
-            labelId="service-type-label"
-            id="service-type-select"
+            style={{ borderRadius: "8px", height: "40px" }}
+            displayEmpty
+            inputProps={{ "aria-label": "Without label" }}
             value={selectedPlan?.serviceType || ""}
-            label="Service Type"
             onChange={(e) => handleSelect(e, "serviceType")}
           >
+            <MenuItem value="">
+              <em>Please choose type</em>
+            </MenuItem>
             {plans[0]?.serviceType?.map((data: any) => (
               <MenuItem key={data?.id} value={data?.name}>
                 {data?.name}
@@ -86,18 +84,21 @@ export const SelectPlan = ({
           </Select>
         </FormControl>
       </Box>
-      <Box sx={{ minWidth: 120 }}>
+      <Box sx={{ minWidth: 120, marginBottom: "12px" }}>
+        <p style={{ marginBottom: "5px", fontWeight: 500 }}>
+          Cancellation policy
+        </p>
         <FormControl fullWidth>
-          <InputLabel id="policy-cancell-label" required>
-            Policy Cancell
-          </InputLabel>
           <Select
-            labelId="policy-cancell-label"
-            id="policy-cancell-select"
+            style={{ borderRadius: "8px", height: "40px" }}
+            displayEmpty
             value={selectedPlan?.policyCancell || ""}
-            label="Policy Cancell"
+            inputProps={{ "aria-label": "Without label" }}
             onChange={(e) => handleSelect(e, "policyCancell")}
           >
+            <MenuItem value="">
+              <em>Please choose type</em>
+            </MenuItem>
             {plans[0]?.policyCancell?.map((data: any) => (
               <MenuItem key={data?.id} value={data?.name}>
                 {data?.name}
@@ -107,17 +108,20 @@ export const SelectPlan = ({
         </FormControl>
       </Box>
       <Box sx={{ minWidth: 120 }}>
+        <p style={{ marginBottom: "5px", fontWeight: 500 }}>
+          Confirmation policy
+        </p>
         <FormControl fullWidth>
-          <InputLabel id="policy-confirm-label" required>
-            Policy Confirm
-          </InputLabel>
           <Select
-            labelId="policy-confirm-label"
-            id="policy-confirm-select"
+            style={{ borderRadius: "8px", height: "40px" }}
+            displayEmpty
             value={selectedPlan?.policyConfirm || ""}
-            label="Policy Confirm"
+            inputProps={{ "aria-label": "Without label" }}
             onChange={(e) => handleSelect(e, "policyConfirm")}
           >
+            <MenuItem value="">
+              <em>Please choose type</em>
+            </MenuItem>
             {plans[0]?.policyConfirm?.map((data: any) => (
               <MenuItem key={data?.id} value={data?.name}>
                 {data?.name}
