@@ -1,112 +1,131 @@
-import { Plan } from 'AppTypes';
-import { Card } from './card';
-import clsx from 'clsx';
-import { calculatePrice } from '../utils/calculatePrice';
-
-const activeClasses =
-	'border border-primary-purplish-blue bg-neutral-magnolia falopa';
+import React from "react";
+import { Plan } from "AppTypes";
+import Box from "@mui/material/Box";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 const plans: Plan[] = [
-	{
-		name: 'Arcade',
-		icon: 'icon-arcade.svg',
-		monthlyPrice: 9,
-	},
-	{
-		name: 'Advanced',
-		icon: 'icon-advanced.svg',
-		monthlyPrice: 12,
-	},
-	{
-		name: 'Pro',
-		icon: 'icon-pro.svg',
-		monthlyPrice: 15,
-	},
+  {
+    serviceType: [
+      {
+        id: 1,
+        name: "Servicios",
+      },
+      {
+        id: 2,
+        name: "Oversea",
+      },
+    ],
+    policyCancell: [
+      {
+        id: 1,
+        name: "Free before 24 hr",
+      },
+      {
+        id: 2,
+        name: "Dont free after 24 hr",
+      },
+    ],
+    policyConfirm: [
+      {
+        id: 1,
+        name: "Immediate",
+      },
+      {
+        id: 2,
+        name: "Dont Immediate",
+      },
+    ],
+  },
 ];
-
 interface SelectPlanProps {
-	selectedPlan: Plan | null;
-	monthly: boolean;
-	updateSelectedPlan: (selectedPlan: Plan) => void;
-	updateIsMonthly: (isMonthly: boolean) => void;
+  selectedPlan: Plan | null;
+  updateSelectedPlan: (selectedPlan: Plan) => void;
 }
 
 export const SelectPlan = ({
-	selectedPlan,
-	monthly,
-	updateSelectedPlan,
-	updateIsMonthly,
+  selectedPlan,
+  updateSelectedPlan,
 }: SelectPlanProps) => {
-	return (
-		<section className="flex flex-col gap-4 w-full">
-			<ul className="flex flex-col gap-2 lg:flex-row">
-				{plans.map((plan) => (
-					<li key={plan.name} className="lg:w-full">
-						<Card
-							className={clsx(
-								'p-4 flex gap-4 transition-all w-full lg:flex-col lg:gap-8 hover:border-primary-purplish-blue hover:bg-neutral-magnolia cursor-pointer',
-								plan.name === selectedPlan?.name
-									? activeClasses
-									: 'border border-neutral-light-gray'
-							)}
-							onClick={() => updateSelectedPlan(plan)}
-						>
-							<figure className="w-10 h-10">
-								<img
-									src={`./assets/images/${plan.icon}`}
-									alt=""
-								/>
-							</figure>
-							<div className="">
-								<h3 className="leading-5">{plan.name}</h3>
-								<p>
-									$
-									{calculatePrice(
-										plan.monthlyPrice,
-										monthly
-									).toLocaleString()}
-									/{monthly ? 'mo' : 'yr'}
-								</p>
+  const handleSelect = (
+    e: SelectChangeEvent<string>,
+    attributeName: keyof Plan
+  ) => {
+    const selectedValue = e.target.value;
+    const updatedPlan: Plan = {
+      ...selectedPlan!,
+      [attributeName]: selectedValue,
+    };
+    updateSelectedPlan(updatedPlan);
+  };
 
-								<p
-									className={clsx(
-										'text-primary-marine-blue',
-										monthly && 'hidden'
-									)}
-								>
-									2 months free
-								</p>
-							</div>
-						</Card>
-					</li>
-				))}
-			</ul>
-			<div className="bg-neutral-alabaster w-full rounded-sm mt-8 felx p-4">
-				<label className="flex relative items-center cursor-pointer mx-auto w-min">
-					<span
-						className={clsx(
-							`mr-4 font-medium`,
-							monthly ? 'text-primary-marine-blue' : ''
-						)}
-					>
-						Monthly
-					</span>
-					<input
-						type="checkbox"
-						onChange={() => updateIsMonthly(!monthly)}
-						className="sr-only peer"
-					/>
-					<div className="w-11 h-6 peer-focus:outline-none rounded-full peer bg-primary-marine-blue peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[80px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
-					<span
-						className={clsx(
-							`ml-4 font-medium`,
-							!monthly ? 'text-primary-marine-blue' : ''
-						)}
-					>
-						Yearly
-					</span>
-				</label>
-			</div>
-		</section>
-	);
+  return (
+    <Box>
+      <Box sx={{ minWidth: 120 }}>
+        <FormControl fullWidth>
+          <InputLabel
+            id="service-type-label"
+            required // Thêm required ở đây
+          >
+            Service Type
+          </InputLabel>
+          <Select
+            labelId="service-type-label"
+            id="service-type-select"
+            value={selectedPlan?.serviceType || ""}
+            label="Service Type"
+            onChange={(e) => handleSelect(e, "serviceType")}
+          >
+            {plans[0]?.serviceType?.map((data: any) => (
+              <MenuItem key={data?.id} value={data?.name}>
+                {data?.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Box>
+      <Box sx={{ minWidth: 120 }}>
+        <FormControl fullWidth>
+          <InputLabel id="policy-cancell-label" required>
+            Policy Cancell
+          </InputLabel>
+          <Select
+            labelId="policy-cancell-label"
+            id="policy-cancell-select"
+            value={selectedPlan?.policyCancell || ""}
+            label="Policy Cancell"
+            onChange={(e) => handleSelect(e, "policyCancell")}
+          >
+            {plans[0]?.policyCancell?.map((data: any) => (
+              <MenuItem key={data?.id} value={data?.name}>
+                {data?.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Box>
+      <Box sx={{ minWidth: 120 }}>
+        <FormControl fullWidth>
+          <InputLabel id="policy-confirm-label" required>
+            Policy Confirm
+          </InputLabel>
+          <Select
+            labelId="policy-confirm-label"
+            id="policy-confirm-select"
+            value={selectedPlan?.policyConfirm || ""}
+            label="Policy Confirm"
+            onChange={(e) => handleSelect(e, "policyConfirm")}
+          >
+            {plans[0]?.policyConfirm?.map((data: any) => (
+              <MenuItem key={data?.id} value={data?.name}>
+                {data?.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Box>
+    </Box>
+  );
 };

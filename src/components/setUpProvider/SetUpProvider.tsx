@@ -37,7 +37,6 @@ function SetUpProvider() {
   const updateUserInfo = (userInfo: UserInfo) => {
     setUserServiceConfiguration({ ...userServiceConfiguration, userInfo });
   };
-console.log(userServiceConfiguration)
   const updateSelectedPlan = (plan: Plan) => {
     setUserServiceConfiguration({
       ...userServiceConfiguration,
@@ -45,12 +44,7 @@ console.log(userServiceConfiguration)
     });
   };
 
-  const updateMonthly = () => {
-    setUserServiceConfiguration((prevVal) => ({
-      ...userServiceConfiguration,
-      monthly: !prevVal.monthly,
-    }));
-  };
+console.log(userServiceConfiguration)
 
   const updateAddons = (addon: Addon) => {
     const addons = userServiceConfiguration.addons;
@@ -189,16 +183,11 @@ console.log(userServiceConfiguration)
                   {step === 2 && (
                     <SelectPlan
                       selectedPlan={userServiceConfiguration.selectedPlan}
-                      monthly={userServiceConfiguration.monthly}
                       updateSelectedPlan={updateSelectedPlan}
-                      updateIsMonthly={updateMonthly}
                     />
                   )}
                   {step === 3 && (
                     <Addons
-                      selectedAddons={userServiceConfiguration.addons}
-                      monthly={userServiceConfiguration.monthly}
-                      updateAddons={updateAddons}
                     />
                   )}
                   {step === 4 && (
