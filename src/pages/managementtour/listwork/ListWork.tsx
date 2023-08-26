@@ -1,15 +1,11 @@
-import {
-  BannerContainer,
-  BannerContent,
-  BannerHomePageList,
-} from "../../../styles/homepage/banner/banner";
+
 import { TitlePage } from "../../../components/titlepage/TitlePage";
 import { Box, Button, Typography } from "@mui/material";
 import React from "react";
 import TabContext from "@mui/lab/TabContext/TabContext";
 import TabList from "@mui/lab/TabList/TabList";
 import TabPanel from "@mui/lab/TabPanel/TabPanel";
-import { BannerHomePageButtonListTab } from "../../../styles/global/StyleGlobal";
+import { BannerContainer, BannerContent, BannerHomePageButtonListTab, BannerHomePageList } from "../../../styles/global/StyleGlobal";
 import Header from "../../../components/header/Header";
 
 function ListWork() {

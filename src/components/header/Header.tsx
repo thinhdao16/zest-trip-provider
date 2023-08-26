@@ -33,7 +33,10 @@ function Header() {
     setRefeshLogin((prev) => !prev);
     navigation("/login");
   };
-
+  const handleAccount = () => {
+    setAnchorEl(null);
+    navigation("/account-settings");
+  };
   return (
     <>
       <Box sx={{ flexGrow: 1, width: "100vw" }}>
@@ -48,7 +51,10 @@ function Header() {
         >
           <Toolbar>
             <Box sx={{ flexGrow: 1 }}>
-              <Link to="/listwork" style={{ textDecoration: "none", color: "black" }}>
+              <Link
+                to="/listwork"
+                style={{ textDecoration: "none", color: "black" }}
+              >
                 <AiFillHome style={{ color: "black " }} />
               </Link>
             </Box>
@@ -62,16 +68,6 @@ function Header() {
               <Link to="/listtour" style={{ textDecoration: "none" }}>
                 <Button color="inherit" style={{ color: "black" }}>
                   list tour
-                </Button>
-              </Link>
-              <Link to="/login" style={{ textDecoration: "none" }}>
-                <Button color="inherit" style={{ color: "black" }}>
-                  Login
-                </Button>
-              </Link>
-              <Link to="/signup" style={{ textDecoration: "none" }}>
-                <Button color="inherit" style={{ color: "black" }}>
-                  signup
                 </Button>
               </Link>
               <Link to="/setupprovider" style={{ textDecoration: "none" }}>
@@ -139,8 +135,8 @@ function Header() {
                 <MenuItem onClick={handleClose}>
                   <Avatar /> Profile
                 </MenuItem>
-                <MenuItem onClick={handleClose}>
-                  <Avatar /> My account
+                <MenuItem onClick={handleAccount}>
+                  <Avatar /> Account
                 </MenuItem>
                 <Divider />
                 <MenuItem onClick={handleClose}>

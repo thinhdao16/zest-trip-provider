@@ -1,8 +1,6 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import {
-  BannerContainer,
-  BannerContent,
   BannerTitle,
 } from "../../../styles/homepage/banner/banner";
 import {
@@ -25,7 +23,7 @@ import { AiFillHome, AiFillStar } from "react-icons/ai";
 import TabContext from "@mui/lab/TabContext/TabContext";
 import TabList from "@mui/lab/TabList/TabList";
 import TabPanel from "@mui/lab/TabPanel/TabPanel";
-import { BannerHomePageButtonListTab } from "../../../styles/global/StyleGlobal";
+import { BannerContainer, BannerContent, BannerHomePageButtonListTab } from "../../../styles/global/StyleGlobal";
 import { useSelector } from "react-redux";
 import { FiMoon, FiSun } from "react-icons/fi";
 import Header from "../../../components/header/Header";
@@ -175,50 +173,7 @@ function SinglePage() {
                         value="3"
                         style={{ maxHeight: "250px", overflowY: "auto" }}
                       >
-                        <Card>
-                          <CardContent>
-                            <Grid container>
-                              <Grid xs={1}>
-                                <div
-                                  style={{
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                    height: "100%", // Ensures the div takes the full height of the Grid item
-                                  }}
-                                >
-                                  <img
-                                    style={{
-                                      borderRadius: "50%",
-                                      width: "30px",
-                                      height: "30px",
-                                    }}
-                                    src="https://subscripciones.mylagro.com/hubfs/Imported_Blog_Media/basket-lowres-219x300.jpg"
-                                    alt=""
-                                  />
-                                </div>
-                              </Grid>
-                              <Grid xs={9}>
-                                <Box style={{ display: "block" }}>
-                                  <Typography>dao duc thinh</Typography>
-                                  <Rating />
-                                </Box>
-                              </Grid>
-                              <Grid xs={2}>
-                                {" "}
-                                <Typography style={{ textAlign: "right" }}>
-                                  1 day ago
-                                </Typography>
-                              </Grid>
-                            </Grid>
-                            <Typography>
-                              đặc biệt để khám phá khu vực nông thôn miền Bắc
-                              Thái Lan. Ở nơi hoang dã, giữa cánh đồng lúa và
-                              cách xa các địa điểm du lịch.
-                            </Typography>
-                          </CardContent>
-                        </Card>
-                        <Card>
+                        <Card className="mb-1">
                           <CardContent>
                             <Grid container>
                               <Grid xs={1}>

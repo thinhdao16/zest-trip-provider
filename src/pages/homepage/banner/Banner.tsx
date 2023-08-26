@@ -4,11 +4,6 @@ import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import {
-  BannerContainer,
-  BannerContent,
-  BannerHomePageList,
-} from "../../../styles/homepage/banner/banner";
 import React from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -20,7 +15,12 @@ import {
 import { AppDispatch } from "../../../store/redux/store";
 
 import { TitlePage } from "../../../components/titlepage/TitlePage";
-import { BannerHomePageButtonListTab } from "../../../styles/global/StyleGlobal";
+import {
+  BannerContainer,
+  BannerContent,
+  BannerHomePageButtonListTab,
+  BannerHomePageList,
+} from "../../../styles/global/StyleGlobal";
 import { DontHaveTour } from "../../../components/donthave/DontHaveTour";
 
 export default function Banner() {
@@ -75,7 +75,7 @@ export default function Banner() {
               <Box className="tab-list-data-mui">
                 <TabPanel value="1">
                   <Grid container spacing={5}>
-                    {tours?.map((data: any, index:any) => (
+                    {tours?.map((data: any, index: any) => (
                       <Grid item xs={4} key={index}>
                         <Link
                           to={`/${data?.id}`}

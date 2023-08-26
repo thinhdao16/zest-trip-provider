@@ -1,13 +1,12 @@
 import { useState } from "react";
-import { Addon, Plan, UserInfo, UserServiceConfiguration } from "AppTypes";
+import { Plan, UserInfo, UserServiceConfiguration } from "AppTypes";
 import { Sidebar } from "./components/sidebar";
 import { PersonalInfo } from "./components/personalInfo";
 import { SelectPlan } from "./components/selectPlan";
 import { Addons } from "./components/Addons";
 import { ServiceSummary } from "./components/serviceSummary";
 import { ThankYou } from "./components/thankYou";
-import { Button } from "antd";
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { formLabelClasses } from "@mui/joy/FormLabel";
 import Typography from "@mui/joy/Typography";
 import { AiOutlineShop } from "react-icons/ai";
@@ -16,8 +15,9 @@ import {
   ContainerPageFullHalfContent,
 } from "../../styles/global/StyleGlobal";
 import { Grid } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 function SetUpProvider() {
+  const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [showRequired, setShowRequiredFields] = useState(false);
   const [userServiceConfiguration, setUserServiceConfiguration] =
@@ -44,25 +44,6 @@ function SetUpProvider() {
     });
   };
 
-  const updateAddons = (addon: Addon) => {
-    const addons = userServiceConfiguration.addons;
-    const index = addons.findIndex(
-      (currentAddon) => currentAddon.name === addon.name
-    );
-    if (index === -1) {
-      setUserServiceConfiguration({
-        ...userServiceConfiguration,
-        addons: [...addons, addon],
-      });
-    } else {
-      addons.splice(index, 1);
-      setUserServiceConfiguration({
-        ...userServiceConfiguration,
-        addons: [...addons],
-      });
-    }
-  };
-
   const nextStep = (onGoingStep?: number) => {
     if (step === 5) return;
     if (step === 1 || (onGoingStep && onGoingStep !== 1 && step === 1)) {
@@ -85,60 +66,71 @@ function SetUpProvider() {
     if (step === 1) return;
     setStep((step) => step - 1);
   };
-
+  const Confirm = (e: any) => {
+    e.preventDefault();
+    navigate("/listwork");
+  };
   return (
     <>
       <ContainerPageFullHalf>
-        
         <Grid container>
-         
-            <Grid
-              item
-              xs={2.5}
+          <Grid
+            item
+            xs={2.5}
+            style={{
+              padding: "13px",
+            }}
+          >
+            <Box
               style={{
-                padding: "13px",
+                backgroundColor: "#f9fbfc",
+                borderRadius: "6px",
+                display: "flex",
+                flexDirection: "column",
+                height: "100%",
+                padding: "30px",
               }}
             >
-              <Box
-                style={{
-                  backgroundColor: "#f9fbfc",
-                  borderRadius: "6px",
-                  display: "flex",
-                  flexDirection: "column",
-                  height: "100%",
-                  padding: "30px",
-                }}
-              >
-                <Link to="/">
-                  <Typography
-                    component="h1"
-                    fontSize="xl2"
-                    fontWeight="lg"
-                    sx={{ mb: 5, display: "flex" }}
-                  >
-                    <AiOutlineShop style={{ margin: "8px 8px 0 0 " }} /> DiTour
-                  </Typography>
-                </Link>
-                <Sidebar currentStep={step} handleNextStep={nextStep} />
-                {step < 5 && (
-                  <menu className="flex justify-between p-4 mt-auto">
-                    <li>
-                      <Button type="dashed" onClick={goBack}>
-                        Go Back
-                      </Button>
-                    </li>
-                    <li>
-                      <Button
-                        onClick={() => nextStep()}
-                        type={step !== 4 ? "default" : "primary"}
-                      >
-                        {step !== 4 ? "Next Step" : "Confirm"}
-                      </Button>
-                    </li>
-                  </menu>
-                )}
-              </Box>
-            </Grid>
+              <Link to="/">
+                <Typography
+                  component="h1"
+                  fontSize="xl2"
+                  fontWeight="lg"
+                  sx={{ mb: 5, display: "flex" }}
+                >
+                  <AiOutlineShop style={{ margin: "8px 8px 0 0 " }} /> DiTour
+                </Typography>
+              </Link>
+              <Sidebar currentStep={step} handleNextStep={nextStep} />
+              {/* {step < 5 && ( */}
+              <menu className="flex justify-between p-4 mt-auto">
+                <li>
+                  <Button style={{ textTransform: "none" }} onClick={goBack}>
+                    Go Back
+                  </Button>
+                </li>
+                <li>
+                  {step < 5 && (
+                    <Button
+                      style={{ textTransform: "none", color: "black" }}
+                      onClick={() => nextStep()}
+                    >
+                      Next step
+                    </Button>
+                  )}
+                  {step >= 5 && (
+                    <Button
+                      style={{ textTransform: "none", color: "black" }}
+                      onClick={(e) => Confirm(e)}
+                    >
+                      Confirm
+                    </Button>
+                  )}
+                </li>
+              </menu>
+              {/* )} */}
+            </Box>
+          </Grid>
 
           <Grid item xs={9.5}>
             <ContainerPageFullHalfContent>
@@ -195,8 +187,7 @@ function SetUpProvider() {
                       userServiceConfiguration={userServiceConfiguration}
                     />
                   )}
-        {step === 5 && <ThankYou />}
-
+                  {step === 5 && <ThankYou />}
                 </form>
               </Box>
             </ContainerPageFullHalfContent>
@@ -208,7 +199,6 @@ function SetUpProvider() {
             </Box>
           </Grid>
         </Grid>
-
       </ContainerPageFullHalf>
     </>
   );

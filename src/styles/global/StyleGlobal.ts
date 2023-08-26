@@ -1,5 +1,25 @@
-import { Button, Tab, Typography, styled, Box } from "@mui/material";
+import { Button, Tab, Typography, styled, Box, Card } from "@mui/material";
 
+export const BannerContainer = styled(Box)(() => ({
+  display: "flex",
+  width: "100vw",
+  // height: "100%",
+  padding: "0px 50px",
+
+}));
+
+export const BannerContent = styled(Box)(() => ({
+  width: "100%",
+  padding: "0 60px",
+}));
+export const BannerHomePageList = styled(Box)(() => ({
+  maxWidth: "100vw",
+  padding: "64px 0 64px 0",
+}));
+export const BannerPageList = styled(Box)(() => ({
+  maxWidth: "100vw",
+  padding: "64px 140px",
+}));
 export const BannerHomePageButtonListTab = styled(Tab)(() => ({
   padding: "-10px 14px !important",
   borderRadius: "25px",
@@ -23,15 +43,12 @@ export const BannerHomePageButtonListTab = styled(Tab)(() => ({
     outline: "none",
   },
 }));
-export const BannerTitleList = styled(Typography)(({ theme }) => ({
+export const BannerTitleList = styled(Typography)(() => ({
   lineHeight: "30px",
   fontSize: "26px",
   fontWeight: "600",
-  [theme.breakpoints.down("sm")]: {
-    fontSize: "42px",
-  },
 }));
-export const ButtonGlobal = styled(Button)(({ theme }) => ({
+export const ButtonGlobal = styled(Button)(() => ({
   position: "relative", // Cần thiết để xác định vị trí tương đối
   backgroundColor: "#8fcaf7",
   color: "white",
@@ -48,14 +65,16 @@ export const ButtonGlobal = styled(Button)(({ theme }) => ({
     borderRadius: "8px",
   },
 }));
-export const ContainerPageFullHalf = styled(Box)(({ theme }) => ({
+export const ContainerPageFullHalf = styled(Box)(() => ({
   height: "100vh",
   width: "100vw ",
 }));
 
-export const ContainerPageFullHalfContent = styled(Box)(({ theme }) => ({
+export const ContainerPageFullHalfContent = styled(Box)(() => ({
   height: "89vh",
   display: "flex",
   flexDirection: "column",
-  padding:"12px 0 12px 0 "
+  padding: "12px 0 12px 0 ",
 }));
+
+

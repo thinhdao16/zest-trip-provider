@@ -21,14 +21,18 @@ const steps = [
   },
   {
     step: 4,
-    title: "Contract",
+    title: "Review Information",
+  },
+  {
+    step: 5,
+    title: "Contractor Information",
   },
 ];
 export const Sidebar = ({ currentStep, handleNextStep }: SidebarProps) => {
   return (
     <>
       {steps.map((step) => (
-        <Box my={0} key={step.step} style={{ textAlign: "center" }}>
+        <Box my={0} key={step.step}>
           {currentStep === step.step ? (
             <Box
               className="sidebar-setupPovider-container-chosen"
@@ -54,7 +58,17 @@ export const Sidebar = ({ currentStep, handleNextStep }: SidebarProps) => {
               <span className="sidebar-setup-title">{step?.title}</span>
             </Box>
           )}
-          <SiInstapaper />
+          {step.step >= 1 && step.step <= 4 && (
+            <Box
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <SiInstapaper />
+            </Box>
+          )}
         </Box>
       ))}
     </>

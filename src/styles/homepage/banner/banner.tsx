@@ -2,26 +2,9 @@ import { Box, Button, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { Colors } from "../theme/theme";
 
-export const BannerContainer = styled(Box)(({ theme }) => ({
-  display: "flex",
-  width: "100vw",
-  // height: "100%",
-  padding: "0px 50px",
-  [theme.breakpoints.down("sm")]: {
-    flexDirection: "column",
-    alignItems: "center",
-  },
-}));
 
-export const BannerContent = styled(Box)(() => ({
-  width: "100%",
-  padding: "0 60px",
-}));
 
-export const BannerHomePageList = styled(Box)(() => ({
-  maxWidth: "100vw",
-  padding: "64px 0 64px 0",
-}));
+
 
 export const BannerHomePageListFirst = styled(Box)(() => ({
   maxWidth: "100vw",
