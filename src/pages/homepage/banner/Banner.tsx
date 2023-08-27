@@ -151,7 +151,7 @@ export default function Banner() {
                   {/* </TransitionGroup> */}
                 </TabPanel>
                 <TabPanel value="3">
-                  <DontHaveTour description="dont have" />
+             
                 </TabPanel>
               </Box>
             </TabContext>

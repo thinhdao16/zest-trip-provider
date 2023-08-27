@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import {
   BannerContainer,
   BannerContent,
-  BannerHomePageList,
   BannerPageList,
 } from "../../styles/global/StyleGlobal";
 import Header from "../../components/header/Header";
@@ -36,15 +35,25 @@ function AccountSettings() {
                   <CardList
                     icon={<AiOutlineProfile />}
                     title="thong tin ca nha"
-                    description="cung cap thong tin lien he cho chung toi co the lie  he voi ban"
-                    to="/listtour"
+                    description="cung cap thong tin lien he cho chung toi co the lie he voi ban"
+                    to="/account-settings/personal-info"
                   />
                 </Grid>
                 <Grid item xs={4}>
-                  <CardList icon="" title="thong tin ca nha" description="=" to="" />
+                  <CardList
+                    icon=""
+                    title="thong tin ca nha"
+                    description="="
+                    to=""
+                  />
                 </Grid>
                 <Grid item xs={4}>
-                  <CardList icon="" title="thong tin ca nha" description="=" to="" />
+                  <CardList
+                    icon=""
+                    title="thong tin ca nha"
+                    description="="
+                    to=""
+                  />
                 </Grid>
               </Grid>
             </Box>

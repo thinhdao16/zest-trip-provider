@@ -8,6 +8,7 @@ import Login from "../../components/login/Login";
 import SignUp from "../../components/signUp/SignUp";
 import SetUpProvider from "../../components/setUpProvider/SetUpProvider";
 import AccountSettings from "../../pages/accountsettings/AccountSettings";
+import PersonalInfo from "../../pages/accountsettings/personalinfo/PersonalInfo";
 
 function MainRouter() {
   const accessToken = localStorage.getItem("access_token");
@@ -36,7 +37,10 @@ function MainRouter() {
                     <Route path="/createtour" element={<CreateTour />} />
                     <Route path="/listwork" element={<ListWork />} />
                     <Route path="/setupprovider" element={<SetUpProvider />} />
-                    <Route path="/account-settings" element={<AccountSettings />} />
+                    <Route path="/account-settings">
+                      <Route path="" element={<AccountSettings />} />
+                      <Route path="personal-info" element={<PersonalInfo />} />
+                    </Route>
                   </React.Fragment>
                 )}
               </Routes>
