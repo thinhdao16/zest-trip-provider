@@ -22,14 +22,16 @@ import {
   BannerHomePageList,
 } from "../../../styles/global/StyleGlobal";
 import { DontHaveTour } from "../../../components/donthave/DontHaveTour";
+import { DataContext } from "../../../store/dataContext/DataContext";
 
 export default function Banner() {
   const [value, setValue] = React.useState("1");
+  const { refeshTour } = React.useContext(DataContext);
   const dispatch: AppDispatch = useDispatch();
   const { tours } = useSelector((state: any) => state.tour);
   React.useEffect(() => {
     dispatch(fetchTours());
-  }, [dispatch]);
+  }, [dispatch, refeshTour]);
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -150,9 +152,7 @@ export default function Banner() {
                   {/* Add more Grid items for content under TabPanel value="2" */}
                   {/* </TransitionGroup> */}
                 </TabPanel>
-                <TabPanel value="3">
-             
-                </TabPanel>
+                <TabPanel value="3"></TabPanel>
               </Box>
             </TabContext>
           </Box>

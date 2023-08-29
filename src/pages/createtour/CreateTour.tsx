@@ -68,7 +68,6 @@ const StepRenderer: React.FC = () => {
       )}
     </>
   );
-  console.log(formValues);
   const dataValueCreate = {
     a: "a",
   };

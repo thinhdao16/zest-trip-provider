@@ -29,10 +29,14 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import { DataContext } from "../../store/dataContext/DataContext";
+import axios from "axios";
 
 function Login() {
   const navigate = useNavigate();
-  const { refeshLogin, setRefeshLogin } = React.useContext(DataContext);
+  const { refeshLogin, setRefeshLogin, setRefeshTour } =
+    React.useContext(DataContext);
+  const [phoneNumber, setPhoneNumber] = React.useState("");
+  const [password, setPassword] = React.useState("");
   const checkAccessToken = () => {
     const accessToken = localStorage.getItem("access_token");
     if (accessToken !== null) {
@@ -41,14 +45,18 @@ function Login() {
       );
       const expTimestamp = decodedToken.exp;
       if (accessToken && expTimestamp > Date.now() / 1000) {
-        setRefeshLogin((prev) => !prev);
-        navigate("/listtour"); // Điều hướng nếu có accessToken còn hạn
+        if (window.location.pathname !== "/listtour") {
+          setRefeshTour((prev) => !prev);
+          navigate("/listtour"); // Navigate to /listtour if accessToken is valid
+        }
       } else {
         // refreshToken(); // Gọi refreshToken nếu không có accessToken hoặc hết hạn
       }
     } else {
-      setRefeshLogin((prev) => !prev);
-      navigate("/login");
+      // Only navigate to /login if not already on that page
+      if (window.location.pathname !== "/login") {
+        navigate("/login");
+      }
     }
   };
   // const refreshToken = async () => {
@@ -67,10 +75,40 @@ function Login() {
   //     console.error('Error refreshing token:', error);
   //   }
   // };
-
+  const handleSignIn = async () => {
+    try {
+      const response = await axios.post(
+        "https://manager-ecom-cllh63fgua-df.a.run.app/auth/signin",
+        {
+          email: phoneNumber,
+          password: password,
+        },
+        { headers:{
+          "Content-Type": "application/json"
+        }}
+      );
+      console.log(response.data);
+        // if (response.status === 200) {
+        //   // const data = await response.json();
+        //   if (response !== undefined) {
+        //     localStorage.setItem("access_token", JSON.stringify(response.data));
+        //     navigate("/listwork");
+        //     //         }
+        //   } else {
+        //     console.log("first");
+        //   }
+        // } else {
+        //   console.log("first");
+      // }
+    } catch (error) {
+      // Handle errors (e.g., display error message to the user)
+      console.error(error);
+    }
+  };
   React.useEffect(() => {
     checkAccessToken();
-  }, [refeshLogin]);
+  }, []); // This empty dependency array means the effect will run only once, on component mount
+
   return (
     <>
       <ContainerPageFullHalf>
@@ -149,65 +187,70 @@ function Login() {
                     Enter your credentials to continue
                   </Typography>
                 </div>
-                <form
-                  onSubmit={(event: React.FormEvent<SignInFormElement>) => {
-                    event.preventDefault();
-                    const formElements = event.currentTarget.elements;
-                    const data = {
-                      email: formElements.email.value,
-                      password: formElements.password.value,
-                      persistent: formElements.persistent.checked,
-                    };
-                    alert(JSON.stringify(data, null, 2));
+                {/* <form
+                onSubmit={(event: React.FormEvent<SignInFormElement>) => {
+                  event.preventDefault();
+                  const formElements = event.currentTarget.elements;
+                  const data = {
+                    email: formElements.email.value,
+                    password: formElements.password.value,
+                    persistent: formElements.persistent.checked,
+                  };
+                  alert(JSON.stringify(data, null, 2));
+                }}
+                > */}
+                <FormControl required>
+                  <FormLabel>Phone Number</FormLabel>
+                  <TextField
+                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    required
+                    value={phoneNumber}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <AiOutlinePhone />
+                        </InputAdornment>
+                      ),
+                    }}
+                    className="input-form-text-ready"
+                  />
+                </FormControl>
+                <FormControl required>
+                  <FormLabel>Password</FormLabel>
+                  <TextField
+                    required
+                    value={password}
+                    type="password"
+                    onChange={(e) => setPassword(e.target.value)}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <AiOutlineLock />
+                        </InputAdornment>
+                      ),
+                    }}
+                    className="input-form-text-ready"
+                  />
+                </FormControl>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
                   }}
                 >
-                  <FormControl required>
-                    <FormLabel>Phone Number</FormLabel>
-                    <TextField
-                      required
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <AiOutlinePhone />
-                          </InputAdornment>
-                        ),
-                      }}
-                      className="input-form-text-ready"
-                    />
-                  </FormControl>
-                  <FormControl required>
-                    <FormLabel>Password</FormLabel>
-                    <TextField
-                      required
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <AiOutlineLock />
-                          </InputAdornment>
-                        ),
-                      }}
-                      className="input-form-text-ready"
-                    />
-                  </FormControl>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                    }}
-                  >
-                    {/* <Link
+                  {/* <Link
                     fontSize="sm"
                     href="#replace-with-a-link"
                     fontWeight="lg"
                   >
                     Forgot your password
                   </Link> */}
-                  </Box>
-                  <ButtonGlobal type="submit" fullWidth>
-                    Sign in
-                  </ButtonGlobal>
-                </form>
+                </Box>
+                <ButtonGlobal fullWidth onClick={handleSignIn}>
+                  Sign in
+                </ButtonGlobal>
+                {/* </form> */}
                 <Box sx={{ position: "relative", margin: 0.5 }}>
                   <span
                     style={{

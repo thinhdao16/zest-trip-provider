@@ -19,16 +19,17 @@ const initialState = {
   tourDetail: [],
 };
 
-
+const abc =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjczMzllNTFlLTdkZTQtNGE5NC04YmVjLTE5N2EyZWI2OTE1YSIsImVtYWlsIjoidGVzdDJAZ21haWwuY29tIiwicGhvbmVfbnVtYmVyIjpudWxsLCJmdWxsX25hbWUiOm51bGwsImRvYiI6bnVsbCwiZ2VuZGVyIjpudWxsLCJhdmF0YXJfaW1hZ2VfdXJsIjpudWxsLCJiYW5uZXJfaW1hZ2VfdXJsIjpudWxsLCJzdGF0dXMiOiJBIiwiY291bnRyeV9jb2RlIjpudWxsLCJyb2xlX2lkIjozLCJpYXQiOjE2OTMyOTI3MDQsImV4cCI6MTY5MzI5NDUwNH0.DdPx2jlqUp-YDdMUd6QWq81prx-n6B-2NOuW38DkZro";
 // Create an async thunk to fetch the list of tours
 export const fetchTours = createAsyncThunk("tour/fetchTours", async () => {
   const token = getTokenFromLocalStorage()?.data?.access_token;
   try {
     const response = await axios.get(
-      "https://tour-ecom-cllh63fgua-df.a.run.app/tour",
+      "https://manager-ecom-cllh63fgua-df.a.run.app/tour",
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${abc}`,
         },
       }
     );

@@ -1,17 +1,22 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import {
   BannerContainer,
   BannerContentReview,
   CreateDescription,
   CreateTitleNullDes,
-  TitleCardOptions,
 } from "../../../styles/createtour/createtour";
 import { useStepContext } from "../context/ui/useStepContext";
 import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import { AiOutlineFieldTime } from "react-icons/ai";
+import {
+  AiOutlineFieldTime,
+  AiOutlineFileText,
+  AiOutlineSelect,
+} from "react-icons/ai";
+
 import { GrCapacity } from "react-icons/gr";
+import { FaLocationDot } from "react-icons/fa6";
 const Review: React.FC = () => {
   const { currentStep, formValues } = useStepContext();
   if (currentStep !== 11) {
@@ -56,80 +61,124 @@ const Review: React.FC = () => {
                   {formValues?.[8]?.Title?.[0]}
                 </Typography>
 
-                <Box
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}
-                >
-                  <Box style={{ display: "flex" }}>
-                    <AiOutlineFieldTime /> Day :{" "}
-                    {formValues?.[4]?.DurationCheckIn?.[0]?.no} - Night :{" "}
-                    {formValues?.[4]?.DurationCheckIn?.[1]?.no}{" "}
-                  </Box>
-                  <Box style={{ display: "flex" }}>
-                    <GrCapacity />{" "}
-                    <Typography>
-                      Capacity :{formValues?.[5]?.Capacity}
-                    </Typography>
-                  </Box>
-                </Box>
-                <Typography>des: {formValues?.[8]?.Title?.[1]}</Typography>
-                <Typography>Adults :{formValues?.[6]?.Adults}</Typography>
-                <Typography>Children : {formValues?.[6]?.Children}</Typography>
-                <Box style={{ display: "flex" }}></Box>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <AiOutlineFieldTime />
+                    <Box>
+                      <p>Day</p>
+                      <p>{formValues?.[4]?.DurationCheckIn?.[0]?.no}</p>
+                    </Box>
+                    -
+                    <Box>
+                      <p>Night</p>
+                      <p>{formValues?.[4]?.DurationCheckIn?.[1]?.no} </p>
+                    </Box>
+                  </div>
+                  <div className="flex items-center">
+                    <GrCapacity />
+                    <div className="block">
+                      <p>Capacity</p>
+                      <p>{formValues?.[5]?.Capacity}</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center">
+                  <FaLocationDot />
+                  <div className="block">
+                    <p> location</p>
+                    <p>
+                      {formValues?.[3]?.Location?.map(
+                        (location: { id: number; value: string }) => (
+                          <Typography>{location?.value}</Typography>
+                        )
+                      )}
+                    </p>
+                  </div>
+                </div>
+                <hr />
+                <div className="block">
+                  <p>{formValues?.[8]?.Title?.[1]}</p>
+                </div>
+                <div className="flex">
+                  <div className="block">
+                    <p>From</p>
+                    <p>₫&nbsp;{formValues?.[6]?.Adults}</p>
+                    <p>per adult</p>
+                  </div>
+                  <div className="block">
+                    <p>From</p>
+                    <p>₫&nbsp;{formValues?.[6]?.Children}</p>
+                    <p>per children</p>
+                  </div>
+                </div>
               </Box>
-
               <hr />
-              <Typography>
-                typetour: {formValues?.[0]?.TypeTour?.title}
-              </Typography>
-              <Typography>
-                accomType:{formValues?.[0]?.TypeTour?.description}
-              </Typography>
+              <div className="flex items-center">
+                <AiOutlineSelect />
+                <div className="block">
+                  <p>typetour</p>
+                  <p>{formValues?.[0]?.TypeTour?.title}</p>
+                </div>
+              </div>
+              <div className="flex items-center">
+                <AiOutlineFileText />
+                <div className="block">
+                  <p>accomType</p>
+                  <p>{formValues?.[0]?.TypeTour?.description}</p>
+                </div>
+              </div>
               <hr />
               <Box>
-                Trans:
-                {formValues?.[1]?.TransportType?.map(
-                  (trans: { id: number; title: string; icon: any }) => (
-                    <Box>
-                      <Typography>{trans?.title}</Typography>
-                    </Box>
-                  )
-                )}
+                <p>Trans</p>
+                <Grid container spacing={2}>
+                  {formValues?.[1]?.TransportType?.map(
+                    (trans: { id: number; title: string; icon: any }) => (
+                      <Grid item xs={3}>
+                        <div
+                          key={trans?.id}
+                          className="w-fit"
+                          style={{
+                            padding: "12px",
+                            borderRadius: "12px",
+                            boxShadow:
+                              "rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px",
+                          }}
+                        >
+                          {(trans?.icon)}
+                          <p>{trans?.title}</p>
+                        </div>
+                      </Grid>
+                    )
+                  )}
+                </Grid>
               </Box>
               <Box>
                 Accom:{" "}
-                {formValues?.[2]?.AccomType?.map(
-                  (accom: { id: number; title: string; icon: any }) => (
-                    <Box>
-                      <Typography>{accom?.title}</Typography>
-                    </Box>
-                  )
-                )}
+                <Grid container spacing={2}>
+                  {formValues?.[2]?.AccomType?.map(
+                    (accom: { id: number; title: string; icon: any }) => (
+                      <Grid item xs={3}>
+                        <div
+                          className="w-fit"
+                          key={accom?.id}
+                          style={{
+                            padding: "12px",
+                            borderRadius: "12px",
+                            boxShadow:
+                              "rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px",
+                          }}
+                        >
+                          {(accom?.icon)}
+                          <Typography>{accom?.title}</Typography>
+                        </div>
+                      </Grid>
+                    )
+                  )}
+                </Grid>
               </Box>
-              <hr />
-              <Box>
-                Location:{" "}
-                {formValues?.[3]?.Location?.map(
-                  (location: { id: number; value: string }) => (
-                    <Typography>{location?.value}</Typography>
-                  )
-                )}
-              </Box>
-              <Box>
-                <Typography>
-                  total:{" "}
-                  {formValues?.[4]?.DurationCheckIn?.[0]?.no +
-                    formValues?.[4]?.DurationCheckIn?.[1]?.no}
-                </Typography>
-              </Box>
-              <hr />
-              <Box></Box>
               <hr />
               <Typography>
-                Lich trinh:
+                Lich trinh: tour
                 {formValues?.[8]?.Title?.["2"]?.map(
                   (step: {
                     data: string;
@@ -160,3 +209,4 @@ const Review: React.FC = () => {
 };
 
 export default Review;
+

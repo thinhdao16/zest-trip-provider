@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import Header from "../../../components/header/Header";
 import {
   BannerContainer,
@@ -16,9 +15,8 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import { AiFillHome } from "react-icons/ai";
-import { FaHotel, FaUserLarge } from "react-icons/fa6";
+import { FaUserLarge } from "react-icons/fa6";
 import { DetailAccountSettings } from "../../../components/accountSettings/DetailAccountSettings";
-import { Input } from "../../../components/setUpProvider/components/input";
 
 function PersonalInfo() {
   function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
@@ -33,12 +31,13 @@ function PersonalInfo() {
   };
 
   const handleSave = () => {
-    // Here you can perform actions to save the edited value
-    // For example, you can make an API call to update the value on the backend
 
-    // After saving, exit edit mode
     setIsEditing(false);
   };
+  const handleCancel = () => {
+    setIsEditing(false);
+  };
+
   return (
     <React.Fragment>
       <Header />
@@ -103,39 +102,36 @@ function PersonalInfo() {
                       </Box>
                       <Box style={{ textAlign: "right", marginLeft: "16px" }}>
                         {isEditing ? (
-                          <></>
+                          <Button onClick={handleCancel}>cancel</Button>
                         ) : (
                           <Button onClick={handleEdit}>edit</Button>
                         )}
                       </Box>
                     </Box>
+                  </Box>
                     {isEditing ? (
-                      <Box>
-                        <Input
-                          labels="Ho"
-                          placeholder=""
-                          icon={<FaHotel />}
-                          value={editedValue}
-                          onChange={(e) => setEditedValue(e.target.value)}
-                        />
-                        <TextField
-                          required
-                          InputProps={{
-                            startAdornment: (
-                              <InputAdornment position="start">
-                                ađâs  
-                              </InputAdornment>
-                            ),
-                          }}
-                          className="input-form-text-ready"
-                          onChange={(e) => setEditedValue(e.target.value)}
-                        />
+                      <Box style={{ paddingBottom: "24px" }}>
+                        <Box style={{ marginBottom: "16px" }}>
+                          <TextField
+                            label="Full Name"
+                            fullWidth
+                            value={editedValue}
+                            InputProps={{
+                              startAdornment: (
+                                <InputAdornment position="start">
+                                  <FaUserLarge />
+                                </InputAdornment>
+                              ),
+                            }}
+                            className="input-form-text-ready"
+                            onChange={(e) => setEditedValue(e.target.value)}
+                          />
+                        </Box>
                         <Button onClick={handleSave}>save</Button>
                       </Box>
                     ) : (
                       <></>
                     )}
-                  </Box>
                 </Box>
               </Grid>
               <Grid item xs={4.5}>
