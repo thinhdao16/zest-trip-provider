@@ -26,7 +26,6 @@ const Title: React.FC = () => {
   const [description, setDescription] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const [nestedDataArray, setNestedDataArray] = useState<NestedData[]>([]);
-  console.log(nestedDataArray)
   const handleModalOpen = () => {
     setModalOpen(true);
   };

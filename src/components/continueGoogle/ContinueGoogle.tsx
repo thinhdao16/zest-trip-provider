@@ -30,12 +30,13 @@ function ContinueGoogle() {
               },
             }
           );
+          console.log(response)
           if (response.status === 200) {
             // const data = await response.json();
             if (response !== undefined) {
               localStorage.setItem(
                 "access_token",
-                JSON.stringify(response.data)
+                JSON.stringify(response.data.data)
               );
               setRefeshTour((prev) => !prev);
               navigate("/listtour");

@@ -1,8 +1,6 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import {
-  BannerTitle,
-} from "../../../styles/homepage/banner/banner";
+import { BannerTitle } from "../../../styles/homepage/banner/banner";
 import {
   BannerDescription,
   BannerHomePageListFirst,
@@ -23,14 +21,24 @@ import { AiFillHome, AiFillStar } from "react-icons/ai";
 import TabContext from "@mui/lab/TabContext/TabContext";
 import TabList from "@mui/lab/TabList/TabList";
 import TabPanel from "@mui/lab/TabPanel/TabPanel";
-import { BannerContainer, BannerContent, BannerHomePageButtonListTab } from "../../../styles/global/StyleGlobal";
+import {
+  BannerContainer,
+  BannerContent,
+  BannerHomePageButtonListTab,
+} from "../../../styles/global/StyleGlobal";
 import { useSelector } from "react-redux";
 import { FiMoon, FiSun } from "react-icons/fi";
 import Header from "../../../components/header/Header";
+import { useDispatch } from "react-redux";
+import { fetchTourDetail } from "../../../store/redux/silce/tourSlice";
+import { AppDispatch } from "../../../store/redux/store";
 function SinglePage() {
   const [value, setValue] = React.useState("1");
+  const dispatch: AppDispatch = useDispatch();
   const { index } = useParams();
-  const tourDetail = useSelector((state: any) => state.tour.tourDetail);
+
+  const tourDetail = useSelector((state: any) => state.tour.tourGetDetail);
+  console.log(tourDetail)
   // console.log(tourDetail);
   function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     event.preventDefault();
@@ -39,17 +47,9 @@ function SinglePage() {
 
   // Add an event listener to handle browser back navigation
   useEffect(() => {
-    const handleBackNavigation = (event: any) => {
-      console.log("Navigated back from SinglePage");
-      // You can add your custom action here
-    };
+    dispatch(fetchTourDetail(index));
+  }, [index]);
 
-    window.addEventListener("popstate", handleBackNavigation);
-
-    return () => {
-      window.removeEventListener("popstate", handleBackNavigation);
-    };
-  }, []);
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
@@ -90,9 +90,7 @@ function SinglePage() {
             </div>
 
             <Grid container spacing={0} style={{ maxHeight: "30vư" }}>
-              {/* Add spacing prop here */}
               <Grid item xs={5}>
-                {/* Add item prop here */}
                 <img
                   src={tourDetail?.tour_images[0]}
                   alt="alt"
@@ -176,7 +174,7 @@ function SinglePage() {
                         <Card className="mb-1">
                           <CardContent>
                             <Grid container>
-                              <Grid xs={1}>
+                              <Grid item xs={1}>
                                 <div
                                   style={{
                                     display: "flex",
@@ -196,7 +194,7 @@ function SinglePage() {
                                   />
                                 </div>
                               </Grid>
-                              <Grid xs={9}>
+                              <Grid item xs={9}>
                                 <Box style={{ display: "block" }}>
                                   <Typography>dao duc thinh</Typography>
                                   <Rating />

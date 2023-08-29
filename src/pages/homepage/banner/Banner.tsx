@@ -36,9 +36,7 @@ export default function Banner() {
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
-  const handleTourDetail = (data: any) => {
-    dispatch(updateTourDetail(data));
-  };
+
   return (
     <BannerContainer>
       <BannerContent>
@@ -82,7 +80,6 @@ export default function Banner() {
                         <Link
                           to={`/${data?.id}`}
                           key={data}
-                          onClick={() => handleTourDetail(data)}
                         >
                           {/* Wrap your Card in a Fade transition */}
                           {/* <Fade in={value === index} timeout={500}> */}

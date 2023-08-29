@@ -41,7 +41,7 @@ function Login() {
     const accessToken = localStorage.getItem("access_token");
     if (accessToken !== null) {
       const decodedToken: any = jwt_decode(
-        JSON.parse(accessToken)?.data?.access_token
+        JSON.parse(accessToken)?.access_token
       );
       const expTimestamp = decodedToken.exp;
       if (accessToken && expTimestamp > Date.now() / 1000) {
@@ -83,23 +83,26 @@ function Login() {
           email: phoneNumber,
           password: password,
         },
-        { headers:{
-          "Content-Type": "application/json"
-        }}
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
       );
-      console.log(response.data);
-        // if (response.status === 200) {
-        //   // const data = await response.json();
-        //   if (response !== undefined) {
-        //     localStorage.setItem("access_token", JSON.stringify(response.data));
-        //     navigate("/listwork");
-        //     //         }
-        //   } else {
-        //     console.log("first");
-        //   }
-        // } else {
-        //   console.log("first");
-      // }
+      console.log(response)
+      if (response.status === 201) {
+        // const data = await response.json();
+        if (response !== undefined) {
+          localStorage.setItem("access_token", JSON.stringify(response.data));
+          setRefeshTour((prev) => !prev);
+          navigate("/listtour");
+          //         }
+        } else {
+          console.log("first");
+        }
+      } else {
+        console.log("first");
+      }
     } catch (error) {
       // Handle errors (e.g., display error message to the user)
       console.error(error);
@@ -188,68 +191,69 @@ function Login() {
                   </Typography>
                 </div>
                 {/* <form
-                onSubmit={(event: React.FormEvent<SignInFormElement>) => {
-                  event.preventDefault();
-                  const formElements = event.currentTarget.elements;
-                  const data = {
-                    email: formElements.email.value,
-                    password: formElements.password.value,
-                    persistent: formElements.persistent.checked,
-                  };
-                  alert(JSON.stringify(data, null, 2));
-                }}
-                > */}
-                <FormControl required>
-                  <FormLabel>Phone Number</FormLabel>
-                  <TextField
-                    onChange={(e) => setPhoneNumber(e.target.value)}
-                    required
-                    value={phoneNumber}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <AiOutlinePhone />
-                        </InputAdornment>
-                      ),
-                    }}
-                    className="input-form-text-ready"
-                  />
-                </FormControl>
-                <FormControl required>
-                  <FormLabel>Password</FormLabel>
-                  <TextField
-                    required
-                    value={password}
-                    type="password"
-                    onChange={(e) => setPassword(e.target.value)}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <AiOutlineLock />
-                        </InputAdornment>
-                      ),
-                    }}
-                    className="input-form-text-ready"
-                  />
-                </FormControl>
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
+                  onSubmit={(event: React.FormEvent<SignInFormElement>) => {
+                    event.preventDefault();
+                    const formElements = event.currentTarget.elements;
+                    const data = {
+                      email: formElements.email.value,
+                      password: formElements.password.value,
+                      persistent: formElements.persistent.checked,
+                    };
+                    alert(JSON.stringify(data, null, 2));
                   }}
-                >
-                  {/* <Link
+                  onSubmit={handleSignIn}
+                > */}
+                  <FormControl required>
+                    <FormLabel>Phone Number</FormLabel>
+                    <TextField
+                      onChange={(e) => setPhoneNumber(e.target.value)}
+                      required
+                      value={phoneNumber}
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <AiOutlinePhone />
+                          </InputAdornment>
+                        ),
+                      }}
+                      className="input-form-text-ready"
+                    />
+                  </FormControl>
+                  <FormControl required>
+                    <FormLabel>Password</FormLabel>
+                    <TextField
+                      required
+                      value={password}
+                      type="password"
+                      onChange={(e) => setPassword(e.target.value)}
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <AiOutlineLock />
+                          </InputAdornment>
+                        ),
+                      }}
+                      className="input-form-text-ready"
+                    />
+                  </FormControl>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    {/* <Link
                     fontSize="sm"
                     href="#replace-with-a-link"
                     fontWeight="lg"
                   >
                     Forgot your password
                   </Link> */}
-                </Box>
-                <ButtonGlobal fullWidth onClick={handleSignIn}>
-                  Sign in
-                </ButtonGlobal>
+                  </Box>
+                  <ButtonGlobal type="submit" fullWidth onClick={handleSignIn}>
+                    Sign in
+                  </ButtonGlobal>
                 {/* </form> */}
                 <Box sx={{ position: "relative", margin: 0.5 }}>
                   <span

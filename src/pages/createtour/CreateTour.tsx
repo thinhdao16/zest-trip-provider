@@ -58,6 +58,7 @@ const StepRenderer: React.FC = () => {
     goToPreviousStep,
     formValues,
   } = useStepContext();
+
   const dispatch: AppDispatch = useDispatch();
   const isLastStep = currentStep === totalSteps;
   const StepsToRender = (
@@ -68,15 +69,81 @@ const StepRenderer: React.FC = () => {
       )}
     </>
   );
-  const dataValueCreate = {
-    a: "a",
+  const abc = {
+    name: "Uncharted Expedition",
+    description:
+      "Embark on an exhilarating journey to discover new horizons and create unforgettable memories.",
+    footnote: "For any inquiries, feel free to contact us anytime!",
+    tour_images: [
+      "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg",
+      "https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-1080x675.jpg",
+    ],
+    price: 120.5,
+    duration_day: 6,
+    duration_night: 5,
+    location: "Spectacular Natural Oasis",
+    tag_id: [3, 4],
+    vehicle_id: [5],
+    TourComponent: [
+      {
+        title: "Day 1",
+        description:
+          "Commence your extraordinary adventure with a warm welcome and an engaging introductory session.",
+      },
+    ],
+    address_name: "179 Tran Phu",
+    tour_location_type: "INTERNATIONAL",
+    address_city: "Bao  Loc",
+    address_province: "Lam Dong",
+    address_country: "Viet Nam",
   };
+  console.log(formValues[7].checkImage);
 
   const handleFormSubmit = () => {
     goToNextStep();
   };
   const handlePostCreate = () => {
-    dispatch(postCreateTour(dataValueCreate));
+    const formData = new FormData();
+    const dataValueCreate = {
+      name: formValues[8]?.Title[0],
+      description: formValues[8]?.Title[1],
+      footnote: "For any inquiries, feel free to contact us anytime!",
+      // price la number
+      // price: formValues[6]?.Adults + formValues[6]?.Children,
+      price:100,
+      //end
+      duration_day: formValues[4]?.DurationCheckIn[0]?.no,
+      duration_night: formValues[4]?.DurationCheckIn[1]?.no,
+      location: formValues[3]?.Location[0]?.value,
+      tag_id: formValues[1]?.TransportType?.map((tag: any) => tag?.id),
+      vehicle_id: formValues[2]?.AccomType?.map((acc: any) => acc?.id),
+      // TourComponent: formValues[8]?.Title[2]?.map((boxes: any, index: any) => ({
+      //   title: `Day ${index + 1}`,
+      //   description: boxes?.boxes,
+      // })),
+      TourComponent: [
+        {
+            title: "Day 1",
+            description: "Commence your extraordinary adventure with a warm welcome and an engaging introductory session."
+        },
+    ],
+      address_name: "179 Tran Phu",
+      tour_location_type: "INTERNATIONAL",
+      address_city: "Bao  Loc",
+      address_province: "Lam Dong",
+      address_country: "Viet Nam",
+    };
+    console.log(JSON.stringify(dataValueCreate));
+    formData.append("data", JSON.stringify(dataValueCreate));
+    // formValues[7]?.Media[0]?.file?.forEach((image:any) => {
+    //   console.log(image?.file)
+    //   formData.append("tour_images", image?.file);
+    // });
+    formData.append("tour_images", formValues[7]?.checkImage);
+    const requestData = {
+      formData, // Send the FormData object
+    };
+    dispatch(postCreateTour(requestData?.formData)); // Pass the JSON data directly
     goToNextStep();
   };
   return (
