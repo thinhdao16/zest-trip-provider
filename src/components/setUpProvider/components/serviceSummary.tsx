@@ -20,7 +20,6 @@ export const ServiceSummary = ({
   userServiceConfiguration,
 }: ServiceSummaryProps) => {
   const { selectedPlan, userInfo } = userServiceConfiguration;
-  console.log(selectedPlan, userInfo); // for some reason needed to do this work arround bc typescript was crying and bug is not fixed apparently
 
   return (
     <Box style={{ width: "60vw" }}>

@@ -16,10 +16,18 @@ import {
 } from "../../styles/global/StyleGlobal";
 import { Grid } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
+import { AppDispatch } from "../../store/redux/store";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { becomeProvider } from "../../store/redux/silce/providerSlice";
 function SetUpProvider() {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [showRequired, setShowRequiredFields] = useState(false);
+
+  const dispatch: AppDispatch = useDispatch();
+  const personalInfo = useSelector((state: any) => state.auth.personalInfo);
+
   const [userServiceConfiguration, setUserServiceConfiguration] =
     useState<UserServiceConfiguration>({
       userInfo: {
@@ -66,9 +74,46 @@ function SetUpProvider() {
     if (step === 1) return;
     setStep((step) => step - 1);
   };
-  const Confirm = (e: any) => {
-    e.preventDefault();
-    navigate("/listwork");
+  const Confirm = () => {
+    if (personalInfo?.id) {
+      const formData = new FormData();
+      formData.append("user_id", personalInfo?.id);
+      formData.append(
+        "website_url",
+        userServiceConfiguration?.userInfo?.webCompnany
+      );
+      formData.append(
+        "country_code",
+        userServiceConfiguration?.userInfo?.region
+      );
+      formData.append("description", "what the hell");
+      formData.append("phone", "0975647951");
+      formData.append("email", "daothinh1105@gmai.com");
+      formData.append("address", userServiceConfiguration?.userInfo?.address);
+      formData.append("status", "what is status");
+      formData.append(
+        "companyName",
+        userServiceConfiguration?.userInfo?.nameCompany
+      );
+      formData.append(
+        "serviceType",
+        userServiceConfiguration?.selectedPlan?.serviceType
+      );
+      const file = userServiceConfiguration?.userInfo?.file[0]; // Lấy đối tượng File hoặc Blob từ userInfo
+
+      // Chuyển đổi File/Blob thành chuỗi base64
+      const fileReader = new FileReader();
+      fileReader.onload = (event: any) => {
+        const base64Data = event.target.result;
+        formData.append("file", base64Data); // Thêm chuỗi base64 vào FormData
+      };
+      fileReader.readAsDataURL(file);
+      dispatch(becomeProvider(formData));
+    } else {
+      alert("dont have userId");
+    }
+
+    // navigate("/listwork");
   };
   return (
     <>
@@ -121,7 +166,7 @@ function SetUpProvider() {
                   {step >= 5 && (
                     <Button
                       style={{ textTransform: "none", color: "black" }}
-                      onClick={(e) => Confirm(e)}
+                      onClick={() => Confirm()}
                     >
                       Confirm
                     </Button>

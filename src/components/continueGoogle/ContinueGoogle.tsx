@@ -30,7 +30,7 @@ function ContinueGoogle() {
               },
             }
           );
-          console.log(response)
+          console.log(response);
           if (response.status === 200) {
             // const data = await response.json();
             if (response !== undefined) {
@@ -38,6 +38,15 @@ function ContinueGoogle() {
                 "access_token",
                 JSON.stringify(response.data.data)
               );
+              const additionalResponse = await axios.get(
+                "URL_CUA_API_BO_SUNG",
+                {
+                  headers: {
+                    Authorization: `Bearer ${response.data.data.access_token}`,
+                  },
+                }
+              );
+              console.log(additionalResponse);
               setRefeshTour((prev) => !prev);
               navigate("/listtour");
               //         }

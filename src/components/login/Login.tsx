@@ -30,11 +30,15 @@ import { Link, useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import { DataContext } from "../../store/dataContext/DataContext";
 import axios from "axios";
+import { AppDispatch } from "../../store/redux/store";
+import { useDispatch } from "react-redux";
+import { personalInfo } from "../../store/redux/silce/authSilce";
 
 function Login() {
   const navigate = useNavigate();
   const { refeshLogin, setRefeshLogin, setRefeshTour } =
     React.useContext(DataContext);
+    const dispatch : AppDispatch = useDispatch()
   const [phoneNumber, setPhoneNumber] = React.useState("");
   const [password, setPassword] = React.useState("");
   const checkAccessToken = () => {
@@ -89,11 +93,17 @@ function Login() {
           },
         }
       );
-      console.log(response)
       if (response.status === 201) {
         // const data = await response.json();
         if (response !== undefined) {
           localStorage.setItem("access_token", JSON.stringify(response.data));
+          localStorage.setItem("refresh_token", JSON.stringify(response.data.refresh_token)); 
+          const additionalResponse = await axios.get("https://manager-ecom-cllh63fgua-df.a.run.app/users/me", {
+            headers: {
+              Authorization: `Bearer ${response.data.access_token}`,
+            },
+          });
+          dispatch(personalInfo(additionalResponse.data))
           setRefeshTour((prev) => !prev);
           navigate("/listtour");
           //         }

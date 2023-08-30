@@ -16,10 +16,13 @@ import PersonAdd from "@mui/icons-material/PersonAdd";
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import { DataContext } from "../../store/dataContext/DataContext";
+import { useSelector } from "react-redux";
 function Header() {
   const navigation = useNavigate();
   const { setRefeshLogin } = useContext(DataContext);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const personalInfo = useSelector((state: any) => state.auth.personalInfo);
+
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -93,7 +96,15 @@ function Header() {
                   aria-haspopup="true"
                   aria-expanded={open ? "true" : undefined}
                 >
-                  <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+                  <Avatar sx={{ width: 32, height: 32 }}>
+                    <img
+                      src={
+                        personalInfo?.avatar_image_url ||
+                        "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                      }
+                      alt="Avatar"
+                    />
+                  </Avatar>
                 </IconButton>
               </Tooltip>
               {/* </Box> */}

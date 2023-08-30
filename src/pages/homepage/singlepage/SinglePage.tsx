@@ -32,23 +32,31 @@ import Header from "../../../components/header/Header";
 import { useDispatch } from "react-redux";
 import { fetchTourDetail } from "../../../store/redux/silce/tourSlice";
 import { AppDispatch } from "../../../store/redux/store";
+import { Carousel } from "react-responsive-carousel";
 function SinglePage() {
   const [value, setValue] = React.useState("1");
+
   const dispatch: AppDispatch = useDispatch();
+
   const { index } = useParams();
 
+  useEffect(() => {
+    // Dispatch action để tải dữ liệu từ server
+    dispatch(fetchTourDetail(index));
+  }, [dispatch, index]);
+
+  const loadingDetail = useSelector((state: any) => state.tour.loadingDetail);
   const tourDetail = useSelector((state: any) => state.tour.tourGetDetail);
-  console.log(tourDetail)
-  // console.log(tourDetail);
+  console.log(tourDetail);
+  if (loadingDetail) {
+    return <div>Loading...</div>;
+  }
   function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     event.preventDefault();
     console.info("You clicked a breadcrumb.");
   }
 
   // Add an event listener to handle browser back navigation
-  useEffect(() => {
-    dispatch(fetchTourDetail(index));
-  }, [index]);
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -89,10 +97,26 @@ function SinglePage() {
               </Breadcrumbs>
             </div>
 
-            <Grid container spacing={0} style={{ maxHeight: "30vư" }}>
+            <Grid container spacing={0} style={{ maxHeight: "30vw" }}>
               <Grid item xs={5}>
-                <img
-                  src={tourDetail?.tour_images[0]}
+                <Carousel>
+                  {tourDetail?.tour_images?.map((data: any, index: number) => (
+                    <div key={index}>
+                      <img
+                        src={data}
+                        alt={`Image ${index}`}
+                        style={{
+                          width: "34vw",
+                          // height: "34vw",
+                          objectFit: "cover",
+                          borderRadius: "25px",
+                        }}
+                      />
+                    </div>
+                  ))}
+                </Carousel>
+                {/* <img
+                  src={tourDetail?.tour_images[0] || "alt"}
                   alt="alt"
                   style={{
                     width: "34vw",
@@ -100,7 +124,7 @@ function SinglePage() {
                     objectFit: "cover",
                     borderRadius: "25px",
                   }}
-                />
+                /> */}
               </Grid>
               <Grid item xs={7}>
                 <BannerHomePageListFirst>

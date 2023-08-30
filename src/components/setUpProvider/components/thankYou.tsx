@@ -4,7 +4,7 @@ export const ThankYou = () => {
   return (
     <Box>
    <Grid container  sx={{display:"flex", alignItems:'center' , padding:"50px"}}>
-	<Grid item xs={6} spacing={5}>
+	<Grid item xs={6} >
 	<Box mb={3}>
         <p style={{fontSize:"50px", fontWeight:500}}>You are all set</p>
       </Box>
