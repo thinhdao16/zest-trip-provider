@@ -81,14 +81,18 @@ const StepRenderer: React.FC = () => {
       description: formValues[8]?.Title[1],
       footnote: "For any inquiries, feel free to contact us anytime!",
       // price la number
-      price: parseInt(formValues[6]?.Adults) + parseInt(formValues[6]?.Children),
+      price:
+        parseInt(formValues[6]?.Adults) + parseInt(formValues[6]?.Children),
       //end
       duration_day: formValues[4]?.DurationCheckIn[0]?.no,
       duration_night: formValues[4]?.DurationCheckIn[1]?.no,
       location: formValues[3]?.Location[0]?.value,
-      tag_id: formValues[1]?.TransportType?.map((tag: any) => tag?.id),
-      vehicle_id: formValues[2]?.AccomType?.map((acc: any) => acc?.id),
-
+      // tag_id: formValues[1]?.TransportType?.map((tag: any) => tag?.id),
+      tag_id: [3, 4],
+      // vehicle_id: formValues[2]?.AccomType?.map((acc: any) => acc?.id),
+      vehicle_id: [
+        5
+    ],
       // TourComponent: formValues[8]?.Title[2]?.map((boxes: any, index: any) => ({
       //   title: `Day ${index + 1}`,
       //   description: boxes?.boxes,
@@ -107,7 +111,7 @@ const StepRenderer: React.FC = () => {
       address_country: "Viet Nam",
     };
     formData.append("data", JSON.stringify(dataValueCreate));
-
+console.log(dataValueCreate);
     const mediaArray = formValues[7]?.Media || [];
 
     for (let i = 0; i < mediaArray.length; i++) {

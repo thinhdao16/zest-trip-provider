@@ -11,11 +11,11 @@ const plans: Plan[] = [
     serviceType: [
       {
         id: 1,
-        name: "Servicios",
+        name: "Domestic",
       },
       {
         id: 2,
-        name: "Oversea",
+        name: "International",
       },
     ],
     policyCancell: [

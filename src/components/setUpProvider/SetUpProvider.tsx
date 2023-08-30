@@ -27,7 +27,6 @@ function SetUpProvider() {
 
   const dispatch: AppDispatch = useDispatch();
   const personalInfo = useSelector((state: any) => state.auth.personalInfo);
-
   const [userServiceConfiguration, setUserServiceConfiguration] =
     useState<UserServiceConfiguration>({
       userInfo: {
@@ -69,7 +68,6 @@ function SetUpProvider() {
       return step + 1;
     });
   };
-
   const goBack = () => {
     if (step === 1) return;
     setStep((step) => step - 1);
@@ -97,17 +95,18 @@ function SetUpProvider() {
       );
       formData.append(
         "serviceType",
-        userServiceConfiguration?.selectedPlan?.serviceType
+        // userServiceConfiguration?.selectedPlan?.serviceType
+        "Domestic"
       );
-      const file = userServiceConfiguration?.userInfo?.file[0]; // Lấy đối tượng File hoặc Blob từ userInfo
-
+      // const file = userServiceConfiguration?.userInfo?.file[0]; // Lấy đối tượng File hoặc Blob từ userInfo
+      formData.append("file", userServiceConfiguration?.userInfo?.file[0]);
       // Chuyển đổi File/Blob thành chuỗi base64
-      const fileReader = new FileReader();
-      fileReader.onload = (event: any) => {
-        const base64Data = event.target.result;
-        formData.append("file", base64Data); // Thêm chuỗi base64 vào FormData
-      };
-      fileReader.readAsDataURL(file);
+      // const fileReader = new FileReader();
+      // fileReader.onload = (event: any) => {
+      //   const base64Data = event.target.result;
+      //   formData.append("file", base64Data); // Thêm chuỗi base64 vào FormData
+      // };
+      // fileReader.readAsDataURL(file);
       dispatch(becomeProvider(formData));
     } else {
       alert("dont have userId");

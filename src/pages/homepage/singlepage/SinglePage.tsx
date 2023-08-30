@@ -33,6 +33,7 @@ import { useDispatch } from "react-redux";
 import { fetchTourDetail } from "../../../store/redux/silce/tourSlice";
 import { AppDispatch } from "../../../store/redux/store";
 import { Carousel } from "react-responsive-carousel";
+import useResponsiveObserver from "antd/es/_util/responsiveObserver";
 function SinglePage() {
   const [value, setValue] = React.useState("1");
 
@@ -45,12 +46,11 @@ function SinglePage() {
     dispatch(fetchTourDetail(index));
   }, [dispatch, index]);
 
-  const loadingDetail = useSelector((state: any) => state.tour.loadingDetail);
+  // const loadingDetail = useSelector((state: any) => state.tour.loadingDetail);
   const tourDetail = useSelector((state: any) => state.tour.tourGetDetail);
-  console.log(tourDetail);
-  if (loadingDetail) {
-    return <div>Loading...</div>;
-  }
+  // if (loadingDetail) {
+  //   return <div>Loading...</div>;
+  // }
   function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     event.preventDefault();
     console.info("You clicked a breadcrumb.");
