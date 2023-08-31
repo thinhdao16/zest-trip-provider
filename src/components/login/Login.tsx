@@ -33,12 +33,13 @@ import axios from "axios";
 import { AppDispatch } from "../../store/redux/store";
 import { useDispatch } from "react-redux";
 import { personalInfo } from "../../store/redux/silce/authSilce";
+import { BASE_URL } from "../../store/apiInterceptors";
 
 function Login() {
   const navigate = useNavigate();
   const { refeshLogin, setRefeshLogin, setRefeshTour } =
     React.useContext(DataContext);
-    const dispatch : AppDispatch = useDispatch()
+  const dispatch: AppDispatch = useDispatch();
   const [phoneNumber, setPhoneNumber] = React.useState("");
   const [password, setPassword] = React.useState("");
   const checkAccessToken = () => {
@@ -82,7 +83,7 @@ function Login() {
   const handleSignIn = async () => {
     try {
       const response = await axios.post(
-        "https://manager-ecom-cllh63fgua-df.a.run.app/auth/signin",
+        `${BASE_URL}/auth/signin`,
         {
           email: phoneNumber,
           password: password,
@@ -97,13 +98,19 @@ function Login() {
         // const data = await response.json();
         if (response !== undefined) {
           localStorage.setItem("access_token", JSON.stringify(response.data));
-          localStorage.setItem("refresh_token", JSON.stringify(response.data.refresh_token)); 
-          const additionalResponse = await axios.get("https://manager-ecom-cllh63fgua-df.a.run.app/users/me", {
-            headers: {
-              Authorization: `Bearer ${response.data.access_token}`,
-            },
-          });
-          dispatch(personalInfo(additionalResponse.data))
+          localStorage.setItem(
+            "refresh_token",
+            JSON.stringify(response.data.refresh_token)
+          );
+          const additionalResponse = await axios.get(
+            `${BASE_URL}/users/me`,
+            {
+              headers: {
+                Authorization: `Bearer ${response.data.access_token}`,
+              },
+            }
+          );
+          dispatch(personalInfo(additionalResponse.data));
           setRefeshTour((prev) => !prev);
           navigate("/listtour");
           //         }
@@ -213,57 +220,57 @@ function Login() {
                   }}
                   onSubmit={handleSignIn}
                 > */}
-                  <FormControl required>
-                    <FormLabel>Phone Number</FormLabel>
-                    <TextField
-                      onChange={(e) => setPhoneNumber(e.target.value)}
-                      required
-                      value={phoneNumber}
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <AiOutlinePhone />
-                          </InputAdornment>
-                        ),
-                      }}
-                      className="input-form-text-ready"
-                    />
-                  </FormControl>
-                  <FormControl required>
-                    <FormLabel>Password</FormLabel>
-                    <TextField
-                      required
-                      value={password}
-                      type="password"
-                      onChange={(e) => setPassword(e.target.value)}
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <AiOutlineLock />
-                          </InputAdornment>
-                        ),
-                      }}
-                      className="input-form-text-ready"
-                    />
-                  </FormControl>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
+                <FormControl required>
+                  <FormLabel>Phone Number</FormLabel>
+                  <TextField
+                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    required
+                    value={phoneNumber}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <AiOutlinePhone />
+                        </InputAdornment>
+                      ),
                     }}
-                  >
-                    {/* <Link
+                    className="input-form-text-ready"
+                  />
+                </FormControl>
+                <FormControl required>
+                  <FormLabel>Password</FormLabel>
+                  <TextField
+                    required
+                    value={password}
+                    type="password"
+                    onChange={(e) => setPassword(e.target.value)}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <AiOutlineLock />
+                        </InputAdornment>
+                      ),
+                    }}
+                    className="input-form-text-ready"
+                  />
+                </FormControl>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  {/* <Link
                     fontSize="sm"
                     href="#replace-with-a-link"
                     fontWeight="lg"
                   >
                     Forgot your password
                   </Link> */}
-                  </Box>
-                  <ButtonGlobal type="submit" fullWidth onClick={handleSignIn}>
-                    Sign in
-                  </ButtonGlobal>
+                </Box>
+                <ButtonGlobal type="submit" fullWidth onClick={handleSignIn}>
+                  Sign in
+                </ButtonGlobal>
                 {/* </form> */}
                 <Box sx={{ position: "relative", margin: 0.5 }}>
                   <span

@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { BASE_URL } from "../../apiInterceptors";
 
 const getTokenFromLocalStorage = () => {
   const token = localStorage.getItem("access_token");
@@ -22,7 +23,7 @@ export const becomeProvider = createAsyncThunk(
     const token = getTokenFromLocalStorage()?.access_token;
     try {
       const response = await axios.post(
-        "https://manager-ecom-cllh63fgua-df.a.run.app/provider",
+        `${BASE_URL}/provider`,
         requestData,
         {
           headers: {

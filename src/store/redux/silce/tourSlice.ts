@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-
+import { BASE_URL, axiosInstance } from "../../apiInterceptors";
 // Function to retrieve token from localStorage
 const getTokenFromLocalStorage = () => {
   const token = localStorage.getItem("access_token");
@@ -21,81 +20,15 @@ const initialState = {
   loadingDetail: false,
   errorDetail: null as string | null,
 };
-// Assume tokenPayload is the decoded payload of the JWT token
-const isTokenExpired = (tokenPayload:any) => {
-  if (!tokenPayload || !tokenPayload.exp) {
-    return true; // If payload or expiration time is missing, consider token expired
-  }
-  
-  const expirationTimeInSeconds = tokenPayload.exp;
-  const currentTimeInSeconds = Math.floor(Date.now() / 1000);
-  
-  return expirationTimeInSeconds < currentTimeInSeconds;
-};
-
-const refreshAccessToken = async () => {
-  const refreshToken = getTokenFromLocalStorage()?.refresh_token;
-
-  if (refreshToken) {
-    try {
-      const refreshResponse = await axios.post(
-        "https://your-auth-server.com/refresh-token-endpoint",
-        {
-          refresh_token: refreshToken,
-        }
-      );
-      const newAccessToken = refreshResponse.data.access_token;
-      // Update the access token in localStorage or state
-      localStorage.setItem("access_token", newAccessToken);
-      return newAccessToken;
-    } catch (error) {
-      // Handle refresh token error
-      console.error("Failed to refresh access token:", error);
-      throw new Error("Failed to refresh access token");
-    }
-  } else {
-    // Handle case when there's no refresh token available
-    throw new Error("No refresh token available");
-  }
-};
-
-// Create an Axios instance with Interceptors
-const axiosInstance = axios.create();
-
-axiosInstance.interceptors.request.use(
-  async (config) => {
-    const accessToken = getTokenFromLocalStorage()?.access_token;
-    // Check if token is expired
-    if (isTokenExpired(accessToken)) {
-      return refreshAccessToken()
-        .then((newAccessToken) => {
-          // Update the request's authorization header with new token
-          config.headers.Authorization = `Bearer ${newAccessToken}`;
-          return config;
-        })
-        .catch((error) => {
-          // Handle refresh token error
-          throw error;
-        });
-    }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
 
 export const fetchTours = createAsyncThunk("tour/fetchTours", async () => {
   const token = getTokenFromLocalStorage()?.access_token;
   try {
-    const response = await axios.get(
-      "https://manager-ecom-cllh63fgua-df.a.run.app/tour/provider",
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const response = await axiosInstance.get(`${BASE_URL}/tour/provider`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return response.data.data;
   } catch (error) {
     throw new Error("Failed to fetch tours");
@@ -106,8 +39,8 @@ export const fetchTourDetail = createAsyncThunk(
   async (index: any) => {
     const token = getTokenFromLocalStorage()?.access_token;
     try {
-      const response = await axios.get(
-        `https://manager-ecom-cllh63fgua-df.a.run.app/tour/detail/${index}`,
+      const response = await axiosInstance.get(
+        `${BASE_URL}/tour/detail/${index}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -128,8 +61,8 @@ export const postCreateTour = createAsyncThunk(
   async (requestData: any) => {
     const token = getTokenFromLocalStorage()?.access_token;
     try {
-      const response = await axios.post(
-        "https://manager-ecom-cllh63fgua-df.a.run.app/tour",
+      const response = await axiosInstance.post(
+        `${BASE_URL}/tour`,
         requestData,
         {
           headers: {
