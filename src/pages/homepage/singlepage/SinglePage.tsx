@@ -33,7 +33,6 @@ import { useDispatch } from "react-redux";
 import { fetchTourDetail } from "../../../store/redux/silce/tourSlice";
 import { AppDispatch } from "../../../store/redux/store";
 import { Carousel } from "react-responsive-carousel";
-import useResponsiveObserver from "antd/es/_util/responsiveObserver";
 function SinglePage() {
   const [value, setValue] = React.useState("1");
 
@@ -42,15 +41,11 @@ function SinglePage() {
   const { index } = useParams();
 
   useEffect(() => {
-    // Dispatch action để tải dữ liệu từ server
     dispatch(fetchTourDetail(index));
   }, [dispatch, index]);
 
-  // const loadingDetail = useSelector((state: any) => state.tour.loadingDetail);
   const tourDetail = useSelector((state: any) => state.tour.tourGetDetail);
-  // if (loadingDetail) {
-  //   return <div>Loading...</div>;
-  // }
+
   function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     event.preventDefault();
     console.info("You clicked a breadcrumb.");
@@ -115,16 +110,6 @@ function SinglePage() {
                     </div>
                   ))}
                 </Carousel>
-                {/* <img
-                  src={tourDetail?.tour_images[0] || "alt"}
-                  alt="alt"
-                  style={{
-                    width: "34vw",
-                    height: "34vw",
-                    objectFit: "cover",
-                    borderRadius: "25px",
-                  }}
-                /> */}
               </Grid>
               <Grid item xs={7}>
                 <BannerHomePageListFirst>
@@ -224,7 +209,7 @@ function SinglePage() {
                                   <Rating />
                                 </Box>
                               </Grid>
-                              <Grid xs={2}>
+                              <Grid item xs={2}>
                                 {" "}
                                 <Typography style={{ textAlign: "right" }}>
                                   1 day ago
@@ -241,7 +226,7 @@ function SinglePage() {
                         <Card>
                           <CardContent>
                             <Grid container>
-                              <Grid xs={1}>
+                              <Grid item xs={1}>
                                 <div
                                   style={{
                                     display: "flex",
@@ -261,7 +246,7 @@ function SinglePage() {
                                   />
                                 </div>
                               </Grid>
-                              <Grid xs={9}>
+                              <Grid item xs={9}>
                                 <Box style={{ display: "block" }}>
                                   <Typography>dao duc thinh</Typography>
                                   <Rating />

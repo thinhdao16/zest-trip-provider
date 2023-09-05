@@ -1,5 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import { BannerTitleList } from "../../styles/global/StyleGlobal";
+import React from "react";
 
 interface CustomTitleProps {
   title: string;
@@ -12,7 +13,7 @@ export const TitlePage: React.FC<CustomTitleProps> = ({
   rest
 }) => {
   return (
-    <>
+    <div>
       <Box textAlign={"center"} mb={8}>
         <p style={{ fontSize: "40px" }}>{title}</p>
         <Box
@@ -32,6 +33,6 @@ export const TitlePage: React.FC<CustomTitleProps> = ({
           <Typography variant="subtitle1">{rest}</Typography>
         </Box>
       </Box>
-    </>
+    </div>
   );
 };

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import { Grid, TextField } from "@mui/material";
+import { Grid } from "@mui/material";
 import { IoAddCircleOutline } from "react-icons/io5";
 
 interface FormModalProps {
@@ -21,7 +21,7 @@ const style = {
   border: "none",
   boxShadow: 24,
   p: 4,
-  borderRadius:"12px"
+  borderRadius: "12px",
 };
 
 interface BoxData {
@@ -121,8 +121,8 @@ const FormModal: React.FC<FormModalProps> = ({ open, onClose, onSubmit }) => {
 
           <Box>
             {formEntries.map((boxData, index) => (
-              <Box>
-                <div key={index}>{boxData?.data}</div>
+              <Box key={index}>
+                <div>{boxData?.data}</div>
               </Box>
             ))}
             <button onClick={handleSubmit}>Submit</button>

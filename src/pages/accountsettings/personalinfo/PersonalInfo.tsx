@@ -23,20 +23,20 @@ function PersonalInfo() {
     event.preventDefault();
     console.info("You clicked a breadcrumb.");
   }
-  const [isEditing, setIsEditing] = React.useState(false);
-  const [editedValue, setEditedValue] = React.useState("Thinhdao"); // Initial value
+    const [isEditing, setIsEditing] = React.useState(false);
+    const [editedValue, setEditedValue] = React.useState("Thinhdao"); // Initial value
 
-  const handleEdit = () => {
-    setIsEditing(true);
-  };
+    const handleEdit = () => {
+      setIsEditing(true);
+    };
 
-  const handleSave = () => {
+    const handleSave = () => {
 
-    setIsEditing(false);
-  };
-  const handleCancel = () => {
-    setIsEditing(false);
-  };
+      setIsEditing(false);
+    };
+    const handleCancel = () => {
+      setIsEditing(false);
+    };
 
   return (
     <React.Fragment>
@@ -60,7 +60,7 @@ function PersonalInfo() {
               <p style={{ fontSize: "40px" }}>abc</p>
             </Box>
             <Grid container spacing={10}>
-              <Grid item xs={7.5}>
+              <Grid item xs={12} sm={7.5}>
                 <Box style={{ borderBottom: "1px solid black" }}>
                   <Box style={{ padding: "24px 0" }}>
                     <Box style={{ display: "flex" }}>
@@ -134,7 +134,7 @@ function PersonalInfo() {
                     )}
                 </Box>
               </Grid>
-              <Grid item xs={4.5}>
+              <Grid item xs={12} sm={4.5}>
                 <Box
                   style={{
                     border: "1px solid #DDDDDD",

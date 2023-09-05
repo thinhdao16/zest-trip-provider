@@ -93,9 +93,9 @@ const Title: React.FC = () => {
                     </div>
                     {data.boxes.map((data, index) => (
                       <div key={index} className="flex">
-                        <p key={index}>{data?.toTime}</p> -
-                        <p key={index}>{data?.fromTime}</p>
-                        <p key={index}>{data?.data}</p>
+                        <p >{data?.toTime}</p> -
+                        <p >{data?.fromTime}</p>
+                        <p >{data?.data}</p>
                       </div>
                     ))}
                   </Grid>

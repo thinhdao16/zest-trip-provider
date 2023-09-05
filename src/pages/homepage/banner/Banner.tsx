@@ -10,7 +10,6 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import {
   fetchTours,
-  updateTourDetail,
 } from "../../../store/redux/silce/tourSlice";
 import { AppDispatch } from "../../../store/redux/store";
 
@@ -40,9 +39,6 @@ export default function Banner() {
   return (
     <BannerContainer>
       <BannerContent>
-        {/* <BannerHomePageListFirst>
-          <BannerTitle variant="h6">Welcome back , Dao</BannerTitle>
-        </BannerHomePageListFirst> */}
         <BannerHomePageList>
           <TitlePage
             title="Wellcome back"
@@ -77,10 +73,7 @@ export default function Banner() {
                   <Grid container spacing={5}>
                     {tours?.map((data: any, index: any) => (
                       <Grid item xs={4} key={index}>
-                        <Link
-                          to={`/${data?.id}`}
-                          key={data}
-                        >
+                        <Link to={`/${data?.id}`} key={data}>
                           {/* Wrap your Card in a Fade transition */}
                           {/* <Fade in={value === index} timeout={500}> */}
                           <Card style={{ boxShadow: "none" }}>

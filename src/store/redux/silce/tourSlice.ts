@@ -41,6 +41,7 @@ export const fetchTourDetail = createAsyncThunk(
     try {
       const response = await axiosInstance.get(
         `${BASE_URL}/tour/detail/${index}`,
+        
         {
           headers: {
             Authorization: `Bearer ${token}`,

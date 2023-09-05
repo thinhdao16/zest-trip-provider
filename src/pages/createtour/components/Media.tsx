@@ -23,11 +23,7 @@ type GalleryImage = {
 const Media: React.FC = () => {
   const { currentStep, updateFormValues } = useStepContext();
   const [selectedImages, setSelectedImages] = useState<GalleryImage[]>([]);
-  const [checkImage, setImage] = useState(null);
-  const handleImageUploadCheck = (event:any) => {
-    const file = event.target.files[0];
-    setImage(file);
-  };
+
   const handleDragEnd = (result: DropResult) => {
     if (!result.destination) return;
 
@@ -107,8 +103,8 @@ const Media: React.FC = () => {
     setSelectedImages(updatedImages);
   };
   useEffect(() => {
-    updateFormValues(7, { Media: selectedImages, checkImage:checkImage });
-  }, [checkImage,selectedImages]);
+    updateFormValues(7, { Media: selectedImages });
+  }, [selectedImages]);
 
   if (currentStep !== 9) {
     return null;
@@ -124,10 +120,7 @@ const Media: React.FC = () => {
         <BannerContentHaveImage>
           <CreateTitleNullDes>Choose media</CreateTitleNullDes>
           <CreateDescription>Choose your photo for the tour</CreateDescription>
-          <input
-                    type="file"
-                    onChange={handleImageUploadCheck}
-                  />
+
           {selectedImages.length < 1 ? (
             <Box
               style={{
