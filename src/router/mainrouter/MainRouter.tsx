@@ -9,9 +9,15 @@ import SignUp from "../../components/signUp/SignUp";
 import SetUpProvider from "../../components/setUpProvider/SetUpProvider";
 import AccountSettings from "../../pages/accountsettings/AccountSettings";
 import PersonalInfo from "../../pages/accountsettings/personalinfo/PersonalInfo";
+import { DataContext } from "../../store/dataContext/DataContext";
 
 function MainRouter() {
-  const accessToken = localStorage.getItem("access_token");
+  const { refeshLogin } = React.useContext(DataContext);
+  const [checkAccessToken, setCheckAccessToken] = React.useState("");
+  React.useEffect(() => {
+    const accessToken: any = localStorage.getItem("access_token");
+    setCheckAccessToken(accessToken);
+  }, [refeshLogin]);
   return (
     <BrowserRouter>
       <Routes>
@@ -21,7 +27,7 @@ function MainRouter() {
           element={
             <React.Fragment>
               <Routes>
-                {!accessToken ? (
+                {checkAccessToken === null ? (
                   <React.Fragment>
                     <Route path="*" element={<Navigate to="/login" />} />
                     <Route path="/login" element={<Login />} />

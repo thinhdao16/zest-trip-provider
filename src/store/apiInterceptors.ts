@@ -12,21 +12,24 @@ const getTokenFromLocalStorage = () => {
   }
   return null;
 };
+const getRefeshTokenFromLocalStorage = () => {
+  const token = localStorage.getItem("refresh_token");
+  if (token !== null) {
+    const parsedToken = JSON.parse(token);
+    return parsedToken;
+  }
+  return null;
+};
 
 export const isTokenExpired = (tokenPayload: any) => {
-  // if (!tokenPayload || !tokenPayload.exp) {
-  //   return true;
-  // }
-
   const decodedToken: any = jwt_decode(tokenPayload);
   const expirationTimeInSeconds = decodedToken.exp;
   const currentTimeInSeconds = Math.floor(Date.now() / 1000);
-  // console.log(expirationTimeInSeconds - currentTimeInSeconds);
   return expirationTimeInSeconds < currentTimeInSeconds;
 };
 
 const refreshToken = async () => {
-  const refreshToken = getTokenFromLocalStorage()?.refresh_token;
+  const refreshToken = getRefeshTokenFromLocalStorage();
   if (refreshToken) {
     try {
       const refreshResponse = await axios.post(`${BASE_URL}/auth/refresh`,null, {
@@ -51,7 +54,8 @@ export const axiosInstance = axios.create();
 
 axiosInstance.interceptors.request.use(
   async (config) => {
-    const accessToken = getTokenFromLocalStorage()?.access_token;
+    const accessToken = getTokenFromLocalStorage();
+    console.log(accessToken)
     if (accessToken) {
       if (isTokenExpired(accessToken)) {
         const newAccessToken = await refreshToken();

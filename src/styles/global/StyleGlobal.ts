@@ -67,7 +67,7 @@ export const BannerTitleList = styled(Typography)(() => ({
   fontWeight: "600",
 }));
 export const ButtonGlobal = styled(Button)(() => ({
-  position: "relative", // Cần thiết để xác định vị trí tương đối
+  position: "relative",
   backgroundColor: "#8fcaf7",
   color: "white",
   borderRadius: "8px",

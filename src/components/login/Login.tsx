@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/joy/Box";
 import FormLabel, { formLabelClasses } from "@mui/joy/FormLabel";
 import Typography from "@mui/joy/Typography";
@@ -40,46 +40,20 @@ function Login() {
   const { refeshLogin, setRefeshLogin, setRefeshTour } =
     React.useContext(DataContext);
   const dispatch: AppDispatch = useDispatch();
-  const [phoneNumber, setPhoneNumber] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const checkAccessToken = () => {
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    checkAccessToken();
+  }, [refeshLogin]);
+
+  const checkAccessToken = async () => {
     const accessToken = localStorage.getItem("access_token");
-    if (accessToken !== null) {
-      const decodedToken: any = jwt_decode(
-        JSON.parse(accessToken)?.access_token
-      );
-      const expTimestamp = decodedToken.exp;
-      if (accessToken && expTimestamp > Date.now() / 1000) {
-        if (window.location.pathname !== "/listtour") {
-          setRefeshTour((prev) => !prev);
-          navigate("/listtour"); // Navigate to /listtour if accessToken is valid
-        }
-      } else {
-        // refreshToken(); // Gọi refreshToken nếu không có accessToken hoặc hết hạn
-      }
-    } else {
-      // Only navigate to /login if not already on that page
-      if (window.location.pathname !== "/login") {
-        navigate("/login");
-      }
+    if (accessToken) {
+      navigate("/listtour");
     }
   };
-  // const refreshToken = async () => {
-  //   // Gọi API refreshToken ở đây
-  //   try {
-  //     const response = "aabc"
-  //     // const newAccessToken = response.data.accessToken;
-  //     const newAccessTokenExp = response.data.accessTokenExp;
 
-  //     localStorage.setItem('accessToken', newAccessToken);
-  //     localStorage.setItem('accessTokenExp', newAccessTokenExp);
-
-  //     navigate('/listtour'); // Điều hướng sau khi refreshToken thành công
-  //   } catch (error) {
-  //     // Xử lý lỗi refreshToken
-  //     console.error('Error refreshing token:', error);
-  //   }
-  // };
   const handleSignIn = async () => {
     try {
       const response = await axios.post(
@@ -94,40 +68,37 @@ function Login() {
           },
         }
       );
+      localStorage.setItem(
+        "access_token",
+        JSON.stringify(response.data.access_token)
+      );
+      localStorage.setItem(
+        "refresh_token",
+        JSON.stringify(response.data.refresh_token)
+      );
+      setRefeshTour((prev) => !prev);
+      setRefeshLogin((prev) => !prev);
+      navigate("/listtour");
       if (response.status === 201) {
-        // const data = await response.json();
         if (response !== undefined) {
-          localStorage.setItem("access_token", JSON.stringify(response.data));
-          localStorage.setItem(
-            "refresh_token",
-            JSON.stringify(response.data.refresh_token)
-          );
-          const additionalResponse = await axios.get(
-            `${BASE_URL}/users/me`,
-            {
-              headers: {
-                Authorization: `Bearer ${response.data.access_token}`,
-              },
-            }
-          );
-          dispatch(personalInfo(additionalResponse.data));
-          setRefeshTour((prev) => !prev);
-          navigate("/listtour");
-          //         }
+          const additionalResponse = await axios.get(`${BASE_URL}/users/me`, {
+            headers: {
+              Authorization: `Bearer ${response.data.access_token}`,
+            },
+          });
+          if (additionalResponse.status === 200) {
+            dispatch(personalInfo(additionalResponse.data));
+          }
         } else {
-          console.log("first");
+          console.log("Lỗi khi đăng nhập");
         }
       } else {
-        console.log("first");
+        console.log("Lỗi khi đăng nhập");
       }
     } catch (error) {
-      // Handle errors (e.g., display error message to the user)
       console.error(error);
     }
   };
-  React.useEffect(() => {
-    checkAccessToken();
-  }, []); // This empty dependency array means the effect will run only once, on component mount
 
   return (
     <>
@@ -207,7 +178,7 @@ function Login() {
                     Enter your credentials to continue
                   </Typography>
                 </div>
-                {/* <form
+                <form
                   onSubmit={(event: React.FormEvent<SignInFormElement>) => {
                     event.preventDefault();
                     const formElements = event.currentTarget.elements;
@@ -217,9 +188,9 @@ function Login() {
                       persistent: formElements.persistent.checked,
                     };
                     alert(JSON.stringify(data, null, 2));
+                    handleSignIn()
                   }}
-                  onSubmit={handleSignIn}
-                > */}
+                >
                 <FormControl required>
                   <FormLabel>Phone Number</FormLabel>
                   <TextField
@@ -271,7 +242,7 @@ function Login() {
                 <ButtonGlobal type="submit" fullWidth onClick={handleSignIn}>
                   Sign in
                 </ButtonGlobal>
-                {/* </form> */}
+                </form>
                 <Box sx={{ position: "relative", margin: 0.5 }}>
                   <span
                     style={{

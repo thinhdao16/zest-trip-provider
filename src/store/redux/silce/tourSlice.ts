@@ -19,16 +19,20 @@ const initialState = {
   tourGetDetail: [],
   loadingDetail: false,
   errorDetail: null as string | null,
+  loadingCreateTour: false,
+  errorCreateTour: null as boolean | null,
 };
 
 export const fetchTours = createAsyncThunk("tour/fetchTours", async () => {
-  const token = getTokenFromLocalStorage()?.access_token;
+  // const token = getTokenFromLocalStorage();
   try {
     const response = await axiosInstance.get(`${BASE_URL}/tour/provider`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      // headers: {
+      //   Authorization: `Bearer ${token}`,
+      // },
     });
+    console.log(response)
+
     return response.data.data;
   } catch (error) {
     throw new Error("Failed to fetch tours");
@@ -37,16 +41,9 @@ export const fetchTours = createAsyncThunk("tour/fetchTours", async () => {
 export const fetchTourDetail = createAsyncThunk(
   "tour/getDetailTour",
   async (index: any) => {
-    const token = getTokenFromLocalStorage()?.access_token;
     try {
       const response = await axiosInstance.get(
         `${BASE_URL}/tour/detail/${index}`,
-        
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
       );
       console.log(response);
       return response.data.data.data;
@@ -60,7 +57,7 @@ export const fetchTourDetail = createAsyncThunk(
 export const postCreateTour = createAsyncThunk(
   "tour/postCreateTour", // Slice name: "tour"
   async (requestData: any) => {
-    const token = getTokenFromLocalStorage()?.access_token;
+    const token = getTokenFromLocalStorage();
     try {
       const response = await axiosInstance.post(
         `${BASE_URL}/tour`,
@@ -75,6 +72,7 @@ export const postCreateTour = createAsyncThunk(
       console.log(response);
       return response.data;
     } catch (error) {
+      console.log(error);
       throw new Error("Failed to fetch other data");
     }
   }
@@ -104,17 +102,17 @@ const tourSlice = createSlice({
         state.error = action.error.message;
       })
       .addCase(postCreateTour.pending, (state) => {
-        state.loading = true;
-        state.error = null;
+        state.loadingCreateTour = true;
+        state.errorCreateTour = null;
       })
       .addCase(postCreateTour.fulfilled, (state, action) => {
-        state.loading = false;
+        state.loadingCreateTour = false;
         state.otherData = action.payload;
-        state.error = null;
+        state.errorCreateTour = null;
       })
-      .addCase(postCreateTour.rejected, (state: any, action) => {
-        state.loading = false;
-        state.error = action.error.message;
+      .addCase(postCreateTour.rejected, (state) => {
+        state.loadingCreateTour = false;
+        state.errorCreateTour = true;
       })
       .addCase(fetchTourDetail.pending, (state) => {
         state.loadingDetail = true;

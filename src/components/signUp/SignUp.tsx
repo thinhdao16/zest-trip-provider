@@ -28,6 +28,8 @@ import {
 } from "../../styles/global/StyleGlobal";
 import { Link, useNavigate } from "react-router-dom";
 import { DataContext } from "../../store/dataContext/DataContext";
+import { BASE_URL } from "../../store/apiInterceptors";
+import axios from "axios";
 interface FormElements extends HTMLFormControlsCollection {
   email: HTMLInputElement;
   password: HTMLInputElement;
@@ -39,46 +41,45 @@ interface SignInFormElement extends HTMLFormElement {
 
 export default function SignUp() {
   const navigate = useNavigate();
-  const { refeshLogin, setRefeshLogin } = React.useContext(DataContext);
-  const checkAccessToken = () => {
-    const accessToken = localStorage.getItem("access_token");
-    if (accessToken !== null) {
-      const decodedToken: any = jwt_decode(
-        JSON.parse(accessToken)?.data?.access_token
-      );
-      const expTimestamp = decodedToken.exp;
-      if (accessToken && expTimestamp > Date.now() / 1000) {
-        setRefeshLogin((prev) => !prev);
-        navigate("/listtour"); // Điều hướng nếu có accessToken còn hạn
-      } else {
-        // refreshToken(); // Gọi refreshToken nếu không có accessToken hoặc hết hạn
-      }
-    } else {
-      setRefeshLogin((prev) => !prev);
-      navigate("/signup");
-    }
-  };
-  // const refreshToken = async () => {
-  //   // Gọi API refreshToken ở đây
-  //   try {
-  //     const response = "aabc"
-  //     // const newAccessToken = response.data.accessToken;
-  //     const newAccessTokenExp = response.data.accessTokenExp;
+  const { refeshLogin, setRefeshLogin, setRefeshTour } =
+    React.useContext(DataContext);
 
-  //     localStorage.setItem('accessToken', newAccessToken);
-  //     localStorage.setItem('accessTokenExp', newAccessTokenExp);
-
-  //     navigate('/listtour'); // Điều hướng sau khi refreshToken thành công
-  //   } catch (error) {
-  //     // Xử lý lỗi refreshToken
-  //     console.error('Error refreshing token:', error);
-  //   }
-  // };
+  const [phoneNumber, setPhoneNumber] = React.useState("");
+  const [password, setPassword] = React.useState("");
 
   React.useEffect(() => {
     checkAccessToken();
   }, [refeshLogin]);
 
+  const checkAccessToken = async () => {
+    const accessToken = localStorage.getItem("access_token");
+    if (accessToken) {
+      navigate("/listtour");
+    }
+  };
+  const handleSignIn = async () => {
+    try {
+      const response = await axios.post(
+        `${BASE_URL}/auth/signup`,
+        {
+          email: phoneNumber,
+          password: password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response.status === 201) {
+        alert("you signup successfully");
+      } else {
+        console.log("first");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <ContainerPageFullHalf>
       <Grid container>
@@ -167,119 +168,123 @@ export default function SignUp() {
                   alert(JSON.stringify(data, null, 2));
                 }}
               >
-                <Grid container spacing={1}>
-                  <Grid item xs={3}>
-                    <FormControl required>
-                      <FormLabel>Region</FormLabel>
-                      <TextField
-                        required
-                        InputProps={{
-                          startAdornment: (
-                            <InputAdornment position="start">
-                              <IoEarthOutline />
-                            </InputAdornment>
-                          ),
-                        }}
-                        placeholder="+84 VN"
-                        className="input-form-text-ready"
-                      />
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={9}>
-                    <FormControl required>
-                      <FormLabel>Phone Number</FormLabel>
-                      <TextField
-                        required
-                        InputProps={{
-                          startAdornment: (
-                            <InputAdornment position="start">
-                              <AiOutlinePhone />
-                            </InputAdornment>
-                          ),
-                        }}
-                        className="input-form-text-ready"
-                      />
-                    </FormControl>
-                  </Grid>
-                </Grid>
-                <Grid container spacing={1}>
-                  <Grid item xs={8}>
-                    <FormControl required>
-                      <FormLabel>Full Name</FormLabel>
-                      <TextField
-                        required
-                        InputProps={{
-                          startAdornment: (
-                            <InputAdornment position="start">
-                              <IoPersonOutline />
-                            </InputAdornment>
-                          ),
-                        }}
-                        className="input-form-text-ready"
-                      />
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={4}>
-                    <FormControl required>
-                      <FormLabel>Gender</FormLabel>
-                      <Select
-                        required
-                        style={{ height: 40, borderRadius: "8px" }}
-                        startAdornment={
+              <Grid container spacing={1}>
+                <Grid item xs={3}>
+                  <FormControl required>
+                    <FormLabel>Region</FormLabel>
+                    <TextField
+                      required
+                      InputProps={{
+                        startAdornment: (
                           <InputAdornment position="start">
-                            <IoTransgenderOutline />
+                            <IoEarthOutline />
                           </InputAdornment>
-                        }
-                        value={"abcdef"}
-                      >
-                        <MenuItem value="male">Male</MenuItem>
-                        <MenuItem value="female">Female</MenuItem>
-                        <MenuItem value="other">Other</MenuItem>
-                      </Select>
-                    </FormControl>
-                  </Grid>
+                        ),
+                      }}
+                      placeholder="+84 VN"
+                      className="input-form-text-ready"
+                    />
+                  </FormControl>
                 </Grid>
-                <FormControl required>
-                  <FormLabel>Password</FormLabel>
-                  <TextField
-                    required
-                    type="password"
-                    InputProps={{
-                      startAdornment: (
+                <Grid item xs={9}>
+                  <FormControl required>
+                    <FormLabel>Phone Number</FormLabel>
+                    <TextField
+                      onChange={(e) => setPhoneNumber(e.target.value)}
+                      required
+                      value={phoneNumber}
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <AiOutlinePhone />
+                          </InputAdornment>
+                        ),
+                      }}
+                      className="input-form-text-ready"
+                    />
+                  </FormControl>
+                </Grid>
+              </Grid>
+              <Grid container spacing={1}>
+                <Grid item xs={8}>
+                  <FormControl required>
+                    <FormLabel>Full Name</FormLabel>
+                    <TextField
+                      required
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <IoPersonOutline />
+                          </InputAdornment>
+                        ),
+                      }}
+                      className="input-form-text-ready"
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={4}>
+                  <FormControl required>
+                    <FormLabel>Gender</FormLabel>
+                    <Select
+                      required
+                      style={{ height: 40, borderRadius: "8px" }}
+                      startAdornment={
                         <InputAdornment position="start">
-                          <AiOutlineLock />
+                          <IoTransgenderOutline />
                         </InputAdornment>
-                      ),
-                    }}
-                    className="input-form-text-ready"
-                  />
-                </FormControl>
-                <FormControl required>
-                  <FormLabel>Confirm Password</FormLabel>
-                  <TextField
-                    required
-                    type="password"
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <IoAlertCircleOutline />
-                        </InputAdornment>
-                      ),
-                    }}
-                    className="input-form-text-ready"
-                  />
-                </FormControl>
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
+                      }
+                      value={"abcdef"}
+                    >
+                      <MenuItem value="male">Male</MenuItem>
+                      <MenuItem value="female">Female</MenuItem>
+                      <MenuItem value="other">Other</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+              </Grid>
+              <FormControl required>
+                <FormLabel>Password</FormLabel>
+                <TextField
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  type="password"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <AiOutlineLock />
+                      </InputAdornment>
+                    ),
                   }}
-                >
-                  <ButtonGlobal type="submit" fullWidth>
-                    Sign Up
-                  </ButtonGlobal>
-                </Box>
+                  className="input-form-text-ready"
+                />
+              </FormControl>
+              <FormControl required>
+                <FormLabel>Confirm Password</FormLabel>
+                <TextField
+                  required
+                  type="password"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <IoAlertCircleOutline />
+                      </InputAdornment>
+                    ),
+                  }}
+                  className="input-form-text-ready"
+                />
+              </FormControl>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <ButtonGlobal type="submit" onClick={handleSignIn} fullWidth>
+                  Sign Up
+                </ButtonGlobal>
+              </Box>
               </form>
               <Box sx={{ position: "relative", margin: 0.5 }}>
                 <span

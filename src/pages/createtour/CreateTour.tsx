@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import Headers from "./components/Headers";
 import { LinearProgress } from "@mui/joy";
 import { StepProvider } from "./context/ui/StepContext";
@@ -19,7 +19,9 @@ import Congratulation from "./components/Congratulation";
 import { postCreateTour } from "../../store/redux/silce/tourSlice";
 import { AppDispatch } from "../../store/redux/store";
 import { useDispatch } from "react-redux";
-import { clearFix } from "polished";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { DataContext } from "../../store/dataContext/DataContext";
 
 const steps = [
   Welcome,
@@ -35,7 +37,6 @@ const steps = [
   Review,
   Congratulation,
 ];
-
 const CreateTour: React.FC = () => {
   return (
     <>
@@ -59,7 +60,8 @@ const StepRenderer: React.FC = () => {
     goToPreviousStep,
     formValues,
   } = useStepContext();
-
+  const navigate = useNavigate();
+  const { setRefeshTour } = useContext(DataContext);
   const dispatch: AppDispatch = useDispatch();
   const isLastStep = currentStep === totalSteps;
   const StepsToRender = (
@@ -70,9 +72,17 @@ const StepRenderer: React.FC = () => {
       )}
     </>
   );
+  const loadingCreateTour = useSelector(
+    (state: any) => state.tour.loadingCreateTour
+  );
+  const errorCreateTour = useSelector(
+    (state: any) => state.tour.errorCreateTour
+  );
 
   const handleFormSubmit = () => {
     goToNextStep();
+    setRefeshTour((prev) => !prev);
+    navigate("/listtour");
   };
   const handlePostCreate = () => {
     const formData = new FormData();
@@ -90,9 +100,7 @@ const StepRenderer: React.FC = () => {
       // tag_id: formValues[1]?.TransportType?.map((tag: any) => tag?.id),
       tag_id: [3, 4],
       // vehicle_id: formValues[2]?.AccomType?.map((acc: any) => acc?.id),
-      vehicle_id: [
-        5
-    ],
+      vehicle_id: [5],
       // TourComponent: formValues[8]?.Title[2]?.map((boxes: any, index: any) => ({
       //   title: `Day ${index + 1}`,
       //   description: boxes?.boxes,
@@ -111,7 +119,6 @@ const StepRenderer: React.FC = () => {
       address_country: "Viet Nam",
     };
     formData.append("data", JSON.stringify(dataValueCreate));
-console.log(dataValueCreate);
     const mediaArray = formValues[7]?.Media || [];
 
     for (let i = 0; i < mediaArray.length; i++) {
@@ -122,12 +129,15 @@ console.log(dataValueCreate);
       formData,
     };
     dispatch(postCreateTour(requestData?.formData));
-    goToNextStep();
+    if (errorCreateTour !== true) {
+      goToNextStep();
+    } else alert("plase see back form");
   };
   return (
     <>
       {!isLastStep && <Headers />}
       {StepsToRender}
+      {!isLastStep && (
       <div
         style={{
           position: "fixed",
@@ -137,13 +147,11 @@ console.log(dataValueCreate);
           background: "white",
         }}
       >
-        {!isLastStep && (
           <LinearProgress
             style={{ color: "black" }}
             determinate
             value={((currentStep + 1) / totalSteps) * 100}
           />
-        )}
         {currentStep === totalSteps ? (
           <>
             <Box
@@ -230,6 +238,7 @@ console.log(dataValueCreate);
           </>
         )}
       </div>
+        )}
     </>
   );
 };

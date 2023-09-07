@@ -252,7 +252,7 @@ function SinglePage() {
                                   <Rating />
                                 </Box>
                               </Grid>
-                              <Grid xs={2}>
+                              <Grid item xs={2}>
                                 {" "}
                                 <Typography style={{ textAlign: "right" }}>
                                   1 day ago

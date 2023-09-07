@@ -79,13 +79,14 @@ const FormModal: React.FC<FormModalProps> = ({ open, onClose, onSubmit }) => {
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Text in a modal
+            Schedule information
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+            These periods normally correspond with normal working hours for the
+            work week and reduced hours for weekends and holidays.
           </Typography>
-          <Grid container style={{ display: "flex", alignItems: "center" }}>
-            <Grid item xs={3}>
+          <Grid container style={{ display: "flex", alignItems: "center", marginTop:"12px" }}>
+            <Grid item xs={6} sm={3}>
               <p style={{ fontWeight: 500, marginBottom: "5px" }}>From time:</p>
               <input
                 style={{ borderRadius: "8px" }}
@@ -94,7 +95,7 @@ const FormModal: React.FC<FormModalProps> = ({ open, onClose, onSubmit }) => {
                 onChange={handleFromTimeChange}
               />
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={6} sm={3}>
               <p style={{ fontWeight: 500, marginBottom: "5px" }}>To Time:</p>
               <input
                 style={{ borderRadius: "8px" }}
@@ -103,7 +104,7 @@ const FormModal: React.FC<FormModalProps> = ({ open, onClose, onSubmit }) => {
                 onChange={handleToTimeChange}
               />
             </Grid>
-            <Grid item xs={5}>
+            <Grid item xs={10} sm={5}>
               <p style={{ fontWeight: 500, marginBottom: "5px" }}>
                 Description:
               </p>
@@ -114,7 +115,7 @@ const FormModal: React.FC<FormModalProps> = ({ open, onClose, onSubmit }) => {
                 placeholder="Enter your form data"
               />
             </Grid>
-            <Grid item xs={1}>
+            <Grid item xs={2} sm={1}>
               <IoAddCircleOutline onClick={handleAddBox} />
             </Grid>
           </Grid>
