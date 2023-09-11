@@ -26,6 +26,12 @@ export const BannerContent = styled(Box)(() => ({
   maxWidth: "43vw",
   padding: "30px",
 }));
+export const BannerContentPrice = styled(Box)(() => ({
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  padding: "30px",
+}));
 export const BannerContentHaveImage = styled(Box)(() => ({
   display: "flex",
   flexDirection: "column",
@@ -105,7 +111,6 @@ export const CreateDescription = styled(Typography)(({ theme }) => ({
   fontWeight: "500",
   marginBottom: "30px",
   color: "#717171",
-
 }));
 export const CreateTitle = styled(Typography)(({ theme }) => ({
   lineHeight: "normal",
@@ -190,13 +195,13 @@ export const CreateChooseContent = styled(Box)(({ theme }) => ({
   flex: "1",
 }));
 export const CreateKnotPre = styled(Box)(({ theme }) => ({
-fontSize:"32px",
-color: "#838383",
+  fontSize: "32px",
+  color: "#838383",
 }));
 export const CreateKnotHidden = styled(Box)(({ theme }) => ({
-  fontSize:"32px",
+  fontSize: "32px",
   color: "#f3f3f3",
-}))
+}));
 interface CardProps {
   index: number;
   selectedCard: number;

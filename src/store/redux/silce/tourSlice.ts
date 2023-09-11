@@ -31,7 +31,6 @@ export const fetchTours = createAsyncThunk("tour/fetchTours", async () => {
       //   Authorization: `Bearer ${token}`,
       // },
     });
-    console.log(response)
 
     return response.data.data;
   } catch (error) {

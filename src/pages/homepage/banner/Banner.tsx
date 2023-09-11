@@ -31,7 +31,6 @@ export default function Banner() {
   React.useEffect(() => {
     dispatch(fetchTours());
   }, [dispatch, refeshTour]);
-
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
@@ -72,7 +71,7 @@ export default function Banner() {
                 <TabPanel value="1">
                   <Grid container spacing={5}>
                     {tours?.map((data: any, index: any) => (
-                      <Grid item xs={4} key={index}>
+                      <Grid item xs={12} sm={6} lg={4} key={index}>
                         <Link to={`/${data?.id}`} key={data}>
                           {/* Wrap your Card in a Fade transition */}
                           {/* <Fade in={value === index} timeout={500}> */}

@@ -13,8 +13,8 @@ export interface DataItemDuration {
 }
 export interface DataPrice {
   id: number;
+  type: string;
   labelMain: string;
-  labelSp: string;
   icon: JSX.Element;
 }
 export const dataType: DataItem[] = [
@@ -60,34 +60,30 @@ export const dataType: DataItem[] = [
   },
 ];
 
-
-
 export const dataTypeDuration: DataItemDuration[] = [
   {
     id: 0,
-    title:"Day",
+    title: "Day",
     no: 1,
   },
   {
     id: 2,
-    title:"Night",
+    title: "Night",
     no: 1,
   },
-
 ];
 
 export const dataTypePrice: DataPrice[] = [
   {
     id: 0,
-    labelMain:"Adults",
-    labelSp :"Age 10+",
-    icon: <GoLocation />
+    type: "text",
+    labelMain: "Name (e.g. Summer 2020, German guide ...)",
+    icon: <GoLocation />,
   },
   {
     id: 1,
-    labelMain:"Children",
-    labelSp :"Age 5-9",
-    icon: <GoLocation />
+    type: "number",
+    labelMain: "Minimum participants per booking",
+    icon: <GoLocation />,
   },
-
 ];

@@ -6,19 +6,15 @@ export const BASE_URL = "https://manager-ecom-cllh63fgua-df.a.run.app";
 
 const getTokenFromLocalStorage = () => {
   const token = localStorage.getItem("access_token");
-  if (token !== null) {
-    const parsedToken = JSON.parse(token);
-    return parsedToken;
-  }
-  return null;
+  return token;
 };
 const getRefeshTokenFromLocalStorage = () => {
   const token = localStorage.getItem("refresh_token");
-  if (token !== null) {
-    const parsedToken = JSON.parse(token);
-    return parsedToken;
-  }
-  return null;
+  // if (token !== null) {
+  //   const parsedToken = JSON.parse(token);
+  //   return parsedToken;
+  // }
+  return token;
 };
 
 export const isTokenExpired = (tokenPayload: any) => {

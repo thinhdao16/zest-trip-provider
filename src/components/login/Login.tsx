@@ -68,14 +68,8 @@ function Login() {
           },
         }
       );
-      localStorage.setItem(
-        "access_token",
-        JSON.stringify(response.data.access_token)
-      );
-      localStorage.setItem(
-        "refresh_token",
-        JSON.stringify(response.data.refresh_token)
-      );
+      localStorage.setItem("access_token", response.data.access_token);
+      localStorage.setItem("refresh_token", response.data.refresh_token);
       setRefeshTour((prev) => !prev);
       setRefeshLogin((prev) => !prev);
       navigate("/listtour");
@@ -188,60 +182,60 @@ function Login() {
                       persistent: formElements.persistent.checked,
                     };
                     alert(JSON.stringify(data, null, 2));
-                    handleSignIn()
+                    handleSignIn();
                   }}
                 >
-                <FormControl required>
-                  <FormLabel>Phone Number</FormLabel>
-                  <TextField
-                    onChange={(e) => setPhoneNumber(e.target.value)}
-                    required
-                    value={phoneNumber}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <AiOutlinePhone />
-                        </InputAdornment>
-                      ),
+                  <FormControl required>
+                    <FormLabel>Phone Number</FormLabel>
+                    <TextField
+                      onChange={(e) => setPhoneNumber(e.target.value)}
+                      required
+                      value={phoneNumber}
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <AiOutlinePhone />
+                          </InputAdornment>
+                        ),
+                      }}
+                      className="input-form-text-ready"
+                    />
+                  </FormControl>
+                  <FormControl required>
+                    <FormLabel>Password</FormLabel>
+                    <TextField
+                      required
+                      value={password}
+                      type="password"
+                      onChange={(e) => setPassword(e.target.value)}
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <AiOutlineLock />
+                          </InputAdornment>
+                        ),
+                      }}
+                      className="input-form-text-ready"
+                    />
+                  </FormControl>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
                     }}
-                    className="input-form-text-ready"
-                  />
-                </FormControl>
-                <FormControl required>
-                  <FormLabel>Password</FormLabel>
-                  <TextField
-                    required
-                    value={password}
-                    type="password"
-                    onChange={(e) => setPassword(e.target.value)}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <AiOutlineLock />
-                        </InputAdornment>
-                      ),
-                    }}
-                    className="input-form-text-ready"
-                  />
-                </FormControl>
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}
-                >
-                  {/* <Link
+                  >
+                    {/* <Link
                     fontSize="sm"
                     href="#replace-with-a-link"
                     fontWeight="lg"
                   >
                     Forgot your password
                   </Link> */}
-                </Box>
-                <ButtonGlobal type="submit" fullWidth onClick={handleSignIn}>
-                  Sign in
-                </ButtonGlobal>
+                  </Box>
+                  <ButtonGlobal type="submit" fullWidth onClick={handleSignIn}>
+                    Sign in
+                  </ButtonGlobal>
                 </form>
                 <Box sx={{ position: "relative", margin: 0.5 }}>
                   <span

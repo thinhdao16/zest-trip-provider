@@ -71,6 +71,14 @@
   max-width: 400px;
 } */
 /* style text component form */
+/* ./src/styles/main.css */
+
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+/* Bổ sung các quy tắc tùy chỉnh sau đây nếu bạn muốn */
+
 html,
 body,
 div,
