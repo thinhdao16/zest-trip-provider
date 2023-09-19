@@ -27,29 +27,29 @@ function MainRouter() {
           element={
             <React.Fragment>
               <Routes>
-                {checkAccessToken === null ? (
+                {/* {checkAccessToken === null ? (
                   <React.Fragment>
                     <Route path="*" element={<Navigate to="/login" />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<SignUp />} />
                     <Route path="/setupprovider" element={<SetUpProvider />} />
                   </React.Fragment>
-                ) : (
-                  <React.Fragment>
-                    <Route path="/" element={<Navigate to="/listtour" />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/signup" element={<SignUp />} />
-                    <Route path="/listtour" element={<HomePage />} />
-                    <Route path="/:index" element={<SinglePage />} />
-                    <Route path="/createtour" element={<CreateTour />} />
-                    <Route path="/listwork" element={<ListWork />} />
-                    <Route path="/setupprovider" element={<SetUpProvider />} />
-                    <Route path="/account-settings">
-                      <Route path="" element={<AccountSettings />} />
-                      <Route path="personal-info" element={<PersonalInfo />} />
-                    </Route>
-                  </React.Fragment>
-                )}
+                ) : ( */}
+                <React.Fragment>
+                  <Route path="/" element={<Navigate to="/listtour" />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/signup" element={<SignUp />} />
+                  <Route path="/listtour" element={<HomePage />} />
+                  <Route path="/:index" element={<SinglePage />} />
+                  <Route path="/createtour" element={<CreateTour />} />
+                  <Route path="/listwork" element={<ListWork />} />
+                  <Route path="/setupprovider" element={<SetUpProvider />} />
+                  <Route path="/account-settings">
+                    <Route path="" element={<AccountSettings />} />
+                    <Route path="personal-info" element={<PersonalInfo />} />
+                  </Route>
+                </React.Fragment>
+                {/* )} */}
               </Routes>
             </React.Fragment>
           }

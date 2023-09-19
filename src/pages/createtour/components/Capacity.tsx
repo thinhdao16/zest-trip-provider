@@ -321,7 +321,7 @@ const Capacity: React.FC = () => {
           <div className="">
             <div className="mt-2">
               <div className="flex flex-wrap items-center mb-1">
-                <p className="font-medium mr-3">Mon</p>
+                <p className="font-medium mr-3 w-5 ">Mon</p>
                 {startingTimes?.Mon?.map((time: any, index: any) => (
                   <div key={index} className="flex items-center mr-8">
                     <select
@@ -378,7 +378,7 @@ const Capacity: React.FC = () => {
 
             <div className="mt-2">
               <div className="flex flex-wrap items-center mb-1">
-                <p className="font-medium mr-3">Tue</p>
+                <p className="font-medium mr-3 w-5">Tue</p>
                 {startingTimes?.Tue?.map((time: any, index: any) => (
                   <div key={index} className="flex items-center mr-8">
                     <select
@@ -435,7 +435,7 @@ const Capacity: React.FC = () => {
 
             <div className="mt-2">
               <div className="flex flex-wrap items-center mb-1">
-                <p className="font-medium mr-3">Wed</p>
+                <p className="font-medium mr-3 w-5">Wed</p>
                 {startingTimes?.Wed?.map((time: any, index: any) => (
                   <div key={index} className="flex items-center mr-8">
                     <select
@@ -492,7 +492,7 @@ const Capacity: React.FC = () => {
 
             <div className="mt-2">
               <div className="flex flex-wrap items-center mb-1">
-                <p className="font-medium mr-3">Thu</p>
+                <p className="font-medium mr-3 w-5">Thu</p>
                 {startingTimes?.Thu?.map((time: any, index: any) => (
                   <div key={index} className="flex items-center mr-8">
                     <select
@@ -549,7 +549,7 @@ const Capacity: React.FC = () => {
 
             <div className="mt-2">
               <div className="flex flex-wrap items-center mb-1">
-                <p className="font-medium mr-3">Fri</p>
+                <p className="font-medium mr-3 w-5">Fri</p>
                 {startingTimes?.Fri?.map((time: any, index: any) => (
                   <div key={index} className="flex items-center mr-8">
                     <select
@@ -605,7 +605,7 @@ const Capacity: React.FC = () => {
             </div>
             <div className="mt-2">
               <div className="flex flex-wrap items-center mb-1">
-                <p className="font-medium mr-3">Sat</p>
+                <p className="font-medium mr-3 w-5">Sat</p>
                 {startingTimes?.Sat?.map((time: any, index: any) => (
                   <div key={index} className="flex items-center mr-8">
                     <select
@@ -661,7 +661,7 @@ const Capacity: React.FC = () => {
             </div>
             <div className="mt-2">
               <div className="flex flex-wrap items-center mb-1">
-                <p className="font-medium mr-3">Sun</p>
+                <p className="font-medium mr-3 w-5">Sun</p>
                 {startingTimes?.Sun?.map((time: any, index: any) => (
                   <div key={index} className="flex items-center mr-8">
                     <select
