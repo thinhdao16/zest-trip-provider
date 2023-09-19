@@ -68,8 +68,8 @@ function Login() {
           },
         }
       );
-      localStorage.setItem("access_token", response.data.access_token);
-      localStorage.setItem("refresh_token", response.data.refresh_token);
+      localStorage.setItem("access_token", response.data.data.access_token);
+      localStorage.setItem("refresh_token", response.data.data.refresh_token);
       setRefeshTour((prev) => !prev);
       setRefeshLogin((prev) => !prev);
       navigate("/listtour");
@@ -77,7 +77,7 @@ function Login() {
         if (response !== undefined) {
           const additionalResponse = await axios.get(`${BASE_URL}/users/me`, {
             headers: {
-              Authorization: `Bearer ${response.data.access_token}`,
+              Authorization: `Bearer ${response.data.data.access_token}`,
             },
           });
           if (additionalResponse.status === 200) {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/joy/Box";
 import FormControl from "@mui/joy/FormControl";
 import FormLabel, { formLabelClasses } from "@mui/joy/FormLabel";
@@ -8,19 +8,14 @@ import {
   InputAdornment,
   TextField,
   Grid,
-  MenuItem,
-  Select,
   Button,
+  Modal,
+  Backdrop,
+  Fade,
 } from "@mui/material";
-import {
-  IoEarthOutline,
-  IoPersonOutline,
-  IoTransgenderOutline,
-  IoAlertCircleOutline,
-} from "react-icons/io5";
-import jwt_decode from "jwt-decode";
+import { IoPersonOutline, IoAlertCircleOutline } from "react-icons/io5";
+import { useTimer } from "react-timer-hook";
 import "./signUp.scss";
-import ContinueGoogle from "../continueGoogle/ContinueGoogle";
 import {
   ButtonGlobal,
   ContainerPageFullHalf,
@@ -30,6 +25,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { DataContext } from "../../store/dataContext/DataContext";
 import { BASE_URL } from "../../store/apiInterceptors";
 import axios from "axios";
+import OtpInput from "react-otp-input";
+
 interface FormElements extends HTMLFormControlsCollection {
   email: HTMLInputElement;
   password: HTMLInputElement;
@@ -41,12 +38,17 @@ interface SignInFormElement extends HTMLFormElement {
 
 export default function SignUp() {
   const navigate = useNavigate();
-  const { refeshLogin, setRefeshLogin, setRefeshTour } =
-    React.useContext(DataContext);
-
+  const { refeshLogin } = React.useContext(DataContext);
   const [phoneNumber, setPhoneNumber] = React.useState("");
   const [password, setPassword] = React.useState("");
-
+  const [email, setEmail] = useState("");
+  const [otp, setOtp] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [open, setOpen] = React.useState(false);
+  const [minutes, setMinutes] = useState(3);
+  const [seconds, setSeconds] = useState(0);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   React.useEffect(() => {
     checkAccessToken();
   }, [refeshLogin]);
@@ -57,13 +59,32 @@ export default function SignUp() {
       navigate("/listtour");
     }
   };
-  const handleSignIn = async () => {
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (seconds > 0) {
+        setSeconds(seconds - 1);
+      }
+
+      if (seconds === 0) {
+        if (minutes === 0) {
+          clearInterval(interval);
+        } else {
+          setSeconds(59);
+          setMinutes(minutes - 1);
+        }
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [seconds]);
+  const handleGetOtp = async () => {
     try {
       const response = await axios.post(
-        `${BASE_URL}/auth/signup`,
+        `${BASE_URL}/otp/generate`,
         {
-          email: phoneNumber,
-          password: password,
+          email: email,
         },
         {
           headers: {
@@ -71,15 +92,70 @@ export default function SignUp() {
           },
         }
       );
+      console.log(response);
       if (response.status === 201) {
-        alert("you signup successfully");
+        setOpen(true);
+        setMinutes(3);
+        setSeconds(0);
       } else {
-        console.log("first");
+        alert("email unknow");
       }
     } catch (error) {
       console.error(error);
     }
   };
+
+  const handleSignUp = async () => {
+    try {
+      const response = await axios.post(
+        `${BASE_URL}/auth/signup`,
+        {
+          email: email,
+          password: password,
+          phoneNumber: phoneNumber,
+          fullName: fullName,
+          otp: otp,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log(response);
+      if (response.status === 201) {
+        setOpen(true);
+        setMinutes(3);
+        setSeconds(1);
+        navigate("/setupprovider");
+        localStorage.setItem(
+          "access_token_signup",
+          response.data.data.access_token
+        );
+      } else {
+        alert("email unknow");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const resendOTP = () => {
+    handleGetOtp();
+  };
+  const style = {
+    position: "absolute" as const,
+    top: "50%" as const,
+    left: "50%" as const,
+    transform: "translate(-50%, -50%)" as const,
+    width: 400 as const,
+    boxShadow: 24 as const,
+    p: 4 as const,
+    background: "white",
+    borderRadius: "15px",
+    textAlign: "center",
+  };
+
   return (
     <ContainerPageFullHalf>
       <Grid container>
@@ -168,147 +244,205 @@ export default function SignUp() {
                   alert(JSON.stringify(data, null, 2));
                 }}
               >
-              <Grid container spacing={1}>
-                <Grid item xs={3}>
-                  <FormControl required>
-                    <FormLabel>Region</FormLabel>
-                    <TextField
-                      required
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <IoEarthOutline />
-                          </InputAdornment>
-                        ),
-                      }}
-                      placeholder="+84 VN"
-                      className="input-form-text-ready"
-                    />
-                  </FormControl>
-                </Grid>
-                <Grid item xs={9}>
-                  <FormControl required>
-                    <FormLabel>Phone Number</FormLabel>
-                    <TextField
-                      onChange={(e) => setPhoneNumber(e.target.value)}
-                      required
-                      value={phoneNumber}
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <AiOutlinePhone />
-                          </InputAdornment>
-                        ),
-                      }}
-                      className="input-form-text-ready"
-                    />
-                  </FormControl>
-                </Grid>
-              </Grid>
-              <Grid container spacing={1}>
-                <Grid item xs={8}>
-                  <FormControl required>
-                    <FormLabel>Full Name</FormLabel>
-                    <TextField
-                      required
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <IoPersonOutline />
-                          </InputAdornment>
-                        ),
-                      }}
-                      className="input-form-text-ready"
-                    />
-                  </FormControl>
-                </Grid>
-                <Grid item xs={4}>
-                  <FormControl required>
-                    <FormLabel>Gender</FormLabel>
-                    <Select
-                      required
-                      style={{ height: 40, borderRadius: "8px" }}
-                      startAdornment={
+                <FormControl required>
+                  <FormLabel>Email</FormLabel>
+                  <TextField
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    InputProps={{
+                      startAdornment: (
                         <InputAdornment position="start">
-                          <IoTransgenderOutline />
+                          <IoPersonOutline />
                         </InputAdornment>
-                      }
-                      value={"abcdef"}
-                    >
-                      <MenuItem value="male">Male</MenuItem>
-                      <MenuItem value="female">Female</MenuItem>
-                      <MenuItem value="other">Other</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-              </Grid>
-              <FormControl required>
-                <FormLabel>Password</FormLabel>
-                <TextField
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  type="password"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <AiOutlineLock />
-                      </InputAdornment>
-                    ),
-                  }}
-                  className="input-form-text-ready"
-                />
-              </FormControl>
-              <FormControl required>
-                <FormLabel>Confirm Password</FormLabel>
-                <TextField
-                  required
-                  type="password"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <IoAlertCircleOutline />
-                      </InputAdornment>
-                    ),
-                  }}
-                  className="input-form-text-ready"
-                />
-              </FormControl>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <ButtonGlobal type="submit" onClick={handleSignIn} fullWidth>
-                  Sign Up
-                </ButtonGlobal>
-              </Box>
-              </form>
-              <Box sx={{ position: "relative", margin: 0.5 }}>
-                <span
-                  style={{
-                    position: "absolute",
-                    top: "50%",
-                    left: "50%",
-                    transform: "translate(-50%, -50%)",
-                    backgroundColor: "#fff",
-                    padding: "0 10px 0 10px",
+                      ),
+                    }}
+                    className="input-form-text-ready"
+                  />
+                </FormControl>
+                <FormControl required>
+                  <FormLabel>Full Name</FormLabel>
+                  <TextField
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    required
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <IoPersonOutline />
+                        </InputAdornment>
+                      ),
+                    }}
+                    className="input-form-text-ready"
+                  />
+                </FormControl>
+                <FormControl required>
+                  <FormLabel>Phone Number</FormLabel>
+                  <TextField
+                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    required
+                    value={phoneNumber}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <AiOutlinePhone />
+                        </InputAdornment>
+                      ),
+                    }}
+                    className="input-form-text-ready"
+                  />
+                </FormControl>
+
+                <FormControl required>
+                  <FormLabel>Password</FormLabel>
+                  <TextField
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    type="password"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <AiOutlineLock />
+                        </InputAdornment>
+                      ),
+                    }}
+                    className="input-form-text-ready"
+                  />
+                </FormControl>
+                <FormControl required>
+                  <FormLabel>Confirm Password</FormLabel>
+                  <TextField
+                    required
+                    type="password"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <IoAlertCircleOutline />
+                        </InputAdornment>
+                      ),
+                    }}
+                    className="input-form-text-ready"
+                  />
+                </FormControl>
+
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
                   }}
                 >
-                  or
-                </span>
-                <hr
-                  style={{
-                    borderColor: "#000",
-                    borderTop: "1px solid #dfdfdf",
-                    width: "100%",
-                    marginTop: 3,
+                  <ButtonGlobal type="submit" onClick={handleGetOtp} fullWidth>
+                    Sign Up
+                  </ButtonGlobal>
+                </Box>
+              </form>
+              <div>
+                {/* <Button onClick={handleOpen}>Open modal</Button> */}
+                <Modal
+                  aria-labelledby="transition-modal-title"
+                  aria-describedby="transition-modal-description"
+                  open={open}
+                  onClose={handleClose}
+                  closeAfterTransition
+                  slots={{ backdrop: Backdrop }}
+                  slotProps={{
+                    backdrop: {
+                      timeout: 500,
+                    },
                   }}
-                />
-              </Box>
-              <ContinueGoogle />
+                >
+                  <Fade in={open}>
+                    <Box sx={style}>
+                      <div className="mb-5">
+                        <p className="font-semibold text-2xl">
+                          Please Verify Account
+                        </p>
+                        <p className=" text-slate-400 leading-5 mt-2">
+                          {/* Enter the six digit code we sent to your email address
+                          to verify you new Nogard account */}
+                          Enter the OTP sent to {email}
+                        </p>
+                      </div>
+                      <div className="mb-4">
+                        {" "}
+                        <OtpInput
+                          value={otp}
+                          onChange={setOtp}
+                          numInputs={6}
+                          // renderSeparator={<span className="font-bold">-</span>}
+                          renderInput={(props: any) => (
+                            <div className="otp-input-container">
+                              <input
+                                {...props}
+                                className="otp-input"
+                                style={{
+                                  background: "#d8d9e1",
+                                  width: "40px",
+                                  height: "40px",
+                                  textAlign: "center",
+                                  borderRadius: "100%",
+                                  boxShadow:
+                                    "rgba(149, 157, 165, 0.2) 0px 8px 24px",
+                                  fontWeight: 600,
+                                  fontSize: "18px",
+                                }}
+                              />
+                            </div>
+                          )}
+                          containerStyle={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            gap: "10px", // Khoảng cách giữa các ô nhập
+                          }}
+                        />
+                      </div>
+                      <div>
+                        <div className="countdown-text">
+                          {seconds > 0 || minutes > 0 ? (
+                            <p className="line-clamp-2">
+                              Time Remaining:{" "}
+                              {minutes < 10 ? `0${minutes}` : minutes}:
+                              {seconds < 10 ? `0${seconds}` : seconds}
+                            </p>
+                          ) : (
+                            <p>Didn't recieve code?</p>
+                          )}
+
+                          <button
+                            disabled={seconds > 0 || minutes > 0}
+                            className={
+                              seconds > 0 || minutes > 0
+                                ? "bg-stone-300 hover:bg-white"
+                                : "bg-white hover:bg-stone-300"
+                            }
+                            onClick={resendOTP}
+                          >
+                            Resend OTP
+                          </button>
+                        </div>
+                      </div>
+                      <div className="flex flex-col items-center mt-6">
+                        <button
+                          type="button"
+                          onClick={handleSignUp}
+                          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                        >
+                          Verify Content & Continue
+                        </button>
+                        <button
+                          type="button"
+                          className="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </Box>
+                  </Fade>
+                </Modal>
+              </div>
             </Box>
           </ContainerPageFullHalfContent>
           <Box component="footer" sx={{ pb: 3 }}>

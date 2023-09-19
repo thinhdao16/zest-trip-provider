@@ -31,6 +31,7 @@ export const BannerContentPrice = styled(Box)(() => ({
   flexDirection: "column",
   justifyContent: "center",
   padding: "30px",
+  maxWidth: "70%",
 }));
 export const BannerContentHaveImage = styled(Box)(() => ({
   display: "flex",

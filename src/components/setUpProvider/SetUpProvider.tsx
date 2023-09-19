@@ -20,6 +20,8 @@ import { AppDispatch } from "../../store/redux/store";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { becomeProvider } from "../../store/redux/silce/providerSlice";
+import jwt_decode from "jwt-decode";
+
 function SetUpProvider() {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
@@ -73,9 +75,11 @@ function SetUpProvider() {
     setStep((step) => step - 1);
   };
   const Confirm = () => {
-    if (personalInfo?.id) {
+    const token: any = localStorage.getItem("access_token_signup");
+    const decode: any = jwt_decode(token);
+    if (decode.id) {
       const formData = new FormData();
-      formData.append("user_id", personalInfo?.id);
+      formData.append("user_id", decode?.id);
       formData.append(
         "website_url",
         userServiceConfiguration?.userInfo?.webCompnany
@@ -107,7 +111,14 @@ function SetUpProvider() {
       //   formData.append("file", base64Data); // Thêm chuỗi base64 vào FormData
       // };
       // fileReader.readAsDataURL(file);
-      dispatch(becomeProvider(formData));
+      dispatch(
+        becomeProvider({
+          formData,
+          onSuccessCallback: () => {
+            navigate("/login");
+          },
+        })
+      );
     } else {
       alert("dont have userId");
     }

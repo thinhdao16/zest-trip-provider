@@ -75,7 +75,6 @@ const Price: React.FC = () => {
     ...formList,
     ...ageFor,
   };
-  console.log(ageFor);
   const handleRadioChange = (groupName: string, selectedValue: string) => {
     setSelectedRadio((prevRadio) => ({
       ...prevRadio,

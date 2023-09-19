@@ -28,12 +28,16 @@ const refreshToken = async () => {
   const refreshToken = getRefeshTokenFromLocalStorage();
   if (refreshToken) {
     try {
-      const refreshResponse = await axios.post(`${BASE_URL}/auth/refresh`,null, {
-        headers: {
-          Authorization: `Bearer ${refreshToken}`,
-          // "Content-Type": "application/json",
-        },
-      });
+      const refreshResponse = await axios.post(
+        `${BASE_URL}/auth/refresh`,
+        null,
+        {
+          headers: {
+            Authorization: `Bearer ${refreshToken}`,
+            // "Content-Type": "application/json",
+          },
+        }
+      );
       const newAccessToken = refreshResponse.data.access_token;
       localStorage.setItem("access_token", newAccessToken);
       return newAccessToken;
@@ -51,7 +55,6 @@ export const axiosInstance = axios.create();
 axiosInstance.interceptors.request.use(
   async (config) => {
     const accessToken = getTokenFromLocalStorage();
-    console.log(accessToken)
     if (accessToken) {
       if (isTokenExpired(accessToken)) {
         const newAccessToken = await refreshToken();

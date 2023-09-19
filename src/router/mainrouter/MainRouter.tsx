@@ -32,6 +32,7 @@ function MainRouter() {
                     <Route path="*" element={<Navigate to="/login" />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<SignUp />} />
+                    <Route path="/setupprovider" element={<SetUpProvider />} />
                   </React.Fragment>
                 ) : (
                   <React.Fragment>
