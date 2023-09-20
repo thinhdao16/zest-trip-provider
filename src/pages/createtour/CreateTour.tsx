@@ -138,107 +138,107 @@ const StepRenderer: React.FC = () => {
       {!isLastStep && <Headers />}
       {StepsToRender}
       {!isLastStep && (
-      <div
-        style={{
-          position: "fixed",
-          bottom: "0",
-          left: "0",
-          right: "0",
-          background: "white",
-        }}
-      >
+        <div
+          style={{
+            position: "fixed",
+            bottom: "0",
+            left: "0",
+            right: "0",
+            background: "white",
+          }}
+        >
           <LinearProgress
             style={{ color: "black" }}
             determinate
             value={((currentStep + 1) / totalSteps) * 100}
           />
-        {currentStep === totalSteps ? (
-          <>
-            <Box
-              p={3}
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <Button
-                onClick={goToPreviousStep}
-                disabled={currentStep !== totalSteps}
+          {currentStep === totalSteps ? (
+            <>
+              <Box
+                p={3}
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
               >
-                Previous Step
-              </Button>
-              <Button
-                onClick={handleFormSubmit}
-                disabled={currentStep !== totalSteps}
+                <Button
+                  onClick={goToPreviousStep}
+                  disabled={currentStep !== totalSteps}
+                >
+                  Previous Step
+                </Button>
+                <Button
+                  onClick={handleFormSubmit}
+                  disabled={currentStep !== totalSteps}
+                >
+                  Start
+                </Button>
+              </Box>
+            </>
+          ) : currentStep === 11 ? (
+            <>
+              <Box
+                p={3}
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
               >
-                Start
-              </Button>
-            </Box>
-          </>
-        ) : currentStep === 11 ? (
-          <>
-            <Box
-              p={3}
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <Button
-                onClick={goToPreviousStep}
-                disabled={currentStep === totalSteps}
-              >
-                Previous Step
-              </Button>
-              <Button
-                color="primary"
-                onClick={handlePostCreate}
-                disabled={currentStep === totalSteps}
-              >
-                Get Started
-              </Button>
-            </Box>
-          </>
-        ) : currentStep === 1 ? (
-          <Box p={3}>
-            <Button
-              onClick={goToNextStep}
-              disabled={currentStep === totalSteps}
-            >
-              Next Step
-            </Button>
-          </Box>
-        ) : (
-          <>
-            <Box
-              p={3}
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <Button
-                onClick={goToPreviousStep}
-                disabled={currentStep === 1}
-                style={{ marginRight: "10px" }}
-              >
-                Previous Step
-              </Button>
+                <Button
+                  onClick={goToPreviousStep}
+                  disabled={currentStep === totalSteps}
+                >
+                  Previous Step
+                </Button>
+                <Button
+                  color="primary"
+                  onClick={handlePostCreate}
+                  disabled={currentStep === totalSteps}
+                >
+                  Get Started
+                </Button>
+              </Box>
+            </>
+          ) : currentStep === 1 ? (
+            <Box p={3}>
               <Button
                 onClick={goToNextStep}
                 disabled={currentStep === totalSteps}
-                style={{ marginLeft: "10px" }}
               >
                 Next Step
               </Button>
             </Box>
-          </>
-        )}
-      </div>
-        )}
+          ) : (
+            <>
+              <Box
+                p={3}
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <Button
+                  onClick={goToPreviousStep}
+                  disabled={currentStep === 1}
+                  style={{ marginRight: "10px" }}
+                >
+                  Previous Step
+                </Button>
+                <Button
+                  onClick={goToNextStep}
+                  disabled={currentStep === totalSteps}
+                  style={{ marginLeft: "10px" }}
+                >
+                  Next Step
+                </Button>
+              </Box>
+            </>
+          )}
+        </div>
+      )}
     </>
   );
 };

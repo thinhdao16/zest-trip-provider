@@ -1,7 +1,8 @@
 import { FaRegCircleDot } from "react-icons/fa6";
-import { Box } from "@mui/material";
+import { Box, Step, StepLabel, Stepper } from "@mui/material";
 import "../styles/sidebar.css";
 import { SiInstapaper } from "react-icons/si";
+import { AiOutlineRight } from "react-icons/ai";
 interface SidebarProps {
   currentStep: number;
   handleNextStep: (step: number) => void;
@@ -28,49 +29,27 @@ const steps = [
     title: "Contractor Information",
   },
 ];
+
 export const Sidebar = ({ currentStep, handleNextStep }: SidebarProps) => {
   return (
     <>
-      {steps.map((step) => (
-        <Box my={0} key={step.step}>
-          {currentStep === step.step ? (
-            <Box
-              className="sidebar-setupPovider-container-chosen"
-              onClick={() => handleNextStep(step.step)}
-            >
-              <FaRegCircleDot />
-              <span className="sidebar-setup-title">{step?.title}</span>
-            </Box>
-          ) : currentStep > step.step ? (
-            <Box
-              className="sidebar-setupPovider-container-chosen"
-              onClick={() => handleNextStep(step.step)}
-            >
-              <FaRegCircleDot />
-              <span className="sidebar-setup-title">{step?.title}</span>
-            </Box>
-          ) : (
-            <Box
-              className="sidebar-setupPovider-container-unchosen"
-              onClick={() => handleNextStep(step.step)}
-            >
-              <FaRegCircleDot />
-              <span className="sidebar-setup-title">{step?.title}</span>
-            </Box>
-          )}
-          {step.step >= 1 && step.step <= 4 && (
-            <Box
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <SiInstapaper />
-            </Box>
-          )}
-        </Box>
-      ))}
+      <div>
+        <div className="mb-3">
+          <p className="font-semibold mb-4 text-4xl">
+            Tell us more about yourself
+          </p>
+          <Stepper activeStep={currentStep - 1} alternativeLabel>
+            {steps.map((label) => (
+              <Step key={label?.step}>
+                <StepLabel onClick={() => handleNextStep(label.step)}>
+                  <p>{label?.title}</p>
+                </StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+        </div>
+        <hr />
+      </div>
     </>
   );
 };

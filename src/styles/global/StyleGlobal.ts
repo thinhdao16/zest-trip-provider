@@ -5,10 +5,10 @@ export const BannerContainer = styled(Box)(({ theme }) => ({
   width: "100vw",
   padding: theme.spacing(0, 2), // Padding cơ bản cho mọi kích thước màn hình
 
-  [theme.breakpoints.up('sm')]: {
+  [theme.breakpoints.up("sm")]: {
     padding: theme.spacing(0, 4), // Padding cho màn hình từ sm trở lên
   },
-  [theme.breakpoints.up('md')]: {
+  [theme.breakpoints.up("md")]: {
     padding: theme.spacing(0, 6), // Padding cho màn hình từ md trở lên
   },
 }));
@@ -31,10 +31,10 @@ export const BannerPageList = styled(Box)(({ theme }) => ({
   maxWidth: "100vw",
   padding: "64px 20px", // Padding cơ bản cho mọi kích thước màn hình
 
-  [theme.breakpoints.up('sm')]: {
+  [theme.breakpoints.up("sm")]: {
     padding: "64px 40px", // Padding cho màn hình từ sm trở lên
   },
-  [theme.breakpoints.up('md')]: {
+  [theme.breakpoints.up("md")]: {
     padding: "64px 140px", // Padding cho màn hình từ md trở lên
   },
 }));
@@ -88,9 +88,10 @@ export const ContainerPageFullHalf = styled(Box)(() => ({
   width: "100vw ",
 }));
 
-export const ContainerPageFullHalfContent = styled(Box)(() => ({
-  height: "89vh",
+export const ContainerPageFullHalfContent = styled(Box)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
-  padding: "12px 0 12px 0 ",
+  padding: "12px 0 12px 0",
+  overflow: "auto",
+  maxHeight: "100vh",
 }));

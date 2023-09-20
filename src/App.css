@@ -73,9 +73,9 @@
 /* style text component form */
 /* ./src/styles/main.css */
 
-@import "tailwindcss/base";
+/* @import "tailwindcss/base";
 @import "tailwindcss/components";
-@import "tailwindcss/utilities";
+@import "tailwindcss/utilities"; */
 
 /* Bổ sung các quy tắc tùy chỉnh sau đây nếu bạn muốn */
 
@@ -218,6 +218,7 @@ table {
 .input-form-text-ready .MuiInputBase-root {
   height: 40px !important;
   border-radius: 8px;
+  width: 450px;
 }
 
 .input-form-text-location-ready .MuiInputBase-root {

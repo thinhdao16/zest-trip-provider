@@ -19,8 +19,8 @@ import "./signUp.scss";
 import {
   ButtonGlobal,
   ContainerPageFullHalf,
-  ContainerPageFullHalfContent,
 } from "../../styles/global/StyleGlobal";
+import { ContainerPageFullHalfContent } from "../../styles/global/ContainerPageFullHalfContent";
 import { Link, useNavigate } from "react-router-dom";
 import { DataContext } from "../../store/dataContext/DataContext";
 import { BASE_URL } from "../../store/apiInterceptors";

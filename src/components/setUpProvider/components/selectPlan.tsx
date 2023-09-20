@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { Plan } from "AppTypes";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
 const plans: Plan[] = [
   {
@@ -62,8 +63,8 @@ export const SelectPlan = ({
   };
 
   return (
-    <Box>
-      <Box sx={{ minWidth: 120, marginBottom: "12px" }}>
+    <div className="flex flex-col items-center">
+      <Box sx={{ width: 450, marginBottom: "12px" }}>
         <p style={{ marginBottom: "5px", fontWeight: 500 }}>Service type</p>
         <FormControl fullWidth>
           <Select
@@ -84,7 +85,7 @@ export const SelectPlan = ({
           </Select>
         </FormControl>
       </Box>
-      <Box sx={{ minWidth: 120, marginBottom: "12px" }}>
+      <Box sx={{ width: 450, marginBottom: "12px" }}>
         <p style={{ marginBottom: "5px", fontWeight: 500 }}>
           Cancellation policy
         </p>
@@ -107,7 +108,7 @@ export const SelectPlan = ({
           </Select>
         </FormControl>
       </Box>
-      <Box sx={{ minWidth: 120 }}>
+      <Box sx={{ width: 450 }}>
         <p style={{ marginBottom: "5px", fontWeight: 500 }}>
           Confirmation policy
         </p>
@@ -130,6 +131,6 @@ export const SelectPlan = ({
           </Select>
         </FormControl>
       </Box>
-    </Box>
+    </div>
   );
 };

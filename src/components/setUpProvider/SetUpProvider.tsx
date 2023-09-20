@@ -10,10 +10,8 @@ import { Box, Button } from "@mui/material";
 import { formLabelClasses } from "@mui/joy/FormLabel";
 import Typography from "@mui/joy/Typography";
 import { AiOutlineShop } from "react-icons/ai";
-import {
-  ContainerPageFullHalf,
-  ContainerPageFullHalfContent,
-} from "../../styles/global/StyleGlobal";
+import { ContainerPageFullHalf } from "../../styles/global/StyleGlobal";
+import { ContainerPageFullHalfContent } from "../../styles/global/ContainerPageFullHalfContent";
 import { Grid } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { AppDispatch } from "../../store/redux/store";
@@ -131,7 +129,8 @@ function SetUpProvider() {
         <Grid container>
           <Grid
             item
-            xs={2.5}
+            xs={12}
+            sm={4}
             style={{
               padding: "13px",
             }}
@@ -144,6 +143,10 @@ function SetUpProvider() {
                 flexDirection: "column",
                 height: "100%",
                 padding: "30px",
+                position: "relative",
+                zIndex: "99",
+                backgroundImage:
+                  "url(https://cdnimgen.vietnamplus.vn/uploaded/oplukat/2022_12_02/hochiminh.jpg)",
               }}
             >
               <Link to="/">
@@ -156,38 +159,9 @@ function SetUpProvider() {
                   <AiOutlineShop style={{ margin: "8px 8px 0 0 " }} /> DiTour
                 </Typography>
               </Link>
-              <Sidebar currentStep={step} handleNextStep={nextStep} />
-              {/* {step < 5 && ( */}
-              <menu className="flex justify-between p-4 mt-auto">
-                <li>
-                  <Button style={{ textTransform: "none" }} onClick={goBack}>
-                    Go Back
-                  </Button>
-                </li>
-                <li>
-                  {step < 5 && (
-                    <Button
-                      style={{ textTransform: "none", color: "black" }}
-                      onClick={() => nextStep()}
-                    >
-                      Next step
-                    </Button>
-                  )}
-                  {step >= 5 && (
-                    <Button
-                      style={{ textTransform: "none", color: "black" }}
-                      onClick={() => Confirm()}
-                    >
-                      Confirm
-                    </Button>
-                  )}
-                </li>
-              </menu>
-              {/* )} */}
             </Box>
           </Grid>
-
-          <Grid item xs={9.5}>
+          <Grid item xs={12} sm={8}>
             <ContainerPageFullHalfContent>
               <Box
                 component="main"
@@ -199,8 +173,9 @@ function SetUpProvider() {
                   flexDirection: "column",
                   gap: 2,
                   minWidth: 400,
-                  maxWidth: "100%",
+                  // maxWidth: "100%",
                   mx: "auto",
+                  px: 10,
                   borderRadius: "sm",
                   "& form": {
                     display: "flex",
@@ -212,16 +187,8 @@ function SetUpProvider() {
                   },
                 }}
               >
-                {step >= 1 && step <= 4 && (
-                  <div>
-                    <Typography component="h1" fontSize="xl2" fontWeight="lg">
-                      Sign in to your account
-                    </Typography>
-                    <Typography level="body-xs" sx={{ my: 1, mb: 1 }}>
-                      Enter your credentials to continue
-                    </Typography>
-                  </div>
-                )}
+                <Sidebar currentStep={step} handleNextStep={nextStep} />
+
                 <form className="">
                   {step === 1 && (
                     <PersonalInfo
@@ -244,14 +211,45 @@ function SetUpProvider() {
                   )}
                   {step === 5 && <ThankYou />}
                 </form>
+                <div style={{}}>
+                  <menu className=" flex items-center p-4 flex-col mb-5">
+                    <div className="flex">
+                      <div>
+                        {step > 1 && (
+                          <Button
+                            style={{ textTransform: "none" }}
+                            onClick={goBack}
+                          >
+                            Go Back
+                          </Button>
+                        )}
+                      </div>
+                      <div>
+                        {step < 5 && (
+                          <Button
+                            style={{ textTransform: "none", color: "black" }}
+                            onClick={() => nextStep()}
+                          >
+                            Next step
+                          </Button>
+                        )}
+                        {step >= 5 && (
+                          <Button
+                            style={{ textTransform: "none", color: "black" }}
+                            onClick={() => Confirm()}
+                          >
+                            Confirm
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+                  </menu>
+                  <Typography mb={4} level="body-md" textAlign="center">
+                    © DiTour {new Date().getFullYear()}
+                  </Typography>
+                </div>
               </Box>
             </ContainerPageFullHalfContent>
-
-            <Box component="footer" sx={{ py: 3 }}>
-              <Typography level="body-md" textAlign="center">
-                © DiTour {new Date().getFullYear()}
-              </Typography>
-            </Box>
           </Grid>
         </Grid>
       </ContainerPageFullHalf>

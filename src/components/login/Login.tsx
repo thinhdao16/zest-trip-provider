@@ -24,8 +24,8 @@ import "./login.scss";
 import {
   ButtonGlobal,
   ContainerPageFullHalf,
-  ContainerPageFullHalfContent,
 } from "../../styles/global/StyleGlobal";
+import { ContainerPageFullHalfContent } from "../../styles/global/ContainerPageFullHalfContent";
 import { Link, useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import { DataContext } from "../../store/dataContext/DataContext";
