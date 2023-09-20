@@ -22,9 +22,12 @@ const Capacity: React.FC = () => {
     Sat: [],
     Sun: [],
     Single: [],
+    DateFrom: "",
+    DateTo: "",
   });
+
   const [startingTimeSingle, setStartingTimeSingle] = useState<any>([]);
-  console.log(startingTimeSingle);
+
   const [selectedHour, setSelectedHour] = useState<any>({
     Mon: [],
     Tue: [],
@@ -200,6 +203,23 @@ const Capacity: React.FC = () => {
     setSelectedMinute(updatedSelectedMinute);
     setStartingTimes(updatedStartingTimes);
   };
+  const onChangeDateFrom = (e: any, field: string) => {
+    if (field === "from") {
+      const newDateFrom = e.target.value;
+      setStartingTimes((prevStartingTimes: any) => ({
+        ...prevStartingTimes,
+        DateFrom: newDateFrom,
+      }));
+    }
+    if (field === "to") {
+      const newDateFrom = e.target.value;
+      setStartingTimes((prevStartingTimes: any) => ({
+        ...prevStartingTimes,
+        DateTo: newDateFrom,
+      }));
+    }
+  };
+
   const optionHr = [];
   for (let i = 0; i <= 23; i++) {
     optionHr.push(
@@ -234,10 +254,8 @@ const Capacity: React.FC = () => {
       const year = parts[2];
       return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
     }
-    return dateString; // Trường hợp không hợp lệ
+    return dateString;
   };
-
-  const today = new Date().toISOString().split("T")[0];
 
   const optionsByDay = daysWithOptions.reduce((acc: any, day: any) => {
     const optionHr: any = [];
@@ -302,6 +320,8 @@ const Capacity: React.FC = () => {
               <input
                 className="flex items-center justify-center font-medium border border-solid border-gray-300 rounded-md p-2   focus:outline-none focus:ring-1 focus:ring-sky-500"
                 type="date"
+                value={startingTimes?.DateFrom}
+                onChange={(e) => onChangeDateFrom(e, "from")}
               />
             </div>
             <p className="font-medium">to</p>
@@ -309,6 +329,8 @@ const Capacity: React.FC = () => {
               <input
                 className="flex items-center justify-center font-medium border border-solid border-gray-300 rounded-md p-2   focus:outline-none focus:ring-1 focus:ring-sky-500"
                 type="date"
+                value={startingTimes?.DateTo}
+                onChange={(e) => onChangeDateFrom(e, "to")}
               />
             </div>
           </div>
