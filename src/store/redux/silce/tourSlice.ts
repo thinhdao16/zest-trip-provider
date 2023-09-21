@@ -1,5 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { BASE_URL, axiosInstance } from "../../apiInterceptors";
+interface DetailTour {
+  index: string;
+}
+interface CreatTour {
+  formData: FormData;
+}
+
 // Function to retrieve token from localStorage
 const getTokenFromLocalStorage = () => {
   const token = localStorage.getItem("access_token");
@@ -17,6 +24,8 @@ const initialState = {
   error: null as string | null,
   tourDetail: [],
   tourGetDetail: [],
+  tagTour: [],
+  vehicleTour: [],
   loadingDetail: false,
   errorDetail: null as string | null,
   loadingCreateTour: false,
@@ -39,10 +48,10 @@ export const fetchTours = createAsyncThunk("tour/fetchTours", async () => {
 });
 export const fetchTourDetail = createAsyncThunk(
   "tour/getDetailTour",
-  async (index: any) => {
+  async (index: DetailTour) => {
     try {
       const response = await axiosInstance.get(
-        `${BASE_URL}/tour/detail/${index}`,
+        `${BASE_URL}/tour/detail/${index}`
       );
       console.log(response);
       return response.data.data.data;
@@ -52,15 +61,34 @@ export const fetchTourDetail = createAsyncThunk(
   }
 );
 
+export const getTagTour = createAsyncThunk("tour/getTagTour", async () => {
+  try {
+    const response = await axiosInstance.get(`${BASE_URL}/resource/tag`);
+    return response.data.data;
+  } catch (error) {
+    throw new Error("Failed to fetch tours");
+  }
+});
+export const getVehicleTour = createAsyncThunk(
+  "tour/getVehicleTour",
+  async () => {
+    try {
+      const response = await axiosInstance.get(`${BASE_URL}/resource/vehicle`);
+      return response.data.data;
+    } catch (error) {
+      throw new Error("Failed to fetch tours");
+    }
+  }
+);
 // Create another async thunk to fetch other data
 export const postCreateTour = createAsyncThunk(
   "tour/postCreateTour", // Slice name: "tour"
-  async (requestData: any) => {
+  async (requestData: CreatTour) => {
     const token = getTokenFromLocalStorage();
     try {
       const response = await axiosInstance.post(
         `${BASE_URL}/tour`,
-        requestData,
+        requestData.formData,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -96,9 +124,9 @@ const tourSlice = createSlice({
         state.tours = action.payload;
         state.error = null;
       })
-      .addCase(fetchTours.rejected, (state: any, action) => {
+      .addCase(fetchTours.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message;
+        state.error = action.error.message || null;
       })
       .addCase(postCreateTour.pending, (state) => {
         state.loadingCreateTour = true;
@@ -122,9 +150,35 @@ const tourSlice = createSlice({
         state.tourGetDetail = action.payload;
         state.errorDetail = null;
       })
-      .addCase(fetchTourDetail.rejected, (state: any, action) => {
+      .addCase(fetchTourDetail.rejected, (state, action) => {
         state.loadingDetail = false;
-        state.errorDetail = action.error.message;
+        state.errorDetail = action.error.message || null;
+      })
+      .addCase(getTagTour.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getTagTour.rejected, (state) => {
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(getTagTour.fulfilled, (state, action) => {
+        state.loading = false;
+        state.tagTour = action.payload;
+        state.error = null;
+      })
+      .addCase(getVehicleTour.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getVehicleTour.rejected, (state) => {
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(getVehicleTour.fulfilled, (state, action) => {
+        state.loading = false;
+        state.vehicleTour = action.payload;
+        state.error = null;
       });
   },
 });

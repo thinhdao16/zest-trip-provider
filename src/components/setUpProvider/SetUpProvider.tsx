@@ -131,34 +131,42 @@ function SetUpProvider() {
             item
             xs={12}
             sm={4}
-            style={{
-              padding: "13px",
-            }}
+            style={
+              {
+                // padding: "13px",
+              }
+            }
           >
             <Box
               style={{
-                backgroundColor: "#f9fbfc",
-                borderRadius: "6px",
+                backgroundColor: "#D4F1F4",
+                borderRadius: "0 20px 20px 0",
                 display: "flex",
                 flexDirection: "column",
                 height: "100%",
                 padding: "30px",
                 position: "relative",
                 zIndex: "99",
-                backgroundImage:
-                  "url(https://cdnimgen.vietnamplus.vn/uploaded/oplukat/2022_12_02/hochiminh.jpg)",
+                alignItems: "center",
+                justifyContent: "center ",
               }}
             >
-              <Link to="/">
-                <Typography
-                  component="h1"
-                  fontSize="xl2"
-                  fontWeight="lg"
-                  sx={{ mb: 5, display: "flex" }}
-                >
-                  <AiOutlineShop style={{ margin: "8px 8px 0 0 " }} /> DiTour
-                </Typography>
-              </Link>
+              <div className="absolute top-5 left-5">
+                <Link to="/">
+                  <div className="flex items-center text-2xl text-amber-950 font-bold">
+                    <AiOutlineShop className="mr-1" />
+                    <p>ZestTravel</p>
+                  </div>
+                </Link>
+              </div>
+
+              <div>
+                <img
+                  style={{ objectFit: "cover", width: "480px" }}
+                  src="src\components\setUpProvider\assets\icon.png"
+                  alt="nothing"
+                />
+              </div>
             </Box>
           </Grid>
           <Grid item xs={12} sm={8}>

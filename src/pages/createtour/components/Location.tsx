@@ -11,42 +11,39 @@ import { TextField, InputAdornment } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { FormControl } from "@mui/joy";
 import { GoLocation, GoPlusCircle } from "react-icons/go";
-import axios from "axios";
-import { MapContainer, TileLayer, useMap } from "react-leaflet";
-import L from "leaflet";
-import "leaflet-routing-machine";
-import "leaflet/dist/leaflet.css";
-import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
+// import "leaflet-routing-machine";
+// import "leaflet/dist/leaflet.css";
+// import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
 
-const defaultCenter: any = [38.9072, -77.0369];
-const defaultZoom: any = 13;
-const disneyWorldLatLng: any = [28.3852, -81.5639];
-const disneyLandLatLng: any = [33.8121, -117.919];
-function RoutingControl() {
-  const map = useMap();
+// const defaultCenter: any = [38.9072, -77.0369];
+// const defaultZoom: any = 13;
+// const disneyWorldLatLng: any = [28.3852, -81.5639];
+// const disneyLandLatLng: any = [33.8121, -117.919];
+// function RoutingControl() {
+//   const map = useMap();
 
-  useEffect(() => {
-    const waypoints = [L.latLng(disneyWorldLatLng), L.latLng(disneyLandLatLng)];
+//   useEffect(() => {
+//     const waypoints = [L.latLng(disneyWorldLatLng), L.latLng(disneyLandLatLng)];
 
-    const routingControl = L.Routing.control({
-      waypoints,
-      routeWhileDragging: true, // Enable route recalculation while dragging waypoints
-      show: false, // Initially hide the routing control UI
-    }).addTo(map);
+//     const routingControl = L.Routing.control({
+//       waypoints,
+//       routeWhileDragging: true, // Enable route recalculation while dragging waypoints
+//       show: false, // Initially hide the routing control UI
+//     }).addTo(map);
 
-    // Handle route events if needed
-    routingControl.on("routesfound", (e) => {
-      // Access the found routes using e.routes
-      console.log("Routes found:", e.routes);
-    });
+//     // Handle route events if needed
+//     routingControl.on("routesfound", (e) => {
+//       // Access the found routes using e.routes
+//       console.log("Routes found:", e.routes);
+//     });
 
-    return () => {
-      routingControl.remove(); // Remove the control when component unmounts
-    };
-  }, [map]);
+//     return () => {
+//       routingControl.remove(); // Remove the control when component unmounts
+//     };
+//   }, [map]);
 
-  return null; // Routing control will be added through the side effect
-}
+//   return null; // Routing control will be added through the side effect
+// }
 const Location: React.FC = () => {
   const { currentStep, updateFormValues } = useStepContext();
   const [formList, setFormList] = useState([

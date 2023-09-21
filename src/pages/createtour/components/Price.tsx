@@ -8,23 +8,22 @@ import {
 import { useStepContext } from "../context/ui/useStepContext";
 import { Input } from "./input";
 import { dataTypePrice } from "../dataFake";
+import { FaRegTrashCan } from "react-icons/fa6";
 
 interface InputValue {
   labelMain: string;
-  value: number;
+  // value: number;
 }
 
-interface PriceData {
-  [key: string]: string;
-}
 const countries = [
   { code: "Infant", name: "Infant" },
   { code: "Children", name: "Children" },
-  { code: "Youth", name: "Youth" },
-  { code: "Senior", name: "Senior" },
+  { code: "Adults", name: "Adults" },
+  // { code: "Youth", name: "Youth" },
+  // { code: "Senior", name: "Senior" },
   { code: "Student", name: "Student (with ID)" },
-  { code: "Military", name: "Military (with ID)" },
-  { code: "Asean", name: "Student ASEAN Citizens (with ID)" },
+  // { code: "Military", name: "Military (with ID)" },
+  // { code: "Asean", name: "Student ASEAN Citizens (with ID)" },
 ];
 const radioItems = [
   "Standard",
@@ -35,7 +34,9 @@ const radioItems = [
 
 const Price: React.FC = () => {
   const { currentStep, updateFormValues } = useStepContext();
-  const [selectedCountry, setSelectedCountry] = useState("");
+  const [selectedCountries, setSelectedCountries]: any = useState([]);
+  console.log(selectedCountries);
+  const [dataTicket, setDataTicket]: any = useState([]);
   const [selectedRadio, setSelectedRadio] = useState({
     students: radioItems[0],
     children: radioItems[0],
@@ -71,10 +72,6 @@ const Price: React.FC = () => {
       ageEnd: 99,
     },
   });
-  const combinedObject = {
-    ...formList,
-    ...ageFor,
-  };
   const handleRadioChange = (groupName: string, selectedValue: string) => {
     setSelectedRadio((prevRadio) => ({
       ...prevRadio,
@@ -102,10 +99,96 @@ const Price: React.FC = () => {
       }
     }
   };
+  const handleCountryChange = (event: any) => {
+    const selectedCountryCode = event.target.value;
+    if (!selectedCountries.includes(selectedCountryCode)) {
+      setSelectedCountries([...selectedCountries, selectedCountryCode]);
+    }
+
+    const updatedFormList = [...formList];
+    const updatedAgeFor = { ...ageFor };
+
+    if (selectedCountryCode === "Student") {
+      const updatedFormListCheck = updatedFormList.map((item) => ({
+        ...item,
+        role: "student",
+        id: item.id,
+        numberOfPeople: item.numberOfPeople,
+        numberOfPeopleAfter: item.numberOfPeopleAfter,
+        retailPrice: item.retailPriceStudent,
+        payoutPerPerson: item.payoutPerPersonStudent,
+        retailPriceStudent: item.retailPriceStudent,
+        payoutPerPersonStudent: item.payoutPerPersonStudent,
+      }));
+      const updatedAgeForCheck: any = {
+        ageStart: updatedAgeFor?.student?.ageStart,
+        ageEnd: updatedAgeFor?.student?.ageEnd,
+      };
+      const object = { ...updatedFormListCheck, ...updatedAgeForCheck };
+      setDataTicket(object);
+    }
+    if (selectedCountryCode === "Children") {
+      const updatedFormListCheck = updatedFormList.map((item) => ({
+        ...item,
+        role: "Children",
+        id: item.id,
+        numberOfPeople: item.numberOfPeople,
+        numberOfPeopleAfter: item.numberOfPeopleAfter,
+        retailPrice: item.retailPriceStudent,
+        payoutPerPerson: item.payoutPerPersonStudent,
+        retailPriceStudent: item.retailPriceStudent,
+        payoutPerPersonStudent: item.payoutPerPersonStudent,
+      }));
+
+      const updatedAgeForCheck: any = {
+        ageStart: updatedAgeFor?.student?.ageStart,
+        ageEnd: updatedAgeFor?.student?.ageEnd,
+      };
+      const object = { ...updatedFormListCheck, ...updatedAgeForCheck };
+      setDataTicket(object);
+    }
+
+    if (selectedCountryCode === "Adults") {
+      const updatedFormListCheck = updatedFormList.map((item) => ({
+        ...item,
+        role: "student",
+        id: item.id,
+        numberOfPeople: item.numberOfPeople,
+        numberOfPeopleAfter: item.numberOfPeopleAfter,
+        retailPrice: item.retailPriceStudent,
+        payoutPerPerson: item.payoutPerPersonStudent,
+        retailPriceStudent: item.retailPriceStudent,
+        payoutPerPersonStudent: item.payoutPerPersonStudent,
+      }));
+      const updatedAgeForCheck: any = {
+        ageStart: updatedAgeFor?.student?.ageStart,
+        ageEnd: updatedAgeFor?.student?.ageEnd,
+      };
+      const object = { ...updatedFormListCheck, ...updatedAgeForCheck };
+      setDataTicket(object);
+    }
+    if (
+      selectedCountries.includes("Children") ||
+      selectedCountries.includes("Student")
+    ) {
+      const updatedFormListCheck = updatedFormList.map((item) => ({
+        ...item,
+        role: ["Children", "Student"],
+      }));
+      setDataTicket(updatedFormListCheck);
+    }
+  };
+  const handleDeleteCountry = (countryCode: any) => {
+    const updatedSelectedCountries = selectedCountries.filter(
+      (code: any) => code !== countryCode
+    );
+    setSelectedCountries(updatedSelectedCountries);
+  };
+
   //select age
-  const initialInputValues: InputValue[] = dataTypePrice.map((data: any) => ({
+  const initialInputValues: InputValue[] = dataTypePrice.map((data) => ({
     labelMain: data.labelMain,
-    value: parseFloat(data.value),
+    // value: parseFloat(data.value),
   }));
   const [inputValues, setInputValues] =
     useState<InputValue[]>(initialInputValues);
@@ -146,7 +229,7 @@ const Price: React.FC = () => {
 
     setFormList([...formList, newForm]);
   };
-  const handleNumberOfPeopleChange = (e: any, id: any) => {
+  const handleNumberOfPeopleChange = (e: any, id: number) => {
     const newNumberOfPeople = parseInt(e.target.value);
     const updatedFormList = formList.map((form, index) => {
       if (form.id === id) {
@@ -171,7 +254,7 @@ const Price: React.FC = () => {
 
     setFormList(updatedFormList);
   };
-  const handleRetailPriceChange = (e: any, id: any, field: string) => {
+  const handleRetailPriceChange = (e: any, id: number, field: string) => {
     const newRetailPrice = parseFloat(e.target.value);
     const updatedFormList: any = formList.map((form) => {
       if (form.id === id) {
@@ -210,12 +293,30 @@ const Price: React.FC = () => {
     setFormList(updatedFormList);
   };
 
-  const removeForm = (id: any) => {
+  const removeForm = (id: number) => {
     const updatedFormList = formList.filter((form) => form.id !== id);
     setFormList(updatedFormList);
   };
   const handleAgeChange = (e: any, field: string, type: string) => {
     const newAgeStart = parseInt(e.target.value, 10);
+    if (field === "student" && type === "studentStart") {
+      setAgeFor({
+        ...ageFor,
+        student: {
+          ...ageFor.student,
+          ageStart: newAgeStart,
+        },
+      });
+    }
+    if (field === "student" && type === "studentEnd") {
+      setAgeFor({
+        ...ageFor,
+        student: {
+          ...ageFor.student,
+          ageEnd: newAgeStart,
+        },
+      });
+    }
     if (field === "children" && type === "childrenStart") {
       setAgeFor({
         ...ageFor,
@@ -258,17 +359,13 @@ const Price: React.FC = () => {
     }
   };
 
-  const handleCountryChange = (e: any) => {
-    setSelectedCountry(e.target.value);
-  };
-
   React.useEffect(() => {
     if (currentStep === 8) {
-      const priceData: PriceData = inputValues.reduce((data, input) => {
-        data[input.labelMain] = input.value.toString(); // Chuyển đổi lại thành string nếu cần
-        return data;
-      }, {} as PriceData);
-      updateFormValues(6, priceData);
+      // const priceData: PriceData = inputValues.reduce((data, input: any) => {
+      //   data[input.labelMain] = input?.value?.toString();
+      //   return data;
+      // }, {} as PriceData);
+      // updateFormValues(6, priceData);
     }
   }, [inputValues]);
 
@@ -292,154 +389,38 @@ const Price: React.FC = () => {
         ))}
         <select
           id="countries_disabled"
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          value={selectedCountry}
+          className="w-32 text-sky-600 font-medium text-lg hover:text-sky-900 focus:border-none"
+          value={selectedCountries}
           onChange={handleCountryChange}
         >
           <option value="" disabled>
             Choose a country
           </option>
-          {countries.map((country) => (
-            <option key={country.code} value={country.code}>
-              {country.name}
-            </option>
-          ))}
+          {countries.map((country) => {
+            // Kiểm tra xem country.code có tồn tại trong selectedCountries không
+            if (!selectedCountries.includes(country.code)) {
+              return (
+                <option key={country.code} value={country.code}>
+                  {country.name}
+                </option>
+              );
+            }
+            return null; // Nếu đã chọn, không hiển thị tùy chọn này
+          })}
         </select>
-        <div className="mt-3">
-          <p className="font-medium">Prices per person</p>
-          <div className="p-4 rounded" style={{ border: "1px solid black" }}>
-            <p className="font-semibold text-lg">Prices per person</p>
-            <div className="grid md:grid-cols-12">
-              <div className="col-span-2">
-                <div className="grid grid-cols-4 gap-2 md:grid-cols-2">
-                  <div></div>
-                </div>
-              </div>
-              <div className="col-span-7">
-                {" "}
-                <div>
-                  {formList.map((form) => (
-                    <div
-                      key={form.id}
-                      className="grid grid-cols-4 gap-4 md:grid-cols-4"
-                    >
-                      <div>
-                        <div className="font-medium">Number of People</div>
-                        <div className="flex items-center">
-                          <p className="font-medium">{form.numberOfPeople}</p>
-                          <p>-</p>
-                          <input
-                            type="number"
-                            id="first_name"
-                            className="w-20 bg-white border border-gray-300 text-gray-900 text-base font-medium rounded-md p-2"
-                            defaultValue={form.numberOfPeopleAfter}
-                            required
-                            onChange={(e) =>
-                              handleNumberOfPeopleChange(e, form.id)
-                            }
-                          />
-                        </div>
-                      </div>
-
-                      <div>
-                        <p className="font-medium">Retail price</p>
-                        <input
-                          type="number"
-                          id="retailPriceChildren"
-                          className="w-20 bg-white border border-gray-300 text-gray-900 text-base font-medium rounded-md p-2"
-                          value={form.retailPrice}
-                          onChange={(e) =>
-                            handleRetailPriceChange(e, form.id, "")
-                          }
-                        />
-                      </div>
-                      <div>
-                        <p className="font-medium">Commission</p>
-                        <p className="font-medium">30%</p>
-                      </div>
-                      <div>
-                        <div className="font-medium">Payout per person</div>
-                        <div className="flex items-center">
-                          <input
-                            className="p-2 w-20 bg-slate-200 rounded-md"
-                            value={form.payoutPerPerson}
-                            disabled
-                          />
-                          <p className="font-medium">VND</p>
-                          {form.id !== 0 ? (
-                            <button onClick={() => removeForm(form.id)}>
-                              X
-                            </button>
-                          ) : (
-                            <></>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                  <button onClick={addNewForm}>Add</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        {/* Student */}
-        <div className="mt-3">
-          <p className="font-medium">Prices per person</p>
-          <div className="p-4 rounded" style={{ border: "1px solid black" }}>
-            <p className="font-semibold text-lg">Student (with ID)</p>
-            <div className="grid md:grid-cols-12">
-              <div className="col-span-5">
-                <div className="grid grid-cols-4 gap-2 md:grid-cols-2">
-                  <div>
-                    <p className="font-medium">Age range</p>
-                    <div className="flex items-center">
-                      <select
-                        id="countries1"
-                        className="w-20 bg-white border border-gray-300 text-gray-900 font-medium rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        defaultValue={ageFor.student.ageStart}
-                      >
-                        {options}
-                      </select>
-                      <p className="mx-1">-</p>
-                      <select
-                        id="countries2"
-                        className="w-20 bg-white border border-gray-300 text-gray-900 font-medium rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        defaultValue={ageFor.student.ageEnd}
-                      >
-                        {options}
-                      </select>
-                    </div>
-                  </div>
-                  <div>
-                    <p className="font-medium">Booking category </p>
-                    <div>
-                      {radioItems.map((item, index) => (
-                        <div className="flex items-center mb-1" key={index}>
-                          <input
-                            id={`radio-students-${index + 1}`}
-                            type="radio"
-                            name="radio-students"
-                            className="w-3 h-3"
-                            checked={selectedRadio.students === item}
-                            onChange={() => handleRadioChange("students", item)}
-                          />
-
-                          <label
-                            htmlFor={`default-radio-${index + 1}`}
-                            className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300"
-                          >
-                            {item}
-                          </label>
-                        </div>
-                      ))}
-                    </div>
+        {selectedCountries.length === 0 && (
+          <div className="mt-3">
+            <p className="font-medium">Prices per person</p>
+            <div className="p-4 rounded" style={{ border: "1px solid black" }}>
+              <p className="font-semibold text-lg">Prices per person</p>
+              <div className="grid md:grid-cols-12">
+                <div className="col-span-2">
+                  <div className="grid grid-cols-4 gap-2 md:grid-cols-2">
+                    <div></div>
                   </div>
                 </div>
-              </div>
-              <div className="col-span-7">
-                {" "}
-                {selectedRadio.students === "Standard" && (
+                <div className="col-span-7">
+                  {" "}
                   <div>
                     {formList.map((form) => (
                       <div
@@ -470,9 +451,9 @@ const Price: React.FC = () => {
                             type="number"
                             id="retailPriceChildren"
                             className="w-20 bg-white border border-gray-300 text-gray-900 text-base font-medium rounded-md p-2"
-                            value={form.retailPriceStudent}
+                            value={form.retailPrice}
                             onChange={(e) =>
-                              handleRetailPriceChange(e, form.id, "student")
+                              handleRetailPriceChange(e, form.id, "")
                             }
                           />
                         </div>
@@ -485,7 +466,7 @@ const Price: React.FC = () => {
                           <div className="flex items-center">
                             <input
                               className="p-2 w-20 bg-slate-200 rounded-md"
-                              value={form.payoutPerPersonStudent}
+                              value={form.payoutPerPerson}
                               disabled
                             />
                             <p className="font-medium">VND</p>
@@ -502,68 +483,223 @@ const Price: React.FC = () => {
                     ))}
                     <button onClick={addNewForm}>Add</button>
                   </div>
-                )}
-                {selectedRadio.students === "Free - ticket required" && (
-                  <div>
-                    {formList.map((form) => (
-                      <div
-                        key={form.id}
-                        className="grid grid-cols-4 gap-4 md:grid-cols-4"
-                      >
-                        <div></div>
-                        <div>
-                          <div className="font-medium">Number of People</div>
-                          <div className="flex items-center">
-                            <p className="font-medium">{form.numberOfPeople}</p>
-                            <p>-</p>
-                            <input
-                              type="number"
-                              id="first_name"
-                              className="w-20 bg-white border border-gray-300 text-gray-900 text-base font-medium rounded-md p-2"
-                              defaultValue={form.numberOfPeopleAfter}
-                              required
-                              onChange={(e) =>
-                                handleNumberOfPeopleChange(e, form.id)
-                              }
-                            />
-                          </div>
-                        </div>
-
-                        <div>
-                          <p className="font-medium">Retail price</p>
-                          <input
-                            type="number"
-                            id="retailPriceChildren"
-                            className="w-20 bg-slate-200 border-gray-300 text-gray-600   text-base font-medium rounded-md p-2"
-                            defaultValue="0"
-                            onChange={(e) =>
-                              handleRetailPriceChange(e, form.id, "children")
-                            }
-                            disabled
-                          />
-                        </div>
-                        <div></div>
-                      </div>
-                    ))}
-                    <button onClick={addNewForm}>Add</button>
-                  </div>
-                )}
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
+        {/* Student */}
+        {selectedCountries.includes("Student") && (
+          <div className="mt-3">
+            <p className="font-medium">Prices per person</p>
+            <div
+              className="p-4 rounded"
+              style={{ border: "1px solid black", position: "relative" }}
+            >
+              <FaRegTrashCan
+                className="absolute , top-0, right-3 text-red-600 hover:text-red-900"
+                onClick={() => handleDeleteCountry("Student")}
+              />
+              <p className="font-semibold text-lg">Student (with ID)</p>
+              <div className="grid md:grid-cols-12">
+                <div className="col-span-5">
+                  <div className="grid grid-cols-4 gap-2 md:grid-cols-2">
+                    <div>
+                      <p className="font-medium">Age range</p>
+                      <div className="flex items-center">
+                        <select
+                          id="countries1"
+                          className="w-20 bg-white border border-gray-300 text-gray-900 font-medium rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                          defaultValue={ageFor.student.ageStart}
+                          onChange={(e) =>
+                            handleAgeChange(e, "student", "studentStart")
+                          }
+                        >
+                          {options}
+                        </select>
+                        <p className="mx-1">-</p>
+                        <select
+                          id="countries2"
+                          className="w-20 bg-white border border-gray-300 text-gray-900 font-medium rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                          defaultValue={ageFor.student.ageEnd}
+                          onChange={(e) =>
+                            handleAgeChange(e, "student", "studentEnd")
+                          }
+                        >
+                          {options}
+                        </select>
+                      </div>
+                    </div>
+                    <div>
+                      <p className="font-medium">Booking category </p>
+                      <div>
+                        {radioItems.map((item, index) => (
+                          <div className="flex items-center mb-1" key={index}>
+                            <input
+                              id={`radio-students-${index + 1}`}
+                              type="radio"
+                              name="radio-students"
+                              className="w-3 h-3"
+                              checked={selectedRadio.students === item}
+                              onChange={() =>
+                                handleRadioChange("students", item)
+                              }
+                            />
+
+                            <label
+                              htmlFor={`default-radio-${index + 1}`}
+                              className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300"
+                            >
+                              {item}
+                            </label>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-span-7">
+                  {" "}
+                  {selectedRadio.students === "Standard" && (
+                    <div>
+                      {formList.map((form) => (
+                        <div
+                          key={form.id}
+                          className="grid grid-cols-4 gap-4 md:grid-cols-4"
+                        >
+                          <div>
+                            <div className="font-medium">Number of People</div>
+                            <div className="flex items-center">
+                              <p className="font-medium">
+                                {form.numberOfPeople}
+                              </p>
+                              <p>-</p>
+                              <input
+                                type="number"
+                                id="first_name"
+                                className="w-20 bg-white border border-gray-300 text-gray-900 text-base font-medium rounded-md p-2"
+                                defaultValue={form.numberOfPeopleAfter}
+                                required
+                                onChange={(e) =>
+                                  handleNumberOfPeopleChange(e, form.id)
+                                }
+                              />
+                            </div>
+                          </div>
+
+                          <div>
+                            <p className="font-medium">Retail price</p>
+                            <input
+                              type="number"
+                              id="retailPriceChildren"
+                              className="w-20 bg-white border border-gray-300 text-gray-900 text-base font-medium rounded-md p-2"
+                              value={form.retailPriceStudent}
+                              onChange={(e) =>
+                                handleRetailPriceChange(e, form.id, "student")
+                              }
+                            />
+                          </div>
+                          <div>
+                            <p className="font-medium">Commission</p>
+                            <p className="font-medium">30%</p>
+                          </div>
+                          <div>
+                            <div className="font-medium">Payout per person</div>
+                            <div className="flex items-center">
+                              <input
+                                className="p-2 w-20 bg-slate-200 rounded-md"
+                                value={form.payoutPerPersonStudent}
+                                disabled
+                              />
+                              <p className="font-medium">VND</p>
+                              {form.id !== 0 ? (
+                                <button onClick={() => removeForm(form.id)}>
+                                  X
+                                </button>
+                              ) : (
+                                <></>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                      <button onClick={addNewForm}>Add</button>
+                    </div>
+                  )}
+                  {selectedRadio.students === "Free - ticket required" && (
+                    <div>
+                      {formList.map((form) => (
+                        <div
+                          key={form.id}
+                          className="grid grid-cols-4 gap-4 md:grid-cols-4"
+                        >
+                          <div></div>
+                          <div>
+                            <div className="font-medium">Number of People</div>
+                            <div className="flex items-center">
+                              <p className="font-medium">
+                                {form.numberOfPeople}
+                              </p>
+                              <p>-</p>
+                              <input
+                                type="number"
+                                id="first_name"
+                                className="w-20 bg-white border border-gray-300 text-gray-900 text-base font-medium rounded-md p-2"
+                                defaultValue={form.numberOfPeopleAfter}
+                                required
+                                onChange={(e) =>
+                                  handleNumberOfPeopleChange(e, form.id)
+                                }
+                              />
+                            </div>
+                          </div>
+
+                          <div>
+                            <p className="font-medium">Retail price</p>
+                            <input
+                              type="number"
+                              id="retailPriceChildren"
+                              className="w-20 bg-slate-200 border-gray-300 text-gray-600   text-base font-medium rounded-md p-2"
+                              defaultValue="0"
+                              onChange={(e) =>
+                                handleRetailPriceChange(e, form.id, "children")
+                              }
+                              disabled
+                            />
+                          </div>
+                          <div></div>
+                        </div>
+                      ))}
+                      <button onClick={addNewForm}>Add</button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Children */}
-        <div className="mt-3">
-          <p className="font-medium">Prices per person</p>
-          <div className="p-4 rounded" style={{ border: "1px solid black" }}>
-            <p className="font-semibold text-lg">Children</p>
-            <div className="grid md:grid-cols-12">
-              <div className="col-span-5">
-                <div className="grid grid-cols-4 gap-2 md:grid-cols-2">
-                  <div>
-                    <p className="font-medium">Age range</p>
-                    <div className="flex items-center">
-                      {/* <select
+
+        {selectedCountries.includes("Children") && (
+          <div className="mt-3">
+            <p className="font-medium">Prices per person</p>
+            <div
+              className="p-4 rounded"
+              style={{ border: "1px solid black", position: "relative" }}
+            >
+              <FaRegTrashCan
+                className="absolute , top-0, right-3 text-red-600 hover:text-red-900"
+                onClick={() => handleDeleteCountry("Children")}
+              />
+              <p className="font-semibold text-lg">Children</p>
+              <div className="grid md:grid-cols-12">
+                <div className="col-span-5">
+                  <div className="grid grid-cols-4 gap-2 md:grid-cols-2">
+                    <div>
+                      <p className="font-medium">Age range</p>
+                      <div className="flex items-center">
+                        {/* <select
                         id="countries1"
                         className="w-20 bg-white border border-gray-300 text-gray-900 font-medium rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         value={ageFor.chidlren.ageStart}
@@ -573,177 +709,193 @@ const Price: React.FC = () => {
                       >
                         {options}
                       </select> */}
-                      <div>
-                        <p className="font-medium">
-                          {ageFor?.chidlren?.ageStart}
-                        </p>
-                      </div>
-                      <p className="mx-1">-</p>
-                      <select
-                        id="countries2"
-                        className="w-20 bg-white border border-gray-300 text-gray-900 font-medium rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        defaultValue={ageFor.chidlren.ageEnd}
-                        onChange={(e) =>
-                          handleAgeChange(e, "children", "childrenEnd")
-                        }
-                      >
-                        {options}
-                      </select>
-                    </div>
-                  </div>
-                  <div>
-                    <p className="font-medium">Booking category </p>
-                    <div>
-                      {radioItems.map((item, index) => (
-                        <div className="flex items-center mb-1" key={index}>
-                          <input
-                            id={`radio-children-${index + 1}`}
-                            type="radio"
-                            name="radio-children"
-                            className="w-3 h-3"
-                            checked={selectedRadio.children === item}
-                            onChange={() => handleRadioChange("children", item)}
-                          />
-
-                          <label
-                            htmlFor={`default-radio-${index + 1}`}
-                            className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300"
-                          >
-                            {item}
-                          </label>
+                        <div>
+                          <p className="font-medium">
+                            {ageFor?.chidlren?.ageStart}
+                          </p>
                         </div>
-                      ))}
+                        <p className="mx-1">-</p>
+                        <select
+                          id="countries2"
+                          className="w-20 bg-white border border-gray-300 text-gray-900 font-medium rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                          defaultValue={ageFor.chidlren.ageEnd}
+                          onChange={(e) =>
+                            handleAgeChange(e, "children", "childrenEnd")
+                          }
+                        >
+                          {options}
+                        </select>
+                      </div>
+                    </div>
+                    <div>
+                      <p className="font-medium">Booking category </p>
+                      <div>
+                        {radioItems.map((item, index) => (
+                          <div className="flex items-center mb-1" key={index}>
+                            <input
+                              id={`radio-children-${index + 1}`}
+                              type="radio"
+                              name="radio-children"
+                              className="w-3 h-3"
+                              checked={selectedRadio.children === item}
+                              onChange={() =>
+                                handleRadioChange("children", item)
+                              }
+                            />
+
+                            <label
+                              htmlFor={`default-radio-${index + 1}`}
+                              className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300"
+                            >
+                              {item}
+                            </label>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className="col-span-7">
-                {" "}
-                {selectedRadio.children === "Standard" && (
-                  <div>
-                    {formList.map((form) => (
-                      <div
-                        key={form.id}
-                        className="grid grid-cols-4 gap-4 md:grid-cols-4"
-                      >
-                        <div>
-                          <div className="font-medium">Number of People</div>
-                          <div className="flex items-center">
-                            <p className="font-medium">{form.numberOfPeople}</p>
-                            <p>-</p>
+                <div className="col-span-7">
+                  {" "}
+                  {selectedRadio.children === "Standard" && (
+                    <div>
+                      {formList.map((form) => (
+                        <div
+                          key={form.id}
+                          className="grid grid-cols-4 gap-4 md:grid-cols-4"
+                        >
+                          <div>
+                            <div className="font-medium">Number of People</div>
+                            <div className="flex items-center">
+                              <p className="font-medium">
+                                {form.numberOfPeople}
+                              </p>
+                              <p>-</p>
+                              <input
+                                type="number"
+                                id="first_name"
+                                className="w-20 bg-white border border-gray-300 text-gray-900 text-base font-medium rounded-md p-2"
+                                defaultValue={form.numberOfPeopleAfter}
+                                required
+                                onChange={(e) =>
+                                  handleNumberOfPeopleChange(e, form.id)
+                                }
+                              />
+                            </div>
+                          </div>
+
+                          <div>
+                            <p className="font-medium">Retail price</p>
+
                             <input
                               type="number"
-                              id="first_name"
+                              id="retailPriceChildren"
                               className="w-20 bg-white border border-gray-300 text-gray-900 text-base font-medium rounded-md p-2"
-                              defaultValue={form.numberOfPeopleAfter}
-                              required
+                              value={form.retailPriceChildren}
                               onChange={(e) =>
-                                handleNumberOfPeopleChange(e, form.id)
+                                handleRetailPriceChange(e, form.id, "children")
                               }
                             />
                           </div>
+                          <div>
+                            <p className="font-medium">Commission</p>
+                            <p className="font-medium">30%</p>
+                          </div>
+                          <div>
+                            <div className="font-medium">Payout per person</div>
+                            <div className="flex items-center">
+                              <input
+                                className="p-2 w-20 bg-slate-200 rounded-md"
+                                value={form.payoutPerPersonChildren}
+                                disabled
+                              />
+                              <p className="font-medium">VND</p>
+                              {form.id !== 0 ? (
+                                <button onClick={() => removeForm(form.id)}>
+                                  X
+                                </button>
+                              ) : (
+                                <></>
+                              )}
+                            </div>
+                          </div>
                         </div>
+                      ))}
+                      <button onClick={addNewForm}>Add</button>
+                    </div>
+                  )}
+                  {selectedRadio.children === "Free - ticket required" && (
+                    <div>
+                      {formList.map((form) => (
+                        <div
+                          key={form.id}
+                          className="grid grid-cols-4 gap-4 md:grid-cols-4"
+                        >
+                          <div></div>
+                          <div>
+                            <div className="font-medium">Number of People</div>
+                            <div className="flex items-center">
+                              <p className="font-medium">
+                                {form.numberOfPeople}
+                              </p>
+                              <p>-</p>
+                              <input
+                                type="number"
+                                id="first_name"
+                                className="w-20 bg-white border border-gray-300 text-gray-900 text-base font-medium rounded-md p-2"
+                                defaultValue={form.numberOfPeopleAfter}
+                                required
+                                onChange={(e) =>
+                                  handleNumberOfPeopleChange(e, form.id)
+                                }
+                              />
+                            </div>
+                          </div>
 
-                        <div>
-                          <p className="font-medium">Retail price</p>
+                          <div>
+                            <p className="font-medium">Retail price</p>
 
-                          <input
-                            type="number"
-                            id="retailPriceChildren"
-                            className="w-20 bg-white border border-gray-300 text-gray-900 text-base font-medium rounded-md p-2"
-                            value={form.retailPriceChildren}
-                            onChange={(e) =>
-                              handleRetailPriceChange(e, form.id, "children")
-                            }
-                          />
-                        </div>
-                        <div>
-                          <p className="font-medium">Commission</p>
-                          <p className="font-medium">30%</p>
-                        </div>
-                        <div>
-                          <div className="font-medium">Payout per person</div>
-                          <div className="flex items-center">
                             <input
-                              className="p-2 w-20 bg-slate-200 rounded-md"
-                              value={form.payoutPerPersonChildren}
+                              type="number"
+                              id="retailPriceChildren"
+                              className="w-20 bg-slate-200 border border-gray-300 text-gray-900 text-base font-medium rounded-md p-2"
+                              defaultValue="0"
                               disabled
                             />
-                            <p className="font-medium">VND</p>
-                            {form.id !== 0 ? (
-                              <button onClick={() => removeForm(form.id)}>
-                                X
-                              </button>
-                            ) : (
-                              <></>
-                            )}
                           </div>
-                        </div>
-                      </div>
-                    ))}
-                    <button onClick={addNewForm}>Add</button>
-                  </div>
-                )}
-                {selectedRadio.children === "Free - ticket required" && (
-                  <div>
-                    {formList.map((form) => (
-                      <div
-                        key={form.id}
-                        className="grid grid-cols-4 gap-4 md:grid-cols-4"
-                      >
-                        <div></div>
-                        <div>
-                          <div className="font-medium">Number of People</div>
-                          <div className="flex items-center">
-                            <p className="font-medium">{form.numberOfPeople}</p>
-                            <p>-</p>
-                            <input
-                              type="number"
-                              id="first_name"
-                              className="w-20 bg-white border border-gray-300 text-gray-900 text-base font-medium rounded-md p-2"
-                              defaultValue={form.numberOfPeopleAfter}
-                              required
-                              onChange={(e) =>
-                                handleNumberOfPeopleChange(e, form.id)
-                              }
-                            />
-                          </div>
-                        </div>
 
-                        <div>
-                          <p className="font-medium">Retail price</p>
-
-                          <input
-                            type="number"
-                            id="retailPriceChildren"
-                            className="w-20 bg-slate-200 border border-gray-300 text-gray-900 text-base font-medium rounded-md p-2"
-                            defaultValue="0"
-                            disabled
-                          />
+                          <div></div>
                         </div>
-
-                        <div></div>
-                      </div>
-                    ))}
-                    <button onClick={addNewForm}>Add</button>
-                  </div>
-                )}
+                      ))}
+                      <button onClick={addNewForm}>Add</button>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
+
         {/* Adults */}
-        <div className="mt-3">
-          <p className="font-medium">Prices per person</p>
-          <div className="p-4 rounded" style={{ border: "1px solid black" }}>
-            <p className="font-semibold text-lg">Adults</p>
-            <div className="grid md:grid-cols-12">
-              <div className="col-span-5">
-                <div className="grid grid-cols-4 gap-2 md:grid-cols-2">
-                  <div>
-                    <p className="font-medium">Age range</p>
-                    <div className="flex items-center">
-                      {/* <select
+        {selectedCountries.includes("Adults") && (
+          <div className="mt-3">
+            <p className="font-medium">Prices per person</p>
+            <div
+              className="p-4 rounded"
+              style={{ border: "1px solid black", position: "relative" }}
+            >
+              <FaRegTrashCan
+                className="absolute , top-0, right-3 text-red-600 hover:text-red-900"
+                onClick={() => handleDeleteCountry("Adults")}
+              />
+              <p className="font-semibold text-lg">Adults</p>
+              <div className="grid md:grid-cols-12">
+                <div className="col-span-5">
+                  <div className="grid grid-cols-4 gap-2 md:grid-cols-2">
+                    <div>
+                      <p className="font-medium">Age range</p>
+                      <div className="flex items-center">
+                        {/* <select
                         id="countries1"
                         className="w-20 bg-white border border-gray-300 text-gray-900 font-medium rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         value={ageFor?.adult?.ageStart}
@@ -753,158 +905,165 @@ const Price: React.FC = () => {
                       >
                         {options}
                       </select> */}
-                      <div>
-                        <p className="font-medium">{ageFor?.adult?.ageStart}</p>
-                      </div>
-                      <p className="mx-1">-</p>
-                      <select
-                        id="countries2"
-                        className="w-20 bg-white border border-gray-300 text-gray-900 font-medium rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        defaultValue={ageFor?.adult?.ageEnd}
-                        onChange={(e) =>
-                          handleAgeChange(e, "adult", "adultStart")
-                        }
-                      >
-                        {options}
-                      </select>
-                    </div>
-                  </div>
-                  <div>
-                    <p className="font-medium">Booking category </p>
-                    <div>
-                      {radioItems.map((item, index) => (
-                        <div className="flex items-center mb-1" key={index}>
-                          <input
-                            id={`radio-adults-${index + 1}`}
-                            type="radio"
-                            name="radio-adults"
-                            className="w-3 h-3"
-                            checked={selectedRadio.adults === item}
-                            onChange={() => handleRadioChange("adults", item)}
-                          />
-
-                          <label
-                            htmlFor={`default-radio-${index + 1}`}
-                            className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300"
-                          >
-                            {item}
-                          </label>
+                        <div>
+                          <p className="font-medium">
+                            {ageFor?.adult?.ageStart}
+                          </p>
                         </div>
-                      ))}
+                        <p className="mx-1">-</p>
+                        <select
+                          id="countries2"
+                          className="w-20 bg-white border border-gray-300 text-gray-900 font-medium rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                          defaultValue={ageFor?.adult?.ageEnd}
+                          onChange={(e) =>
+                            handleAgeChange(e, "adult", "adultStart")
+                          }
+                        >
+                          {options}
+                        </select>
+                      </div>
+                    </div>
+                    <div>
+                      <p className="font-medium">Booking category </p>
+                      <div>
+                        {radioItems.map((item, index) => (
+                          <div className="flex items-center mb-1" key={index}>
+                            <input
+                              id={`radio-adults-${index + 1}`}
+                              type="radio"
+                              name="radio-adults"
+                              className="w-3 h-3"
+                              checked={selectedRadio.adults === item}
+                              onChange={() => handleRadioChange("adults", item)}
+                            />
+
+                            <label
+                              htmlFor={`default-radio-${index + 1}`}
+                              className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300"
+                            >
+                              {item}
+                            </label>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className="col-span-7">
-                {" "}
-                {selectedRadio.adults === "Standard" && (
-                  <div>
-                    {formList.map((form) => (
-                      <div
-                        key={form.id}
-                        className="grid grid-cols-4 gap-4 md:grid-cols-4"
-                      >
-                        <div>
-                          <div className="font-medium">Number of People</div>
-                          <div className="flex items-center">
-                            <p className="font-medium">{form.numberOfPeople}</p>
-                            <p>-</p>
-                            <input
-                              type="number"
-                              id="first_name"
-                              className="w-20 bg-white border border-gray-300 text-gray-900 text-base font-medium rounded-md p-2"
-                              defaultValue={form.numberOfPeopleAfter}
-                              required
-                              onChange={(e) =>
-                                handleNumberOfPeopleChange(e, form.id)
-                              }
-                            />
+                <div className="col-span-7">
+                  {" "}
+                  {selectedRadio.adults === "Standard" && (
+                    <div>
+                      {formList.map((form) => (
+                        <div
+                          key={form.id}
+                          className="grid grid-cols-4 gap-4 md:grid-cols-4"
+                        >
+                          <div>
+                            <div className="font-medium">Number of People</div>
+                            <div className="flex items-center">
+                              <p className="font-medium">
+                                {form.numberOfPeople}
+                              </p>
+                              <p>-</p>
+                              <input
+                                type="number"
+                                id="first_name"
+                                className="w-20 bg-white border border-gray-300 text-gray-900 text-base font-medium rounded-md p-2"
+                                defaultValue={form.numberOfPeopleAfter}
+                                required
+                                onChange={(e) =>
+                                  handleNumberOfPeopleChange(e, form.id)
+                                }
+                              />
+                            </div>
                           </div>
-                        </div>
 
-                        <div>
-                          <p className="font-medium">Retail price</p>
-                          <input
-                            type="number"
-                            id="retailPriceChildren"
-                            className="w-20 bg-white border border-gray-300 text-gray-900 text-base font-medium rounded-md p-2"
-                            value={form.retailPriceAdult}
-                            onChange={(e) =>
-                              handleRetailPriceChange(e, form.id, "adult")
-                            }
-                          />
-                        </div>
-                        <div>
-                          <p className="font-medium">Commission</p>
-                          <p className="font-medium">30%</p>
-                        </div>
-                        <div>
-                          <div className="font-medium">Payout per person</div>
-                          <div className="flex items-center">
-                            <input
-                              className="p-2 w-20 bg-slate-200 rounded-md"
-                              value={form.payoutPerPersonAdult}
-                              disabled
-                            />
-                            <p className="font-medium">VND</p>
-                            {form.id !== 0 ? (
-                              <button onClick={() => removeForm(form.id)}>
-                                X
-                              </button>
-                            ) : (
-                              <></>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                    <button onClick={addNewForm}>Add</button>
-                  </div>
-                )}
-                {selectedRadio.adults === "Free - ticket required" && (
-                  <div>
-                    {formList.map((form) => (
-                      <div
-                        key={form.id}
-                        className="grid grid-cols-4 gap-4 md:grid-cols-4"
-                      >
-                        <div></div>
-                        <div>
-                          <div className="font-medium">Number of People</div>
-                          <div className="flex items-center">
-                            <p className="font-medium">{form.numberOfPeople}</p>
-                            <p>-</p>
+                          <div>
+                            <p className="font-medium">Retail price</p>
                             <input
                               type="number"
-                              id="first_name"
+                              id="retailPriceChildren"
                               className="w-20 bg-white border border-gray-300 text-gray-900 text-base font-medium rounded-md p-2"
-                              defaultValue={form.numberOfPeopleAfter}
-                              required
+                              value={form.retailPriceAdult}
                               onChange={(e) =>
-                                handleNumberOfPeopleChange(e, form.id)
+                                handleRetailPriceChange(e, form.id, "adult")
                               }
                             />
                           </div>
+                          <div>
+                            <p className="font-medium">Commission</p>
+                            <p className="font-medium">30%</p>
+                          </div>
+                          <div>
+                            <div className="font-medium">Payout per person</div>
+                            <div className="flex items-center">
+                              <input
+                                className="p-2 w-20 bg-slate-200 rounded-md"
+                                value={form.payoutPerPersonAdult}
+                                disabled
+                              />
+                              <p className="font-medium">VND</p>
+                              {form.id !== 0 ? (
+                                <button onClick={() => removeForm(form.id)}>
+                                  X
+                                </button>
+                              ) : (
+                                <></>
+                              )}
+                            </div>
+                          </div>
                         </div>
-                        <div>
-                          <p className="font-medium">Retail price</p>
-                          <input
-                            type="number"
-                            id="retailPriceChildren"
-                            className="w-20 bg-slate-200 border border-gray-300 text-gray-900 text-base font-medium rounded-md p-2"
-                            defaultValue="0"
-                          />
+                      ))}
+                      <button onClick={addNewForm}>Add</button>
+                    </div>
+                  )}
+                  {selectedRadio.adults === "Free - ticket required" && (
+                    <div>
+                      {formList.map((form) => (
+                        <div
+                          key={form.id}
+                          className="grid grid-cols-4 gap-4 md:grid-cols-4"
+                        >
+                          <div></div>
+                          <div>
+                            <div className="font-medium">Number of People</div>
+                            <div className="flex items-center">
+                              <p className="font-medium">
+                                {form.numberOfPeople}
+                              </p>
+                              <p>-</p>
+                              <input
+                                type="number"
+                                id="first_name"
+                                className="w-20 bg-white border border-gray-300 text-gray-900 text-base font-medium rounded-md p-2"
+                                defaultValue={form.numberOfPeopleAfter}
+                                required
+                                onChange={(e) =>
+                                  handleNumberOfPeopleChange(e, form.id)
+                                }
+                              />
+                            </div>
+                          </div>
+                          <div>
+                            <p className="font-medium">Retail price</p>
+                            <input
+                              type="number"
+                              id="retailPriceChildren"
+                              className="w-20 bg-slate-200 border border-gray-300 text-gray-900 text-base font-medium rounded-md p-2"
+                              defaultValue="0"
+                            />
+                          </div>
+                          <div></div>
                         </div>
-                        <div></div>
-                      </div>
-                    ))}
-                    <button onClick={addNewForm}>Add</button>
-                  </div>
-                )}
+                      ))}
+                      <button onClick={addNewForm}>Add</button>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
       </BannerContentPrice>
     </BannerContainer>
   );

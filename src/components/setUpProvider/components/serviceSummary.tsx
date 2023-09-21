@@ -22,7 +22,7 @@ export const ServiceSummary = ({
   const { selectedPlan, userInfo } = userServiceConfiguration;
 
   return (
-    <Box style={{ width: "60vw" }}>
+    <div>
       <h2 className="mb-3 font-medium">This is information of you</h2>
       <Grid container spacing={4}>
         <Grid item xs={4}>
@@ -77,6 +77,6 @@ export const ServiceSummary = ({
           />
         </Grid>
       </Grid>
-    </Box>
+    </div>
   );
 };

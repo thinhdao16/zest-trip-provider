@@ -344,7 +344,7 @@ const Capacity: React.FC = () => {
             <div className="mt-2">
               <div className="flex flex-wrap items-center mb-1">
                 <p className="font-medium mr-3 w-5 ">Mon</p>
-                {startingTimes?.Mon?.map((time: any, index: any) => (
+                {startingTimes?.Mon?.map((index: number) => (
                   <div key={index} className="flex items-center mr-8">
                     <select
                       className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
@@ -401,7 +401,7 @@ const Capacity: React.FC = () => {
             <div className="mt-2">
               <div className="flex flex-wrap items-center mb-1">
                 <p className="font-medium mr-3 w-5">Tue</p>
-                {startingTimes?.Tue?.map((time: any, index: any) => (
+                {startingTimes?.Tue?.map((index: number) => (
                   <div key={index} className="flex items-center mr-8">
                     <select
                       className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
@@ -458,7 +458,7 @@ const Capacity: React.FC = () => {
             <div className="mt-2">
               <div className="flex flex-wrap items-center mb-1">
                 <p className="font-medium mr-3 w-5">Wed</p>
-                {startingTimes?.Wed?.map((time: any, index: any) => (
+                {startingTimes?.Wed?.map((index: number) => (
                   <div key={index} className="flex items-center mr-8">
                     <select
                       className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
@@ -515,7 +515,7 @@ const Capacity: React.FC = () => {
             <div className="mt-2">
               <div className="flex flex-wrap items-center mb-1">
                 <p className="font-medium mr-3 w-5">Thu</p>
-                {startingTimes?.Thu?.map((time: any, index: any) => (
+                {startingTimes?.Thu?.map((index: number) => (
                   <div key={index} className="flex items-center mr-8">
                     <select
                       className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
@@ -572,7 +572,7 @@ const Capacity: React.FC = () => {
             <div className="mt-2">
               <div className="flex flex-wrap items-center mb-1">
                 <p className="font-medium mr-3 w-5">Fri</p>
-                {startingTimes?.Fri?.map((time: any, index: any) => (
+                {startingTimes?.Fri?.map((index: number) => (
                   <div key={index} className="flex items-center mr-8">
                     <select
                       className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
@@ -628,7 +628,7 @@ const Capacity: React.FC = () => {
             <div className="mt-2">
               <div className="flex flex-wrap items-center mb-1">
                 <p className="font-medium mr-3 w-5">Sat</p>
-                {startingTimes?.Sat?.map((time: any, index: any) => (
+                {startingTimes?.Sat?.map((index: number) => (
                   <div key={index} className="flex items-center mr-8">
                     <select
                       className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
@@ -684,7 +684,7 @@ const Capacity: React.FC = () => {
             <div className="mt-2">
               <div className="flex flex-wrap items-center mb-1">
                 <p className="font-medium mr-3 w-5">Sun</p>
-                {startingTimes?.Sun?.map((time: any, index: any) => (
+                {startingTimes?.Sun?.map((index: number) => (
                   <div key={index} className="flex items-center mr-8">
                     <select
                       className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
@@ -741,73 +741,79 @@ const Capacity: React.FC = () => {
           <div className="mt-3">
             <p className="font-medium">Single/special dates</p>
             <div className="mt-2">
-              {startingTimeSingle?.map((day: any, dayIndex: number) => (
-                <div
-                  key={dayIndex}
-                  className="flex flex-wrap items-center mb-4 gap-4"
-                >
-                  <FaRegTrashCan
-                    className="ml-3 text-red-600 hover:text-red-900"
-                    onClick={() => removeDay(dayIndex)}
-                  />
-
-                  <input
-                    type="date"
-                    className="flex items-center justify-center font-medium border border-solid border-gray-300 rounded-md p-2   focus:outline-none focus:ring-1 focus:ring-sky-500"
-                    value={convertToYYYYMMDD(day.day)}
-                    onChange={(e) => updateDayForDay(dayIndex, e.target.value)}
-                  />
-                  {day.time.map((time: string, timeIndex: number) => {
-                    const [hour, minute] = time.split(":");
-
-                    return (
-                      <div key={timeIndex} className="flex items-center mr-4">
-                        <select
-                          className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
-                          value={hour}
-                          onChange={(e) =>
-                            updateHourForDay(
-                              dayIndex,
-                              timeIndex,
-                              parseInt(e.target.value)
-                            )
-                          }
-                        >
-                          {optionsByDay["Single"].hr}
-                        </select>
-                        <div className="mx-1 font-medium">:</div>
-                        <select
-                          className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
-                          value={minute}
-                          onChange={(e) =>
-                            updateMinuteForDay(
-                              dayIndex,
-                              timeIndex,
-                              parseInt(e.target.value)
-                            )
-                          }
-                        >
-                          {optionsByDay["Single"].min}
-                        </select>
-
-                        <FaRegTrashCan
-                          className="ml-3 text-red-600 hover:text-red-900"
-                          onClick={() => removeTimeFromDay(dayIndex, timeIndex)}
-                        />
-                      </div>
-                    );
-                  })}
-                  <button
-                    className="flex items-center bg-white border-none"
-                    onClick={() => addTimeToDay(dayIndex)}
+              {startingTimeSingle?.map(
+                (day: { day: string; time: [] }, dayIndex: number) => (
+                  <div
+                    key={dayIndex}
+                    className="flex flex-wrap items-center mb-4 gap-4"
                   >
-                    <FaRegClock className="text-sky-500 mr-1" />{" "}
-                    <span className="font-medium text-sky-600 hover:text-sky-900 text-md">
-                      Add starting time
-                    </span>
-                  </button>
-                </div>
-              ))}
+                    <FaRegTrashCan
+                      className="ml-3 text-red-600 hover:text-red-900"
+                      onClick={() => removeDay(dayIndex)}
+                    />
+
+                    <input
+                      type="date"
+                      className="flex items-center justify-center font-medium border border-solid border-gray-300 rounded-md p-2   focus:outline-none focus:ring-1 focus:ring-sky-500"
+                      value={convertToYYYYMMDD(day.day)}
+                      onChange={(e) =>
+                        updateDayForDay(dayIndex, e.target.value)
+                      }
+                    />
+                    {day.time.map((time: string, timeIndex: number) => {
+                      const [hour, minute] = time.split(":");
+
+                      return (
+                        <div key={timeIndex} className="flex items-center mr-4">
+                          <select
+                            className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
+                            value={hour}
+                            onChange={(e) =>
+                              updateHourForDay(
+                                dayIndex,
+                                timeIndex,
+                                parseInt(e.target.value)
+                              )
+                            }
+                          >
+                            {optionsByDay["Single"].hr}
+                          </select>
+                          <div className="mx-1 font-medium">:</div>
+                          <select
+                            className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
+                            value={minute}
+                            onChange={(e) =>
+                              updateMinuteForDay(
+                                dayIndex,
+                                timeIndex,
+                                parseInt(e.target.value)
+                              )
+                            }
+                          >
+                            {optionsByDay["Single"].min}
+                          </select>
+
+                          <FaRegTrashCan
+                            className="ml-3 text-red-600 hover:text-red-900"
+                            onClick={() =>
+                              removeTimeFromDay(dayIndex, timeIndex)
+                            }
+                          />
+                        </div>
+                      );
+                    })}
+                    <button
+                      className="flex items-center bg-white border-none"
+                      onClick={() => addTimeToDay(dayIndex)}
+                    >
+                      <FaRegClock className="text-sky-500 mr-1" />{" "}
+                      <span className="font-medium text-sky-600 hover:text-sky-900 text-md">
+                        Add starting time
+                      </span>
+                    </button>
+                  </div>
+                )
+              )}
 
               <button
                 className="flex items-center bg-white border-2 border-sky-500 rounded-3xl p-4  text-sky-600 hover:text-sky-900 hover:border-sky-900"

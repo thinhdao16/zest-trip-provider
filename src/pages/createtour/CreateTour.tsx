@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import Headers from "./components/Headers";
 import { LinearProgress } from "@mui/joy";
 import { StepProvider } from "./context/ui/StepContext";
@@ -16,12 +16,17 @@ import Media from "./components/Media";
 import Title from "./components/Title";
 import Review from "./components/Review";
 import Congratulation from "./components/Congratulation";
-import { postCreateTour } from "../../store/redux/silce/tourSlice";
+import {
+  getTagTour,
+  getVehicleTour,
+  postCreateTour,
+} from "../../store/redux/silce/tourSlice";
 import { AppDispatch } from "../../store/redux/store";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { DataContext } from "../../store/dataContext/DataContext";
+import { StateTour } from "./types/index.t";
 
 const steps = [
   Welcome,
@@ -72,13 +77,14 @@ const StepRenderer: React.FC = () => {
       )}
     </>
   );
-  const loadingCreateTour = useSelector(
-    (state: any) => state.tour.loadingCreateTour
-  );
-  const errorCreateTour = useSelector(
-    (state: any) => state.tour.errorCreateTour
-  );
+  useEffect(() => {
+    dispatch(getTagTour());
+    dispatch(getVehicleTour());
+  }, []);
 
+  const errorCreateTour = useSelector(
+    (state: StateTour) => state.tour.errorCreateTour
+  );
   const handleFormSubmit = () => {
     goToNextStep();
     setRefeshTour((prev) => !prev);
@@ -128,7 +134,7 @@ const StepRenderer: React.FC = () => {
     const requestData = {
       formData,
     };
-    dispatch(postCreateTour(requestData?.formData));
+    dispatch(postCreateTour(requestData));
     if (errorCreateTour !== true) {
       goToNextStep();
     } else alert("plase see back form");
