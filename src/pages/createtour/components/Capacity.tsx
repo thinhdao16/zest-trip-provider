@@ -28,6 +28,7 @@ const Capacity: React.FC = () => {
 
   const [startingTimeSingle, setStartingTimeSingle] = useState<any>([]);
 
+  const allStartingTime = { ...startingTimes, ...startingTimeSingle };
   const [selectedHour, setSelectedHour] = useState<any>({
     Mon: [],
     Tue: [],
@@ -143,6 +144,7 @@ const Capacity: React.FC = () => {
     setSelectedHour({ ...selectedHour, [field]: updatedHours });
 
     const updatedStartingTimes = { ...startingTimes };
+    console.log(value);
     updatedStartingTimes[field][index].setHours(value);
 
     setStartingTimes(updatedStartingTimes);
@@ -170,7 +172,7 @@ const Capacity: React.FC = () => {
     if (dayIndex >= 0 && dayIndex < startingTimeSingle.length) {
       const updatedStartingTimeSingle = [...startingTimeSingle];
       const updatedDay = { ...updatedStartingTimeSingle[dayIndex] };
-      updatedDay.time.splice(timeIndex, 1); // Xóa giờ và phút tại vị trí timeIndex
+      updatedDay.time.splice(timeIndex, 1);
       updatedStartingTimeSingle[dayIndex] = updatedDay;
       setStartingTimeSingle(updatedStartingTimeSingle);
     }
@@ -178,7 +180,7 @@ const Capacity: React.FC = () => {
   const removeDay = (dayIndex: number) => {
     if (dayIndex >= 0 && dayIndex < startingTimeSingle.length) {
       const updatedStartingTimeSingle = [...startingTimeSingle];
-      updatedStartingTimeSingle.splice(dayIndex, 1); // Xóa ngày-tháng-năm tại vị trí dayIndex
+      updatedStartingTimeSingle.splice(dayIndex, 1);
       setStartingTimeSingle(updatedStartingTimeSingle);
     }
   };
@@ -290,8 +292,8 @@ const Capacity: React.FC = () => {
     setCapacity(inputData);
   };
   React.useEffect(() => {
-    updateFormValues(5, { Capacity: capacity });
-  }, [capacity]);
+    updateFormValues(5, { Capacity: allStartingTime });
+  }, [startingTimes, startingTimeSingle]);
 
   if (currentStep !== 7) {
     return null;
@@ -344,7 +346,7 @@ const Capacity: React.FC = () => {
             <div className="mt-2">
               <div className="flex flex-wrap items-center mb-1">
                 <p className="font-medium mr-3 w-5 ">Mon</p>
-                {startingTimes?.Mon?.map((index: number) => (
+                {startingTimes?.Mon?.map((item: any, index: number) => (
                   <div key={index} className="flex items-center mr-8">
                     <select
                       className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
@@ -401,7 +403,7 @@ const Capacity: React.FC = () => {
             <div className="mt-2">
               <div className="flex flex-wrap items-center mb-1">
                 <p className="font-medium mr-3 w-5">Tue</p>
-                {startingTimes?.Tue?.map((index: number) => (
+                {startingTimes?.Tue?.map((item: any, index: number) => (
                   <div key={index} className="flex items-center mr-8">
                     <select
                       className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
@@ -458,7 +460,7 @@ const Capacity: React.FC = () => {
             <div className="mt-2">
               <div className="flex flex-wrap items-center mb-1">
                 <p className="font-medium mr-3 w-5">Wed</p>
-                {startingTimes?.Wed?.map((index: number) => (
+                {startingTimes?.Wed?.map((item: any, index: number) => (
                   <div key={index} className="flex items-center mr-8">
                     <select
                       className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
@@ -515,7 +517,7 @@ const Capacity: React.FC = () => {
             <div className="mt-2">
               <div className="flex flex-wrap items-center mb-1">
                 <p className="font-medium mr-3 w-5">Thu</p>
-                {startingTimes?.Thu?.map((index: number) => (
+                {startingTimes?.Thu?.map((item: any, index: number) => (
                   <div key={index} className="flex items-center mr-8">
                     <select
                       className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
@@ -572,7 +574,7 @@ const Capacity: React.FC = () => {
             <div className="mt-2">
               <div className="flex flex-wrap items-center mb-1">
                 <p className="font-medium mr-3 w-5">Fri</p>
-                {startingTimes?.Fri?.map((index: number) => (
+                {startingTimes?.Fri?.map((item: any, index: number) => (
                   <div key={index} className="flex items-center mr-8">
                     <select
                       className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
@@ -628,7 +630,7 @@ const Capacity: React.FC = () => {
             <div className="mt-2">
               <div className="flex flex-wrap items-center mb-1">
                 <p className="font-medium mr-3 w-5">Sat</p>
-                {startingTimes?.Sat?.map((index: number) => (
+                {startingTimes?.Sat?.map((item: any, index: number) => (
                   <div key={index} className="flex items-center mr-8">
                     <select
                       className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
@@ -684,7 +686,7 @@ const Capacity: React.FC = () => {
             <div className="mt-2">
               <div className="flex flex-wrap items-center mb-1">
                 <p className="font-medium mr-3 w-5">Sun</p>
-                {startingTimes?.Sun?.map((index: number) => (
+                {startingTimes?.Sun?.map((item: any, index: number) => (
                   <div key={index} className="flex items-center mr-8">
                     <select
                       className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"

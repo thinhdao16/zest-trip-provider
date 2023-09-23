@@ -1,4 +1,3 @@
-import { FaRegCircleDot } from "react-icons/fa6";
 import { Box, Step, StepLabel, Stepper } from "@mui/material";
 import "../styles/sidebar.css";
 import { SiInstapaper } from "react-icons/si";
@@ -10,7 +9,7 @@ interface SidebarProps {
 const steps = [
   {
     step: 1,
-    title: "Company Informationd",
+    title: "Company Information",
   },
   {
     step: 2,
@@ -41,7 +40,12 @@ export const Sidebar = ({ currentStep, handleNextStep }: SidebarProps) => {
           <Stepper activeStep={currentStep - 1} alternativeLabel>
             {steps.map((label) => (
               <Step key={label?.step}>
-                <StepLabel onClick={() => handleNextStep(label.step)}>
+                <StepLabel
+                  onClick={() => handleNextStep(label.step)}
+                  style={{
+                    color: label.step === currentStep ? "red" : "black",
+                  }}
+                >
                   <p>{label?.title}</p>
                 </StepLabel>
               </Step>

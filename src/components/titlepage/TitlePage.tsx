@@ -1,16 +1,15 @@
 import { Box, Typography } from "@mui/material";
-import { BannerTitleList } from "../../styles/global/StyleGlobal";
 import React from "react";
 
 interface CustomTitleProps {
   title: string;
   titleList: string;
-  rest: string
+  rest: string;
 }
 export const TitlePage: React.FC<CustomTitleProps> = ({
   title,
   titleList,
-  rest
+  rest,
 }) => {
   return (
     <div>
@@ -27,10 +26,10 @@ export const TitlePage: React.FC<CustomTitleProps> = ({
       </Box>
       <Box style={{ marginBottom: "36px", display: "flex" }}>
         <Box style={{ flexGrow: 1 }}>
-          <BannerTitleList variant="subtitle1">{titleList}</BannerTitleList>
+          <p className="text-2xl font-semibold">{titleList}</p>
         </Box>
         <Box style={{ flexGrow: 1, textAlign: "right" }}>
-          <Typography variant="subtitle1">{rest}</Typography>
+          <p>{rest}</p>
         </Box>
       </Box>
     </div>

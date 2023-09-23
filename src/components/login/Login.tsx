@@ -4,7 +4,9 @@ import FormLabel, { formLabelClasses } from "@mui/joy/FormLabel";
 import Typography from "@mui/joy/Typography";
 import { AiOutlinePhone, AiOutlineLock, AiOutlineShop } from "react-icons/ai";
 import {
+  Backdrop,
   Button,
+  CircularProgress,
   FormControl,
   Grid,
   InputAdornment,
@@ -34,6 +36,7 @@ import { AppDispatch } from "../../store/redux/store";
 import { useDispatch } from "react-redux";
 import { personalInfo } from "../../store/redux/silce/authSilce";
 import { BASE_URL } from "../../store/apiInterceptors";
+import Main from "./Main";
 
 function Login() {
   const navigate = useNavigate();
@@ -42,7 +45,7 @@ function Login() {
   const dispatch: AppDispatch = useDispatch();
   const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
-
+  const [openLoading, setOpenLoading] = useState(false);
   useEffect(() => {
     checkAccessToken();
   }, [refeshLogin]);
@@ -55,6 +58,7 @@ function Login() {
   };
 
   const handleSignIn = async () => {
+    setOpenLoading(true);
     try {
       const response = await axios.post(
         `${BASE_URL}/auth/signin`,
@@ -89,18 +93,27 @@ function Login() {
       } else {
         console.log("Lỗi khi đăng nhập");
       }
+      setOpenLoading(false);
     } catch (error) {
       console.error(error);
+      setOpenLoading(false);
     }
   };
 
   return (
     <>
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={openLoading}
+        onClick={() => setOpenLoading(false)}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <ContainerPageFullHalf>
         <Grid container>
           <Grid
             item
-            xs={6}
+            xs={4}
             style={{
               backgroundColor: "#f9fbfc",
               borderRadius: "8px 0 0 8px",
@@ -108,39 +121,53 @@ function Login() {
               display: "flex",
               flexDirection: "column",
               height: "100vh",
+              alignItems: "center",
+              justifyContent: "center",
+              position: "relative",
             }}
           >
-            <Typography
-              component="h1"
-              fontSize="xl2"
-              fontWeight="lg"
-              sx={{ mb: 5, display: "flex" }}
-            >
-              <AiOutlineShop style={{ margin: "8px 8px 0 0 " }} /> DiTour
-            </Typography>
-            <ul>
-              <li>⨀ Exclusive discounts 🎉🎉🎉</li>
-              <li>⨀ Tailored recommendation</li>
-              <li>⨀ Advance custiomer support</li>
-              <li>⨀ Save details for next up </li>
-            </ul>
-            <div style={{ marginTop: "auto" }}>
-              <Link to="/signup">
-                <Button
-                  fullWidth
-                  style={{
-                    backgroundColor: "white",
-                    border: "1px solid #e7e7eb",
-                    color: "black",
-                  }}
-                >
-                  Don't have an account
-                </Button>
-              </Link>
+            <div className="absolute top-5 left-5">
+              <div className="flex items-center justify-center font-medium text-2xl">
+                <AiOutlineShop /> <p>DiTour</p>
+              </div>
+            </div>
+            <div className="flex items-center justify-center flex-col">
+              <p className="font-bold text-4xl mb-6">Welcome Back!</p>
+              <ul className="mb-6">
+                <li>⨀ Exclusive discounts 🎉🎉🎉</li>
+                <li>⨀ Tailored recommendation</li>
+                <li>⨀ Advance custiomer support</li>
+                <li>⨀ Save details for next up </li>
+              </ul>
+              <div
+                style={{
+                  marginTop: "auto",
+                  display: "flex",
+                  justifyContent: "center ",
+                }}
+              >
+                <div>
+                  <Link to="/signup">
+                    <Button
+                      fullWidth
+                      style={{
+                        backgroundColor: "white",
+                        border: "1px solid #e7e7eb",
+                        color: "black",
+                        width: "250px",
+                        borderRadius: "10px",
+                        textTransform: "none",
+                      }}
+                    >
+                      Don't have an account
+                    </Button>
+                  </Link>
+                </div>
+              </div>
             </div>
           </Grid>
-          <Grid item xs={6}>
-            <ContainerPageFullHalfContent>
+          <Grid item xs={8}>
+            <ContainerPageFullHalfContent style={{ height: "100vw" }}>
               <Box
                 component="main"
                 sx={{
@@ -165,12 +192,12 @@ function Login() {
                 }}
               >
                 <div>
-                  <Typography component="h1" fontSize="xl2" fontWeight="lg">
+                  <p className="font-medium text-2xl">
                     Sign in to your account
-                  </Typography>
-                  <Typography level="body-xs" sx={{ my: 1, mb: 1 }}>
+                  </p>
+                  <p className="font-medium text-sm text-gray-600">
                     Enter your credentials to continue
-                  </Typography>
+                  </p>
                 </div>
                 <form
                   onSubmit={(event: React.FormEvent<SignInFormElement>) => {
@@ -186,7 +213,7 @@ function Login() {
                   }}
                 >
                   <FormControl required>
-                    <FormLabel>Phone Number</FormLabel>
+                    <span className=" font-medium mb-1">Phone Number</span>
                     <TextField
                       onChange={(e) => setPhoneNumber(e.target.value)}
                       required
@@ -202,7 +229,7 @@ function Login() {
                     />
                   </FormControl>
                   <FormControl required>
-                    <FormLabel>Password</FormLabel>
+                    <p className="font-medium mb-1">Password</p>
                     <TextField
                       required
                       value={password}
@@ -233,11 +260,16 @@ function Login() {
                     Forgot your password
                   </Link> */}
                   </Box>
-                  <ButtonGlobal type="submit" fullWidth onClick={handleSignIn}>
+                  <ButtonGlobal
+                    style={{ width: "450px" }}
+                    type="submit"
+                    fullWidth
+                    onClick={handleSignIn}
+                  >
                     Sign in
                   </ButtonGlobal>
                 </form>
-                <Box sx={{ position: "relative", margin: 0.5 }}>
+                {/* <Box sx={{ position: "relative", margin: 0.5 }}>
                   <span
                     style={{
                       position: "absolute",
@@ -258,15 +290,15 @@ function Login() {
                       marginTop: 3,
                     }}
                   />
-                </Box>
-                <ContinueGoogle />
+                </Box> */}
+                {/* <ContinueGoogle /> */}
+              </Box>
+              <Box component="footer" sx={{ py: 3 }}>
+                <Typography level="body-md" textAlign="center">
+                  © ZestTravel {new Date().getFullYear()}
+                </Typography>
               </Box>
             </ContainerPageFullHalfContent>
-            <Box component="footer" sx={{ py: 3 }}>
-              <Typography level="body-md" textAlign="center">
-                © DiTour {new Date().getFullYear()}
-              </Typography>
-            </Box>
           </Grid>
         </Grid>
       </ContainerPageFullHalf>

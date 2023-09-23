@@ -35,7 +35,6 @@ const radioItems = [
 const Price: React.FC = () => {
   const { currentStep, updateFormValues } = useStepContext();
   const [selectedCountries, setSelectedCountries]: any = useState([]);
-  console.log(selectedCountries);
   const [dataTicket, setDataTicket]: any = useState([]);
   const [selectedRadio, setSelectedRadio] = useState({
     students: radioItems[0],
@@ -361,13 +360,12 @@ const Price: React.FC = () => {
 
   React.useEffect(() => {
     if (currentStep === 8) {
-      // const priceData: PriceData = inputValues.reduce((data, input: any) => {
-      //   data[input.labelMain] = input?.value?.toString();
-      //   return data;
-      // }, {} as PriceData);
-      // updateFormValues(6, priceData);
+      updateFormValues(6, { ticket: dataTicket });
     }
-  }, [inputValues]);
+    if (selectedCountries.length === 0) {
+      setDataTicket(formList);
+    }
+  }, [formList, selectedCountries]);
 
   if (currentStep !== 8) {
     return null;
@@ -389,12 +387,12 @@ const Price: React.FC = () => {
         ))}
         <select
           id="countries_disabled"
-          className="w-32 text-sky-600 font-medium text-lg hover:text-sky-900 focus:border-none"
+          className="w-44 text-sky-600 font-medium text-lg hover:text-sky-900 focus:border-none"
           value={selectedCountries}
           onChange={handleCountryChange}
         >
           <option value="" disabled>
-            Choose a country
+            Choose type ticket
           </option>
           {countries.map((country) => {
             // Kiểm tra xem country.code có tồn tại trong selectedCountries không
@@ -410,25 +408,24 @@ const Price: React.FC = () => {
         </select>
         {selectedCountries.length === 0 && (
           <div className="mt-3">
-            <p className="font-medium">Prices per person</p>
             <div className="p-4 rounded" style={{ border: "1px solid black" }}>
-              <p className="font-semibold text-lg">Prices per person</p>
+              <p className="font-semibold text-lg mb-4">Prices per person</p>
               <div className="grid md:grid-cols-12">
-                <div className="col-span-2">
-                  <div className="grid grid-cols-4 gap-2 md:grid-cols-2">
-                    <div></div>
-                  </div>
+                <div className="col-span-3">
+                  <p className="font-medium">Prices per person</p>
                 </div>
-                <div className="col-span-7">
+                <div className="col-span-9">
                   {" "}
                   <div>
                     {formList.map((form) => (
                       <div
                         key={form.id}
-                        className="grid grid-cols-4 gap-4 md:grid-cols-4"
+                        className="grid grid-cols-4 gap-4 md:grid-cols-4 mb-2"
                       >
                         <div>
-                          <div className="font-medium">Number of People</div>
+                          <div className="font-medium h-4 mb-2">
+                            Number of People
+                          </div>
                           <div className="flex items-center">
                             <p className="font-medium">{form.numberOfPeople}</p>
                             <p>-</p>
@@ -446,7 +443,7 @@ const Price: React.FC = () => {
                         </div>
 
                         <div>
-                          <p className="font-medium">Retail price</p>
+                          <p className="font-medium h-4 mb-2">Retail price</p>
                           <input
                             type="number"
                             id="retailPriceChildren"
@@ -458,11 +455,13 @@ const Price: React.FC = () => {
                           />
                         </div>
                         <div>
-                          <p className="font-medium">Commission</p>
+                          <p className="font-medium h-4 mb-2">Commission</p>
                           <p className="font-medium">30%</p>
                         </div>
                         <div>
-                          <div className="font-medium">Payout per person</div>
+                          <div className="font-medium h-4 mb-2">
+                            Payout per person
+                          </div>
                           <div className="flex items-center">
                             <input
                               className="p-2 w-20 bg-slate-200 rounded-md"
@@ -481,7 +480,12 @@ const Price: React.FC = () => {
                         </div>
                       </div>
                     ))}
-                    <button onClick={addNewForm}>Add</button>
+                    <button
+                      className=" text-base font-semibold bg-white p-0 mt-2 focus:outline-none hover:border-none hover:p-0 hover:m border-none text-sky-600 hover:text-sky-900"
+                      onClick={addNewForm}
+                    >
+                      Set up price tiers
+                    </button>
                   </div>
                 </div>
               </div>

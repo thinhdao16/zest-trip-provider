@@ -9,13 +9,14 @@ import { useStepContext } from "../context/ui/useStepContext";
 import { Box, Card, Grid } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { AiFillBank } from "react-icons/ai";
 import { DataSelectCard, StateTour } from "../types/index.t";
+import { VehicleTag } from "../../../components/icon/tour/tag";
 
 const TransportType: React.FC = () => {
   const { currentStep, updateFormValues } = useStepContext();
   const [selectedCards, setSelectedCards] = useState<number[]>([]);
   const vehicleTour = useSelector((state: StateTour) => state.tour.vehicleTour);
+  console.log(vehicleTour);
   const handleCardClick = (data: DataSelectCard) => {
     setSelectedCards((prevSelectedCards) => {
       if (prevSelectedCards.includes(data.id)) {
@@ -60,7 +61,12 @@ const TransportType: React.FC = () => {
                 onClick={() => handleCardClick(data)}
               >
                 <Box sx={{ margin: 3 }}>
-                  <AiFillBank style={{ fontSize: "32px" }} />
+                  {/* <img
+                    src="src\assets\tour\iconTag\airplane.svg"
+                    className="h-2"
+                    alt=""
+                  /> */}
+                  <VehicleTag field={data?.name} />
                   <TitleIconCardOptions>{data?.name}</TitleIconCardOptions>
                 </Box>
               </Card>

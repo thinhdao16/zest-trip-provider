@@ -61,11 +61,11 @@ export const BannerHomePageButtonListTab = styled(Tab)(() => ({
     outline: "none",
   },
 }));
-export const BannerTitleList = styled(Typography)(() => ({
-  lineHeight: "30px",
-  fontSize: "26px",
-  fontWeight: "600",
-}));
+// export const BannerTitleList = styled(Typography)(() => ({
+//   lineHeight: "30px",
+//   fontSize: "26px",
+//   fontWeight: "600",
+// }));
 export const ButtonGlobal = styled(Button)(() => ({
   position: "relative",
   backgroundColor: "#8fcaf7",

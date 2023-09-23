@@ -11,6 +11,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { DataSelectCard, StateTour } from "../types/index.t";
 import { AiFillBank } from "react-icons/ai";
+import { TourTag } from "../../../components/icon/tour/tag";
 
 const AccomType: React.FC = () => {
   const { currentStep, updateFormValues } = useStepContext();
@@ -63,8 +64,7 @@ const AccomType: React.FC = () => {
                 onClick={() => handleCardClick(data)}
               >
                 <Box sx={{ margin: 3 }}>
-                  <AiFillBank style={{ fontSize: "32px" }} />
-
+                  <TourTag field={data?.name} />
                   <TitleIconCardOptions>{data?.name}</TitleIconCardOptions>
                 </Box>
               </Card>

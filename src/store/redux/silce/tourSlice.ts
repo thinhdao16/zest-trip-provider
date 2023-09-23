@@ -53,7 +53,6 @@ export const fetchTourDetail = createAsyncThunk(
       const response = await axiosInstance.get(
         `${BASE_URL}/tour/detail/${index}`
       );
-      console.log(response);
       return response.data.data.data;
     } catch (error) {
       throw new Error("Failed to fetch tours");

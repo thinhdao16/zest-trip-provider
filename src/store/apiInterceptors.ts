@@ -1,5 +1,4 @@
 import jwt_decode from "jwt-decode";
-// apiInterceptors.js
 import axios from "axios";
 
 export const BASE_URL = "https://manager-ecom-cllh63fgua-df.a.run.app";
@@ -8,24 +7,26 @@ const getTokenFromLocalStorage = () => {
   const token = localStorage.getItem("access_token");
   return token;
 };
-const getRefeshTokenFromLocalStorage = () => {
+
+const getRefreshTokenFromLocalStorage = () => {
   const token = localStorage.getItem("refresh_token");
-  // if (token !== null) {
-  //   const parsedToken = JSON.parse(token);
-  //   return parsedToken;
-  // }
   return token;
 };
 
-export const isTokenExpired = (tokenPayload: any) => {
-  const decodedToken: any = jwt_decode(tokenPayload);
-  const expirationTimeInSeconds = decodedToken.exp;
-  const currentTimeInSeconds = Math.floor(Date.now() / 1000);
-  return expirationTimeInSeconds < currentTimeInSeconds;
+export const isTokenExpired = (tokenPayload: string) => {
+  try {
+    const decodedToken: { exp: number } = jwt_decode(tokenPayload);
+    const expirationTimeInSeconds = decodedToken.exp;
+    const currentTimeInSeconds = Math.floor(Date.now() / 1000);
+    return expirationTimeInSeconds < currentTimeInSeconds;
+  } catch (error) {
+    console.error("Error decoding token:", error);
+    return true;
+  }
 };
 
 const refreshToken = async () => {
-  const refreshToken = getRefeshTokenFromLocalStorage();
+  const refreshToken = getRefreshTokenFromLocalStorage();
   if (refreshToken) {
     try {
       const refreshResponse = await axios.post(
@@ -34,11 +35,10 @@ const refreshToken = async () => {
         {
           headers: {
             Authorization: `Bearer ${refreshToken}`,
-            // "Content-Type": "application/json",
           },
         }
       );
-      const newAccessToken = refreshResponse.data.access_token;
+      const newAccessToken = refreshResponse.data.data.access_token;
       localStorage.setItem("access_token", newAccessToken);
       return newAccessToken;
     } catch (error) {
@@ -55,12 +55,20 @@ export const axiosInstance = axios.create();
 axiosInstance.interceptors.request.use(
   async (config) => {
     const accessToken = getTokenFromLocalStorage();
+    const refreshTokenUse = getRefreshTokenFromLocalStorage();
     if (accessToken) {
       if (isTokenExpired(accessToken)) {
         const newAccessToken = await refreshToken();
         config.headers.Authorization = `Bearer ${newAccessToken}`;
       } else {
         config.headers.Authorization = `Bearer ${accessToken}`;
+      }
+    } else {
+      if (refreshTokenUse) {
+        const newAccessToken = await refreshToken();
+        config.headers.Authorization = `Bearer ${newAccessToken}`;
+      } else {
+        console.log("dont find token");
       }
     }
     return config;

@@ -14,7 +14,6 @@ import {
   Grid,
   Link,
   Rating,
-  Tab,
   Typography,
 } from "@mui/material";
 import { AiFillHome, AiFillStar } from "react-icons/ai";
@@ -33,18 +32,32 @@ import { useDispatch } from "react-redux";
 import { fetchTourDetail } from "../../../store/redux/silce/tourSlice";
 import { AppDispatch } from "../../../store/redux/store";
 import { Carousel } from "react-responsive-carousel";
+import { StateTour } from "../../createtour/types/index.t";
+
+// interface tourDetail{
+//   tour_images:[],
+//   name:string,
+//   location:string,
+//   price:string,
+//   description:string,
+//   duration_day:string,
+//   duration_night:string
+// }
+
 function SinglePage() {
   const [value, setValue] = React.useState("1");
 
   const dispatch: AppDispatch = useDispatch();
 
-  const { index } = useParams();
+  const { index }: any = useParams();
 
   useEffect(() => {
     dispatch(fetchTourDetail(index));
   }, [dispatch, index]);
 
-  const tourDetail = useSelector((state: any) => state.tour.tourGetDetail);
+  const tourDetail: any = useSelector(
+    (state: StateTour) => state.tour.tourGetDetail
+  );
 
   function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     event.preventDefault();
@@ -91,187 +104,171 @@ function SinglePage() {
                 </Typography>
               </Breadcrumbs>
             </div>
-
-            <Grid container spacing={0} style={{ maxHeight: "30vw" }}>
-              <Grid item xs={5}>
-                <Carousel>
-                  {tourDetail?.tour_images?.map((data: any, index: number) => (
-                    <div key={index}>
-                      <img
-                        src={data}
-                        alt={`Image ${index}`}
-                        style={{
-                          width: "34vw",
-                          // height: "34vw",
-                          objectFit: "cover",
-                          borderRadius: "25px",
-                        }}
-                      />
-                    </div>
-                  ))}
-                </Carousel>
-              </Grid>
-              <Grid item xs={7}>
-                <BannerHomePageListFirst>
-                  <BannerTitle>{tourDetail?.name} </BannerTitle>
-                  <BannerTitleExtra>
-                    <AiFillStar />
-                    <Typography>5,0</Typography> ·{" "}
-                    <Typography> 5 rate </Typography>.
-                    <Typography>{tourDetail?.location}</Typography>
-                  </BannerTitleExtra>
-                </BannerHomePageListFirst>{" "}
-                <Box
-                  style={{
-                    display: "flex",
-                    margin: "5px 0 10px 0",
-                    fontSize: "20px",
-                    fontWeight: "600",
-                  }}
-                >
-                  <Typography>${tourDetail?.price}</Typography>
-                  <Typography>/adults</Typography>
-                </Box>
-                <Box style={{ margin: "5px 0 10px 0" }}>
-                  <BannerDescription>
-                    {tourDetail?.description}
-                  </BannerDescription>
-                </Box>
-                <Box style={{ display: "flex", margin: "5px 0 15px 0 " }}>
-                  <Typography>abc</Typography>
-                  <Typography>bcd</Typography>
-                </Box>
+            <Carousel>
+              {tourDetail?.tour_images?.map((data: string, index: number) => (
+                <div key={index}>
+                  <img
+                    src={data}
+                    alt={`Image ${index}`}
+                    style={{
+                      width: "34vw",
+                      // height: "34vw",
+                      objectFit: "cover",
+                      borderRadius: "25px",
+                    }}
+                  />
+                </div>
+              ))}
+            </Carousel>
+            <BannerHomePageListFirst>
+              <BannerTitle>{tourDetail?.name} </BannerTitle>
+              <BannerTitleExtra>
+                <AiFillStar />
+                <Typography>5,0</Typography> · <Typography> 5 rate </Typography>
+                .<Typography>{tourDetail?.location}</Typography>
+              </BannerTitleExtra>
+            </BannerHomePageListFirst>{" "}
+            <Box
+              style={{
+                display: "flex",
+                margin: "5px 0 10px 0",
+                fontSize: "20px",
+                fontWeight: "600",
+              }}
+            >
+              <Typography>${tourDetail?.price}</Typography>
+              <Typography>/adults</Typography>
+            </Box>
+            <Box style={{ margin: "5px 0 10px 0" }}>
+              <BannerDescription>{tourDetail?.description}</BannerDescription>
+            </Box>
+            <Box style={{ display: "flex", margin: "5px 0 15px 0 " }}>
+              <Typography>abc</Typography>
+              <Typography>bcd</Typography>
+            </Box>
+            <Box>
+              <TabContext value={value}>
                 <Box>
-                  <TabContext value={value}>
-                    <Box>
-                      <TabList
-                        onChange={handleChange}
-                        aria-label="lab API tabs example"
-                        className="tab-list-mui"
-                      >
-                        <BannerHomePageButtonListTab
-                          label="Item One"
-                          value="1"
-                        />
-                        <BannerHomePageButtonListTab
-                          label="Duration"
-                          value="2"
-                        />
-                        <BannerHomePageButtonListTab label="Review" value="3" />
-                      </TabList>
-                    </Box>
-                    <Box className="tab-list-data-mui">
-                      <TabPanel value="1"></TabPanel>
-                      <TabPanel value="2">
-                        <Box style={{ display: "flex", alignItems: "center" }}>
-                          <FiSun />
-                          <Typography>
-                            Duration_day: {tourDetail?.duration_day}
-                          </Typography>
-                        </Box>
-                        <Box style={{ display: "flex" }}>
-                          <FiMoon />
-                          <Typography>
-                            Duration_night: {tourDetail?.duration_night}
-                          </Typography>
-                        </Box>
-                      </TabPanel>
-                      <TabPanel
-                        value="3"
-                        style={{ maxHeight: "250px", overflowY: "auto" }}
-                      >
-                        <Card className="mb-1">
-                          <CardContent>
-                            <Grid container>
-                              <Grid item xs={1}>
-                                <div
-                                  style={{
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                    height: "100%", // Ensures the div takes the full height of the Grid item
-                                  }}
-                                >
-                                  <img
-                                    style={{
-                                      borderRadius: "50%",
-                                      width: "30px",
-                                      height: "30px",
-                                    }}
-                                    src="https://subscripciones.mylagro.com/hubfs/Imported_Blog_Media/basket-lowres-219x300.jpg"
-                                    alt=""
-                                  />
-                                </div>
-                              </Grid>
-                              <Grid item xs={9}>
-                                <Box style={{ display: "block" }}>
-                                  <Typography>dao duc thinh</Typography>
-                                  <Rating />
-                                </Box>
-                              </Grid>
-                              <Grid item xs={2}>
-                                {" "}
-                                <Typography style={{ textAlign: "right" }}>
-                                  1 day ago
-                                </Typography>
-                              </Grid>
-                            </Grid>
-                            <Typography>
-                              đặc biệt để khám phá khu vực nông thôn miền Bắc
-                              Thái Lan. Ở nơi hoang dã, giữa cánh đồng lúa và
-                              cách xa các địa điểm du lịch.
-                            </Typography>
-                          </CardContent>
-                        </Card>
-                        <Card>
-                          <CardContent>
-                            <Grid container>
-                              <Grid item xs={1}>
-                                <div
-                                  style={{
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                    height: "100%", // Ensures the div takes the full height of the Grid item
-                                  }}
-                                >
-                                  <img
-                                    style={{
-                                      borderRadius: "50%",
-                                      width: "30px",
-                                      height: "30px",
-                                    }}
-                                    src="https://subscripciones.mylagro.com/hubfs/Imported_Blog_Media/basket-lowres-219x300.jpg"
-                                    alt=""
-                                  />
-                                </div>
-                              </Grid>
-                              <Grid item xs={9}>
-                                <Box style={{ display: "block" }}>
-                                  <Typography>dao duc thinh</Typography>
-                                  <Rating />
-                                </Box>
-                              </Grid>
-                              <Grid item xs={2}>
-                                {" "}
-                                <Typography style={{ textAlign: "right" }}>
-                                  1 day ago
-                                </Typography>
-                              </Grid>
-                            </Grid>
-                            <Typography>
-                              đặc biệt để khám phá khu vực nông thôn miền Bắc
-                              Thái Lan. Ở nơi hoang dã, giữa cánh đồng lúa và
-                              cách xa các địa điểm du lịch.
-                            </Typography>
-                          </CardContent>
-                        </Card>
-                      </TabPanel>
-                    </Box>
-                  </TabContext>
+                  <TabList
+                    onChange={handleChange}
+                    aria-label="lab API tabs example"
+                    className="tab-list-mui"
+                  >
+                    <BannerHomePageButtonListTab label="Item One" value="1" />
+                    <BannerHomePageButtonListTab label="Duration" value="2" />
+                    <BannerHomePageButtonListTab label="Review" value="3" />
+                  </TabList>
                 </Box>
-              </Grid>
-            </Grid>
+                <Box className="tab-list-data-mui">
+                  <TabPanel value="1"></TabPanel>
+                  <TabPanel value="2">
+                    <Box style={{ display: "flex", alignItems: "center" }}>
+                      <FiSun />
+                      <Typography>
+                        Duration_day: {tourDetail?.duration_day}
+                      </Typography>
+                    </Box>
+                    <Box style={{ display: "flex" }}>
+                      <FiMoon />
+                      <Typography>
+                        Duration_night: {tourDetail?.duration_night}
+                      </Typography>
+                    </Box>
+                  </TabPanel>
+                  <TabPanel
+                    value="3"
+                    style={{ maxHeight: "250px", overflowY: "auto" }}
+                  >
+                    <Card className="mb-1">
+                      <CardContent>
+                        <Grid container>
+                          <Grid item xs={1}>
+                            <div
+                              style={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                height: "100%", // Ensures the div takes the full height of the Grid item
+                              }}
+                            >
+                              <img
+                                style={{
+                                  borderRadius: "50%",
+                                  width: "30px",
+                                  height: "30px",
+                                }}
+                                src="https://subscripciones.mylagro.com/hubfs/Imported_Blog_Media/basket-lowres-219x300.jpg"
+                                alt=""
+                              />
+                            </div>
+                          </Grid>
+                          <Grid item xs={9}>
+                            <Box style={{ display: "block" }}>
+                              <Typography>dao duc thinh</Typography>
+                              <Rating />
+                            </Box>
+                          </Grid>
+                          <Grid item xs={2}>
+                            {" "}
+                            <Typography style={{ textAlign: "right" }}>
+                              1 day ago
+                            </Typography>
+                          </Grid>
+                        </Grid>
+                        <Typography>
+                          đặc biệt để khám phá khu vực nông thôn miền Bắc Thái
+                          Lan. Ở nơi hoang dã, giữa cánh đồng lúa và cách xa các
+                          địa điểm du lịch.
+                        </Typography>
+                      </CardContent>
+                    </Card>
+                    <Card>
+                      <CardContent>
+                        <Grid container>
+                          <Grid item xs={1}>
+                            <div
+                              style={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                height: "100%", // Ensures the div takes the full height of the Grid item
+                              }}
+                            >
+                              <img
+                                style={{
+                                  borderRadius: "50%",
+                                  width: "30px",
+                                  height: "30px",
+                                }}
+                                src="https://subscripciones.mylagro.com/hubfs/Imported_Blog_Media/basket-lowres-219x300.jpg"
+                                alt=""
+                              />
+                            </div>
+                          </Grid>
+                          <Grid item xs={9}>
+                            <Box style={{ display: "block" }}>
+                              <Typography>dao duc thinh</Typography>
+                              <Rating />
+                            </Box>
+                          </Grid>
+                          <Grid item xs={2}>
+                            {" "}
+                            <Typography style={{ textAlign: "right" }}>
+                              1 day ago
+                            </Typography>
+                          </Grid>
+                        </Grid>
+                        <Typography>
+                          đặc biệt để khám phá khu vực nông thôn miền Bắc Thái
+                          Lan. Ở nơi hoang dã, giữa cánh đồng lúa và cách xa các
+                          địa điểm du lịch.
+                        </Typography>
+                      </CardContent>
+                    </Card>
+                  </TabPanel>
+                </Box>
+              </TabContext>
+            </Box>
           </BannerHomePageListFirst>
         </BannerContent>
       </BannerContainer>

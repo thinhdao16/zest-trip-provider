@@ -161,45 +161,60 @@ export default function SignUp() {
       <Grid container>
         <Grid
           item
-          xs={6}
+          xs={4}
           style={{
             backgroundColor: "#f9fbfc",
             borderRadius: "8px 0 0 8px",
             padding: "30px",
             display: "flex",
-            flexDirection: "column",
+            // flexDirection: "column",
+            height: "100vh",
+            alignItems: "center",
+            justifyContent: "center",
+            position: "relative",
           }}
         >
-          <Typography
-            component="h1"
-            fontSize="xl2"
-            fontWeight="lg"
-            sx={{ mb: 5, display: "flex" }}
-          >
-            <AiOutlineShop style={{ margin: "8px 8px 0 0 " }} /> DiTour
-          </Typography>
-          <ul>
-            <li>⨀ Exclusive discounts 🎉🎉🎉</li>
-            <li>⨀ Tailored recommendation</li>
-            <li>⨀ Advance custiomer support</li>
-            <li>⨀ Save details for next up </li>
-          </ul>
-          <div style={{ marginTop: "auto" }}>
-            <Link to="/login">
-              <Button
-                fullWidth
-                style={{
-                  backgroundColor: "white",
-                  border: "1px solid #e7e7eb",
-                  color: "black",
-                }}
-              >
-                You have account
-              </Button>
-            </Link>
+          <div className="absolute top-5 left-5">
+            <div className="flex items-center text-2xl font-medium">
+              <AiOutlineShop /> <p>DiTour</p>
+            </div>
+          </div>
+          <div className="flex items-center justify-center flex-col">
+            <p className="font-bold text-4xl mb-6">Welcome Back!</p>
+            <ul className="mb-6">
+              <li>⨀ Exclusive discounts 🎉🎉🎉</li>
+              <li>⨀ Tailored recommendation</li>
+              <li>⨀ Advance custiomer support</li>
+              <li>⨀ Save details for next up </li>
+            </ul>
+            <div
+              style={{
+                marginTop: "auto",
+                display: "flex",
+                justifyContent: "center ",
+              }}
+            >
+              <div>
+                <Link to="/login">
+                  <Button
+                    fullWidth
+                    style={{
+                      backgroundColor: "white",
+                      border: "1px solid #e7e7eb",
+                      color: "black",
+                      width: "250px",
+                      borderRadius: "10px",
+                      textTransform: "none",
+                    }}
+                  >
+                    You have an account
+                  </Button>
+                </Link>
+              </div>
+            </div>
           </div>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={8}>
           <ContainerPageFullHalfContent>
             <Box
               component="main"
@@ -225,12 +240,10 @@ export default function SignUp() {
               }}
             >
               <div>
-                <Typography component="h1" fontSize="xl2" fontWeight="lg">
-                  Sign up to your account
-                </Typography>
-                <Typography level="body-xs" sx={{ my: 1, mb: 1 }}>
+                <p className="font-medium text-2xl">Sign up to your account</p>
+                <p className="font-medium text-sm text-gray-600">
                   Enter your credentials to continue
-                </Typography>
+                </p>
               </div>
               <form
                 onSubmit={(event: React.FormEvent<SignInFormElement>) => {
@@ -326,17 +339,22 @@ export default function SignUp() {
                   />
                 </FormControl>
 
-                <Box
+                {/* <Box
                   sx={{
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
                   }}
+                > */}
+                <ButtonGlobal
+                  style={{ width: "450px" }}
+                  type="submit"
+                  onClick={handleGetOtp}
+                  fullWidth
                 >
-                  <ButtonGlobal type="submit" onClick={handleGetOtp} fullWidth>
-                    Sign Up
-                  </ButtonGlobal>
-                </Box>
+                  Sign Up
+                </ButtonGlobal>
+                {/* </Box> */}
               </form>
               <div>
                 {/* <Button onClick={handleOpen}>Open modal</Button> */}
@@ -446,8 +464,8 @@ export default function SignUp() {
             </Box>
           </ContainerPageFullHalfContent>
           <Box component="footer" sx={{ pb: 3 }}>
-            <Typography level="body-lg" textAlign="center">
-              © DiTour {new Date().getFullYear()}
+            <Typography level="body-md" textAlign="center">
+              © ZestTravel {new Date().getFullYear()}
             </Typography>
           </Box>
         </Grid>

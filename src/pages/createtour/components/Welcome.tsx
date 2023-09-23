@@ -15,12 +15,13 @@ export default function Welcome() {
   }
 
   return (
-    <BannerContainer style={{paddingTop:"12vh"}}>
+    <BannerContainer style={{ paddingTop: "12vh" }}>
       <BannerContent>
-        <Typography variant="h6">Step 1</Typography>
-        <WelcomTitle variant="h6">
+        <p className="text-xl">Step 1</p>
+
+        <p className="font-semibold text-6xl leading-tight mb-3 text-black">
           Share your tour information with us
-        </WelcomTitle>
+        </p>
         <BannerDescription variant="subtitle1">
           Torem ipsum dolor sit amet, consectetur adipisicing elitsed do eiusmo
           tempor incididunt ut labore et dolore magna

@@ -1,4 +1,4 @@
-import { Box, Card, Grid } from "@mui/material";
+import { Box, Card, Grid, Skeleton } from "@mui/material";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
@@ -8,9 +8,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import {
-  fetchTours,
-} from "../../../store/redux/silce/tourSlice";
+import { fetchTours } from "../../../store/redux/silce/tourSlice";
 import { AppDispatch } from "../../../store/redux/store";
 
 import { TitlePage } from "../../../components/titlepage/TitlePage";
@@ -40,9 +38,9 @@ export default function Banner() {
       <BannerContent>
         <BannerHomePageList>
           <TitlePage
-            title="Wellcome back"
+            title="Welcome back"
             titleList="All tour of you"
-            rest="all tour (0)"
+            rest={`all tour (${tours.length})`}
           />
           <Box
             justifyContent="center"
@@ -70,66 +68,162 @@ export default function Banner() {
               <Box className="tab-list-data-mui">
                 <TabPanel value="1">
                   <Grid container spacing={5}>
-                    {tours?.map((data: any, index: any) => (
-                      <Grid item xs={12} sm={6} lg={4} key={index}>
-                        <Link to={`/${data?.id}`} key={data}>
-                          {/* Wrap your Card in a Fade transition */}
-                          {/* <Fade in={value === index} timeout={500}> */}
-                          <Card style={{ boxShadow: "none" }}>
-                            <img
-                              style={{ width: "100%", borderRadius: "25px" }}
-                              src={data?.tour_images[0]}
-                              alt="noting"
-                            />
-                            <Box style={{ margin: "32px 0 40px" }}>
-                              <Box
-                                style={{
-                                  background: "#8fcaf7",
-                                  padding: "4px 7px",
-                                  borderRadius: "12px",
-                                  display: "inline-block",
-                                  fontSize: "18px",
-                                  color: "#4F4F4F",
-                                  margin: "0 0 0.7rem 0",
-                                }}
-                              >
-                                <p>Tour in country</p>
-                              </Box>
-                              <Box>
-                                <p
+                    {tours.length > 0 ? (
+                      tours.map((data: any, index: number) => (
+                        <Grid item xs={12} sm={6} lg={4} key={index}>
+                          <Link to={`/${data?.id}`} key={data?.id}>
+                            <Card style={{ boxShadow: "none" }}>
+                              {data?.tour_images[0] ? (
+                                <img
                                   style={{
-                                    color: "#091f44",
-                                    fontSize: "24px",
-                                    lineHeight: "1.5",
-                                    margin: "8px 0 16px 0",
+                                    width: "100%",
+                                    borderRadius: "25px",
+                                  }}
+                                  src={data?.tour_images[0]}
+                                  alt="nothing"
+                                />
+                              ) : (
+                                <Skeleton
+                                  variant="rectangular"
+                                  height={200}
+                                  animation="wave"
+                                />
+                              )}
+                              <Box style={{ margin: "32px 0 40px" }}>
+                                <Box
+                                  style={{
+                                    background: "#8fcaf7",
+                                    padding: "4px 7px",
+                                    borderRadius: "12px",
+                                    display: "inline-block",
+                                    fontSize: "18px",
+                                    color: "#4F4F4F",
+                                    margin: "0 0 0.7rem 0",
                                   }}
                                 >
-                                  {data?.name}
+                                  {data ? (
+                                    <p>Tour in country</p>
+                                  ) : (
+                                    <Skeleton width={100} />
+                                  )}
+                                </Box>
+                                <Box>
+                                  <p
+                                    style={{
+                                      color: "#091f44",
+                                      fontSize: "24px",
+                                      lineHeight: "1.5",
+                                      margin: "8px 0 16px 0",
+                                    }}
+                                  >
+                                    {data ? (
+                                      data.name
+                                    ) : (
+                                      <Skeleton width={200} />
+                                    )}
+                                  </p>
+                                </Box>
+                                <p
+                                  style={{
+                                    fontSize: "18px",
+                                    fontWeight: 300,
+                                    opacity: "0.8",
+                                    paddingBottom: "8px",
+                                  }}
+                                >
+                                  {data ? (
+                                    data.description
+                                  ) : (
+                                    <Skeleton
+                                      variant="rectangular"
+                                      height={200}
+                                      animation="wave"
+                                    />
+                                  )}
                                 </p>
+                                <Box>
+                                  <p
+                                    style={{
+                                      fontSize: "16px",
+                                      fontWeight: 300,
+                                    }}
+                                  >
+                                    {data ? (
+                                      `$${data.price}`
+                                    ) : (
+                                      <Skeleton width={60} />
+                                    )}
+                                  </p>
+                                </Box>
                               </Box>
+                            </Card>
+                          </Link>
+                        </Grid>
+                      ))
+                    ) : (
+                      <Grid item xs={12} sm={6} lg={4}>
+                        <Card style={{ boxShadow: "none" }}>
+                          <Skeleton
+                            variant="rectangular"
+                            height={200}
+                            animation="wave"
+                            className="rounded-3xl"
+                          />
+                          <Box style={{ margin: "32px 0 40px" }}>
+                            <Box
+                              style={{
+                                background: "#8fcaf7",
+                                padding: "4px 7px",
+                                borderRadius: "12px",
+                                display: "inline-block",
+                                fontSize: "18px",
+                                color: "#4F4F4F",
+                                margin: "0 0 0.7rem 0",
+                              }}
+                            >
+                              <Skeleton width={100} />
+                            </Box>
+                            <Box>
                               <p
                                 style={{
-                                  fontSize: "18px",
-                                  fontWeight: 300,
-                                  opacity: "0.8",
-                                  paddingBottom: "8px",
+                                  color: "#091f44",
+                                  fontSize: "24px",
+                                  lineHeight: "1.5",
+                                  margin: "8px 0 16px 0",
                                 }}
                               >
-                                {data?.description}
+                                <Skeleton width={200} className="rounded-2xl" />
                               </p>
-                              <Box>
-                                <p
-                                  style={{ fontSize: "16px", fontWeight: 300 }}
-                                >
-                                  ${data?.price}
-                                </p>
-                              </Box>
                             </Box>
-                          </Card>
-                          {/* </Fade> */}
-                        </Link>
+                            <p
+                              style={{
+                                fontSize: "18px",
+                                fontWeight: 300,
+                                opacity: "0.8",
+                                paddingBottom: "8px",
+                              }}
+                            >
+                              <Skeleton
+                                variant="rectangular"
+                                height={50}
+                                animation="wave"
+                                className="rounded-lg"
+                              />
+                            </p>
+                            <Box>
+                              <p
+                                style={{
+                                  fontSize: "16px",
+                                  fontWeight: 300,
+                                }}
+                              >
+                                <Skeleton width={60} className="rounded-3xl" />
+                              </p>
+                            </Box>
+                          </Box>
+                        </Card>
                       </Grid>
-                    ))}
+                    )}
                   </Grid>
                 </TabPanel>
                 <TabPanel value="2">
