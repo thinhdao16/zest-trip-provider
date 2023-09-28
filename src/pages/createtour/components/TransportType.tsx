@@ -16,7 +16,6 @@ const TransportType: React.FC = () => {
   const { currentStep, updateFormValues } = useStepContext();
   const [selectedCards, setSelectedCards] = useState<number[]>([]);
   const vehicleTour = useSelector((state: StateTour) => state.tour.vehicleTour);
-  console.log(vehicleTour);
   const handleCardClick = (data: DataSelectCard) => {
     setSelectedCards((prevSelectedCards) => {
       if (prevSelectedCards.includes(data.id)) {
@@ -34,14 +33,14 @@ const TransportType: React.FC = () => {
     updateFormValues(1, { TransportType: selectedData });
   }, [selectedCards]);
 
-  if (currentStep !== 3) {
+  if (currentStep !== 4) {
     return null;
   }
   return (
     <BannerContainer>
       <BannerContent>
         <CreateTitle variant="h6">
-          Choose the vehicle types you want to create for the tour
+          Choose the transportations included in the tour
         </CreateTitle>
         <Grid container spacing={2}>
           {vehicleTour.map((data: DataSelectCard) => (
@@ -66,7 +65,7 @@ const TransportType: React.FC = () => {
                     className="h-2"
                     alt=""
                   /> */}
-                  <VehicleTag field={data?.name} />
+                  <VehicleTag field={data?.name} style="w-8 h-8" />
                   <TitleIconCardOptions>{data?.name}</TitleIconCardOptions>
                 </Box>
               </Card>

@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { Grid } from "@mui/material";
 import { IoAddCircleOutline } from "react-icons/io5";
+import { FaCircle, FaEnvelopeOpenText } from "react-icons/fa6";
 
 interface FormModalProps {
   open: boolean;
@@ -35,6 +36,7 @@ const FormModal: React.FC<FormModalProps> = ({ open, onClose, onSubmit }) => {
   const [fromTime, setFromTime] = useState("00:00");
   const [toTime, setToTime] = useState("00:00");
   const [formEntries, setFormEntries] = useState<BoxData[]>([]);
+  console.log(formEntries);
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFormData(event.target.value);
   };
@@ -85,20 +87,23 @@ const FormModal: React.FC<FormModalProps> = ({ open, onClose, onSubmit }) => {
             These periods normally correspond with normal working hours for the
             work week and reduced hours for weekends and holidays.
           </Typography>
-          <Grid container style={{ display: "flex", alignItems: "center", marginTop:"12px" }}>
-            <Grid item xs={6} sm={3}>
+          <Grid
+            container
+            style={{ display: "flex", alignItems: "center", marginTop: "12px" }}
+          >
+            <Grid item xs={6} sm={2.5}>
               <p style={{ fontWeight: 500, marginBottom: "5px" }}>From time:</p>
               <input
-                style={{ borderRadius: "8px" }}
+                className="border border-gray-300 p-2 rounded-lg shadow-custom-card-mui hover:border-navy-blue focus:outline-none focus:border-navy-blue"
                 type="time"
                 value={fromTime}
                 onChange={handleFromTimeChange}
               />
             </Grid>
-            <Grid item xs={6} sm={3}>
+            <Grid item xs={6} sm={2.5}>
               <p style={{ fontWeight: 500, marginBottom: "5px" }}>To Time:</p>
               <input
-                style={{ borderRadius: "8px" }}
+                className="border border-gray-300 p-2 rounded-lg shadow-custom-card-mui hover:border-navy-blue focus:outline-none focus:border-navy-blue"
                 type="time"
                 value={toTime}
                 onChange={handleToTimeChange}
@@ -108,26 +113,47 @@ const FormModal: React.FC<FormModalProps> = ({ open, onClose, onSubmit }) => {
               <p style={{ fontWeight: 500, marginBottom: "5px" }}>
                 Description:
               </p>
-              <input
-                style={{ height: "40px", borderRadius: "8px" }}
-                value={formData}
-                onChange={handleInputChange}
-                placeholder="Enter your form data"
-              />
+              <div className="relative">
+                <FaEnvelopeOpenText className="absolute top-3 left-2" />
+                <input
+                  className="w-72 border border-gray-300 py-2 px-7 rounded-lg text-black shadow-custom-card-mui hover:border-navy-blue focus:outline-none focus:border-navy-blue"
+                  value={formData}
+                  onChange={handleInputChange}
+                  placeholder="Enter your form data"
+                />
+              </div>
             </Grid>
-            <Grid item xs={2} sm={1}>
-              <IoAddCircleOutline onClick={handleAddBox} />
+            <Grid item xs={2} sm={2}>
+              <p style={{ fontWeight: 500, marginBottom: "5px" }}>Add more:</p>
+              <IoAddCircleOutline className="mt-3" onClick={handleAddBox} />
             </Grid>
           </Grid>
 
-          <Box>
+          <div
+            className="mt-5 w-1/2 gap-6 grid mb-6"
+            style={{ overflowWrap: "break-word" }}
+          >
             {formEntries.map((boxData, index) => (
-              <Box key={index}>
-                <div>{boxData?.data}</div>
-              </Box>
+              <div key={index} className="relative max-w-full ">
+                <FaCircle className="absolute inset-y-1/3 w-2" />
+                <div className="ml-6">
+                  <div className="flex gap-2">
+                    <p className="font-medium">{boxData?.fromTime}</p>
+                    <p className="font-medium">-</p>
+                    <p className="font-medium ">{boxData?.toTime}</p>
+                  </div>
+                  <p>{boxData?.data}</p>
+                </div>
+              </div>
             ))}
-            <button onClick={handleSubmit}>Submit</button>
-          </Box>
+          </div>
+          <button
+            style={{}}
+            className=" p-2 bg-navy-blue border border-navy-blue rounded-lg text-white hover:border-navy-blue hover:bg-white hover:text-navy-blue hover:border"
+            onClick={handleSubmit}
+          >
+            Add schedule
+          </button>
         </Box>
       </Modal>
     </div>

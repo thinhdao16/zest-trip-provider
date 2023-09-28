@@ -19,7 +19,7 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { becomeProvider } from "../../store/redux/silce/providerSlice";
 import jwt_decode from "jwt-decode";
-
+import "./styles/setup.css";
 function SetUpProvider() {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
@@ -139,8 +139,8 @@ function SetUpProvider() {
           >
             <Box
               style={{
-                backgroundColor: "#D4F1F4",
-                borderRadius: "0 20px 20px 0",
+                backgroundColor: "#f9fbfc",
+                // borderRadius: "0 20px 20px 0",
                 display: "flex",
                 flexDirection: "column",
                 height: "100%",
@@ -154,8 +154,11 @@ function SetUpProvider() {
               <div className="absolute top-5 left-5">
                 <Link to="/">
                   <div className="flex items-center text-2xl text-amber-950 font-bold">
-                    <AiOutlineShop className="mr-1" />
-                    <p>ZestTravel</p>
+                    <img
+                      src=" src\assets\File-logo-Zest-Travel.svg"
+                      className="w-16"
+                    />
+                    {/* <p>ZestTravel</p> */}
                   </div>
                 </Link>
               </div>
@@ -200,54 +203,58 @@ function SetUpProvider() {
                 <form className="">
                   {step === 1 && (
                     <PersonalInfo
+                      selectedPlan={userServiceConfiguration.selectedPlan}
+                      updateSelectedPlan={updateSelectedPlan}
                       userInfo={userServiceConfiguration.userInfo}
                       updateUserInfo={updateUserInfo}
                       showRequired={showRequired}
                     />
                   )}
-                  {step === 2 && (
+                  {/* {step === 2 && (
                     <SelectPlan
                       selectedPlan={userServiceConfiguration.selectedPlan}
                       updateSelectedPlan={updateSelectedPlan}
                     />
-                  )}
-                  {step === 3 && <Addons />}
-                  {step === 4 && (
+                  )} */}
+                  {step === 2 && <Addons />}
+                  {step === 3 && (
                     <ServiceSummary
                       userServiceConfiguration={userServiceConfiguration}
                     />
                   )}
-                  {step === 5 && <ThankYou />}
+                  {step === 4 && <ThankYou />}
                 </form>
                 <div style={{}}>
                   <menu className=" flex items-center p-4 flex-col mb-5">
-                    <div className="flex">
+                    <div className="flex gap-4">
                       <div>
                         {step > 1 && (
-                          <Button
+                          <button
+                            className="  font-medium  px-4 py-1.5 rounded-lg text-navy-blue border  border-navy-blue hover:bg-navy-blue hover:text-white"
                             style={{ textTransform: "none" }}
                             onClick={goBack}
                           >
                             Go Back
-                          </Button>
+                          </button>
                         )}
                       </div>
-                      <div>
-                        {step < 5 && (
-                          <Button
-                            style={{ textTransform: "none", color: "black" }}
+                      <div className="gap-4">
+                        {step < 4 && (
+                          <button
+                            className="nextSetupProvider bg-navy-blue font-medium border border-navy-blue px-4 py-1.5 rounded-lg text-white hover:border hover:border-navy-blue hover:bg-white hover:text-navy-blue"
                             onClick={() => nextStep()}
                           >
                             Next step
-                          </Button>
+                          </button>
                         )}
-                        {step >= 5 && (
-                          <Button
-                            style={{ textTransform: "none", color: "black" }}
+                        {step >= 4 && (
+                          <button
+                            className=" text-white bg-navy-blue font-medium border border-navy-blue px-4 py-1.5 rounded-lg  hover:border hover:border-navy-blue hover:bg-white hover:text-navy-blue"
+                            style={{ textTransform: "none" }}
                             onClick={() => Confirm()}
                           >
                             Confirm
-                          </Button>
+                          </button>
                         )}
                       </div>
                     </div>

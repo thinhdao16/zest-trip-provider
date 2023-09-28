@@ -1,7 +1,6 @@
-import { Box, Step, StepLabel, Stepper } from "@mui/material";
+import { Step, StepLabel, Stepper } from "@mui/material";
 import "../styles/sidebar.css";
-import { SiInstapaper } from "react-icons/si";
-import { AiOutlineRight } from "react-icons/ai";
+
 interface SidebarProps {
   currentStep: number;
   handleNextStep: (step: number) => void;
@@ -13,18 +12,14 @@ const steps = [
   },
   {
     step: 2,
-    title: "Service information",
-  },
-  {
-    step: 3,
     title: "Contact information",
   },
   {
-    step: 4,
+    step: 3,
     title: "Review Information",
   },
   {
-    step: 5,
+    step: 4,
     title: "Contractor Information",
   },
 ];

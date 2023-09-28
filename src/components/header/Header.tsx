@@ -4,7 +4,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
 import { Link, useNavigate } from "react-router-dom";
 import { AiFillHome } from "react-icons/ai";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -17,12 +17,17 @@ import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import { DataContext } from "../../store/dataContext/DataContext";
 import { useSelector } from "react-redux";
+import "./header.css";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../store/redux/store";
+import { getPersonalInfo } from "../../store/redux/silce/authSilce";
+
 function Header() {
   const navigation = useNavigate();
+  const dispatch: AppDispatch = useDispatch();
   const { setRefeshLogin } = useContext(DataContext);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const personalInfo = useSelector((state: any) => state.auth.personalInfo);
-
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -40,6 +45,12 @@ function Header() {
     setAnchorEl(null);
     navigation("/account-settings");
   };
+  const isActive = (route: string) => {
+    return location.pathname === route ? "active-link" : "";
+  };
+  useEffect(() => {
+    dispatch(getPersonalInfo());
+  }, [dispatch]);
   return (
     <>
       <Box sx={{ flexGrow: 1, width: "100vw" }}>
@@ -47,18 +58,28 @@ function Header() {
           position="static"
           style={{
             backgroundColor: "white",
-            boxShadow: "none",
-            borderBottom: "1px solid #e4e4e4 ",
+            boxShadow:
+              "0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)",
             padding: 0,
           }}
         >
-          <Toolbar>
+          <Toolbar
+            style={{
+              padding: "15px 48px 0",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
             <Box sx={{ flexGrow: 1 }}>
               <Link
                 to="/listwork"
                 style={{ textDecoration: "none", color: "black" }}
               >
-                <AiFillHome style={{ color: "black " }} />
+                <img
+                  src="src\assets\File-logo-Zest-Travel.svg"
+                  className="w-16"
+                />
               </Link>
             </Box>
 
@@ -68,7 +89,11 @@ function Header() {
                   Create tour
                 </Button>
               </Link>
-              <Link to="/listtour" style={{ textDecoration: "none" }}>
+              <Link
+                to="/listtour"
+                className={isActive("/listtour")}
+                // style={{ textDecoration: "none" }}
+              >
                 <Button color="inherit" style={{ color: "black" }}>
                   list tour
                 </Button>
@@ -80,18 +105,10 @@ function Header() {
               </Link>
             </Box>
             <Box sx={{ flexGrow: 1, textAlign: "right", color: "black" }}>
-              {/* <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  textAlign: "center",
-                }}
-              > */}
               <Tooltip title="Account settings">
                 <IconButton
                   onClick={handleClick}
                   size="small"
-                  // sx={{ ml: 2 }}
                   aria-controls={open ? "account-menu" : undefined}
                   aria-haspopup="true"
                   aria-expanded={open ? "true" : undefined}
@@ -107,7 +124,6 @@ function Header() {
                   </Avatar>
                 </IconButton>
               </Tooltip>
-              {/* </Box> */}
               <Menu
                 anchorEl={anchorEl}
                 id="account-menu"

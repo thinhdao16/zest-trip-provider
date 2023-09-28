@@ -9,6 +9,7 @@ import { useStepContext } from "../context/ui/useStepContext";
 import { Input } from "./input";
 import { dataTypePrice } from "../dataFake";
 import { FaRegTrashCan } from "react-icons/fa6";
+import { GoLocation } from "react-icons/go";
 
 interface InputValue {
   labelMain: string;
@@ -367,7 +368,7 @@ const Price: React.FC = () => {
     }
   }, [formList, selectedCountries]);
 
-  if (currentStep !== 8) {
+  if (currentStep !== 9) {
     return null;
   }
   return (
@@ -376,25 +377,31 @@ const Price: React.FC = () => {
         <CreateTitleNullDes>Setting price and tickets</CreateTitleNullDes>
         <CreateDescription>Enter the pricing information</CreateDescription>
         {dataTypePrice.map((data, index) => (
-          <Input
-            key={index}
-            labelMain={data.labelMain}
-            placeholder="inputs"
-            type={data?.type}
-            icon={data.icon}
-            onChange={(e) => handleInput(index, e.target.value)}
-          />
+          <>
+            <div className="mb-3">
+              <p className="font-medium mb-1">{data.labelMain}</p>
+              <div className=" bg-white relative ">
+                <p className="absolute top-4 left-2">{data.icon}</p>
+                <input
+                  className="w-1/2 border rounded-md px-8 py-3 border-gray-400 shadow-custom-card-mui focus:outline-none hover:border-navy-blue focus:border-navy-blue"
+                  placeholder="New availability"
+                  type={data?.type}
+                  onChange={(e) => handleInput(index, e.target.value)}
+                />
+              </div>
+            </div>
+          </>
         ))}
         <select
           id="countries_disabled"
-          className="w-44 text-sky-600 font-medium text-lg hover:text-sky-900 focus:border-none"
+          className="w-44 text-navy-blue font-medium text-lg hover:text-black focus:border-none"
           value={selectedCountries}
           onChange={handleCountryChange}
         >
           <option value="" disabled>
             Choose type ticket
           </option>
-          {countries.map((country) => {
+          {countries.map((country, index) => {
             // Kiểm tra xem country.code có tồn tại trong selectedCountries không
             if (!selectedCountries.includes(country.code)) {
               return (
@@ -408,8 +415,12 @@ const Price: React.FC = () => {
         </select>
         {selectedCountries.length === 0 && (
           <div className="mt-3">
-            <div className="p-4 rounded" style={{ border: "1px solid black" }}>
-              <p className="font-semibold text-lg mb-4">Prices per person</p>
+            <p className="font-semibold text-lg mb-4">Prices per person</p>
+            <div className="p-4 rounded relative border border-gray-400 border-solid shadow-custom-card-mui">
+              <FaRegTrashCan
+                className="absolute , top-0, right-3 text-white "
+                onClick={() => handleDeleteCountry("Student")}
+              />
               <div className="grid md:grid-cols-12">
                 <div className="col-span-3">
                   <p className="font-medium">Prices per person</p>
@@ -462,7 +473,7 @@ const Price: React.FC = () => {
                           <div className="font-medium h-4 mb-2">
                             Payout per person
                           </div>
-                          <div className="flex items-center">
+                          <div className="flex items-center gap-4">
                             <input
                               className="p-2 w-20 bg-slate-200 rounded-md"
                               value={form.payoutPerPerson}
@@ -470,18 +481,23 @@ const Price: React.FC = () => {
                             />
                             <p className="font-medium">VND</p>
                             {form.id !== 0 ? (
-                              <button onClick={() => removeForm(form.id)}>
-                                X
+                              <button
+                                className="font-medium text-red-600 hover:text-red-800 text-xl"
+                                onClick={() => removeForm(form.id)}
+                              >
+                                x
                               </button>
                             ) : (
-                              <></>
+                              <button className="font-medium text-white  text-xl ">
+                                x
+                              </button>
                             )}
                           </div>
                         </div>
                       </div>
                     ))}
                     <button
-                      className=" text-base font-semibold bg-white p-0 mt-2 focus:outline-none hover:border-none hover:p-0 hover:m border-none text-sky-600 hover:text-sky-900"
+                      className=" text-base font-semibold bg-white p-0 mt-2 focus:outline-none hover:border-none hover:p-0 hover:m border-none text-navy-blue hover:text-black"
                       onClick={addNewForm}
                     >
                       Set up price tiers
@@ -496,10 +512,7 @@ const Price: React.FC = () => {
         {selectedCountries.includes("Student") && (
           <div className="mt-3">
             <p className="font-medium">Prices per person</p>
-            <div
-              className="p-4 rounded"
-              style={{ border: "1px solid black", position: "relative" }}
-            >
+            <div className="p-4 rounded relative border border-gray-400 border-solid shadow-custom-card-mui">
               <FaRegTrashCan
                 className="absolute , top-0, right-3 text-red-600 hover:text-red-900"
                 onClick={() => handleDeleteCountry("Student")}

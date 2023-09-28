@@ -40,7 +40,7 @@ export default function Banner() {
           <TitlePage
             title="Welcome back"
             titleList="All tour of you"
-            rest={`all tour (${tours.length})`}
+            rest={`All tour bookings (${tours.length})`}
           />
           <Box
             justifyContent="center"
@@ -78,6 +78,8 @@ export default function Banner() {
                                   style={{
                                     width: "100%",
                                     borderRadius: "25px",
+                                    objectFit: "cover",
+                                    height: "235px",
                                   }}
                                   src={data?.tour_images[0]}
                                   alt="nothing"
@@ -90,47 +92,23 @@ export default function Banner() {
                                 />
                               )}
                               <Box style={{ margin: "32px 0 40px" }}>
-                                <Box
-                                  style={{
-                                    background: "#8fcaf7",
-                                    padding: "4px 7px",
-                                    borderRadius: "12px",
-                                    display: "inline-block",
-                                    fontSize: "18px",
-                                    color: "#4F4F4F",
-                                    margin: "0 0 0.7rem 0",
-                                  }}
-                                >
+                                <button className=" bg-navy-blue px-3 text-white font-medium py-1.5 rounded-lg">
                                   {data ? (
                                     <p>Tour in country</p>
                                   ) : (
                                     <Skeleton width={100} />
                                   )}
-                                </Box>
-                                <Box>
-                                  <p
-                                    style={{
-                                      color: "#091f44",
-                                      fontSize: "24px",
-                                      lineHeight: "1.5",
-                                      margin: "8px 0 16px 0",
-                                    }}
-                                  >
+                                </button>
+                                <div>
+                                  <p className="font-medium text-xl">
                                     {data ? (
                                       data.name
                                     ) : (
                                       <Skeleton width={200} />
                                     )}
                                   </p>
-                                </Box>
-                                <p
-                                  style={{
-                                    fontSize: "18px",
-                                    fontWeight: 300,
-                                    opacity: "0.8",
-                                    paddingBottom: "8px",
-                                  }}
-                                >
+                                </div>
+                                <p>
                                   {data ? (
                                     data.description
                                   ) : (
@@ -141,20 +119,17 @@ export default function Banner() {
                                     />
                                   )}
                                 </p>
-                                <Box>
-                                  <p
-                                    style={{
-                                      fontSize: "16px",
-                                      fontWeight: 300,
-                                    }}
-                                  >
-                                    {data ? (
-                                      `$${data.price}`
-                                    ) : (
-                                      <Skeleton width={60} />
-                                    )}
-                                  </p>
-                                </Box>
+                                <div>
+                                  {data ? (
+                                    // `vnđ ${data.price}`
+                                    <p className="font-medium flex items-center">
+                                      <span className="text-gray-600">vnđ</span>
+                                      <span className="text-lg">250.000</span>
+                                    </p>
+                                  ) : (
+                                    <Skeleton width={60} />
+                                  )}
+                                </div>
                               </Box>
                             </Card>
                           </Link>

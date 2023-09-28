@@ -1,4 +1,4 @@
-export function VehicleTag(field: { field: string }) {
+export function VehicleTag(field: { field: string; style: string }) {
   let imagePath;
   switch (field.field) {
     case `${field.field}`:
@@ -9,11 +9,11 @@ export function VehicleTag(field: { field: string }) {
   }
   return (
     <div>
-      <img src={imagePath} alt="any" className="h-8 w-8" />
+      <img src={imagePath} alt="any" className={field.style} />
     </div>
   );
 }
-export function TourTag(field: { field: string }) {
+export function TourTag(field: { field: string; style: string }) {
   let imagePath;
   switch (field.field) {
     case `${field.field}`:
@@ -24,7 +24,7 @@ export function TourTag(field: { field: string }) {
   }
   return (
     <div>
-      <img src={imagePath} alt="any" className="h-8 w-8" />
+      <img src={imagePath} alt="any" className={field.style} />
     </div>
   );
 }

@@ -4,54 +4,18 @@ import { policy } from "../../../data/policy";
 export const Addons = () => {
   return (
     <Grid container>
-      <Grid item xs={9} style={{ maxHeight: "75vh", overflow: "auto" }}>
+      <Grid item xs={12}>
         <Box mt={2}>
-          <p
-            style={{
-              fontSize: "1.875rem",
-              lineHeight: "2.25rem",
-              fontWeight: 500,
-            }}
-          >
-            {policy?.main?.titleMain}
-          </p>
-          <p
-            style={{
-              color: "rgb(107 114 128)",
-              fontSize: "1.25rem",
-              marginTop: "5px",
-            }}
-          >
-            {policy?.main?.descriptionMain}
-          </p>
+          <p className="font-medium text-2xl">{policy?.main?.titleMain}</p>
+          <p className="mt-2 text-gray-500">{policy?.main?.descriptionMain}</p>
         </Box>
         <Box mt={2}>
-          <p
-            style={{
-              fontSize: "1.875rem",
-              lineHeight: "2.25rem",
-              fontWeight: 500,
-            }}
-          >
-            {policy?.title?.titleMain}
-          </p>
+          <p className="font-medium text-2xl">{policy?.title?.titleMain}</p>
           <Box mt={1}>
             {policy?.title?.description.map((data) => (
-              <ol key={data?.description} style={{ display: "flex", marginTop: "5px" }}>
-                <li
-                  style={{
-                    display: "flex",
-                    color: "rgb(107 114 128)",
-                    fontSize: "1.25rem",
-                  }}
-                >
-                  <p
-                    style={{
-                      fontWeight: 600,
-                      display: "contents",
-                      color: "black",
-                    }}
-                  >
+              <ol key={data?.description}>
+                <li className="text-gray-500 flex ">
+                  <p className="contents text-black font-medium">
                     {data?.title}
                   </p>
                   {data?.description}
@@ -61,50 +25,17 @@ export const Addons = () => {
           </Box>
         </Box>
         <Box mt={2}>
-          {policy?.description?.map((data: any, index:number) => (
+          {policy?.description?.map((data: any, index: number) => (
             <Box key={index}>
-              <p
-              id={`${data?.header}`}
-                style={{
-                  fontSize: "1.875rem",
-                  lineHeight: "2.25rem",
-                  fontWeight: 500,
-                }}
-              >
+              <p id={`${data?.header}`} className="font-medium text-2xl">
                 {data?.header}
               </p>
-              <p style={{ fontSize: "1.25rem", color: "rgb(107 114 128)" }}>
-                {data?.title}
-              </p>
+              <p className="text-gray-500">{data?.title}</p>
               {data?.description?.map((data: any) => (
                 <Box>
-                  <p style={{ fontSize: "1.25rem", color: "rgb(107 114 128)" }}>
-                    {data?.list}
-                  </p>
+                  <p className="text-gray-500 ">{data?.list}</p>
                 </Box>
               ))}
-            </Box>
-          ))}
-        </Box>
-      </Grid>
-      <Grid item xs={3}>
-        <p style={{ fontSize: "1.875rem", fontWeight: 500 }}>Table Content</p>
-        <Box>
-          {policy?.description?.map((data: any) => (
-            <Box>
-              <a href={`#${data?.header}`} style={{ textDecoration: "none" }}>
-                <p
-                  style={{
-                    fontSize: "1rem",
-                    lineHeight: "1.25rem",
-                    fontWeight: 400,
-                    margin: 0,
-                    padding: "8px 0",
-                  }}
-                >
-                  {data?.header}
-                </p>
-              </a>
             </Box>
           ))}
         </Box>

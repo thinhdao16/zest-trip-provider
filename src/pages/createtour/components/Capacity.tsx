@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import {
   BannerContainer,
   BannerContentPrice,
@@ -7,7 +7,6 @@ import {
 } from "../../../styles/createtour/createtour";
 import { useStepContext } from "../context/ui/useStepContext";
 import { GoLocation } from "react-icons/go";
-import { Input } from "./input";
 import { FaCheck, FaRegClock, FaRegTrashCan } from "react-icons/fa6";
 
 const Capacity: React.FC = () => {
@@ -25,10 +24,48 @@ const Capacity: React.FC = () => {
     DateFrom: "",
     DateTo: "",
   });
-
   const [startingTimeSingle, setStartingTimeSingle] = useState<any>([]);
+  function formatTimeToHourAndMinute(date: any) {
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const formattedTime = `${hours.toString().padStart(2, "0")}:${minutes
+      .toString()
+      ?.padStart(2, "0")}`;
 
-  const allStartingTime = { ...startingTimes, ...startingTimeSingle };
+    return formattedTime;
+  }
+
+  const formattedStartingTimes = {
+    Mon: startingTimes.Mon.map((time: Date) =>
+      formatTimeToHourAndMinute(time)
+    ).toString(),
+    Tue: startingTimes.Tue.map((time: Date) =>
+      formatTimeToHourAndMinute(time)
+    ).toString(),
+    Wed: startingTimes.Wed.map((time: Date) =>
+      formatTimeToHourAndMinute(time)
+    ).toString(),
+    Thu: startingTimes.Thu.map((time: Date) =>
+      formatTimeToHourAndMinute(time)
+    ).toString(),
+    Fri: startingTimes.Fri.map((time: Date) =>
+      formatTimeToHourAndMinute(time)
+    ).toString(),
+    Sat: startingTimes.Sat.map((time: Date) =>
+      formatTimeToHourAndMinute(time)
+    ).toString(),
+    Sun: startingTimes.Sun.map((time: Date) =>
+      formatTimeToHourAndMinute(time)
+    ).toString(),
+    SingleTime: startingTimeSingle.map((time: any) => ({
+      day: time.day,
+      time: time.time.toString(),
+    })),
+    DateFrom: startingTimes.DateFrom,
+    DateTo: startingTimes.DateTo,
+    Title: capacity,
+  };
+
   const [selectedHour, setSelectedHour] = useState<any>({
     Mon: [],
     Tue: [],
@@ -78,7 +115,7 @@ const Capacity: React.FC = () => {
     }/${currentDate.getFullYear()}`;
     const newDay = {
       day: formattedDate,
-      time: ["10:00:00"],
+      time: ["10:00"],
     };
 
     setStartingTimeSingle([...startingTimeSingle, newDay]);
@@ -87,7 +124,7 @@ const Capacity: React.FC = () => {
   const addTimeToDay = (dayIndex: number) => {
     if (dayIndex >= 0 && dayIndex < startingTimeSingle.length) {
       const updatedStartingTimeSingle = [...startingTimeSingle];
-      updatedStartingTimeSingle[dayIndex].time.push("10:00:00");
+      updatedStartingTimeSingle[dayIndex].time.push("10:00");
       setStartingTimeSingle(updatedStartingTimeSingle);
     }
   };
@@ -291,11 +328,11 @@ const Capacity: React.FC = () => {
     const inputData = e.target.value;
     setCapacity(inputData);
   };
-  React.useEffect(() => {
-    updateFormValues(5, { Capacity: allStartingTime });
-  }, [startingTimes, startingTimeSingle]);
+  useEffect(() => {
+    updateFormValues(5, { Capacity: formattedStartingTimes });
+  }, [startingTimes, startingTimeSingle, capacity]);
 
-  if (currentStep !== 7) {
+  if (currentStep !== 8) {
     return null;
   }
   return (
@@ -307,13 +344,22 @@ const Capacity: React.FC = () => {
           dates and times by connecting your booking system or by manually
           entering the information for your product and options.
         </CreateDescription>
-        <Input
-          labelMain="Name (e.g. Summer Season, Autumn 2011... )"
-          placeholder="New availability"
-          type="text"
-          icon={<GoLocation />}
-          onChange={handlePersonalInfo}
-        />
+
+        <div>
+          <p className="font-medium mb-1">
+            Name (e.g. Summer Season, Autumn 2011... )
+          </p>
+          <div className=" bg-white relative ">
+            <GoLocation className="absolute top-4 left-2" />
+            <input
+              className="w-1/2 border rounded-md px-8 py-3 border-gray-400 shadow-custom-card-mui focus:outline-none hover:border-navy-blue focus:border-navy-blue"
+              placeholder="New availability"
+              type="text"
+              onChange={handlePersonalInfo}
+            />
+          </div>
+        </div>
+
         <div className="mt-3">
           <p className="font-medium">Validity of this season</p>{" "}
           <div className="flex items-center gap-3 mt-2">
@@ -339,13 +385,11 @@ const Capacity: React.FC = () => {
         </div>
         <div className="mt-3">
           <p className="font-medium">Weekly starting times</p>
-          <button className="rounded-lg px-4 py-2 border border-gray-500 bg-white mt-2">
-            Create regular time intervals
-          </button>
+
           <div className="">
             <div className="mt-2">
               <div className="flex flex-wrap items-center mb-1">
-                <p className="font-medium mr-3 w-5 ">Mon</p>
+                <p className="font-medium mr-5 w-5 ">Mon</p>
                 {startingTimes?.Mon?.map((item: any, index: number) => (
                   <div key={index} className="flex items-center mr-8">
                     <select
@@ -377,21 +421,24 @@ const Capacity: React.FC = () => {
                     />
                   </div>
                 ))}
-                <button
-                  className="flex items-center bg-white border-none"
-                  onClick={() => addStartingTime("Mon")}
-                >
-                  <FaRegClock className="text-sky-500 mr-1" />{" "}
-                  <span className="font-medium text-sky-600 hover:text-sky-900  text-md  ">
-                    Add starting time
-                  </span>
-                </button>
+                {startingTimes?.Mon.length < 1 && (
+                  <button
+                    className="flex items-center bg-white border-none mr-3"
+                    onClick={() => addStartingTime("Mon")}
+                  >
+                    <FaRegClock className="text-navy-blue mr-1" />{" "}
+                    <span className="font-medium text-navy-blue hover:text-black text-md">
+                      Add starting time
+                    </span>
+                  </button>
+                )}
+
                 <button
                   className="flex items-center bg-white border-none"
                   onClick={() => copyToWholeWeek("Mon")}
                 >
-                  <FaCheck className="text-sky-500 mr-1" />{" "}
-                  <span className="font-medium text-sky-600 hover:text-sky-900  text-md  ">
+                  <FaCheck className="text-navy-blue mr-1" />{" "}
+                  <span className="font-medium text-navy-blue hover:text-black  text-md  ">
                     Copy to whole
                   </span>
                 </button>
@@ -402,7 +449,7 @@ const Capacity: React.FC = () => {
 
             <div className="mt-2">
               <div className="flex flex-wrap items-center mb-1">
-                <p className="font-medium mr-3 w-5">Tue</p>
+                <p className="font-medium mr-5 w-5">Tue</p>
                 {startingTimes?.Tue?.map((item: any, index: number) => (
                   <div key={index} className="flex items-center mr-8">
                     <select
@@ -434,21 +481,23 @@ const Capacity: React.FC = () => {
                     />
                   </div>
                 ))}
-                <button
-                  className="flex items-center bg-white border-none"
-                  onClick={() => addStartingTime("Tue")}
-                >
-                  <FaRegClock className="text-sky-500 mr-1" />{" "}
-                  <span className="font-medium text-sky-600 hover:text-sky-900  text-md  ">
-                    Add starting time
-                  </span>
-                </button>
+                {startingTimes?.Tue.length < 1 && (
+                  <button
+                    className="flex items-center bg-white border-none mr-3  "
+                    onClick={() => addStartingTime("Tue")}
+                  >
+                    <FaRegClock className="text-navy-blue mr-1" />{" "}
+                    <span className="font-medium text-navy-blue hover:text-black  text-md  ">
+                      Add starting time
+                    </span>
+                  </button>
+                )}
                 <button
                   className="flex items-center bg-white border-none"
                   onClick={() => copyToWholeWeek("Tue")}
                 >
-                  <FaCheck className="text-sky-500 mr-1" />{" "}
-                  <span className="font-medium text-sky-600 hover:text-sky-900  text-md  ">
+                  <FaCheck className="text-navy-blue mr-1" />{" "}
+                  <span className="font-medium text-navy-blue hover:text-black  text-md  ">
                     Copy to whole
                   </span>
                 </button>
@@ -459,7 +508,7 @@ const Capacity: React.FC = () => {
 
             <div className="mt-2">
               <div className="flex flex-wrap items-center mb-1">
-                <p className="font-medium mr-3 w-5">Wed</p>
+                <p className="font-medium mr-5 w-5">Wed</p>
                 {startingTimes?.Wed?.map((item: any, index: number) => (
                   <div key={index} className="flex items-center mr-8">
                     <select
@@ -491,21 +540,24 @@ const Capacity: React.FC = () => {
                     />
                   </div>
                 ))}
-                <button
-                  className="flex items-center bg-white border-none"
-                  onClick={() => addStartingTime("Wed")}
-                >
-                  <FaRegClock className="text-sky-500 mr-1" />{" "}
-                  <span className="font-medium text-sky-600 hover:text-sky-900  text-md  ">
-                    Add starting time
-                  </span>
-                </button>
+
+                {startingTimes?.Wed.length < 1 && (
+                  <button
+                    className="flex items-center bg-white border-none  mr-3"
+                    onClick={() => addStartingTime("Wed")}
+                  >
+                    <FaRegClock className="text-navy-blue mr-1" />{" "}
+                    <span className="font-medium text-navy-blue hover:text-black  text-md  ">
+                      Add starting time
+                    </span>
+                  </button>
+                )}
                 <button
                   className="flex items-center bg-white border-none"
                   onClick={() => copyToWholeWeek("Wed")}
                 >
-                  <FaCheck className="text-sky-500 mr-1" />{" "}
-                  <span className="font-medium text-sky-600 hover:text-sky-900  text-md  ">
+                  <FaCheck className="text-navy-blue mr-1" />{" "}
+                  <span className="font-medium text-navy-blue hover:text-black  text-md  ">
                     Copy to whole
                   </span>
                 </button>
@@ -516,7 +568,7 @@ const Capacity: React.FC = () => {
 
             <div className="mt-2">
               <div className="flex flex-wrap items-center mb-1">
-                <p className="font-medium mr-3 w-5">Thu</p>
+                <p className="font-medium mr-5 w-5">Thu</p>
                 {startingTimes?.Thu?.map((item: any, index: number) => (
                   <div key={index} className="flex items-center mr-8">
                     <select
@@ -548,21 +600,23 @@ const Capacity: React.FC = () => {
                     />
                   </div>
                 ))}
-                <button
-                  className="flex items-center bg-white border-none"
-                  onClick={() => addStartingTime("Thu")}
-                >
-                  <FaRegClock className="text-sky-500 mr-1" />{" "}
-                  <span className="font-medium text-sky-600 hover:text-sky-900  text-md  ">
-                    Add starting time
-                  </span>
-                </button>
+                {startingTimes?.Thu.length < 1 && (
+                  <button
+                    className="flex items-center bg-white border-none  mr-3"
+                    onClick={() => addStartingTime("Thu")}
+                  >
+                    <FaRegClock className="text-navy-blue mr-1" />{" "}
+                    <span className="font-medium text-navy-blue hover:text-black  text-md  ">
+                      Add starting time
+                    </span>
+                  </button>
+                )}
                 <button
                   className="flex items-center bg-white border-none"
                   onClick={() => copyToWholeWeek("Thu")}
                 >
-                  <FaCheck className="text-sky-500 mr-1" />{" "}
-                  <span className="font-medium text-sky-600 hover:text-sky-900  text-md  ">
+                  <FaCheck className="text-navy-blue mr-1" />{" "}
+                  <span className="font-medium text-navy-blue hover:text-black  text-md  ">
                     Copy to whole
                   </span>
                 </button>
@@ -573,7 +627,7 @@ const Capacity: React.FC = () => {
 
             <div className="mt-2">
               <div className="flex flex-wrap items-center mb-1">
-                <p className="font-medium mr-3 w-5">Fri</p>
+                <p className="font-medium mr-5 w-5">Fri</p>
                 {startingTimes?.Fri?.map((item: any, index: number) => (
                   <div key={index} className="flex items-center mr-8">
                     <select
@@ -605,21 +659,23 @@ const Capacity: React.FC = () => {
                     />
                   </div>
                 ))}
-                <button
-                  className="flex items-center bg-white border-none"
-                  onClick={() => addStartingTime("Fri")}
-                >
-                  <FaRegClock className="text-sky-500 mr-1" />{" "}
-                  <span className="font-medium text-sky-600 hover:text-sky-900  text-md  ">
-                    Add starting time
-                  </span>
-                </button>
+                {startingTimes?.Fri.length < 1 && (
+                  <button
+                    className="flex items-center bg-white border-none  mr-3"
+                    onClick={() => addStartingTime("Fri")}
+                  >
+                    <FaRegClock className="text-navy-blue mr-1" />{" "}
+                    <span className="font-medium text-navy-blue hover:text-black  text-md  ">
+                      Add starting time
+                    </span>
+                  </button>
+                )}
                 <button
                   className="flex items-center bg-white border-none"
                   onClick={() => copyToWholeWeek("Fri")}
                 >
-                  <FaCheck className="text-sky-500 mr-1" />{" "}
-                  <span className="font-medium text-sky-600 hover:text-sky-900  text-md  ">
+                  <FaCheck className="text-navy-blue mr-1" />{" "}
+                  <span className="font-medium text-navy-blue hover:text-black  text-md  ">
                     Copy to whole
                   </span>
                 </button>
@@ -629,7 +685,7 @@ const Capacity: React.FC = () => {
             </div>
             <div className="mt-2">
               <div className="flex flex-wrap items-center mb-1">
-                <p className="font-medium mr-3 w-5">Sat</p>
+                <p className="font-medium mr-5 w-5">Sat</p>
                 {startingTimes?.Sat?.map((item: any, index: number) => (
                   <div key={index} className="flex items-center mr-8">
                     <select
@@ -661,21 +717,23 @@ const Capacity: React.FC = () => {
                     />
                   </div>
                 ))}
-                <button
-                  className="flex items-center bg-white border-none"
-                  onClick={() => addStartingTime("Sat")}
-                >
-                  <FaRegClock className="text-sky-500 mr-1" />{" "}
-                  <span className="font-medium text-sky-600 hover:text-sky-900  text-md  ">
-                    Add starting time
-                  </span>
-                </button>
+                {startingTimes?.Sat.length < 1 && (
+                  <button
+                    className="flex items-center bg-white border-none  mr-3"
+                    onClick={() => addStartingTime("Sat")}
+                  >
+                    <FaRegClock className="text-navy-blue mr-1" />{" "}
+                    <span className="font-medium text-navy-blue hover:text-black  text-md  ">
+                      Add starting time
+                    </span>
+                  </button>
+                )}
                 <button
                   className="flex items-center bg-white border-none"
                   onClick={() => copyToWholeWeek("Sat")}
                 >
-                  <FaCheck className="text-sky-500 mr-1" />{" "}
-                  <span className="font-medium text-sky-600 hover:text-sky-900  text-md  ">
+                  <FaCheck className="text-navy-blue mr-1" />{" "}
+                  <span className="font-medium text-navy-blue hover:text-black  text-md  ">
                     Copy to whole
                   </span>
                 </button>
@@ -685,7 +743,7 @@ const Capacity: React.FC = () => {
             </div>
             <div className="mt-2">
               <div className="flex flex-wrap items-center mb-1">
-                <p className="font-medium mr-3 w-5">Sun</p>
+                <p className="font-medium mr-5 w-5">Sun</p>
                 {startingTimes?.Sun?.map((item: any, index: number) => (
                   <div key={index} className="flex items-center mr-8">
                     <select
@@ -717,21 +775,23 @@ const Capacity: React.FC = () => {
                     />
                   </div>
                 ))}
-                <button
-                  className="flex items-center bg-white border-none"
-                  onClick={() => addStartingTime("Sun")}
-                >
-                  <FaRegClock className="text-sky-500 mr-1" />{" "}
-                  <span className="font-medium text-sky-600 hover:text-sky-900  text-md  ">
-                    Add starting time
-                  </span>
-                </button>
+                {startingTimes?.Sun.length < 1 && (
+                  <button
+                    className="flex items-center bg-white border-none  mr-3"
+                    onClick={() => addStartingTime("Sun")}
+                  >
+                    <FaRegClock className="text-navy-blue mr-1" />{" "}
+                    <span className="font-medium text-navy-blue hover:text-black  text-md  ">
+                      Add starting time
+                    </span>
+                  </button>
+                )}
                 <button
                   className="flex items-center bg-white border-none"
                   onClick={() => copyToWholeWeek("Sun")}
                 >
-                  <FaCheck className="text-sky-500 mr-1" />{" "}
-                  <span className="font-medium text-sky-600 hover:text-sky-900  text-md  ">
+                  <FaCheck className="text-navy-blue mr-1" />{" "}
+                  <span className="font-medium text-navy-blue hover:text-black  text-md  ">
                     Copy to whole
                   </span>
                 </button>
@@ -795,30 +855,32 @@ const Capacity: React.FC = () => {
                             {optionsByDay["Single"].min}
                           </select>
 
-                          <FaRegTrashCan
+                          {/* <FaRegTrashCan
                             className="ml-3 text-red-600 hover:text-red-900"
                             onClick={() =>
                               removeTimeFromDay(dayIndex, timeIndex)
                             }
-                          />
+                          /> */}
                         </div>
                       );
                     })}
-                    <button
-                      className="flex items-center bg-white border-none"
-                      onClick={() => addTimeToDay(dayIndex)}
-                    >
-                      <FaRegClock className="text-sky-500 mr-1" />{" "}
-                      <span className="font-medium text-sky-600 hover:text-sky-900 text-md">
-                        Add starting time
-                      </span>
-                    </button>
+                    {day.time?.length < 1 && (
+                      <button
+                        className="flex items-center bg-white border-none"
+                        onClick={() => addTimeToDay(dayIndex)}
+                      >
+                        <FaRegClock className="text-navy-blue mr-1" />{" "}
+                        <span className="font-medium text-navy-blue hover:text-black text-md">
+                          Add starting time
+                        </span>
+                      </button>
+                    )}
                   </div>
                 )
               )}
 
               <button
-                className="flex items-center bg-white border-2 border-sky-500 rounded-3xl p-4  text-sky-600 hover:text-sky-900 hover:border-sky-900"
+                className="flex items-center bg-white border-2 px-3 py-2 border-navy-blue rounded-xl   text-navy-blue hover:text-white hover:bg-navy-blue hover:border-sky-900"
                 onClick={() => addDayWithTime()}
               >
                 <span className="font-medium text-md  ">Add new date</span>

@@ -11,6 +11,7 @@ import {
   TitleCardOptions,
 } from "../../../styles/createtour/createtour";
 import { AiFillBank } from "react-icons/ai";
+import { FaEarthAfrica } from "react-icons/fa6";
 
 const TourType: React.FC = () => {
   const { currentStep, updateFormValues } = useStepContext();
@@ -28,17 +29,17 @@ const TourType: React.FC = () => {
   const dataClickType = [
     {
       id: 0,
-      title: "tour in country",
+      title: "Domestic",
       description:
         "All bookings are protected for free in the event of Landlord cancellations, incorrect listing information and other",
       icon: <AiFillBank />,
     },
     {
       id: 1,
-      title: "overseas tour",
+      title: "International ",
       description:
         "All bookings are protected for free in the event of Landlord cancellations, incorrect listing information and other",
-      icon: <AiFillBank />,
+      icon: <FaEarthAfrica />,
     },
   ];
   return (

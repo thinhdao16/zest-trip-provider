@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { BASE_URL, axiosInstance } from "../../apiInterceptors";
+import { toast } from "react-toastify";
 interface DetailTour {
   index: string;
 }
@@ -33,19 +34,22 @@ const initialState = {
 };
 
 export const fetchTours = createAsyncThunk("tour/fetchTours", async () => {
-  // const token = getTokenFromLocalStorage();
   try {
-    const response = await axiosInstance.get(`${BASE_URL}/tour/provider`, {
-      // headers: {
-      //   Authorization: `Bearer ${token}`,
-      // },
-    });
+    const response = await axiosInstance.get(`${BASE_URL}/tour/provider`, {});
 
-    return response.data.data;
+    if (response.status === 200) {
+      toast.success("This is tour!"); // Thông báo lấy danh sách tour thành công
+      return response.data.data;
+    } else {
+      toast.error("Failed to fetch tours!"); // Thông báo lỗi khi lấy danh sách tour
+      throw new Error("Failed to fetch tours");
+    }
   } catch (error) {
+    toast.error("Failed to fetch tours!"); // Thông báo lỗi khi lấy danh sách tour
     throw new Error("Failed to fetch tours");
   }
 });
+
 export const fetchTourDetail = createAsyncThunk(
   "tour/getDetailTour",
   async (index: DetailTour) => {
@@ -82,16 +86,38 @@ export const getVehicleTour = createAsyncThunk(
 // Create another async thunk to fetch other data
 export const postCreateTour = createAsyncThunk(
   "tour/postCreateTour", // Slice name: "tour"
-  async (requestData: CreatTour) => {
-    const token = getTokenFromLocalStorage();
+  async (requestData: any) => {
     try {
+      console.log(requestData);
       const response = await axiosInstance.post(
         `${BASE_URL}/tour`,
-        requestData.formData,
+        requestData,
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            // Authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      throw new Error("Failed to fetch other data");
+    }
+  }
+);
+export const postCreateAvailabilityTour = createAsyncThunk(
+  "tour/postCreateAvailabilityTour", // Slice name: "tour"
+  async (requestDataAvailability: any) => {
+    try {
+      console.log(requestDataAvailability);
+      const response = await axiosInstance.post(
+        `${BASE_URL}/availability`,
+        requestDataAvailability,
+        {
+          headers: {
+            // Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
           },
         }
       );
@@ -103,7 +129,6 @@ export const postCreateTour = createAsyncThunk(
     }
   }
 );
-
 const tourSlice = createSlice({
   name: "tour",
   initialState,

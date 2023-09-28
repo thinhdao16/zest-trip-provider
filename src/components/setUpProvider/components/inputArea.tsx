@@ -35,7 +35,7 @@ const InputArea: FC<TextAreaWithIconProps> = ({
 
   return (
     <FormControl>
-      <FormLabel style={{ fontWeight: 600, color: "black" }}>{label}</FormLabel>
+      <p className="font-medium">{label}</p>
       <div style={{ position: "relative" }}>
         <InputAdornment
           position="start"
@@ -48,16 +48,16 @@ const InputArea: FC<TextAreaWithIconProps> = ({
         >
           {icon}
         </InputAdornment>
-        <TextareaAutosize
+        <textarea
           style={{
             border: "1px solid #cccccc",
             paddingTop: "5px",
             paddingLeft: "32px",
-            width: "38vw",
+            width: "100%",
             minHeight: "60px",
-            fontSize: "20px",
             borderRadius: "8px",
           }}
+          className=" focus:ring-navy-blue focus:ring-1 focus:outline-none hover:ring-1 hover:ring-navy-blue  shadow-custom-card-mui"
           onChange={handleInputChange}
           maxLength={maxLength}
           {...rest}

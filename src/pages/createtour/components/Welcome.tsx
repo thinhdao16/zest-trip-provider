@@ -1,10 +1,7 @@
-import { Typography } from "@mui/material";
 import {
   BannerContainer,
   BannerContent,
-  BannerDescription,
   BannerImage,
-  WelcomTitle,
 } from "../../../styles/createtour/createtour";
 import { useStepContext } from "../context/ui/useStepContext";
 
@@ -17,17 +14,12 @@ export default function Welcome() {
   return (
     <BannerContainer style={{ paddingTop: "12vh" }}>
       <BannerContent>
-        <p className="text-xl">Step 1</p>
-
-        <p className="font-semibold text-6xl leading-tight mb-3 text-black">
+        <div className="text-lg">Let's get started</div>
+        <p className="font-semibold text-5xl leading-tight mb-3 text-black">
           Share your tour information with us
         </p>
-        <BannerDescription variant="subtitle1">
-          Torem ipsum dolor sit amet, consectetur adipisicing elitsed do eiusmo
-          tempor incididunt ut labore et dolore magna
-        </BannerDescription>
       </BannerContent>
-      <BannerImage src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi8JQ7zxwLF4drUpLeYn98SZCAj44y0lmhCYPmYdnfFMH-n1aw9vBVwULWEJGC451D268t9OOMOuQMrhX5n0AYBI6GE8r3_RgzTwdCxQytqb8Cq_Be04fK8VeZiJBNHaV1IWwCHOFQb77yrzZ5ynFRxcrz8tmIgRP8pplCbQFJYcM-nVCY5goNSrw2v/w680/school-tour-guidelines.png" />
+      <BannerImage src="src\assets\tour\welcome\Tour-PNG-Download-Image.png" />
     </BannerContainer>
   );
 }

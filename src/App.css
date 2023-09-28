@@ -166,11 +166,15 @@ video {
   font-size: 100%;
   font: inherit;
   vertical-align: baseline;
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif,
+    Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
 }
 
 * {
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif,
+    Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
 }
 
 /* HTML5 display-role reset for older browsers */
@@ -206,7 +210,7 @@ blockquote:before,
 blockquote:after,
 q:before,
 q:after {
-  content: '';
+  content: "";
   content: none;
 }
 
@@ -241,14 +245,13 @@ table {
 }
 
 .tab-list-mui .css-1aquho2-MuiTabs-indicator {
-  background-color: #8fcaf7;
+  background-color: #05445e;
   height: 0;
 }
 
 .tab-list-mui .Mui-selected {
-  color: #8fcaf7 !important;
-  border: 1px solid #8fcaf7 !important;
-
+  color: #05445e !important;
+  border: 1px solid #05445e !important;
 }
 
 .tab-list-mui .css-1h9z7r5-MuiButtonBase-root-MuiTab-root {
@@ -263,6 +266,5 @@ table {
 .tab-list-data-mui .css-13xfq8m-MuiTabPanel-root {
   padding: 24px 0;
 }
-
 
 /*end*/

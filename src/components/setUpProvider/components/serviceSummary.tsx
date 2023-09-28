@@ -1,17 +1,14 @@
 import { UserServiceConfiguration } from "AppTypes";
-import { AiOutlineAlert } from "react-icons/ai";
 import { InformationSum } from "./informationSum";
 import {
-  FaConnectdevelop,
   FaEarthEurope,
   FaHotel,
   FaLocationDot,
   FaRegFile,
-  FaRegFileLines,
   FaServicestack,
   FaStaylinked,
 } from "react-icons/fa6";
-import { Box, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 interface ServiceSummaryProps {
   userServiceConfiguration: UserServiceConfiguration;
 }
@@ -31,11 +28,15 @@ export const ServiceSummary = ({
             title="nameCompany"
             description={userInfo?.nameCompany}
           />
+        </Grid>{" "}
+        <Grid item xs={4}>
           <InformationSum
             icon={<FaEarthEurope />}
             title="region"
             description={userInfo?.region}
           />
+        </Grid>{" "}
+        <Grid item xs={4}>
           <InformationSum
             icon={<FaLocationDot />}
             title="address"
@@ -43,16 +44,18 @@ export const ServiceSummary = ({
           />
         </Grid>
         <Grid item xs={4}>
-          <InformationSum
+          {/* <InformationSum
             icon={<FaConnectdevelop />}
             title="WebCompany"
             description={userInfo?.webCompnany}
-          />
+          /> */}
           <InformationSum
             icon={<FaStaylinked />}
             title="Media Social"
             description={userInfo?.mediaSocial}
           />
+        </Grid>
+        <Grid item xs={4}>
           <InformationSum
             icon={<FaRegFile />}
             title="Title"
@@ -64,16 +67,6 @@ export const ServiceSummary = ({
             icon={<FaServicestack />}
             title="Service Type"
             description={selectedPlan?.serviceType}
-          />
-          <InformationSum
-            icon={<AiOutlineAlert />}
-            description={selectedPlan?.policyCancell}
-            title="Policy Cancell"
-          />
-          <InformationSum
-            icon={<FaRegFileLines />}
-            title="Policy Confirm"
-            description={selectedPlan?.policyConfirm}
           />
         </Grid>
       </Grid>

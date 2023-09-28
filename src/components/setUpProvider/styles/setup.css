@@ -1,0 +1,33 @@
+.nextSetupProvider {
+  background: white;
+  border: 1px solid back;
+}
+
+.setUpThankYou {
+  position: relative;
+  height: 50vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.setUpThankYou::before {
+  content: "";
+  background-image: url("https://cdn.dribbble.com/users/4929358/screenshots/14997870/media/368ca4f7a23a7486e4ccdcc8830dee15.png?resize=1000x750&vertical=center");
+  background-size: cover;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  opacity: 0.6;
+}
+
+.beforeSetupThankYou {
+  position: relative;
+  color: black;
+  font-size: 14rem;
+  line-height: 0.9;
+  text-align: center;
+}

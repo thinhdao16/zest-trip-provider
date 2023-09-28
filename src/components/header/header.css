@@ -1,0 +1,11 @@
+.active-link {
+  color: red; /* Change to the desired color for the active link */
+  /* You can add other styles like font-weight: bold; for bold text */
+}
+
+.active-link-text {
+  /* Additional styles for the text when it's active */
+  /* For example, you can change the color or add underline here */
+  color: red; /* Change to the desired color */
+  text-decoration: underline; /* Add underline */
+}

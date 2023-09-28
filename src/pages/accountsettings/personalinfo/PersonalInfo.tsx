@@ -5,39 +5,37 @@ import {
   BannerContent,
   BannerPageList,
 } from "../../../styles/global/StyleGlobal";
-import {
-  Box,
-  Breadcrumbs,
-  Button,
-  Grid,
-  InputAdornment,
-  TextField,
-} from "@mui/material";
+import { Box, Breadcrumbs, Grid } from "@mui/material";
 import { Link } from "react-router-dom";
 import { AiFillHome } from "react-icons/ai";
-import { FaUserLarge } from "react-icons/fa6";
+import { FaUserLarge, FaWallet } from "react-icons/fa6";
 import { DetailAccountSettings } from "../../../components/accountSettings/DetailAccountSettings";
+import { useSelector } from "react-redux";
 
 function PersonalInfo() {
   function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     event.preventDefault();
     console.info("You clicked a breadcrumb.");
   }
-    const [isEditing, setIsEditing] = React.useState(false);
-    const [editedValue, setEditedValue] = React.useState("Thinhdao"); // Initial value
+  const [isEditing, setIsEditing] = React.useState(false);
+  const { personalInfo } = useSelector((state: any) => state.auth);
+  const [editedValue, setEditedValue] = React.useState(
+    personalInfo?.full_name || "please input name"
+  ); // Initial value
 
-    const handleEdit = () => {
-      setIsEditing(true);
-    };
+  const handleEdit = () => {
+    setIsEditing(true);
+  };
 
-    const handleSave = () => {
-
-      setIsEditing(false);
-    };
-    const handleCancel = () => {
-      setIsEditing(false);
-    };
-
+  const handleSave = () => {
+    setIsEditing(false);
+  };
+  const handleCancel = () => {
+    setIsEditing(false);
+  };
+  const handleEditLegalName = (e: any) => {
+    setEditedValue(e);
+  };
   return (
     <React.Fragment>
       <Header />
@@ -46,22 +44,25 @@ function PersonalInfo() {
           <BannerPageList>
             <div role="presentation" onClick={handleClick}>
               <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 1 }}>
-                <Link className="flex items-center" to="/account-settings">
-                  <AiFillHome sx={{ mr: 0.5 }} fontSize="inherit" />
-                  <p>Account</p>
+                <Link
+                  className="flex items-center gap-1"
+                  to="/account-settings"
+                >
+                  <FaWallet fontSize="inherit" />
+                  <p className="font-medium">Account</p>
                 </Link>
-                <p className="flex items-center">
+                <p className="flex items-center gap-1 font-medium">
                   <FaUserLarge sx={{ mr: 0.5 }} fontSize="inherit" />
                   Personal Infomation
                 </p>
               </Breadcrumbs>
             </div>
             <Box mb={5} mt={2}>
-              <p style={{ fontSize: "40px" }}>abc</p>
+              <p className="text-4xl font-medium ">Personal infomation</p>
             </Box>
             <Grid container spacing={10}>
               <Grid item xs={12} sm={7.5}>
-                <Box style={{ borderBottom: "1px solid black" }}>
+                <div className="border-b border-gray-300 border-solid">
                   <Box style={{ padding: "24px 0" }}>
                     <Box style={{ display: "flex" }}>
                       <Box
@@ -73,7 +74,7 @@ function PersonalInfo() {
                           width: "100%",
                         }}
                       >
-                        <p style={{ fontSize: "16px" }}>ten phap ly</p>
+                        <p className="font-medium">Legal name</p>
                         {isEditing ? (
                           <React.Fragment>
                             <p
@@ -89,50 +90,51 @@ function PersonalInfo() {
                             </p>
                           </React.Fragment>
                         ) : (
-                          <p
-                            style={{
-                              color: "#717171",
-                              fontSize: "16px",
-                              marginTop: "4px",
-                            }}
-                          >
-                            {editedValue}
-                          </p>
+                          <p className="text-gray-600">{editedValue}</p>
                         )}
                       </Box>
                       <Box style={{ textAlign: "right", marginLeft: "16px" }}>
                         {isEditing ? (
-                          <Button onClick={handleCancel}>cancel</Button>
+                          <button
+                            className="border border-navy-blue py-2 px-4 rounded-lg text-navy-blue hover:bg-navy-blue hover:text-white"
+                            onClick={handleCancel}
+                          >
+                            Cancel
+                          </button>
                         ) : (
-                          <Button onClick={handleEdit}>edit</Button>
+                          <button
+                            className="bg-navy-blue py-2 text-white px-4 rounded-lg hover:bg-white hover:border-navy-blue border  hover:text-navy-blue"
+                            onClick={handleEdit}
+                          >
+                            Edit
+                          </button>
                         )}
                       </Box>
                     </Box>
                   </Box>
-                    {isEditing ? (
-                      <Box style={{ paddingBottom: "24px" }}>
-                        <Box style={{ marginBottom: "16px" }}>
-                          <TextField
-                            label="Full Name"
-                            fullWidth
-                            value={editedValue}
-                            InputProps={{
-                              startAdornment: (
-                                <InputAdornment position="start">
-                                  <FaUserLarge />
-                                </InputAdornment>
-                              ),
-                            }}
-                            className="input-form-text-ready"
-                            onChange={(e) => setEditedValue(e.target.value)}
-                          />
-                        </Box>
-                        <Button onClick={handleSave}>save</Button>
-                      </Box>
-                    ) : (
-                      <></>
-                    )}
-                </Box>
+                  {isEditing ? (
+                    <Box style={{ paddingBottom: "24px" }}>
+                      <div className="relative mb-5">
+                        <FaUserLarge className="absolute top-3.5 left-4 " />
+                        <input
+                          onChange={(e) => {
+                            handleEditLegalName(e.target.value);
+                          }}
+                          value={editedValue}
+                          className="border pl-10 border-gray-300 rounded-md py-2 px-4 w-full hover:border-navy-blue focus:border-navy-blue focus:outline-none"
+                        />
+                      </div>
+                      <button
+                        className="bg-navy-blue py-2 text-white px-4 rounded-lg hover:bg-white hover:border-navy-blue border  hover:text-navy-blue"
+                        onClick={handleSave}
+                      >
+                        Save
+                      </button>
+                    </Box>
+                  ) : (
+                    <></>
+                  )}
+                </div>
               </Grid>
               <Grid item xs={12} sm={4.5}>
                 <Box

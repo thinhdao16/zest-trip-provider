@@ -1,30 +1,32 @@
 import { Box, Grid } from "@mui/material";
-
+import "../styles/setup.css";
 export const ThankYou = () => {
   return (
     <Box>
-   <Grid container  sx={{display:"flex", alignItems:'center' , padding:"50px"}}>
-	<Grid item xs={6} >
-	<Box mb={3}>
-        <p style={{fontSize:"50px", fontWeight:500}}>You are all set</p>
-      </Box>
-      <Box mb={1}>
-        <p style={{fontSize:"20px"}}>
-          You can now visit your provider account and set it up, you can create
-          tours and your provider profile!
-        </p>
-      </Box>
-      <Box>
-        <p style={{fontSize:"17px"}}>
-          Keep in note that you can not receive any reservation and order until
-          we have verified your registration
-        </p>
-      </Box>
-	</Grid>
-	<Grid item xs={6}>
-		<img alt="alt" src="https://atlas-content-cdn.pixelsquid.com/stock-images/us-constitution-file-holder-JeKQZV2-600.jpg"/>
-	</Grid>
-   </Grid>
+      <Grid
+        container
+        sx={{ display: "flex", alignItems: "center", padding: "50px" }}
+      >
+        <div className="setUpThankYou">
+          <div className="beforeSetupThankYou">
+            <Box mb={3}>
+              <p className="text-5xl font-medium">You are all set</p>
+            </Box>
+            <Box mb={1}>
+              <p className="text-xl">
+                You can now visit your provider account and set it up, you can
+                create tours and your provider profile!
+              </p>
+            </Box>
+            <Box>
+              <p className="text-xl">
+                Keep in note that you can not receive any reservation and order
+                until we have verified your registration
+              </p>
+            </Box>
+          </div>
+        </div>
+      </Grid>
     </Box>
   );
 };

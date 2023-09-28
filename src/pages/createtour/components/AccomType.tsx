@@ -10,7 +10,6 @@ import { Box, Card, Grid } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { DataSelectCard, StateTour } from "../types/index.t";
-import { AiFillBank } from "react-icons/ai";
 import { TourTag } from "../../../components/icon/tour/tag";
 
 const AccomType: React.FC = () => {
@@ -31,16 +30,16 @@ const AccomType: React.FC = () => {
     const selectedData = tagTour
       .filter((item: DataSelectCard) => selectedCards.includes(item.id))
       .map((item: DataSelectCard) => ({ id: item.id, name: item.name }));
-    updateFormValues(2, { TransportType: selectedData });
+    updateFormValues(2, { AccomType: selectedData });
   }, [selectedCards]);
-  if (currentStep !== 4) {
+  if (currentStep !== 5) {
     return null;
   }
   return (
     <BannerContainer>
       <BannerContent>
         <CreateTitle variant="h6">
-          Chooser the tag types you want to create for the tour
+          Choose the type of tour you are providing
         </CreateTitle>
         <Grid container spacing={2}>
           {" "}
@@ -64,7 +63,7 @@ const AccomType: React.FC = () => {
                 onClick={() => handleCardClick(data)}
               >
                 <Box sx={{ margin: 3 }}>
-                  <TourTag field={data?.name} />
+                  <TourTag field={data?.name} style="w-8 h-8" />
                   <TitleIconCardOptions>{data?.name}</TitleIconCardOptions>
                 </Box>
               </Card>

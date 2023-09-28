@@ -14,6 +14,7 @@ import {
   DropResult,
 } from "react-beautiful-dnd";
 import { Box, Button, Grid, InputLabel, Typography } from "@mui/material";
+import { FaRegTrashCan } from "react-icons/fa6";
 
 type GalleryImage = {
   id: string;
@@ -106,7 +107,7 @@ const Media: React.FC = () => {
     updateFormValues(7, { Media: selectedImages });
   }, [selectedImages]);
 
-  if (currentStep !== 9) {
+  if (currentStep !== 10) {
     return null;
   }
 
@@ -211,23 +212,17 @@ const Media: React.FC = () => {
                                 src={image.url}
                                 alt={`Image ${index}`}
                                 style={{
-                                  objectFit: "contain",
+                                  objectFit: "cover",
                                   height: "14.5vw",
                                   width: "100%",
                                 }}
                               />
-                              <Button
-                                variant="outlined"
+                              <button
                                 onClick={() => handleDeleteImage(image.id)}
-                                style={{
-                                  position: "absolute",
-                                  top: 0, // Positioned at the top
-                                  right: 0, // Positioned at the right
-                                  zIndex: 1, // Ensure the button appears above the image
-                                }}
+                                className="absolute top-3 right-3 bg-white shadow-custom-card-mui font-medium text-gray-600 w-8 h-8 p-0 rounded-full flex items-center justify-center"
                               >
-                                Delete
-                              </Button>
+                                <FaRegTrashCan />
+                              </button>
                             </div>
                           </Grid>
                         )}

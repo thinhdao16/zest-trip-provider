@@ -13,8 +13,10 @@ export const TitlePage: React.FC<CustomTitleProps> = ({
 }) => {
   return (
     <div>
-      <Box textAlign={"center"} mb={8}>
-        <p style={{ fontSize: "40px" }}>{title}</p>
+      <Box textAlign={"center"}>
+        <p className="font-medium" style={{ fontSize: "40px" }}>
+          {title}
+        </p>
         <Box
           style={{
             padding: "4px 12px",
@@ -26,10 +28,13 @@ export const TitlePage: React.FC<CustomTitleProps> = ({
       </Box>
       <Box style={{ marginBottom: "36px", display: "flex" }}>
         <Box style={{ flexGrow: 1 }}>
-          <p className="text-2xl font-semibold">{titleList}</p>
+          <p className="text-3xl font-semibold">{titleList}</p>
         </Box>
-        <Box style={{ flexGrow: 1, textAlign: "right" }}>
-          <p>{rest}</p>
+        <Box
+          className="border-b-2 border-black"
+          style={{ flexGrow: 1, textAlign: "right" }}
+        >
+          <p className="font-medium underline decoration-navy-blue ">{rest}</p>
         </Box>
       </Box>
     </div>

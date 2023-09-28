@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { useState } from "react";
 import {
   BannerContainer,
   BannerContentReview,
@@ -6,7 +6,7 @@ import {
   CreateTitleNullDes,
 } from "../../../styles/createtour/createtour";
 import { useStepContext } from "../context/ui/useStepContext";
-import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
+import { Box, Button, Card, CardContent, Grid, TextField } from "@mui/material";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import {
@@ -15,11 +15,51 @@ import {
   AiOutlineFileText,
   AiOutlineSelect,
 } from "react-icons/ai";
-
-import { GrCapacity } from "react-icons/gr";
 import { FaLocationDot } from "react-icons/fa6";
+import { TourTag, VehicleTag } from "../../../components/icon/tour/tag";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import dayjs from "dayjs";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+
+export interface Ilist {
+  id: number;
+  descriptions: string;
+}
+
+export const listFrameword: Ilist[] = [
+  {
+    id: -1,
+    descriptions: "Selects...",
+  },
+  {
+    id: 1,
+    descriptions: "React",
+  },
+  {
+    id: 2,
+    descriptions: "Angular",
+  },
+  {
+    id: 3,
+    descriptions: "Vuejs",
+  },
+];
+
 const Review: React.FC = () => {
   const { currentStep, formValues } = useStepContext();
+
+  const [dataForm, setDataForm] = useState<{
+    dateFrom: Date | null;
+    dateTo: Date | null;
+    selected: string | number;
+  }>({
+    dateFrom: new Date(),
+    dateTo: new Date(),
+    selected: -1,
+  });
+
+  const handleFiler = () => alert(JSON.stringify(dataForm));
+
   if (currentStep !== 11) {
     return null;
   }
@@ -31,6 +71,66 @@ const Review: React.FC = () => {
           Below is the information that we will display to guests. Make sure
           everything is okay.
         </CreateDescription>
+        {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <div>
+            <Card elevation={1}>
+              * <div>{JSON.stringify(dataForm)}</div>
+              <CardContent>
+                <div className="text-start">
+                  <h1>Date Picker</h1>
+                </div>
+
+                <Grid direction="row" container spacing={2} my={2.5}>
+                  <Grid item xs={12} sm={12} xl={3} lg={3}>
+                    <DatePicker
+                      disableFuture
+                      label="Date From"
+                      value={dataForm.dateFrom}
+                      onChange={(newValue) => {
+                        setDataForm({ ...dataForm, dateFrom: newValue });
+                      }}
+                      renderInput={(params: any) => (
+                        <TextField {...params} fullWidth />
+                      )}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={12} xl={3} lg={3}>
+                    <DatePicker
+                      disableFuture
+                      label="Date To"
+                      minDate={dataForm.dateFrom}
+                      value={dataForm.dateTo}
+                      onChange={(newValue) => {
+                        setDataForm({ ...dataForm, dateTo: newValue });
+                      }}
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={12} xl={3} lg={3}>
+                    <Button variant="contained" fullWidth onClick={handleFiler}>
+                      Filter
+                    </Button>
+                  </Grid>
+                  <Grid
+                    item
+                    xs={12}
+                    sm={12}
+                    xl={12}
+                    lg={12}
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignContent: "center",
+                    }}
+                  >
+                    <h4>{dayjs(dataForm.dateFrom).format("DD/MM/YYYY")}</h4>
+                    <h4>{dayjs(dataForm.dateTo).format("DD/MM/YYYY")}</h4>
+                  </Grid>
+                </Grid>
+              </CardContent>
+            </Card>
+          </div>
+        </LocalizationProvider> */}
         <Box>
           <Grid container spacing={5}>
             <Grid item xs={6}>
@@ -53,57 +153,33 @@ const Review: React.FC = () => {
             </Grid>
             <Grid item xs={6}>
               <div className="mb-5">
-                <p className="font-medium text-3xl mb-3">
+                <p className="font-medium text-2xl mb-3">
                   {formValues?.[8]?.Title?.[0]}
                 </p>
-
+                <div className="block  mb-3">
+                  <p>{formValues?.[8]?.Title?.[1]}</p>
+                </div>
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center">
                     <AiOutlineFieldTime className="mr-2 " />
                     <div>
-                      <p className="font-medium mb-1 text-lg">Day</p>
-                      <p>{formValues?.[4]?.DurationCheckIn?.[0]?.no}</p>
-                    </div>
-                    <p className="font-medium m-2">-</p>
-                    <div>
-                      <p className="font-medium mb-1 text-lg">Night</p>
-                      <p>{formValues?.[4]?.DurationCheckIn?.[1]?.no} </p>
+                      <p className="font-medium mb-1 text-lg">Duration</p>
+                      <p>{formValues?.[4]?.DurationCheckIn?.[0]?.[0]?.no}</p>
                     </div>
                   </div>
-                  <div className="flex items-center">
-                    <GrCapacity className="mr-2" />
+                  <div className="flex items-center ">
+                    <FaLocationDot className="mr-2" />
                     <div className="block">
-                      <p className="font-medium mb-1 text-lg">Capacity</p>
-                      <p>{formValues?.[5]?.Capacity}</p>
+                      <p className="font-medium mb-1 text-lg"> location</p>
+                      <div>{formValues?.[3]?.Location}</div>
                     </div>
                   </div>
                   <div></div>
-                </div>
-                <div className="flex items-center ">
-                  <FaLocationDot className="mr-2" />
-                  <div className="block">
-                    <p className="font-medium mb-1 text-lg"> location</p>
-                    <div>
-                      {formValues?.[3]?.Location?.map(
-                        (
-                          location: { id: number; value: string },
-                          index: any
-                        ) => (
-                          <div key={index}>
-                            <p>{location?.value}</p>
-                          </div>
-                        )
-                      )}
-                    </div>
-                  </div>
                 </div>
               </div>
 
               <hr />
               <div className="my-5">
-                <div className="block font-medium text-lg mb-3">
-                  <p>{formValues?.[8]?.Title?.[1]}</p>
-                </div>
                 <div className="flex items-center justify-between">
                   <div className="block">
                     <p>From</p>
@@ -157,20 +233,14 @@ const Review: React.FC = () => {
                   </div>
                   <Grid container spacing={2}>
                     {formValues?.[1]?.TransportType?.map(
-                      (trans: { id: number; title: string; icon: any }, index:any) => (
+                      (trans: { id: number; name: string }, index: any) => (
                         <Grid item xs={3} key={index}>
                           <div
                             key={trans?.id}
-                            className="w-fit"
-                            style={{
-                              padding: "12px",
-                              borderRadius: "12px",
-                              boxShadow:
-                                "rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px",
-                            }}
+                            className="flex items-center gap-2 border border-gray-400 border-solid rounded-md p-3 shadow-custom-card-mui"
                           >
-                            {trans?.icon}
-                            <p>{trans?.title}</p>
+                            <VehicleTag field={trans?.name} style="w-8 h-8" />
+                            <p>{trans?.name}</p>
                           </div>
                         </Grid>
                       )
@@ -184,20 +254,14 @@ const Review: React.FC = () => {
                   </div>
                   <Grid container spacing={2}>
                     {formValues?.[2]?.AccomType?.map(
-                      (accom: { id: number; title: string; icon: any },index:any) => (
+                      (accom: { id: number; name: string }, index: any) => (
                         <Grid item xs={3} key={index}>
                           <div
-                            className="w-fit"
                             key={accom?.id}
-                            style={{
-                              padding: "12px",
-                              borderRadius: "12px",
-                              boxShadow:
-                                "rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px",
-                            }}
+                            className="flex items-center gap-2 border border-gray-400 border-solid rounded-md p-3 shadow-custom-card-mui"
                           >
-                            {accom?.icon}
-                            <Typography>{accom?.title}</Typography>
+                            <TourTag field={accom?.name} style="w-8 h-8" />
+                            <p>{accom?.name}</p>
                           </div>
                         </Grid>
                       )

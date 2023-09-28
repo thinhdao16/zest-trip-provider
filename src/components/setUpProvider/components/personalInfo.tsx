@@ -1,36 +1,80 @@
 import React, { FormEvent, useState } from "react";
 import { Input } from "./input";
-import { UserInfo } from "AppTypes";
+import { Plan, UserInfo } from "AppTypes";
 import {
   AiFillFileAdd,
   AiOutlineBulb,
   AiOutlineDelete,
   AiOutlineSync,
 } from "react-icons/ai";
-import { Box, InputLabel } from "@mui/material";
+import {
+  Box,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+} from "@mui/material";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import {
-  FaConnectdevelop,
   FaEarthEurope,
   FaHotel,
   FaLocationDot,
   FaStaylinked,
 } from "react-icons/fa6";
-import { FormLabel } from "@mui/joy";
+
+const plans: Plan[] = [
+  {
+    serviceType: [
+      {
+        id: 1,
+        name: "Domestic",
+      },
+      {
+        id: 2,
+        name: "International",
+      },
+    ],
+    policyCancell: [
+      {
+        id: 1,
+        name: "Free before 24 hr",
+      },
+      {
+        id: 2,
+        name: "Dont free after 24 hr",
+      },
+    ],
+    policyConfirm: [
+      {
+        id: 1,
+        name: "Immediate",
+      },
+      {
+        id: 2,
+        name: "Dont Immediate",
+      },
+    ],
+  },
+];
 interface PersonalInfoProps {
   userInfo: UserInfo;
   updateUserInfo: (userInfo: UserInfo) => void;
   showRequired: boolean;
+  selectedPlan: Plan | null;
+  updateSelectedPlan: (selectedPlan: Plan) => void;
 }
 
 export const PersonalInfo = ({
   userInfo,
   updateUserInfo,
-}: // showRequired,
-PersonalInfoProps) => {
+  selectedPlan,
+  updateSelectedPlan,
+}: PersonalInfoProps) => {
   const [selectedFiles, setSelectedFiles] = useState<any[]>([]);
   const [imageSrc, setImageSrc] = useState<any>();
   const [imageAvt, setImageAvt] = useState<any>();
+
   const handlePersonalInfo = (
     event: FormEvent<HTMLInputElement>,
     key: keyof UserInfo
@@ -74,8 +118,12 @@ PersonalInfoProps) => {
       setImageAvt(undefined);
     }
   };
+  const handleImageChange = (
+    field: string,
+    e: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    e.preventDefault(); // Ngăn chặn reload trang
 
-  const handleImageChange = (field: string) => {
     if (field === "banner") {
       const inputFile: any = document.getElementById("imageInputBanner");
       inputFile.click();
@@ -106,8 +154,21 @@ PersonalInfoProps) => {
       setImageAvt(newImages);
     }
   };
+  const handleSelect = (
+    e: SelectChangeEvent<string>,
+    attributeName: keyof Plan
+  ) => {
+    const selectedValue = e.target.value;
+    const updatedPlan: Plan = {
+      ...selectedPlan!,
+      [attributeName]: selectedValue,
+    };
+    console.log(updatedPlan);
+    updateSelectedPlan(updatedPlan);
+  };
+
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center gap-2 ">
       <div
         style={{
           width: "450px",
@@ -148,7 +209,7 @@ PersonalInfoProps) => {
           handlePersonalInfo(e, "address")
         }
       />
-      <Input
+      {/* <Input
         labels="Company Website"
         placeholder="e.g. Stephen King"
         icon={<FaConnectdevelop />}
@@ -156,7 +217,7 @@ PersonalInfoProps) => {
         onChange={(e: FormEvent<HTMLInputElement>) =>
           handlePersonalInfo(e, "webCompnany")
         }
-      />
+      /> */}
       <Input
         labels="Social media"
         placeholder="e.g. Stephen King"
@@ -166,8 +227,30 @@ PersonalInfoProps) => {
           handlePersonalInfo(e, "mediaSocial")
         }
       />
+      <div style={{ width: "450px" }}>
+        <p className="font-medium mb-1">Service type</p>
+        <FormControl fullWidth className="relative">
+          {/* <FaStaylinked className="absolute top-3 left-3" /> */}
+          <Select
+            style={{ borderRadius: "8px", height: "40px" }}
+            displayEmpty
+            inputProps={{ "aria-label": "Without label" }}
+            value={selectedPlan?.serviceType || ""}
+            onChange={(e) => handleSelect(e, "serviceType")}
+          >
+            <MenuItem value="">
+              <em>Please choose type</em>
+            </MenuItem>
+            {plans[0]?.serviceType?.map((data: any) => (
+              <MenuItem key={data?.id} value={data?.name}>
+                {data?.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </div>
       <div>
-        <FormLabel>Business registration</FormLabel>
+        <p className="font-medium">Business license</p>
         <Box
           style={{
             marginTop: "5px",
@@ -243,8 +326,8 @@ PersonalInfoProps) => {
           )}
         </Box>
       </div>
-      <div className="mt-3">
-        <p className="font-medium mb-2">Set up information</p>
+      <div>
+        <p className="font-medium mb-1 ">Upload banner and avatar</p>
         {imageSrc && imageSrc?.url ? (
           <div style={{ position: "relative" }}>
             <AiOutlineDelete
@@ -383,30 +466,30 @@ PersonalInfoProps) => {
           )}
           {imageSrc ? (
             <button
-              className="bg-white hover:border hover:border-solid hover:border-sky-600 hover:rounded-2xl m-3"
-              onClick={() => handleImageChange("banner")}
+              className="bg-white border border-navy-blue text-navy-blue px-3 rounded-2xl hover:border hover:border-navy-blue hover:bg-navy-blue hover:text-white h-10 m-3"
+              onClick={(e) => handleImageChange("banner", e)}
             >
               Change banner
             </button>
           ) : (
             <button
-              className="bg-slate-500 h-10 m-3 hover:border-none hover:bg-slate-800 hover:text-white"
-              onClick={() => handleImageChange("banner")}
+              className="bg-navy-blue  text-white h-10 m-3 border border-navy-blue hover:bg-white hover:border hover:border-navy-blue hover:text-navy-blue rounded-2xl px-3"
+              onClick={(e) => handleImageChange("banner", e)}
             >
               Add banner
             </button>
           )}
           {imageAvt ? (
             <button
-              className="bg-white hover:border hover:border-solid hover:border-sky-600 hover:rounded-2xl h-10 mt-3"
-              onClick={() => handleImageChange("avt")}
+              className="bg-white border border-blue-grotto text-blue-grotto rounded-2xl hover:border hover:border-solid hover:border-blue-grotto hover:bg-blue-grotto hover:text-white hover:rounded-2xl h-10 mt-3 px-3 "
+              onClick={(e) => handleImageChange("avt", e)}
             >
               Change avt
             </button>
           ) : (
             <button
-              className="bg-sky-500 h-10 hover:bg-sky-800 hover:border-none hover:text-white mt-3"
-              onClick={() => handleImageChange("avt")}
+              className="bg-blue-grotto  text-white border border-blue-grotto h-10 hover:bg-white hover:border hover:border-blue-grotto hover:text-blue-grotto  mt-3 px-3 rounded-2xl"
+              onClick={(e) => handleImageChange("avt", e)}
             >
               Add avt
             </button>

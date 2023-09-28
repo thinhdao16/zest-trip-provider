@@ -104,29 +104,17 @@ function SinglePage() {
                 </Typography>
               </Breadcrumbs>
             </div>
-            <Carousel>
-              {tourDetail?.tour_images?.map((data: string, index: number) => (
-                <div key={index}>
-                  <img
-                    src={data}
-                    alt={`Image ${index}`}
-                    style={{
-                      width: "34vw",
-                      // height: "34vw",
-                      objectFit: "cover",
-                      borderRadius: "25px",
-                    }}
-                  />
-                </div>
-              ))}
-            </Carousel>
             <BannerHomePageListFirst>
-              <BannerTitle>{tourDetail?.name} </BannerTitle>
-              <BannerTitleExtra>
+              <p className="text-3xl text-black font-semibold">
+                {tourDetail?.name}
+              </p>
+              <div className="flex gap-1">
+                {" "}
                 <AiFillStar />
-                <Typography>5,0</Typography> · <Typography> 5 rate </Typography>
-                .<Typography>{tourDetail?.location}</Typography>
-              </BannerTitleExtra>
+                <p className="font-medium">5,0</p> ·{" "}
+                <p className="font-medium"> 5 rate </p>.
+                <Typography>{tourDetail?.location}</Typography>
+              </div>
             </BannerHomePageListFirst>{" "}
             <Box
               style={{

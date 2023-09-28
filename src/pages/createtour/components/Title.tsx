@@ -6,41 +6,15 @@ import {
   CreateTitleNullDes,
 } from "../../../styles/createtour/createtour";
 import { useStepContext } from "../context/ui/useStepContext";
-import { Input } from "../../../components/setUpProvider/components/input";
 import { AiOutlineLock } from "react-icons/ai";
-import { Box, Card, Grid } from "@mui/material";
 import InputArea from "../../../components/setUpProvider/components/inputArea";
-import { IoAddCircleOutline } from "react-icons/io5";
-import FormModal from "./Title/FormModal";
-export interface BoxData {
-  data: string;
-  fromTime: string;
-  toTime: string;
-}
-interface NestedData {
-  boxes: BoxData[];
-}
+import "../styles/createtour.css";
+import { Button, Tooltip } from "@mui/material";
+import { FaRegCircleQuestion } from "react-icons/fa6";
 const Title: React.FC = () => {
   const { currentStep, updateFormValues } = useStepContext();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [modalOpen, setModalOpen] = useState(false);
-  const [nestedDataArray, setNestedDataArray] = useState<NestedData[]>([]);
-  const handleModalOpen = () => {
-    setModalOpen(true);
-  };
-
-  const handleModalClose = () => {
-    setModalOpen(false);
-  };
-
-  const handleFormSubmit = (boxes: BoxData[]) => {
-    const newNestedData: NestedData = {
-      boxes: boxes,
-    };
-    setNestedDataArray((prevData) => [...prevData, newNestedData]);
-  };
-
   const handleTitle = (e: ChangeEvent<HTMLInputElement>) => {
     const inputData = e.target.value;
     setTitle(inputData);
@@ -50,10 +24,10 @@ const Title: React.FC = () => {
     setDescription(inputData);
   };
   React.useEffect(() => {
-    updateFormValues(8, { Title: [title, description, nestedDataArray] });
-  }, [title, description, nestedDataArray]);
+    updateFormValues(8, { Title: [title, description] });
+  }, [title, description]);
 
-  if (currentStep !== 10) {
+  if (currentStep !== 3) {
     return null;
   }
   return (
@@ -63,15 +37,37 @@ const Title: React.FC = () => {
         <CreateDescription>
           Share what makes your place special.
         </CreateDescription>
-        <Box style={{ width: "38vw", marginBottom: "30px" }}>
-          <Input
-            labels="Title tour"
-            placeholder="e.g. Stephen King"
-            icon={<AiOutlineLock />}
-            // showRequired={ userInfo.nameCompany}
-            onChange={handleTitle}
-          />
+        <div className="gap-3 grid" style={{ width: "480px" }}>
+          <div>
+            <div className="flex items-center gap-3">
+              <p className="font-medium mb-1">Title tour</p>
+              <Tooltip
+                title="What is the title of your activity?
+Write a short descriptive title to help customers understand your product. It should include:
 
+• the activity’s main location (where the activity starts from or takes place)
+• the type of activity (e.g. an entry ticket, a walking tour, a full-day trip, etc)
+• any important inclusions (e.g. transportation, meals, etc)"
+                placement="top-end"
+              >
+                <p>
+                  <FaRegCircleQuestion />
+                </p>
+              </Tooltip>
+            </div>
+
+            <div className="relative">
+              <AiOutlineLock className="absolute top-4 left-2" />
+              <input
+                className="w-full shadow-custom-card-mui rounded-lg py-3 pl-8 focus:ring-navy-blue focus:ring-1 focus:outline-none   hover:ring-1 hover:ring-navy-blue  border border-gray-400 "
+                name="apartment"
+                placeholder="e.g. Stephen King"
+                type="text"
+                autoComplete="address-line2"
+                onChange={handleTitle}
+              />
+            </div>
+          </div>
           <InputArea
             label="Description"
             onChange={handleDescription}
@@ -79,39 +75,7 @@ const Title: React.FC = () => {
             placeholder="Description"
             maxLength={500}
           />
-        </Box>
-        <Box>
-          <CreateTitleNullDes>Tour Schedule</CreateTitleNullDes>
-          <Card style={{ border: "1px solid", padding: "50px" }}>
-            <div>
-              <Grid container spacing={2}>
-                {nestedDataArray.map((data, index) => (
-                  <Grid item xs={6} key={index}>
-                    <div className="flex"> 
-                    <IoAddCircleOutline />
-                    <p>day:{index+1 }</p>
-                    </div>
-                    {data.boxes.map((data, index) => (
-                      <div key={index} className="flex">
-                        <p >{data?.toTime}</p> -
-                        <p >{data?.fromTime}</p>
-                        <p >{data?.data}</p>
-                      </div>
-                    ))}
-                  </Grid>
-                ))}
-                <Grid item xs={6}>
-                  <IoAddCircleOutline onClick={handleModalOpen} />
-                </Grid>
-              </Grid>
-              <FormModal
-                open={modalOpen}
-                onClose={handleModalClose}
-                onSubmit={handleFormSubmit}
-              />
-            </div>
-          </Card>
-        </Box>
+        </div>
       </BannerContent>
     </BannerContainer>
   );

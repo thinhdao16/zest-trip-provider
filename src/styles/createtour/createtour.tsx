@@ -15,7 +15,7 @@ export const BannerContainer = styled(Box)(({ theme }) => ({
   },
   marginTop: "70px",
   marginBottom: "70px",
-  // backgroundImage: `url(/images/banner/banner.png)`,
+  // backgroundImage: `url(https://images.unsplash.com/photo-1695105875900-3b75051bc326?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2072&q=80)`,
   // backgroundRepeat: "no-repeat",
   // backgroundPosition: "center",
 }));
@@ -49,7 +49,7 @@ export const BannerContentReview = styled(Box)(() => ({
 }));
 export const BannerImage = styled("img")(({ src, theme }) => ({
   src: `url(${src})`,
-  width: "500px",
+  width: "400px",
   [theme.breakpoints.down("md")]: {
     width: "350px",
   },
@@ -161,21 +161,35 @@ export const DescriptionCardOptions = styled(Typography)(({ theme }) => ({
 }));
 
 export const BannerMapContainer = styled(Box)(({ theme }) => ({
+  position: "relative",
   justifyContent: "center",
   alignItems: "center",
   width: "100%",
   minHeight: "20vw",
-  padding: "34px",
+  // padding: "34px",
   background: Colors.white,
   [theme.breakpoints.down("sm")]: {
     flexDirection: "column",
     alignItems: "center",
   },
   marginBottom: "30px",
-  backgroundImage: `url(https://cdn.dribbble.com/userupload/3226448/file/original-f526b3120edb630931fd389871e370b5.png?resize=1200x900)`,
+  // backgroundImage: `url(https://static1.anpoimages.com/wordpress/wp-content/uploads/2022/07/googleMapsTricksHero.jpg)`,
   backgroundRepeat: "no-repeat",
   backgroundPosition: "center",
   borderRadius: "18px",
+
+  // Thêm lớp phía dưới với opacity
+  "&::before": {
+    content: '""',
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    background: "rgba(0,0,0,0.25)",
+    zIndex: -1,
+    opacity: 0.1,
+  },
 }));
 export const CreateIconContent = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -185,7 +199,7 @@ export const CreateIconContent = styled(Box)(({ theme }) => ({
 }));
 export const CreateDurationContent = styled(Box)(({ theme }) => ({
   display: "block",
-  borderBottom: "1px solid #e0e0e0",
+  // borderBottom: "1px solid #e0e0e0",
   padding: "25px 0 25px 0",
 }));
 
@@ -208,7 +222,7 @@ interface CardProps {
   selectedCard: number;
 }
 export const CardOptionStyles = ({ index, selectedCard }: CardProps) => ({
-  border: selectedCard === index ? "2px solid black" : "1px solid #ccc",
+  border: selectedCard === index ? "2px solid #05445E" : "1px solid #ccc",
   backgroundColor: selectedCard === index ? "#f7f7f7" : "white",
   cursor: "pointer",
   borderRadius: "12px",
@@ -223,7 +237,9 @@ export const CardOptionManyStyles = ({
   index,
   selectedCards,
 }: CardOptionStylesProps) => ({
-  border: selectedCards.includes(index) ? "2px solid black" : "1px solid #ccc",
+  border: selectedCards.includes(index)
+    ? "2px solid #05445E"
+    : "1px solid #ccc",
   backgroundColor: selectedCards.includes(index) ? "#f7f7f7" : "white", // Add background color here
   padding: "10px",
   cursor: "pointer",

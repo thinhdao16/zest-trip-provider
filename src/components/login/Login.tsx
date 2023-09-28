@@ -12,7 +12,8 @@ import {
   InputAdornment,
   TextField,
 } from "@mui/material";
-import ContinueGoogle from "../continueGoogle/ContinueGoogle";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; // Import CSS của react-toastify
 
 interface FormElements extends HTMLFormControlsCollection {
   email: HTMLInputElement;
@@ -29,14 +30,11 @@ import {
 } from "../../styles/global/StyleGlobal";
 import { ContainerPageFullHalfContent } from "../../styles/global/ContainerPageFullHalfContent";
 import { Link, useNavigate } from "react-router-dom";
-import jwt_decode from "jwt-decode";
 import { DataContext } from "../../store/dataContext/DataContext";
 import axios from "axios";
 import { AppDispatch } from "../../store/redux/store";
 import { useDispatch } from "react-redux";
-import { personalInfo } from "../../store/redux/silce/authSilce";
 import { BASE_URL } from "../../store/apiInterceptors";
-import Main from "./Main";
 
 function Login() {
   const navigate = useNavigate();
@@ -72,12 +70,13 @@ function Login() {
           },
         }
       );
+      console.log(response);
       localStorage.setItem("access_token", response.data.data.access_token);
       localStorage.setItem("refresh_token", response.data.data.refresh_token);
       setRefeshTour((prev) => !prev);
       setRefeshLogin((prev) => !prev);
       navigate("/listtour");
-      if (response.status === 201) {
+      if (response.status === 200) {
         if (response !== undefined) {
           const additionalResponse = await axios.get(`${BASE_URL}/users/me`, {
             headers: {
@@ -85,18 +84,35 @@ function Login() {
             },
           });
           if (additionalResponse.status === 200) {
-            dispatch(personalInfo(additionalResponse.data));
+            // dispatch(personalInfo(additionalResponse.data));
           }
+          toast.success("SignIn success!"); // Thông báo đăng nhập thành công
         } else {
           console.log("Lỗi khi đăng nhập");
+          toast.error("SignIn fail!"); // Thông báo đăng nhập thất bại
         }
       } else {
         console.log("Lỗi khi đăng nhập");
+        toast.error("SignIn fail!"); // Thông báo đăng nhập thất bại
       }
       setOpenLoading(false);
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
       setOpenLoading(false);
+
+      // Xử lý thông báo lỗi từ máy chủ
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        const errorMessages = error.response.data.message;
+        errorMessages.forEach((errorMessage: string) => {
+          toast.error(errorMessage); // Thông báo đăng nhập thất bại
+        });
+      } else {
+        toast.error("SignIn fail!"); // Thông báo đăng nhập thất bại mặc định
+      }
     }
   };
 
@@ -115,7 +131,7 @@ function Login() {
             item
             xs={4}
             style={{
-              backgroundColor: "#f9fbfc",
+              // backgroundColor: "#f9fbfc",
               borderRadius: "8px 0 0 8px",
               padding: "30px",
               display: "flex",
@@ -127,9 +143,7 @@ function Login() {
             }}
           >
             <div className="absolute top-5 left-5">
-              <div className="flex items-center justify-center font-medium text-2xl">
-                <AiOutlineShop /> <p>DiTour</p>
-              </div>
+              <div className="flex items-center justify-center font-medium text-2xl"></div>
             </div>
             <div className="flex items-center justify-center flex-col">
               <p className="font-bold text-4xl mb-6">Welcome Back!</p>
@@ -167,7 +181,7 @@ function Login() {
             </div>
           </Grid>
           <Grid item xs={8}>
-            <ContainerPageFullHalfContent style={{ height: "100vw" }}>
+            <ContainerPageFullHalfContent>
               <Box
                 component="main"
                 sx={{

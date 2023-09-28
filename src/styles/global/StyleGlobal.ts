@@ -17,7 +17,7 @@ export const BannerContent = styled(Box)(({ theme }) => ({
   width: "100%",
   padding: theme.spacing(0, 2), // You can adjust the spacing as needed
   [theme.breakpoints.up("sm")]: {
-    padding: theme.spacing(0, 4), // Adjust the padding for small screens and above
+    padding: theme.spacing(0, 4), // Adjust the padding for small sckreens and above
   },
   [theme.breakpoints.up("md")]: {
     padding: theme.spacing(0, 6), // Adjust the padding for medium screens and above
@@ -25,7 +25,7 @@ export const BannerContent = styled(Box)(({ theme }) => ({
 }));
 export const BannerHomePageList = styled(Box)(() => ({
   maxWidth: "100vw",
-  padding: "64px 0 64px 0",
+  padding: "32px 0 64px 0",
 }));
 export const BannerPageList = styled(Box)(({ theme }) => ({
   maxWidth: "100vw",
@@ -54,8 +54,8 @@ export const BannerHomePageButtonListTab = styled(Tab)(() => ({
   transition: "border-color 0.7s, color 0.7s", // Add a smooth transition for the border color change
   cursor: "pointer",
   "&:hover": {
-    borderColor: "#8fcaf7",
-    color: "#8fcaf7",
+    borderColor: "#05445E",
+    color: "#05445E",
   },
   "&:focus": {
     outline: "none",
@@ -67,8 +67,9 @@ export const BannerHomePageButtonListTab = styled(Tab)(() => ({
 //   fontWeight: "600",
 // }));
 export const ButtonGlobal = styled(Button)(() => ({
+  marginTop: "15px",
   position: "relative",
-  backgroundColor: "#8fcaf7",
+  backgroundColor: "#05445E",
   color: "white",
   borderRadius: "8px",
   fontSize: "15px",
@@ -78,8 +79,8 @@ export const ButtonGlobal = styled(Button)(() => ({
 
   "&:hover": {
     backgroundColor: "white",
-    color: "black",
-    border: "1px solid #8fcaf7",
+    color: "#05445E",
+    outline: "1px solid #05445E",
     borderRadius: "8px",
   },
 }));

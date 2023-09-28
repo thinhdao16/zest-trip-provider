@@ -1,18 +1,34 @@
 .sidebar-setupPovider-container-chosen {
-    display: flex;
-    align-items: center;
-    padding: 14px;
-
+  display: flex;
+  align-items: center;
+  padding: 14px;
 }
 
 .sidebar-setupPovider-container-unchosen {
-    display: flex;
-    align-items: center;
-    opacity: .6;
-
+  display: flex;
+  align-items: center;
+  opacity: 0.6;
 }
 
 .sidebar-setup-title {
-    font-weight: 600;
-    padding-left: 12px;
+  font-weight: 600;
+  padding-left: 12px;
+}
+
+.personal-info {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root.Mui-completed {
+  color: #05445e !important;
+}
+.css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root.Mui-active {
+  color: #05445e !important;
+}
+.css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root {
+  color: #189ab4 !important;
 }
