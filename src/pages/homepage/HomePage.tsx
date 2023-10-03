@@ -4,7 +4,6 @@ import Banner from "./banner/Banner";
 function HomePage() {
   return (
     <>
-      <Header />
       <Banner />
     </>
   );

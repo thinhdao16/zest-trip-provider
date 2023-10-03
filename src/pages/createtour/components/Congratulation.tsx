@@ -84,17 +84,7 @@ const Congratulation: React.FC = () => {
           >
             <button
               onClick={handleFormSubmit}
-              style={{
-                position: "absolute",
-                bottom: "0", // Align to the bottom
-                right: "0", // Align to the right
-                marginRight: "20px", // Add spacing between the button and the right edge
-                marginBottom:"15px",
-                color:"white",
-                background:"#AACFF6",
-                fontSize:"16px",
-                padding:"12px 40px"
-              }}
+              className="absolute bottom-0 right-0 px-6 py-2.5 border border-navy-blue  hover:bg-white hover:text-black hover:border-white rounded-lg bg-navy-blue mb-3 mr-3 font-medium"
             >
               <p>Start</p>
             </button>

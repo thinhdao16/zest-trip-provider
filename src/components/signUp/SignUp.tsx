@@ -50,9 +50,42 @@ export default function SignUp() {
   const [minutes, setMinutes] = useState(3);
   const [seconds, setSeconds] = useState(0);
   const [openLoading, setOpenLoading] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [isPasswordValid, setIsPasswordValid] = useState(true);
+  const [isPasswordMatch, setIsPasswordMatch] = useState(true);
 
-  const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const handlePasswordChange = (e: any) => {
+    const newPassword = e.target.value;
+    setPassword(newPassword);
+
+    // Kiểm tra độ dài của mật khẩu
+    if (newPassword.length >= 8) {
+      setIsPasswordValid(true);
+    } else {
+      setIsPasswordValid(false);
+    }
+
+    // Kiểm tra xem mật khẩu khớp với mật khẩu xác nhận không
+    if (newPassword === confirmPassword) {
+      setIsPasswordMatch(true);
+    } else {
+      setIsPasswordMatch(false);
+    }
+  };
+
+  const handleConfirmPasswordChange = (e: any) => {
+    const newConfirmPassword = e.target.value;
+    setConfirmPassword(newConfirmPassword);
+
+    // Kiểm tra xem mật khẩu khớp với mật khẩu xác nhận không
+    if (password === newConfirmPassword) {
+      setIsPasswordMatch(true);
+    } else {
+      setIsPasswordMatch(false);
+    }
+  };
+
   React.useEffect(() => {
     checkAccessToken();
   }, [refeshLogin]);
@@ -90,6 +123,7 @@ export default function SignUp() {
         `${BASE_URL}/otp/generate`,
         {
           email: email,
+          type: "REGISTER_USER",
         },
         {
           headers: {
@@ -347,7 +381,7 @@ export default function SignUp() {
                     <FormLabel>Password</FormLabel>
                     <TextField
                       value={password}
-                      onChange={(e) => setPassword(e.target.value)}
+                      onChange={handlePasswordChange}
                       required
                       type="password"
                       InputProps={{
@@ -359,10 +393,18 @@ export default function SignUp() {
                       }}
                       className="input-form-text-ready"
                     />
+                    {!isPasswordValid && (
+                      <p style={{ color: "red" }}>
+                        Password must be at least 8 characters long.
+                      </p>
+                    )}
                   </FormControl>
+
                   <FormControl required>
                     <FormLabel>Confirm Password</FormLabel>
                     <TextField
+                      value={confirmPassword}
+                      onChange={handleConfirmPasswordChange}
                       required
                       type="password"
                       InputProps={{
@@ -374,6 +416,9 @@ export default function SignUp() {
                       }}
                       className="input-form-text-ready"
                     />
+                    {!isPasswordMatch && (
+                      <p style={{ color: "red" }}>Passwords do not match.</p>
+                    )}
                   </FormControl>
 
                   <ButtonGlobal

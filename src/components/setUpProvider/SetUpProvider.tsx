@@ -130,7 +130,7 @@ function SetUpProvider() {
           <Grid
             item
             xs={12}
-            sm={4}
+            sm={5}
             style={
               {
                 // padding: "13px",
@@ -139,7 +139,9 @@ function SetUpProvider() {
           >
             <Box
               style={{
-                backgroundColor: "#f9fbfc",
+                backgroundImage: "url()",
+                // backgroundSize: "cover",
+                // backgroundColor: "#f9fbfc",
                 // borderRadius: "0 20px 20px 0",
                 display: "flex",
                 flexDirection: "column",
@@ -155,24 +157,21 @@ function SetUpProvider() {
                 <Link to="/">
                   <div className="flex items-center text-2xl text-amber-950 font-bold">
                     <img
-                      src=" src\assets\File-logo-Zest-Travel.svg"
+                      src="src/assets/File-logo-Zest-Travel.svg" // Đảm bảo đường dẫn hình ảnh là chính xác
                       className="w-16"
                     />
                     {/* <p>ZestTravel</p> */}
                   </div>
                 </Link>
               </div>
-
-              <div>
-                <img
-                  style={{ objectFit: "cover", width: "480px" }}
-                  src="src\components\setUpProvider\assets\icon.png"
-                  alt="nothing"
-                />
-              </div>
+              <img
+                className=""
+                src="https://img.freepik.com/premium-vector/web-content-illustration-concept-with-characters_269730-154.jpg?w=2000"
+                alt="error"
+              />
             </Box>
           </Grid>
-          <Grid item xs={12} sm={8}>
+          <Grid item xs={12} sm={7}>
             <ContainerPageFullHalfContent>
               <Box
                 component="main"

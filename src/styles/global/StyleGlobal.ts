@@ -2,7 +2,7 @@ import { Button, Tab, Typography, styled, Box, Card } from "@mui/material";
 
 export const BannerContainer = styled(Box)(({ theme }) => ({
   display: "flex",
-  width: "100vw",
+  // width: "100vw",
   padding: theme.spacing(0, 2), // Padding cơ bản cho mọi kích thước màn hình
 
   [theme.breakpoints.up("sm")]: {

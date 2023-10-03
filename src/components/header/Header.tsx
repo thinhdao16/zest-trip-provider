@@ -98,11 +98,11 @@ function Header() {
                   list tour
                 </Button>
               </Link>
-              <Link to="/setupprovider" style={{ textDecoration: "none" }}>
+              {/* <Link to="/setupprovider" style={{ textDecoration: "none" }}>
                 <Button color="inherit" style={{ color: "black" }}>
                   setup
                 </Button>
-              </Link>
+              </Link> */}
             </Box>
             <Box sx={{ flexGrow: 1, textAlign: "right", color: "black" }}>
               <Tooltip title="Account settings">

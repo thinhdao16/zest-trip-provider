@@ -10,6 +10,9 @@ import SetUpProvider from "../../components/setUpProvider/SetUpProvider";
 import AccountSettings from "../../pages/accountsettings/AccountSettings";
 import PersonalInfo from "../../pages/accountsettings/personalinfo/PersonalInfo";
 import { DataContext } from "../../store/dataContext/DataContext";
+import AuthLayout from "../../components/Layout/AuthLayout";
+import Dashboard from "../../pages/dashboard/Dashboard";
+import Blank from "../../pages/Blank";
 
 function MainRouter() {
   const { refeshLogin } = React.useContext(DataContext);
@@ -36,10 +39,16 @@ function MainRouter() {
                   </React.Fragment>
                 ) : (
                   <React.Fragment>
+                    <Route path="/" element={<AuthLayout />}>
+                      <Route path="/" element={<Dashboard />}></Route>
+                      <Route path="/blank" element={<Blank />}></Route>
+                      <Route path="/profile" element={<Blank />}></Route>
+                      <Route path="/listtour" element={<HomePage />} />
+                    </Route>
                     <Route path="/" element={<Navigate to="/listtour" />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<SignUp />} />
-                    <Route path="/listtour" element={<HomePage />} />
+                    {/* <Route path="/listtour" element={<HomePage />} /> */}
                     <Route path="/:index" element={<SinglePage />} />
                     <Route path="/createtour" element={<CreateTour />} />
                     <Route path="/listwork" element={<ListWork />} />
