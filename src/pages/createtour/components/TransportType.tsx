@@ -38,41 +38,43 @@ const TransportType: React.FC = () => {
   }
   return (
     <BannerContainer>
-      <BannerContent>
-        <CreateTitle variant="h6">
-          Choose the transportations included in the tour
-        </CreateTitle>
-        <Grid container spacing={2}>
-          {vehicleTour.map((data: DataSelectCard) => (
-            <Grid
-              key={data.id}
-              item
-              xs={12}
-              sm={6}
-              md={4}
-              style={{ paddingTop: 0 }}
-            >
-              <Card
-                style={CardOptionManyStyles({
-                  index: data.id,
-                  selectedCards: selectedCards,
-                })}
-                onClick={() => handleCardClick(data)}
+      <div className="items-center flex justify-center">
+        <BannerContent>
+          <CreateTitle variant="h6">
+            Choose the transportations included in the tour
+          </CreateTitle>
+          <Grid container spacing={2}>
+            {vehicleTour.map((data: DataSelectCard) => (
+              <Grid
+                key={data.id}
+                item
+                xs={12}
+                sm={6}
+                md={4}
+                style={{ paddingTop: 0 }}
               >
-                <Box sx={{ margin: 3 }}>
-                  {/* <img
+                <Card
+                  style={CardOptionManyStyles({
+                    index: data.id,
+                    selectedCards: selectedCards,
+                  })}
+                  onClick={() => handleCardClick(data)}
+                >
+                  <Box sx={{ margin: 3 }}>
+                    {/* <img
                     src="src\assets\tour\iconTag\airplane.svg"
                     className="h-2"
                     alt=""
                   /> */}
-                  <VehicleTag field={data?.name} style="w-8 h-8" />
-                  <TitleIconCardOptions>{data?.name}</TitleIconCardOptions>
-                </Box>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      </BannerContent>
+                    <VehicleTag field={data?.name} style="w-8 h-8" />
+                    <TitleIconCardOptions>{data?.name}</TitleIconCardOptions>
+                  </Box>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        </BannerContent>
+      </div>
     </BannerContainer>
   );
 };

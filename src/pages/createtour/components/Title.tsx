@@ -32,51 +32,53 @@ const Title: React.FC = () => {
   }
   return (
     <BannerContainer>
-      <BannerContent>
-        <CreateTitleNullDes>Title & Description</CreateTitleNullDes>
-        <CreateDescription>
-          Share what makes your place special.
-        </CreateDescription>
-        <div className="gap-3 grid" style={{ width: "480px" }}>
-          <div>
-            <div className="flex items-center gap-3">
-              <p className="font-medium mb-1">Title tour</p>
-              <Tooltip
-                title="What is the title of your activity?
+      <div className="items-center flex justify-center h-full">
+        <BannerContent>
+          <CreateTitleNullDes>Title & Description</CreateTitleNullDes>
+          <CreateDescription>
+            Share what makes your place special.
+          </CreateDescription>
+          <div className="gap-3 grid" style={{ width: "480px" }}>
+            <div>
+              <div className="flex items-center gap-3">
+                <p className="font-medium mb-1">Title tour</p>
+                <Tooltip
+                  title="What is the title of your activity?
 Write a short descriptive title to help customers understand your product. It should include:
 
 • the activity’s main location (where the activity starts from or takes place)
 • the type of activity (e.g. an entry ticket, a walking tour, a full-day trip, etc)
 • any important inclusions (e.g. transportation, meals, etc)"
-                placement="top-end"
-              >
-                <p>
-                  <FaRegCircleQuestion />
-                </p>
-              </Tooltip>
-            </div>
+                  placement="top-end"
+                >
+                  <p>
+                    <FaRegCircleQuestion />
+                  </p>
+                </Tooltip>
+              </div>
 
-            <div className="relative">
-              <AiOutlineLock className="absolute top-4 left-2" />
-              <input
-                className="w-full shadow-custom-card-mui rounded-lg py-3 pl-8 focus:ring-navy-blue focus:ring-1 focus:outline-none   hover:ring-1 hover:ring-navy-blue  border border-gray-400 "
-                name="apartment"
-                placeholder="e.g. Stephen King"
-                type="text"
-                autoComplete="address-line2"
-                onChange={handleTitle}
-              />
+              <div className="relative">
+                <AiOutlineLock className="absolute top-4 left-2" />
+                <input
+                  className="w-full shadow-custom-card-mui rounded-lg py-3 pl-8 focus:ring-navy-blue focus:ring-1 focus:outline-none   hover:ring-1 hover:ring-navy-blue  border border-gray-400 "
+                  name="apartment"
+                  placeholder="e.g. Stephen King"
+                  type="text"
+                  autoComplete="address-line2"
+                  onChange={handleTitle}
+                />
+              </div>
             </div>
+            <InputArea
+              label="Description"
+              onChange={handleDescription}
+              icon={<AiOutlineLock />}
+              placeholder="Description"
+              maxLength={500}
+            />
           </div>
-          <InputArea
-            label="Description"
-            onChange={handleDescription}
-            icon={<AiOutlineLock />}
-            placeholder="Description"
-            maxLength={500}
-          />
-        </div>
-      </BannerContent>
+        </BannerContent>
+      </div>
     </BannerContainer>
   );
 };

@@ -27,7 +27,6 @@ function DashboardHeader({
   return (
     <div className=" flex flex-wrap w-full justify-between items-center">
       <div className="flex flex-row ">
-        <p className="flex-shrink-0 rounded-full block md:hidden border border-emerald-400 p-[3px] shadow-lg"></p>
         <div id="nameSection">
           <h1 className="font-semibold  text-3xl text-black mb-1">
             {user?.name}

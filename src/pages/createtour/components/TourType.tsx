@@ -42,36 +42,39 @@ const TourType: React.FC = () => {
       icon: <FaEarthAfrica />,
     },
   ];
+
   return (
     <BannerContainer>
-      <BannerContent>
-        <CreateTitle>
-          Choose the type of tour that best describes the type of tour you want
-          to create
-        </CreateTitle>
-        <Box sx={{ display: "block", alignItems: "center" }}>
-          {dataClickType.map((data) => (
-            <Card
-              key={data.id}
-              style={CardOptionStyles({
-                index: data.id,
-                selectedCard: selectedCard,
-              })}
-              onClick={() => handleCardClick(data, data.id)}
-            >
-              <CreateChooseContent sx={{ margin: 3 }}>
-                <div>
-                  <TitleCardOptions>{data?.title}</TitleCardOptions>
-                  <DescriptionCardOptions>
-                    {data?.description}
-                  </DescriptionCardOptions>
-                </div>
-                <p className="text-xl">{data.icon}</p>
-              </CreateChooseContent>
-            </Card>
-          ))}
-        </Box>
-      </BannerContent>
+      <div className="items-center flex justify-center h-full ">
+        <BannerContent>
+          <CreateTitle>
+            Choose the type of tour that best describes the type of tour you
+            want to create
+          </CreateTitle>
+          <div className="h-[50vh] overflow-auto">
+            {dataClickType.map((data) => (
+              <Card
+                key={data.id}
+                style={CardOptionStyles({
+                  index: data.id,
+                  selectedCard: selectedCard,
+                })}
+                onClick={() => handleCardClick(data, data.id)}
+              >
+                <CreateChooseContent sx={{ margin: 3 }}>
+                  <div>
+                    <TitleCardOptions>{data?.title}</TitleCardOptions>
+                    <DescriptionCardOptions>
+                      {data?.description}
+                    </DescriptionCardOptions>
+                  </div>
+                  <p className="text-xl">{data.icon}</p>
+                </CreateChooseContent>
+              </Card>
+            ))}
+          </div>
+        </BannerContent>
+      </div>
     </BannerContainer>
   );
 };

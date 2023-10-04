@@ -37,40 +37,42 @@ const AccomType: React.FC = () => {
   }
   return (
     <BannerContainer>
-      <BannerContent>
-        <CreateTitle variant="h6">
-          Choose the type of tour you are providing
-        </CreateTitle>
-        <Grid container spacing={2}>
-          {" "}
-          {/* Use Grid container to create a row with spacing between cards */}
-          {tagTour.map((data: DataSelectCard) => (
-            <Grid
-              key={data.id}
-              item
-              xs={12}
-              sm={6}
-              md={4}
-              style={{ paddingTop: 0 }}
-            >
-              {" "}
-              {/* Adjust xs, sm, md, lg, and xl props as per your desired layout */}
-              <Card
-                style={CardOptionManyStyles({
-                  index: data.id,
-                  selectedCards: selectedCards,
-                })}
-                onClick={() => handleCardClick(data)}
+      <div className="flex items-center justify-center">
+        <BannerContent>
+          <CreateTitle variant="h6">
+            Choose the type of tour you are providing
+          </CreateTitle>
+          <Grid container spacing={2}>
+            {" "}
+            {/* Use Grid container to create a row with spacing between cards */}
+            {tagTour.map((data: DataSelectCard) => (
+              <Grid
+                key={data.id}
+                item
+                xs={12}
+                sm={6}
+                md={4}
+                style={{ paddingTop: 0 }}
               >
-                <Box sx={{ margin: 3 }}>
-                  <TourTag field={data?.name} style="w-8 h-8" />
-                  <TitleIconCardOptions>{data?.name}</TitleIconCardOptions>
-                </Box>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      </BannerContent>
+                {" "}
+                {/* Adjust xs, sm, md, lg, and xl props as per your desired layout */}
+                <Card
+                  style={CardOptionManyStyles({
+                    index: data.id,
+                    selectedCards: selectedCards,
+                  })}
+                  onClick={() => handleCardClick(data)}
+                >
+                  <Box sx={{ margin: 3 }}>
+                    <TourTag field={data?.name} style="w-8 h-8" />
+                    <TitleIconCardOptions>{data?.name}</TitleIconCardOptions>
+                  </Box>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        </BannerContent>
+      </div>
     </BannerContainer>
   );
 };

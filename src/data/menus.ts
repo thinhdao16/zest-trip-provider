@@ -26,6 +26,18 @@ const initMenu: MenuItem[] = [
     name: "Blank", // Thêm 'name' cho mục này
   },
   {
+    label: "Listtour",
+    path: "/listtour",
+    icon: faPage4,
+    name: "Listtour", // Thêm 'name' cho mục này
+  },
+  {
+    label: "Create Tour",
+    path: "/createtour",
+    icon: faPage4,
+    name: "Create Tour", // Thêm 'name' cho mục này
+  },
+  {
     label: "Otentikasi",
   },
   {

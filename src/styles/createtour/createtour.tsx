@@ -3,28 +3,25 @@ import { styled } from "@mui/material/styles";
 import { Colors } from "./theme/theme";
 
 export const BannerContainer = styled(Box)(({ theme }) => ({
-  display: "flex",
   justifyContent: "center",
   width: "100%",
-  height: "100%",
+  height: "80vh",
+  overflow: "auto",
   padding: "0px 0px",
-  background: Colors.white,
+  background: "#f8fafc",
+  // marginTop: "30px",
+  borderRadius: "12px",
   [theme.breakpoints.down("sm")]: {
     flexDirection: "column",
     alignItems: "center",
   },
-  marginTop: "70px",
-  marginBottom: "70px",
-  // backgroundImage: `url(https://images.unsplash.com/photo-1695105875900-3b75051bc326?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2072&q=80)`,
-  // backgroundRepeat: "no-repeat",
-  // backgroundPosition: "center",
 }));
 export const BannerContent = styled(Box)(() => ({
-  display: "flex",
   flexDirection: "column",
   justifyContent: "center",
-  maxWidth: "43vw",
   padding: "30px",
+  maxWidth: "43vw",
+  alignItems: "center",
 }));
 export const BannerContentPrice = styled(Box)(() => ({
   display: "flex",
@@ -33,12 +30,18 @@ export const BannerContentPrice = styled(Box)(() => ({
   padding: "30px",
   maxWidth: "70%",
 }));
-export const BannerContentHaveImage = styled(Box)(() => ({
+export const BannerContentHaveImage = styled(Box)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   justifyContent: "center",
   maxWidth: "48vw",
   padding: "30px",
+  [theme.breakpoints.down("sm")]: {
+    maxWidth: "100vW",
+    flexDirection: "column",
+    alignItems: "center",
+    padding: 0,
+  },
 }));
 export const BannerContentReview = styled(Box)(() => ({
   display: "flex",
@@ -50,6 +53,8 @@ export const BannerContentReview = styled(Box)(() => ({
 export const BannerImage = styled("img")(({ src, theme }) => ({
   src: `url(${src})`,
   width: "400px",
+  height: "400px",
+  objectFit: "cover",
   [theme.breakpoints.down("md")]: {
     width: "350px",
   },

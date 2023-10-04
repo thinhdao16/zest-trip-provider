@@ -12,14 +12,16 @@ export default function Welcome() {
   }
 
   return (
-    <BannerContainer style={{ paddingTop: "12vh" }}>
-      <BannerContent>
-        <div className="text-lg">Let's get started</div>
-        <p className="font-semibold text-5xl leading-tight mb-3 text-black">
-          Share your tour information with us
-        </p>
-      </BannerContent>
-      <BannerImage src="src\assets\tour\welcome\Tour-PNG-Download-Image.png" />
+    <BannerContainer>
+      <div className="items-center flex justify-center h-full">
+        <BannerContent>
+          <div className="text-lg">Let's get started</div>
+          <p className="font-semibold text-5xl leading-tight text-black">
+            Share your tour information with us
+          </p>
+        </BannerContent>
+        <BannerImage src="src\assets\tour\welcome\Tour-PNG-Download-Image.png" />
+      </div>
     </BannerContainer>
   );
 }

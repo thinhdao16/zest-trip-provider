@@ -20,10 +20,10 @@ function DashboardInfo() {
           </div>
           <AiOutlineDown style={{ fontWeight: "800" }} />
         </div>
-        <p className="text-gray-500 flex gap-1 text-sm">
+        <div className="text-gray-500 flex gap-1 text-sm">
           Please, Finish your profile !
           <p className="text-navy-blue">Edit now</p>
-        </p>
+        </div>
         <hr />
       </div>
       <div className="mt-5">
@@ -33,8 +33,8 @@ function DashboardInfo() {
             <span className="text-gray-500 ">10 september 2023</span>
           </div>
           <div
-            className="gap-2 grid"
-            style={{ height: "20vh ", overflow: "auto" }}
+            className="gap-2 grid   h-[20vh] overflow-y-scroll global-scrollbar "
+            // style={{ height: "20vh ", overflow: "auto" }}
           >
             <div className="flex items-baseline gap-3">
               <div className="w-2.5 h-2.5 bg-navy-blue rounded-sm"></div>
@@ -63,10 +63,10 @@ function DashboardInfo() {
       <div className="mt-5">
         <p className="font-medium text-xl mb-4">Done Trip</p>
         <div
-          className="grid gap-3"
-          style={{ height: "30vh", overflow: "auto" }}
+          className="grid gap-3 global-scrollbar"
+          style={{ maxHeight: "30vh", overflow: "auto" }}
         >
-          <div className="border border-solid border-gray-200 p-3 rounded-xl flex gap-3">
+          <div className="border border-solid border-gray-200 p-3 rounded-xl flex gap-3 ">
             <img
               src="https://images.inc.com/uploaded_files/image/1920x1080/getty_481292845_77896.jpg"
               alt="error"
@@ -79,8 +79,8 @@ function DashboardInfo() {
                 08- 14 september 2023
               </span>
             </div>
-          </div>{" "}
-          <div className="border border-solid border-gray-200 p-3 rounded-xl flex gap-3">
+          </div>
+          <div className="border border-solid border-gray-200 p-3 rounded-xl flex gap-3 ">
             <img
               src="https://images.inc.com/uploaded_files/image/1920x1080/getty_481292845_77896.jpg"
               alt="error"
@@ -93,8 +93,8 @@ function DashboardInfo() {
                 08- 14 september 2023
               </span>
             </div>
-          </div>{" "}
-          <div className="border border-solid border-gray-200 p-3 rounded-xl flex gap-3">
+          </div>
+          <div className="border border-solid border-gray-200 p-3 rounded-xl flex gap-3 ">
             <img
               src="https://images.inc.com/uploaded_files/image/1920x1080/getty_481292845_77896.jpg"
               alt="error"

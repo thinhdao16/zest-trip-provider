@@ -36,7 +36,6 @@ const FormModal: React.FC<FormModalProps> = ({ open, onClose, onSubmit }) => {
   const [fromTime, setFromTime] = useState("00:00");
   const [toTime, setToTime] = useState("00:00");
   const [formEntries, setFormEntries] = useState<BoxData[]>([]);
-  console.log(formEntries);
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFormData(event.target.value);
   };

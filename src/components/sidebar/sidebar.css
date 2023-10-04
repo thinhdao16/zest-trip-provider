@@ -72,7 +72,7 @@ li.active > svg {
 
 #menu .link,
 button.link {
-  @apply flex items-center px-6 py-4 text-sm text-slate-500 font-medium rounded-lg gap-6 cursor-pointer;
+  @apply flex items-center px-6 py-4 text-base text-slate-500 rounded-lg gap-6 cursor-pointer;
 }
 
 #menu .link:hover {

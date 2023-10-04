@@ -65,119 +65,123 @@ const DurationCheckIn: React.FC = () => {
   }
   return (
     <BannerContainer>
-      <BannerContent>
-        <CreateTitleNullDes>
-          Share some basic information about the time
-        </CreateTitleNullDes>
-        <CreateDescription>
-          Your address is only shared with guests after they have successfully.
-        </CreateDescription>
-        {dataDuration.map((data) => (
-          <CreateDurationContent key={data?.id}>
-            <p className="font-medium mb-1 text-lg">Duration</p>
-            <div className="flex flex-1 justify-between items-center border-b border-solid border-gray-400 p-3 rounded hover:border-navy-blue  ">
-              <Typography>{data?.title}</Typography>
-              <div>
-                <CreateChooseContent key={data?.id}>
-                  {data?.no > 1 ? (
-                    <CreateKnotPre onClick={() => handleDecrement(data.id)}>
-                      <GoNoEntry />
+      <div className="flex items-center justify-center h-full">
+        <BannerContent>
+          <CreateTitleNullDes>
+            Share some basic information about the time
+          </CreateTitleNullDes>
+          <CreateDescription>
+            Your address is only shared with guests after they have
+            successfully.
+          </CreateDescription>
+          {dataDuration.map((data) => (
+            <CreateDurationContent key={data?.id}>
+              <p className="font-medium mb-1 text-lg">Duration</p>
+              <div className="flex flex-1 justify-between items-center border-b border-solid border-gray-400 p-3 rounded hover:border-navy-blue  ">
+                <Typography>{data?.title}</Typography>
+                <div>
+                  <CreateChooseContent key={data?.id}>
+                    {data?.no > 1 ? (
+                      <CreateKnotPre onClick={() => handleDecrement(data.id)}>
+                        <GoNoEntry />
+                      </CreateKnotPre>
+                    ) : (
+                      <CreateKnotHidden>
+                        <GoNoEntry />
+                      </CreateKnotHidden>
+                    )}
+                    <Typography sx={{ marginX: 2 }}>{data?.no}</Typography>
+                    <CreateKnotPre onClick={() => handleIncrement(data?.id)}>
+                      <GoPlusCircle />
                     </CreateKnotPre>
-                  ) : (
-                    <CreateKnotHidden>
-                      <GoNoEntry />
-                    </CreateKnotHidden>
-                  )}
-                  <Typography sx={{ marginX: 2 }}>{data?.no}</Typography>
-                  <CreateKnotPre onClick={() => handleIncrement(data?.id)}>
-                    <GoPlusCircle />
-                  </CreateKnotPre>
-                </CreateChooseContent>
+                  </CreateChooseContent>
+                </div>
               </div>
-            </div>
-          </CreateDurationContent>
-        ))}
-        <div>
-          <p className="font-medium mb-1 text-lg">Tour Schedule</p>
+            </CreateDurationContent>
+          ))}
+          <div>
+            <p className="font-medium mb-1 text-lg">Tour Schedule</p>
 
-          {nestedDataArray?.length > 0 ? (
-            <Card className="p-7 border border-gray-400  border-solid">
-              <div>
-                <div className="gap-4 grid">
-                  {nestedDataArray.map((data, index) => (
-                    <div key={index}>
-                      <div className="flex gap-3">
-                        <div className="">
-                          <button className="font-medium p-2 bg-navy-blue text-white rounded-lg ">
-                            Day {index + 1}
-                          </button>
+            {nestedDataArray?.length > 0 ? (
+              <Card className="p-7 border border-gray-400  border-solid">
+                <div>
+                  <div className="gap-4 grid">
+                    {nestedDataArray.map((data, index) => (
+                      <div key={index}>
+                        <div className="flex gap-3">
+                          <div className="">
+                            <button className="font-medium p-2 bg-navy-blue text-white rounded-lg ">
+                              Day {index + 1}
+                            </button>
 
-                          {data.boxes.map((data, index) => (
-                            <div className="relative mt-3">
-                              <FaCircle className="absolute inset-y-1/3 w-2" />
-                              <div className="pl-5 pr-7">
-                                <div
-                                  key={index}
-                                  className="flex font-medium text-gray-700"
-                                >
-                                  <p>{data?.toTime}</p> -<p>{data?.fromTime}</p>
+                            {data.boxes.map((data, index) => (
+                              <div className="relative mt-3">
+                                <FaCircle className="absolute inset-y-1/3 w-2" />
+                                <div className="pl-5 pr-7">
+                                  <div
+                                    key={index}
+                                    className="flex font-medium text-gray-700"
+                                  >
+                                    <p>{data?.toTime}</p> -
+                                    <p>{data?.fromTime}</p>
+                                  </div>
+                                  <p className=" font-normal">{data?.data}</p>
                                 </div>
-                                <p className=" font-normal">{data?.data}</p>
                               </div>
-                            </div>
-                          ))}
+                            ))}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
 
+                    <div className="flex items-center justify-center">
+                      <button
+                        className="border bg-gray-200 font-medium py-2 px-4 rounded-lg hover:bg-white hover:border-gray-200"
+                        onClick={handleModalOpen}
+                      >
+                        Add schedule day {nestedDataArray.length + 1}
+                      </button>
+                    </div>
+                  </div>
+                  {nestedDataArray.length === 0 && (
+                    <div className="flex items-center justify-center">
+                      <button
+                        onClick={handleModalOpen}
+                        className="border bg-gray-200 font-medium py-2 px-4 rounded-lg hover:bg-white hover:border-gray-200"
+                      >
+                        Add schedule
+                      </button>
+                    </div>
+                  )}
+                  <FormModal
+                    open={modalOpen}
+                    onClose={handleModalClose}
+                    onSubmit={handleFormSubmit}
+                  />
+                </div>
+              </Card>
+            ) : (
+              <Card className="p-16 border border-gray-400  border-solid">
+                <div>
                   <div className="flex items-center justify-center">
                     <button
-                      className="border bg-gray-200 font-medium py-2 px-4 rounded-lg hover:bg-white hover:border-gray-200"
                       onClick={handleModalOpen}
+                      className="border bg-gray-200 font-medium py-2 px-4 rounded-lg hover:bg-white hover:border-gray-200"
                     >
                       Add schedule day {nestedDataArray.length + 1}
                     </button>
                   </div>
+                  <FormModal
+                    open={modalOpen}
+                    onClose={handleModalClose}
+                    onSubmit={handleFormSubmit}
+                  />
                 </div>
-                {nestedDataArray.length === 0 && (
-                  <div className="flex items-center justify-center">
-                    <button
-                      onClick={handleModalOpen}
-                      className="border bg-gray-200 font-medium py-2 px-4 rounded-lg hover:bg-white hover:border-gray-200"
-                    >
-                      Add schedule
-                    </button>
-                  </div>
-                )}
-                <FormModal
-                  open={modalOpen}
-                  onClose={handleModalClose}
-                  onSubmit={handleFormSubmit}
-                />
-              </div>
-            </Card>
-          ) : (
-            <Card className="p-16 border border-gray-400  border-solid">
-              <div>
-                <div className="flex items-center justify-center">
-                  <button
-                    onClick={handleModalOpen}
-                    className="border bg-gray-200 font-medium py-2 px-4 rounded-lg hover:bg-white hover:border-gray-200"
-                  >
-                    Add schedule day {nestedDataArray.length + 1}
-                  </button>
-                </div>
-                <FormModal
-                  open={modalOpen}
-                  onClose={handleModalClose}
-                  onSubmit={handleFormSubmit}
-                />
-              </div>
-            </Card>
-          )}
-        </div>
-      </BannerContent>
+              </Card>
+            )}
+          </div>
+        </BannerContent>
+      </div>
     </BannerContainer>
   );
 };

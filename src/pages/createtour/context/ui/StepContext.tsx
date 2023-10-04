@@ -9,6 +9,7 @@ export type StepContextType = {
   updateFormValues: (stepIndex: any, data: any) => void;
   isNextClicked: boolean;
   selectedCard: number;
+  chooseStep: (step: number) => void;
   setSelectedCard: React.Dispatch<React.SetStateAction<number>>; // Add the setSelectedCard type
 };
 
@@ -38,7 +39,9 @@ export const StepProvider: React.FC<StepProviderProps> = ({
   const goToPreviousStep = () => {
     setCurrentStep((prevStep) => Math.max(prevStep - 1, 1));
   };
-
+  const chooseStep = (step: number) => {
+    setCurrentStep(step);
+  };
   const updateFormValues = (stepIndex: any, data: any) => {
     setFormValues((prevFormValues) => {
       const updatedValues = [...prevFormValues];
@@ -59,6 +62,7 @@ export const StepProvider: React.FC<StepProviderProps> = ({
         isNextClicked,
         selectedCard,
         setSelectedCard,
+        chooseStep,
       }}
     >
       {children}

@@ -25,7 +25,18 @@ export default {
         'main': "#fcfbfc"
         // Thêm nhiều màu sắc khác nếu cần
       },
+      scrollbarWidth: {
+        thin: '6px',
+        custom: '25px',
+      },
+      scrollbarRadius: {
+        custom: '10px', // Border-radius tùy chỉnh cho thanh scrollbar
+      },
     },
   },
-  plugins: [],
+
+  plugins: [
+    // eslint-disable-next-line no-undef
+    require('tailwind-scrollbar'),
+  ],
 }

@@ -1,5 +1,3 @@
-import React from "react";
-import PropTypes from "prop-types";
 import { AiFillPlusSquare, AiOutlineSearch } from "react-icons/ai";
 import { FaSliders } from "react-icons/fa6";
 
@@ -27,21 +25,23 @@ function DashBoardTrip() {
           </div>
         </div>
 
-        <div style={{ height: "53.5vh" }}>
+        <div
+          className="flex flex-col items-center justify-center"
+          style={{ height: "53.5vh" }}
+        >
           <img
             className="w-80 h-80 object-cover"
             src="https://img.freepik.com/premium-vector/businessman-woman-reading-business-reports-flat-illustration_828072-312.jpg?w=2000"
             alt="error"
           />
-        </div>
-        <div className="absolute bottom-6 inset-x-1/2 transform -translate-x-1/2">
-          <div className="items-center">
-            <button className="bg-navy-blue rounded-xl p-2 flex items-center justify-center w-24">
+          <div className="items-center flex  justify-center">
+            <button className="bg-navy-blue rounded-xl p-2 flex items-center justify-center w-28">
               <AiFillPlusSquare className="w-6 h-6 rounded-xl text-gray-50" />
               <p className="font-medium text-white  ">New trip</p>
             </button>
           </div>
         </div>
+        <div className="absolute bottom-6 inset-x-1/2 transform -translate-x-1/2"></div>
       </div>
     </div>
   );

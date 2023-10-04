@@ -337,558 +337,591 @@ const Capacity: React.FC = () => {
   }
   return (
     <BannerContainer>
-      <BannerContentPrice>
-        <CreateTitleNullDes>Availability</CreateTitleNullDes>
-        <CreateDescription>
-          When is your activity available for customers? Add your activity’s
-          dates and times by connecting your booking system or by manually
-          entering the information for your product and options.
-        </CreateDescription>
+      <div className="flex items-center justify-center">
+        <BannerContentPrice>
+          <CreateTitleNullDes>Availability</CreateTitleNullDes>
+          <CreateDescription>
+            When is your activity available for customers? Add your activity’s
+            dates and times by connecting your booking system or by manually
+            entering the information for your product and options.
+          </CreateDescription>
 
-        <div>
-          <p className="font-medium mb-1">
-            Name (e.g. Summer Season, Autumn 2011... )
-          </p>
-          <div className=" bg-white relative ">
-            <GoLocation className="absolute top-4 left-2" />
-            <input
-              className="w-1/2 border rounded-md px-8 py-3 border-gray-400 shadow-custom-card-mui focus:outline-none hover:border-navy-blue focus:border-navy-blue"
-              placeholder="New availability"
-              type="text"
-              onChange={handlePersonalInfo}
-            />
-          </div>
-        </div>
-
-        <div className="mt-3">
-          <p className="font-medium">Validity of this season</p>{" "}
-          <div className="flex items-center gap-3 mt-2">
-            <p className="font-medium">Valid from </p>
-            <div>
+          <div>
+            <p className="font-medium mb-1">
+              Name (e.g. Summer Season, Autumn 2011... )
+            </p>
+            <div className="  relative ">
+              <GoLocation className="absolute top-4 left-2" />
               <input
-                className="flex items-center justify-center font-medium border border-solid border-gray-300 rounded-md p-2   focus:outline-none focus:ring-1 focus:ring-sky-500"
-                type="date"
-                value={startingTimes?.DateFrom}
-                onChange={(e) => onChangeDateFrom(e, "from")}
-              />
-            </div>
-            <p className="font-medium">to</p>
-            <div>
-              <input
-                className="flex items-center justify-center font-medium border border-solid border-gray-300 rounded-md p-2   focus:outline-none focus:ring-1 focus:ring-sky-500"
-                type="date"
-                value={startingTimes?.DateTo}
-                onChange={(e) => onChangeDateFrom(e, "to")}
+                className="w-1/2 border rounded-lg px-8 py-3 border-gray-400 shadow-custom-card-mui focus:outline-none hover:border-navy-blue focus:border-navy-blue"
+                placeholder="New availability"
+                type="text"
+                onChange={handlePersonalInfo}
               />
             </div>
           </div>
-        </div>
-        <div className="mt-3">
-          <p className="font-medium">Weekly starting times</p>
 
-          <div className="">
-            <div className="mt-2">
-              <div className="flex flex-wrap items-center mb-1">
-                <p className="font-medium mr-5 w-5 ">Mon</p>
-                {startingTimes?.Mon?.map((item: any, index: number) => (
-                  <div key={index} className="flex items-center mr-8">
-                    <select
-                      className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
-                      value={selectedHour?.Mon[index]}
-                      onChange={(e) =>
-                        handleHourChange(index, parseInt(e.target.value), "Mon")
-                      }
-                    >
-                      {optionsByDay["Mon"].hr}
-                    </select>
-                    <div className="mx-1 font-medium"> :</div>
-                    <select
-                      className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
-                      value={selectedMinute?.Mon[index]}
-                      onChange={(e) =>
-                        handleMinuteChange(
-                          index,
-                          parseInt(e.target.value),
-                          "Mon"
-                        )
-                      }
-                    >
-                      {optionsByDay["Mon"].min}
-                    </select>
-                    <FaRegTrashCan
-                      className="ml-3 text-red-600 hover:text-red-900"
-                      onClick={() => removeForm(index, "Mon")}
-                    />
-                  </div>
-                ))}
-                {startingTimes?.Mon.length < 1 && (
-                  <button
-                    className="flex items-center bg-white border-none mr-3"
-                    onClick={() => addStartingTime("Mon")}
-                  >
-                    <FaRegClock className="text-navy-blue mr-1" />{" "}
-                    <span className="font-medium text-navy-blue hover:text-black text-md">
-                      Add starting time
-                    </span>
-                  </button>
-                )}
-
-                <button
-                  className="flex items-center bg-white border-none"
-                  onClick={() => copyToWholeWeek("Mon")}
-                >
-                  <FaCheck className="text-navy-blue mr-1" />{" "}
-                  <span className="font-medium text-navy-blue hover:text-black  text-md  ">
-                    Copy to whole
-                  </span>
-                </button>
+          <div className="mt-3">
+            <p className="font-medium">Validity of this season</p>{" "}
+            <div className="flex items-center gap-3 mt-2">
+              <p className="font-medium">Valid from </p>
+              <div>
+                <input
+                  className="flex items-center justify-center font-medium border border-solid border-gray-300 rounded-md p-2   focus:outline-none focus:ring-1 focus:ring-sky-500"
+                  type="date"
+                  value={startingTimes?.DateFrom}
+                  onChange={(e) => onChangeDateFrom(e, "from")}
+                />
               </div>
-
-              <hr className="mt-3" />
-            </div>
-
-            <div className="mt-2">
-              <div className="flex flex-wrap items-center mb-1">
-                <p className="font-medium mr-5 w-5">Tue</p>
-                {startingTimes?.Tue?.map((item: any, index: number) => (
-                  <div key={index} className="flex items-center mr-8">
-                    <select
-                      className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
-                      value={selectedHour?.Tue[index]}
-                      onChange={(e) =>
-                        handleHourChange(index, parseInt(e.target.value), "Tue")
-                      }
-                    >
-                      {optionsByDay["Tue"].hr}
-                    </select>
-                    <div className="mx-1 font-medium"> :</div>
-                    <select
-                      className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
-                      value={selectedMinute?.Tue[index]}
-                      onChange={(e) =>
-                        handleMinuteChange(
-                          index,
-                          parseInt(e.target.value),
-                          "Tue"
-                        )
-                      }
-                    >
-                      {optionsByDay["Tue"].min}
-                    </select>
-                    <FaRegTrashCan
-                      className="ml-3 text-red-600 hover:text-red-900"
-                      onClick={() => removeForm(index, "Tue")}
-                    />
-                  </div>
-                ))}
-                {startingTimes?.Tue.length < 1 && (
-                  <button
-                    className="flex items-center bg-white border-none mr-3  "
-                    onClick={() => addStartingTime("Tue")}
-                  >
-                    <FaRegClock className="text-navy-blue mr-1" />{" "}
-                    <span className="font-medium text-navy-blue hover:text-black  text-md  ">
-                      Add starting time
-                    </span>
-                  </button>
-                )}
-                <button
-                  className="flex items-center bg-white border-none"
-                  onClick={() => copyToWholeWeek("Tue")}
-                >
-                  <FaCheck className="text-navy-blue mr-1" />{" "}
-                  <span className="font-medium text-navy-blue hover:text-black  text-md  ">
-                    Copy to whole
-                  </span>
-                </button>
+              <p className="font-medium">to</p>
+              <div>
+                <input
+                  className="flex items-center justify-center font-medium border border-solid border-gray-300 rounded-md p-2   focus:outline-none focus:ring-1 focus:ring-sky-500"
+                  type="date"
+                  value={startingTimes?.DateTo}
+                  onChange={(e) => onChangeDateFrom(e, "to")}
+                />
               </div>
-
-              <hr className="mt-3" />
-            </div>
-
-            <div className="mt-2">
-              <div className="flex flex-wrap items-center mb-1">
-                <p className="font-medium mr-5 w-5">Wed</p>
-                {startingTimes?.Wed?.map((item: any, index: number) => (
-                  <div key={index} className="flex items-center mr-8">
-                    <select
-                      className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
-                      value={selectedHour?.Wed[index]}
-                      onChange={(e) =>
-                        handleHourChange(index, parseInt(e.target.value), "Wed")
-                      }
-                    >
-                      {optionsByDay["Wed"].hr}
-                    </select>
-                    <div className="mx-1 font-medium"> :</div>
-                    <select
-                      className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
-                      value={selectedMinute?.Wed[index]}
-                      onChange={(e) =>
-                        handleMinuteChange(
-                          index,
-                          parseInt(e.target.value),
-                          "Wed"
-                        )
-                      }
-                    >
-                      {optionsByDay["Wed"].min}
-                    </select>
-                    <FaRegTrashCan
-                      className="ml-3 text-red-600 hover:text-red-900"
-                      onClick={() => removeForm(index, "Wed")}
-                    />
-                  </div>
-                ))}
-
-                {startingTimes?.Wed.length < 1 && (
-                  <button
-                    className="flex items-center bg-white border-none  mr-3"
-                    onClick={() => addStartingTime("Wed")}
-                  >
-                    <FaRegClock className="text-navy-blue mr-1" />{" "}
-                    <span className="font-medium text-navy-blue hover:text-black  text-md  ">
-                      Add starting time
-                    </span>
-                  </button>
-                )}
-                <button
-                  className="flex items-center bg-white border-none"
-                  onClick={() => copyToWholeWeek("Wed")}
-                >
-                  <FaCheck className="text-navy-blue mr-1" />{" "}
-                  <span className="font-medium text-navy-blue hover:text-black  text-md  ">
-                    Copy to whole
-                  </span>
-                </button>
-              </div>
-
-              <hr className="mt-3" />
-            </div>
-
-            <div className="mt-2">
-              <div className="flex flex-wrap items-center mb-1">
-                <p className="font-medium mr-5 w-5">Thu</p>
-                {startingTimes?.Thu?.map((item: any, index: number) => (
-                  <div key={index} className="flex items-center mr-8">
-                    <select
-                      className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
-                      value={selectedHour?.Thu[index]}
-                      onChange={(e) =>
-                        handleHourChange(index, parseInt(e.target.value), "Thu")
-                      }
-                    >
-                      {optionsByDay["Thu"].hr}
-                    </select>
-                    <div className="mx-1 font-medium"> :</div>
-                    <select
-                      className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
-                      value={selectedMinute?.Thu[index]}
-                      onChange={(e) =>
-                        handleMinuteChange(
-                          index,
-                          parseInt(e.target.value),
-                          "Thu"
-                        )
-                      }
-                    >
-                      {optionsByDay["Thu"].min}
-                    </select>
-                    <FaRegTrashCan
-                      className="ml-3 text-red-600 hover:text-red-900"
-                      onClick={() => removeForm(index, "Thu")}
-                    />
-                  </div>
-                ))}
-                {startingTimes?.Thu.length < 1 && (
-                  <button
-                    className="flex items-center bg-white border-none  mr-3"
-                    onClick={() => addStartingTime("Thu")}
-                  >
-                    <FaRegClock className="text-navy-blue mr-1" />{" "}
-                    <span className="font-medium text-navy-blue hover:text-black  text-md  ">
-                      Add starting time
-                    </span>
-                  </button>
-                )}
-                <button
-                  className="flex items-center bg-white border-none"
-                  onClick={() => copyToWholeWeek("Thu")}
-                >
-                  <FaCheck className="text-navy-blue mr-1" />{" "}
-                  <span className="font-medium text-navy-blue hover:text-black  text-md  ">
-                    Copy to whole
-                  </span>
-                </button>
-              </div>
-
-              <hr className="mt-3" />
-            </div>
-
-            <div className="mt-2">
-              <div className="flex flex-wrap items-center mb-1">
-                <p className="font-medium mr-5 w-5">Fri</p>
-                {startingTimes?.Fri?.map((item: any, index: number) => (
-                  <div key={index} className="flex items-center mr-8">
-                    <select
-                      className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
-                      value={selectedHour?.Fri[index]}
-                      onChange={(e) =>
-                        handleHourChange(index, parseInt(e.target.value), "Fri")
-                      }
-                    >
-                      {optionsByDay["Fri"].hr}
-                    </select>
-                    <div className="mx-1 font-medium"> :</div>
-                    <select
-                      className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
-                      value={selectedMinute?.Fri[index]}
-                      onChange={(e) =>
-                        handleMinuteChange(
-                          index,
-                          parseInt(e.target.value),
-                          "Fri"
-                        )
-                      }
-                    >
-                      {optionsByDay["Fri"].min}
-                    </select>
-                    <FaRegTrashCan
-                      className="ml-3 text-red-600 hover:text-red-900"
-                      onClick={() => removeForm(index, "Fri")}
-                    />
-                  </div>
-                ))}
-                {startingTimes?.Fri.length < 1 && (
-                  <button
-                    className="flex items-center bg-white border-none  mr-3"
-                    onClick={() => addStartingTime("Fri")}
-                  >
-                    <FaRegClock className="text-navy-blue mr-1" />{" "}
-                    <span className="font-medium text-navy-blue hover:text-black  text-md  ">
-                      Add starting time
-                    </span>
-                  </button>
-                )}
-                <button
-                  className="flex items-center bg-white border-none"
-                  onClick={() => copyToWholeWeek("Fri")}
-                >
-                  <FaCheck className="text-navy-blue mr-1" />{" "}
-                  <span className="font-medium text-navy-blue hover:text-black  text-md  ">
-                    Copy to whole
-                  </span>
-                </button>
-              </div>
-
-              <hr className="mt-3" />
-            </div>
-            <div className="mt-2">
-              <div className="flex flex-wrap items-center mb-1">
-                <p className="font-medium mr-5 w-5">Sat</p>
-                {startingTimes?.Sat?.map((item: any, index: number) => (
-                  <div key={index} className="flex items-center mr-8">
-                    <select
-                      className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
-                      value={selectedHour?.Sat[index]}
-                      onChange={(e) =>
-                        handleHourChange(index, parseInt(e.target.value), "Sat")
-                      }
-                    >
-                      {optionsByDay["Sat"].hr}
-                    </select>
-                    <div className="mx-1 font-medium"> :</div>
-                    <select
-                      className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
-                      value={selectedMinute?.Sat[index]}
-                      onChange={(e) =>
-                        handleMinuteChange(
-                          index,
-                          parseInt(e.target.value),
-                          "Sat"
-                        )
-                      }
-                    >
-                      {optionsByDay["Sat"].min}
-                    </select>
-                    <FaRegTrashCan
-                      className="ml-3 text-red-600 hover:text-red-900"
-                      onClick={() => removeForm(index, "Sat")}
-                    />
-                  </div>
-                ))}
-                {startingTimes?.Sat.length < 1 && (
-                  <button
-                    className="flex items-center bg-white border-none  mr-3"
-                    onClick={() => addStartingTime("Sat")}
-                  >
-                    <FaRegClock className="text-navy-blue mr-1" />{" "}
-                    <span className="font-medium text-navy-blue hover:text-black  text-md  ">
-                      Add starting time
-                    </span>
-                  </button>
-                )}
-                <button
-                  className="flex items-center bg-white border-none"
-                  onClick={() => copyToWholeWeek("Sat")}
-                >
-                  <FaCheck className="text-navy-blue mr-1" />{" "}
-                  <span className="font-medium text-navy-blue hover:text-black  text-md  ">
-                    Copy to whole
-                  </span>
-                </button>
-              </div>
-
-              <hr className="mt-3" />
-            </div>
-            <div className="mt-2">
-              <div className="flex flex-wrap items-center mb-1">
-                <p className="font-medium mr-5 w-5">Sun</p>
-                {startingTimes?.Sun?.map((item: any, index: number) => (
-                  <div key={index} className="flex items-center mr-8">
-                    <select
-                      className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
-                      value={selectedHour?.Sun[index]}
-                      onChange={(e) =>
-                        handleHourChange(index, parseInt(e.target.value), "Sun")
-                      }
-                    >
-                      {optionsByDay["Sun"].hr}
-                    </select>
-                    <div className="mx-1 font-medium"> :</div>
-                    <select
-                      className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
-                      value={selectedMinute?.Sun[index]}
-                      onChange={(e) =>
-                        handleMinuteChange(
-                          index,
-                          parseInt(e.target.value),
-                          "Sun"
-                        )
-                      }
-                    >
-                      {optionsByDay["Sun"].min}
-                    </select>
-                    <FaRegTrashCan
-                      className="ml-3 text-red-600 hover:text-red-900"
-                      onClick={() => removeForm(index, "Sun")}
-                    />
-                  </div>
-                ))}
-                {startingTimes?.Sun.length < 1 && (
-                  <button
-                    className="flex items-center bg-white border-none  mr-3"
-                    onClick={() => addStartingTime("Sun")}
-                  >
-                    <FaRegClock className="text-navy-blue mr-1" />{" "}
-                    <span className="font-medium text-navy-blue hover:text-black  text-md  ">
-                      Add starting time
-                    </span>
-                  </button>
-                )}
-                <button
-                  className="flex items-center bg-white border-none"
-                  onClick={() => copyToWholeWeek("Sun")}
-                >
-                  <FaCheck className="text-navy-blue mr-1" />{" "}
-                  <span className="font-medium text-navy-blue hover:text-black  text-md  ">
-                    Copy to whole
-                  </span>
-                </button>
-              </div>
-
-              <hr className="mt-3" />
             </div>
           </div>
           <div className="mt-3">
-            <p className="font-medium">Single/special dates</p>
-            <div className="mt-2">
-              {startingTimeSingle?.map(
-                (day: { day: string; time: [] }, dayIndex: number) => (
-                  <div
-                    key={dayIndex}
-                    className="flex flex-wrap items-center mb-4 gap-4"
+            <p className="font-medium">Weekly starting times</p>
+
+            <div className="">
+              <div className="mt-2">
+                <div className="flex flex-wrap items-center mb-1">
+                  <p className="font-medium mr-5 w-5 ">Mon</p>
+                  {startingTimes?.Mon?.map((item: any, index: number) => (
+                    <div key={index} className="flex items-center mr-8">
+                      <select
+                        className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
+                        value={selectedHour?.Mon[index]}
+                        onChange={(e) =>
+                          handleHourChange(
+                            index,
+                            parseInt(e.target.value),
+                            "Mon"
+                          )
+                        }
+                      >
+                        {optionsByDay["Mon"].hr}
+                      </select>
+                      <div className="mx-1 font-medium"> :</div>
+                      <select
+                        className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
+                        value={selectedMinute?.Mon[index]}
+                        onChange={(e) =>
+                          handleMinuteChange(
+                            index,
+                            parseInt(e.target.value),
+                            "Mon"
+                          )
+                        }
+                      >
+                        {optionsByDay["Mon"].min}
+                      </select>
+                      <FaRegTrashCan
+                        className="ml-3 text-red-600 hover:text-red-900"
+                        onClick={() => removeForm(index, "Mon")}
+                      />
+                    </div>
+                  ))}
+                  {startingTimes?.Mon.length < 1 && (
+                    <button
+                      className="flex items-center bg-white border-none mr-3"
+                      onClick={() => addStartingTime("Mon")}
+                    >
+                      <FaRegClock className="text-navy-blue mr-1" />{" "}
+                      <span className="font-medium text-navy-blue hover:text-black text-md">
+                        Add starting time
+                      </span>
+                    </button>
+                  )}
+
+                  <button
+                    className="flex items-center bg-white border-none"
+                    onClick={() => copyToWholeWeek("Mon")}
                   >
-                    <FaRegTrashCan
-                      className="ml-3 text-red-600 hover:text-red-900"
-                      onClick={() => removeDay(dayIndex)}
-                    />
+                    <FaCheck className="text-navy-blue mr-1" />{" "}
+                    <span className="font-medium text-navy-blue hover:text-black  text-md  ">
+                      Copy to whole
+                    </span>
+                  </button>
+                </div>
 
-                    <input
-                      type="date"
-                      className="flex items-center justify-center font-medium border border-solid border-gray-300 rounded-md p-2   focus:outline-none focus:ring-1 focus:ring-sky-500"
-                      value={convertToYYYYMMDD(day.day)}
-                      onChange={(e) =>
-                        updateDayForDay(dayIndex, e.target.value)
-                      }
-                    />
-                    {day.time.map((time: string, timeIndex: number) => {
-                      const [hour, minute] = time.split(":");
+                <hr className="mt-3" />
+              </div>
 
-                      return (
-                        <div key={timeIndex} className="flex items-center mr-4">
-                          <select
-                            className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
-                            value={hour}
-                            onChange={(e) =>
-                              updateHourForDay(
-                                dayIndex,
-                                timeIndex,
-                                parseInt(e.target.value)
-                              )
-                            }
+              <div className="mt-2">
+                <div className="flex flex-wrap items-center mb-1">
+                  <p className="font-medium mr-5 w-5">Tue</p>
+                  {startingTimes?.Tue?.map((item: any, index: number) => (
+                    <div key={index} className="flex items-center mr-8">
+                      <select
+                        className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
+                        value={selectedHour?.Tue[index]}
+                        onChange={(e) =>
+                          handleHourChange(
+                            index,
+                            parseInt(e.target.value),
+                            "Tue"
+                          )
+                        }
+                      >
+                        {optionsByDay["Tue"].hr}
+                      </select>
+                      <div className="mx-1 font-medium"> :</div>
+                      <select
+                        className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
+                        value={selectedMinute?.Tue[index]}
+                        onChange={(e) =>
+                          handleMinuteChange(
+                            index,
+                            parseInt(e.target.value),
+                            "Tue"
+                          )
+                        }
+                      >
+                        {optionsByDay["Tue"].min}
+                      </select>
+                      <FaRegTrashCan
+                        className="ml-3 text-red-600 hover:text-red-900"
+                        onClick={() => removeForm(index, "Tue")}
+                      />
+                    </div>
+                  ))}
+                  {startingTimes?.Tue.length < 1 && (
+                    <button
+                      className="flex items-center bg-white border-none mr-3  "
+                      onClick={() => addStartingTime("Tue")}
+                    >
+                      <FaRegClock className="text-navy-blue mr-1" />{" "}
+                      <span className="font-medium text-navy-blue hover:text-black  text-md  ">
+                        Add starting time
+                      </span>
+                    </button>
+                  )}
+                  <button
+                    className="flex items-center bg-white border-none"
+                    onClick={() => copyToWholeWeek("Tue")}
+                  >
+                    <FaCheck className="text-navy-blue mr-1" />{" "}
+                    <span className="font-medium text-navy-blue hover:text-black  text-md  ">
+                      Copy to whole
+                    </span>
+                  </button>
+                </div>
+
+                <hr className="mt-3" />
+              </div>
+
+              <div className="mt-2">
+                <div className="flex flex-wrap items-center mb-1">
+                  <p className="font-medium mr-5 w-5">Wed</p>
+                  {startingTimes?.Wed?.map((item: any, index: number) => (
+                    <div key={index} className="flex items-center mr-8">
+                      <select
+                        className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
+                        value={selectedHour?.Wed[index]}
+                        onChange={(e) =>
+                          handleHourChange(
+                            index,
+                            parseInt(e.target.value),
+                            "Wed"
+                          )
+                        }
+                      >
+                        {optionsByDay["Wed"].hr}
+                      </select>
+                      <div className="mx-1 font-medium"> :</div>
+                      <select
+                        className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
+                        value={selectedMinute?.Wed[index]}
+                        onChange={(e) =>
+                          handleMinuteChange(
+                            index,
+                            parseInt(e.target.value),
+                            "Wed"
+                          )
+                        }
+                      >
+                        {optionsByDay["Wed"].min}
+                      </select>
+                      <FaRegTrashCan
+                        className="ml-3 text-red-600 hover:text-red-900"
+                        onClick={() => removeForm(index, "Wed")}
+                      />
+                    </div>
+                  ))}
+
+                  {startingTimes?.Wed.length < 1 && (
+                    <button
+                      className="flex items-center bg-white border-none  mr-3"
+                      onClick={() => addStartingTime("Wed")}
+                    >
+                      <FaRegClock className="text-navy-blue mr-1" />{" "}
+                      <span className="font-medium text-navy-blue hover:text-black  text-md  ">
+                        Add starting time
+                      </span>
+                    </button>
+                  )}
+                  <button
+                    className="flex items-center bg-white border-none"
+                    onClick={() => copyToWholeWeek("Wed")}
+                  >
+                    <FaCheck className="text-navy-blue mr-1" />{" "}
+                    <span className="font-medium text-navy-blue hover:text-black  text-md  ">
+                      Copy to whole
+                    </span>
+                  </button>
+                </div>
+
+                <hr className="mt-3" />
+              </div>
+
+              <div className="mt-2">
+                <div className="flex flex-wrap items-center mb-1">
+                  <p className="font-medium mr-5 w-5">Thu</p>
+                  {startingTimes?.Thu?.map((item: any, index: number) => (
+                    <div key={index} className="flex items-center mr-8">
+                      <select
+                        className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
+                        value={selectedHour?.Thu[index]}
+                        onChange={(e) =>
+                          handleHourChange(
+                            index,
+                            parseInt(e.target.value),
+                            "Thu"
+                          )
+                        }
+                      >
+                        {optionsByDay["Thu"].hr}
+                      </select>
+                      <div className="mx-1 font-medium"> :</div>
+                      <select
+                        className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
+                        value={selectedMinute?.Thu[index]}
+                        onChange={(e) =>
+                          handleMinuteChange(
+                            index,
+                            parseInt(e.target.value),
+                            "Thu"
+                          )
+                        }
+                      >
+                        {optionsByDay["Thu"].min}
+                      </select>
+                      <FaRegTrashCan
+                        className="ml-3 text-red-600 hover:text-red-900"
+                        onClick={() => removeForm(index, "Thu")}
+                      />
+                    </div>
+                  ))}
+                  {startingTimes?.Thu.length < 1 && (
+                    <button
+                      className="flex items-center bg-white border-none  mr-3"
+                      onClick={() => addStartingTime("Thu")}
+                    >
+                      <FaRegClock className="text-navy-blue mr-1" />{" "}
+                      <span className="font-medium text-navy-blue hover:text-black  text-md  ">
+                        Add starting time
+                      </span>
+                    </button>
+                  )}
+                  <button
+                    className="flex items-center bg-white border-none"
+                    onClick={() => copyToWholeWeek("Thu")}
+                  >
+                    <FaCheck className="text-navy-blue mr-1" />{" "}
+                    <span className="font-medium text-navy-blue hover:text-black  text-md  ">
+                      Copy to whole
+                    </span>
+                  </button>
+                </div>
+
+                <hr className="mt-3" />
+              </div>
+
+              <div className="mt-2">
+                <div className="flex flex-wrap items-center mb-1">
+                  <p className="font-medium mr-5 w-5">Fri</p>
+                  {startingTimes?.Fri?.map((item: any, index: number) => (
+                    <div key={index} className="flex items-center mr-8">
+                      <select
+                        className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
+                        value={selectedHour?.Fri[index]}
+                        onChange={(e) =>
+                          handleHourChange(
+                            index,
+                            parseInt(e.target.value),
+                            "Fri"
+                          )
+                        }
+                      >
+                        {optionsByDay["Fri"].hr}
+                      </select>
+                      <div className="mx-1 font-medium"> :</div>
+                      <select
+                        className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
+                        value={selectedMinute?.Fri[index]}
+                        onChange={(e) =>
+                          handleMinuteChange(
+                            index,
+                            parseInt(e.target.value),
+                            "Fri"
+                          )
+                        }
+                      >
+                        {optionsByDay["Fri"].min}
+                      </select>
+                      <FaRegTrashCan
+                        className="ml-3 text-red-600 hover:text-red-900"
+                        onClick={() => removeForm(index, "Fri")}
+                      />
+                    </div>
+                  ))}
+                  {startingTimes?.Fri.length < 1 && (
+                    <button
+                      className="flex items-center bg-white border-none  mr-3"
+                      onClick={() => addStartingTime("Fri")}
+                    >
+                      <FaRegClock className="text-navy-blue mr-1" />{" "}
+                      <span className="font-medium text-navy-blue hover:text-black  text-md  ">
+                        Add starting time
+                      </span>
+                    </button>
+                  )}
+                  <button
+                    className="flex items-center bg-white border-none"
+                    onClick={() => copyToWholeWeek("Fri")}
+                  >
+                    <FaCheck className="text-navy-blue mr-1" />{" "}
+                    <span className="font-medium text-navy-blue hover:text-black  text-md  ">
+                      Copy to whole
+                    </span>
+                  </button>
+                </div>
+
+                <hr className="mt-3" />
+              </div>
+              <div className="mt-2">
+                <div className="flex flex-wrap items-center mb-1">
+                  <p className="font-medium mr-5 w-5">Sat</p>
+                  {startingTimes?.Sat?.map((item: any, index: number) => (
+                    <div key={index} className="flex items-center mr-8">
+                      <select
+                        className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
+                        value={selectedHour?.Sat[index]}
+                        onChange={(e) =>
+                          handleHourChange(
+                            index,
+                            parseInt(e.target.value),
+                            "Sat"
+                          )
+                        }
+                      >
+                        {optionsByDay["Sat"].hr}
+                      </select>
+                      <div className="mx-1 font-medium"> :</div>
+                      <select
+                        className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
+                        value={selectedMinute?.Sat[index]}
+                        onChange={(e) =>
+                          handleMinuteChange(
+                            index,
+                            parseInt(e.target.value),
+                            "Sat"
+                          )
+                        }
+                      >
+                        {optionsByDay["Sat"].min}
+                      </select>
+                      <FaRegTrashCan
+                        className="ml-3 text-red-600 hover:text-red-900"
+                        onClick={() => removeForm(index, "Sat")}
+                      />
+                    </div>
+                  ))}
+                  {startingTimes?.Sat.length < 1 && (
+                    <button
+                      className="flex items-center bg-white border-none  mr-3"
+                      onClick={() => addStartingTime("Sat")}
+                    >
+                      <FaRegClock className="text-navy-blue mr-1" />{" "}
+                      <span className="font-medium text-navy-blue hover:text-black  text-md  ">
+                        Add starting time
+                      </span>
+                    </button>
+                  )}
+                  <button
+                    className="flex items-center bg-white border-none"
+                    onClick={() => copyToWholeWeek("Sat")}
+                  >
+                    <FaCheck className="text-navy-blue mr-1" />{" "}
+                    <span className="font-medium text-navy-blue hover:text-black  text-md  ">
+                      Copy to whole
+                    </span>
+                  </button>
+                </div>
+
+                <hr className="mt-3" />
+              </div>
+              <div className="mt-2">
+                <div className="flex flex-wrap items-center mb-1">
+                  <p className="font-medium mr-5 w-5">Sun</p>
+                  {startingTimes?.Sun?.map((item: any, index: number) => (
+                    <div key={index} className="flex items-center mr-8">
+                      <select
+                        className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
+                        value={selectedHour?.Sun[index]}
+                        onChange={(e) =>
+                          handleHourChange(
+                            index,
+                            parseInt(e.target.value),
+                            "Sun"
+                          )
+                        }
+                      >
+                        {optionsByDay["Sun"].hr}
+                      </select>
+                      <div className="mx-1 font-medium"> :</div>
+                      <select
+                        className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
+                        value={selectedMinute?.Sun[index]}
+                        onChange={(e) =>
+                          handleMinuteChange(
+                            index,
+                            parseInt(e.target.value),
+                            "Sun"
+                          )
+                        }
+                      >
+                        {optionsByDay["Sun"].min}
+                      </select>
+                      <FaRegTrashCan
+                        className="ml-3 text-red-600 hover:text-red-900"
+                        onClick={() => removeForm(index, "Sun")}
+                      />
+                    </div>
+                  ))}
+                  {startingTimes?.Sun.length < 1 && (
+                    <button
+                      className="flex items-center bg-white border-none  mr-3"
+                      onClick={() => addStartingTime("Sun")}
+                    >
+                      <FaRegClock className="text-navy-blue mr-1" />{" "}
+                      <span className="font-medium text-navy-blue hover:text-black  text-md  ">
+                        Add starting time
+                      </span>
+                    </button>
+                  )}
+                  <button
+                    className="flex items-center bg-white border-none"
+                    onClick={() => copyToWholeWeek("Sun")}
+                  >
+                    <FaCheck className="text-navy-blue mr-1" />{" "}
+                    <span className="font-medium text-navy-blue hover:text-black  text-md  ">
+                      Copy to whole
+                    </span>
+                  </button>
+                </div>
+
+                <hr className="mt-3" />
+              </div>
+            </div>
+            <div className="mt-3">
+              <p className="font-medium">Single/special dates</p>
+              <div className="mt-2">
+                {startingTimeSingle?.map(
+                  (day: { day: string; time: [] }, dayIndex: number) => (
+                    <div
+                      key={dayIndex}
+                      className="flex flex-wrap items-center mb-4 gap-4"
+                    >
+                      <FaRegTrashCan
+                        className="ml-3 text-red-600 hover:text-red-900"
+                        onClick={() => removeDay(dayIndex)}
+                      />
+
+                      <input
+                        type="date"
+                        className="flex items-center justify-center font-medium border border-solid border-gray-300 rounded-md p-2   focus:outline-none focus:ring-1 focus:ring-sky-500"
+                        value={convertToYYYYMMDD(day.day)}
+                        onChange={(e) =>
+                          updateDayForDay(dayIndex, e.target.value)
+                        }
+                      />
+                      {day.time.map((time: string, timeIndex: number) => {
+                        const [hour, minute] = time.split(":");
+
+                        return (
+                          <div
+                            key={timeIndex}
+                            className="flex items-center mr-4"
                           >
-                            {optionsByDay["Single"].hr}
-                          </select>
-                          <div className="mx-1 font-medium">:</div>
-                          <select
-                            className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
-                            value={minute}
-                            onChange={(e) =>
-                              updateMinuteForDay(
-                                dayIndex,
-                                timeIndex,
-                                parseInt(e.target.value)
-                              )
-                            }
-                          >
-                            {optionsByDay["Single"].min}
-                          </select>
+                            <select
+                              className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
+                              value={hour}
+                              onChange={(e) =>
+                                updateHourForDay(
+                                  dayIndex,
+                                  timeIndex,
+                                  parseInt(e.target.value)
+                                )
+                              }
+                            >
+                              {optionsByDay["Single"].hr}
+                            </select>
+                            <div className="mx-1 font-medium">:</div>
+                            <select
+                              className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
+                              value={minute}
+                              onChange={(e) =>
+                                updateMinuteForDay(
+                                  dayIndex,
+                                  timeIndex,
+                                  parseInt(e.target.value)
+                                )
+                              }
+                            >
+                              {optionsByDay["Single"].min}
+                            </select>
 
-                          {/* <FaRegTrashCan
+                            {/* <FaRegTrashCan
                             className="ml-3 text-red-600 hover:text-red-900"
                             onClick={() =>
                               removeTimeFromDay(dayIndex, timeIndex)
                             }
                           /> */}
-                        </div>
-                      );
-                    })}
-                    {day.time?.length < 1 && (
-                      <button
-                        className="flex items-center bg-white border-none"
-                        onClick={() => addTimeToDay(dayIndex)}
-                      >
-                        <FaRegClock className="text-navy-blue mr-1" />{" "}
-                        <span className="font-medium text-navy-blue hover:text-black text-md">
-                          Add starting time
-                        </span>
-                      </button>
-                    )}
-                  </div>
-                )
-              )}
+                          </div>
+                        );
+                      })}
+                      {day.time?.length < 1 && (
+                        <button
+                          className="flex items-center bg-white border-none"
+                          onClick={() => addTimeToDay(dayIndex)}
+                        >
+                          <FaRegClock className="text-navy-blue mr-1" />{" "}
+                          <span className="font-medium text-navy-blue hover:text-black text-md">
+                            Add starting time
+                          </span>
+                        </button>
+                      )}
+                    </div>
+                  )
+                )}
 
-              <button
-                className="flex items-center bg-white border-2 px-3 py-2 border-navy-blue rounded-xl   text-navy-blue hover:text-white hover:bg-navy-blue hover:border-sky-900"
-                onClick={() => addDayWithTime()}
-              >
-                <span className="font-medium text-md  ">Add new date</span>
-              </button>
+                <button
+                  className="flex items-center bg-white border-2 px-3 py-2 border-navy-blue rounded-xl   text-navy-blue hover:text-white hover:bg-navy-blue hover:border-sky-900"
+                  onClick={() => addDayWithTime()}
+                >
+                  <span className="font-medium text-md  ">Add new date</span>
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      </BannerContentPrice>
+        </BannerContentPrice>
+      </div>
     </BannerContainer>
   );
 };

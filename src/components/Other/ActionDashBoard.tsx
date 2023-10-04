@@ -1,5 +1,3 @@
-import React from "react";
-import PropTypes from "prop-types";
 import { AiOutlineSearch } from "react-icons/ai";
 import { FaSliders } from "react-icons/fa6";
 
@@ -25,7 +23,7 @@ function ActionDashBoard() {
           <button className="p-3 rounded-lg bg-navy-blue text-white">
             <FaSliders />
           </button>
-          <button className="py-3 px-8 rounded-lg bg-navy-blue text-white text-sm">
+          <button className="py-3 px-8 rounded-lg bg-navy-blue text-white text-base">
             Search
           </button>
         </div>
