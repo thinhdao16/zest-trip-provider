@@ -27,8 +27,8 @@ const radioItems = [
   "Not permitted",
 ];
 const typeDefault = {
-  ticket_type: "ADULT",
-  pricing_type: "DEFAULT",
+  role: "ADULT",
+  type: "DEFAULT",
 };
 const Price: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -42,7 +42,7 @@ const Price: React.FC = () => {
   const [formList, setFormList] = useState([
     {
       id: 0,
-      numberOfPeople: 1,
+      numberOfPeople: 0,
       numberOfPeopleAfter: 1,
       retailPrice: 0,
       payoutPerPerson: 0,
@@ -493,9 +493,11 @@ const Price: React.FC = () => {
       updateFormValues(6, { ticket: dataTicket });
     }
     if (selectedCountries.length === 0) {
-      const price_range = { ...formList };
-      console.log([price_range]);
-      const convertArray = { formList, ...quantityDefault, ...typeDefault };
+      const convertArray = {
+        price_range: formList,
+        ...quantityDefault,
+        ...typeDefault,
+      };
       setDataTicket([convertArray]);
     }
     funcUpdateTicketRole();
@@ -507,26 +509,34 @@ const Price: React.FC = () => {
     formListAdult,
     quantityAdult,
     quantityChildren,
+    typeDefault,
   ]);
 
   if (currentStep !== 1) {
     return null;
   }
   const createTicket = () => {
-    const pricing_data = dataTicket.map((item: any) => ({
-      ticket_type: item.role,
-      pricing_type: item.type,
-      maximum_booking_quantity: parseInt(item.max),
-      minimum_booking_quantity: parseInt(item.min),
-      price_range: item.price_range.map((formItem: any) => ({
-        from_amount: parseInt(formItem.numberOfPeople),
-        to_amount: parseInt(formItem.numberOfPeopleAfter),
-        price: parseInt(formItem.payoutPerPerson),
-      })),
-    }));
+    const pricing_data = dataTicket.map((item: any) => {
+      const pricingData: any = {
+        ticket_type: item.role,
+        pricing_type: item.type,
+        maximum_booking_quantity: parseInt(item.max),
+        minimum_booking_quantity: parseInt(item.min),
+      };
+
+      if (item.price_range) {
+        pricingData.price_range = item.price_range.map((formItem: any) => ({
+          from_amount: parseInt(formItem.numberOfPeople),
+          to_amount: parseInt(formItem.numberOfPeopleAfter),
+          price: parseInt(formItem.payoutPerPerson),
+        }));
+      }
+
+      return pricingData;
+    });
 
     const data = {
-      tour_id: "224a3f13-ce03-4521-ba41-d92e5923ec15",
+      tour_id: "3e1dab9e-d129-4b0b-8159-0da83ae2bddc",
       pricing_data,
     };
     console.log(data);
