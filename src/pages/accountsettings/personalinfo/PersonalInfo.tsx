@@ -38,9 +38,8 @@ function PersonalInfo() {
   };
   return (
     <React.Fragment>
-      <Header />
-      <BannerContainer>
-        <BannerContent>
+      <div>
+        <div>
           <BannerPageList>
             <div role="presentation" onClick={handleClick}>
               <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 1 }}>
@@ -159,8 +158,8 @@ function PersonalInfo() {
               </Grid>
             </Grid>
           </BannerPageList>
-        </BannerContent>
-      </BannerContainer>
+        </div>
+      </div>
     </React.Fragment>
   );
 }

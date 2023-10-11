@@ -27,6 +27,8 @@ function SetUpProvider() {
 
   const dispatch: AppDispatch = useDispatch();
   const personalInfo = useSelector((state: any) => state.auth.personalInfo);
+  const { loadingBecomeProvider } = useSelector((state: any) => state.provider);
+  console.log(loadingBecomeProvider);
   const [userServiceConfiguration, setUserServiceConfiguration] =
     useState<UserServiceConfiguration>({
       userInfo: {
@@ -35,6 +37,12 @@ function SetUpProvider() {
         address: "",
         webCompnany: "",
         mediaSocial: "",
+        taxCode: "",
+        address_name: "",
+        address_district: "",
+        address_ward: "",
+        address_province: "",
+        address_country: "",
         file: [],
       },
       selectedPlan: null,
@@ -55,9 +63,8 @@ function SetUpProvider() {
     if (step === 5) return;
     if (step === 1 || (onGoingStep && onGoingStep !== 1 && step === 1)) {
       if (
-        !userServiceConfiguration.userInfo.nameCompany ||
-        !userServiceConfiguration.userInfo.region ||
-        !userServiceConfiguration.userInfo.address
+        !userServiceConfiguration.userInfo.nameCompany
+        // !userServiceConfiguration.userInfo.address
       ) {
         setShowRequiredFields(true);
         return;
@@ -72,6 +79,7 @@ function SetUpProvider() {
     if (step === 1) return;
     setStep((step) => step - 1);
   };
+
   const Confirm = () => {
     const token: any = localStorage.getItem("access_token_signup");
     const decode: any = jwt_decode(token);
@@ -94,6 +102,27 @@ function SetUpProvider() {
       formData.append(
         "companyName",
         userServiceConfiguration?.userInfo?.nameCompany
+      );
+      formData.append("taxCode", userServiceConfiguration?.userInfo?.taxCode);
+      formData.append(
+        "address_name",
+        userServiceConfiguration?.userInfo?.address_name
+      );
+      formData.append(
+        "address_district",
+        userServiceConfiguration?.userInfo?.address_district
+      );
+      formData.append(
+        "address_ward",
+        userServiceConfiguration?.userInfo?.address_ward
+      );
+      formData.append(
+        "address_province",
+        userServiceConfiguration?.userInfo?.address_province
+      );
+      formData.append(
+        "address_country",
+        userServiceConfiguration?.userInfo?.address_country
       );
       formData.append(
         "serviceType",
@@ -127,49 +156,23 @@ function SetUpProvider() {
     <>
       <ContainerPageFullHalf>
         <Grid container>
-          <Grid
-            item
-            xs={12}
-            sm={5}
-            style={
-              {
-                // padding: "13px",
-              }
-            }
-          >
-            <Box
-              style={{
-                backgroundImage: "url()",
-                // backgroundSize: "cover",
-                // backgroundColor: "#f9fbfc",
-                // borderRadius: "0 20px 20px 0",
-                display: "flex",
-                flexDirection: "column",
-                height: "100%",
-                padding: "30px",
-                position: "relative",
-                zIndex: "99",
-                alignItems: "center",
-                justifyContent: "center ",
-              }}
-            >
-              <div className="absolute top-5 left-5">
-                <Link to="/">
-                  <div className="flex items-center text-2xl text-amber-950 font-bold">
-                    <img
-                      src="src/assets/File-logo-Zest-Travel.svg" // Đảm bảo đường dẫn hình ảnh là chính xác
-                      className="w-16"
-                    />
-                    {/* <p>ZestTravel</p> */}
-                  </div>
-                </Link>
+          <Grid item xs={12} sm={5} className="setup-main">
+            <div className="relative flex items-center justify-center h-[100vh] flex-col">
+              <div className="flex items-center justify-center flex-col gap-3 ">
+                <div className="flex gap-2 font-medium items-center text-3xl ">
+                  <p>Become to</p>
+                  <p className="  text-navy-blue ">Provider</p>
+                </div>
+                <ul className="">
+                  <li className="font-base">Exclusive discounts 🎉🎉🎉</li>
+                </ul>
               </div>
               <img
-                className=""
-                src="https://img.freepik.com/premium-vector/web-content-illustration-concept-with-characters_269730-154.jpg?w=2000"
+                src="src/assets/login.svg"
+                className="w-[50vh] h-[50vh]"
                 alt="error"
               />
-            </Box>
+            </div>
           </Grid>
           <Grid item xs={12} sm={7}>
             <ContainerPageFullHalfContent>
@@ -259,7 +262,7 @@ function SetUpProvider() {
                     </div>
                   </menu>
                   <Typography mb={4} level="body-md" textAlign="center">
-                    © DiTour {new Date().getFullYear()}
+                    © ZestTravel {new Date().getFullYear()}
                   </Typography>
                 </div>
               </Box>

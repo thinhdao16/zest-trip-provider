@@ -15,17 +15,17 @@ import { FaCircleCheck } from "react-icons/fa6";
 function CreateTourNav() {
   const step = [
     { id: 1, name: "Welcome" },
-    { id: 2, name: "Type Tour" },
+    { id: 2, name: "Tour Type" },
     { id: 3, name: "Title" },
-    { id: 4, name: "Welcome" },
-    { id: 5, name: "Type Tour" },
-    { id: 6, name: "Title" },
-    { id: 7, name: "Welcome" },
-    { id: 8, name: "Type Tour" },
-    { id: 9, name: "Title" },
-    { id: 10, name: "Welcome" },
-    { id: 11, name: "Type Tour" },
-    { id: 12, name: "Title" },
+    { id: 4, name: "Transportations " },
+    { id: 5, name: "Categories" },
+    { id: 6, name: "Location" },
+    { id: 7, name: "Schedule" },
+    { id: 8, name: "Availability" },
+    { id: 9, name: "P ricing" },
+    { id: 10, name: "Media" },
+    { id: 11, name: "Review" },
+    { id: 12, name: "Succesfull" },
   ];
 
   const {
@@ -179,7 +179,6 @@ function CreateTourNav() {
       chooseStep(data);
     }
   };
-  console.log(formValues);
   const constraintLength = () => {
     let classSkip = "no"; // Mặc định là "no"
 
@@ -257,7 +256,7 @@ function CreateTourNav() {
       <div className=" border-r-2 border-gray-100 h-full flex-col flex flex-shrink-0">
         <div className="flex flex-col justify-center px-8 py-4">
           <p className="font-medium pl-5 pb-3">Information</p>
-          <div className="h-[60vh] overflow-auto scrollbar-none gap-4 grid">
+          <div className="h-[68vh] overflow-auto scrollbar-none gap-4 grid">
             {step.map((item) => (
               <div
                 key={item.id}
@@ -286,7 +285,7 @@ function CreateTourNav() {
               </div>
             ))}
           </div>
-          <div className="flex w-64">
+          <div className="pt-5">
             {!isLastStep && (
               <>
                 {currentStep === totalSteps ? (
@@ -312,36 +311,43 @@ function CreateTourNav() {
                     </Button>
                   </Box>
                 ) : currentStep === 11 ? (
-                  <div className="flex flex-col items-center justify-center px-10 py-4 gap-y-4">
-                    <button
-                      className="bg-navy-blue font-medium border border-navy-blue px-6 py-2.5 rounded-lg text-white hover:border hover:border-navy-blue hover:bg-white hover:text-navy-blue"
-                      onClick={handleCreateTourAndAvailability}
-                      disabled={currentStep === totalSteps}
-                    >
-                      Get Started
-                    </button>
+                  <div className="flex items-center justify-between">
                     <button
                       className="font-medium border-b-2 border-navy-blue text-navy-blue hover:border-baby-blue hover:border-b-2"
                       onClick={goToPreviousStep}
                       disabled={currentStep === totalSteps}
                     >
-                      Previous Step
+                      Previous
+                    </button>
+                    <button
+                      className="bg-navy-blue font-medium border border-navy-blue px-6 py-2.5 rounded-lg text-white hover:border hover:border-navy-blue hover:bg-white hover:text-navy-blue"
+                      onClick={handleCreateTourAndAvailability}
+                      disabled={currentStep === totalSteps}
+                    >
+                      Start
                     </button>
                   </div>
                 ) : currentStep === 1 ? (
-                  <div className="flex items-center justify-between px-10 py-4">
+                  <div className="flex items-center justify-between ">
                     <button></button>
                     <button
                       className="bg-navy-blue font-medium border border-navy-blue px-6 py-2.5 rounded-lg text-white hover:border hover:border-navy-blue hover:bg-white hover:text-navy-blue"
                       onClick={goToNextStep}
                       disabled={currentStep === totalSteps}
                     >
-                      Next Step
+                      Next
                     </button>
                   </div>
                 ) : (
                   <>
-                    <div className="flex flex-col items-center justify-center px-10 py-4 gap-y-4">
+                    <div className=" flex items-center justify-between">
+                      <button
+                        className="font-medium border-b-2 border-navy-blue text-navy-blue hover:border-baby-blue hover:border-b-2"
+                        onClick={goToPreviousStep}
+                        disabled={currentStep === 1}
+                      >
+                        Previous
+                      </button>
                       <button
                         id="yourButtonId"
                         className={`font-medium border  px-6 py-2.5 rounded-lg   ${
@@ -352,14 +358,7 @@ function CreateTourNav() {
                         onClick={goToNextStep}
                         disabled={lengthValue === "no"}
                       >
-                        Next Steps
-                      </button>
-                      <button
-                        className="font-medium border-b-2 border-navy-blue text-navy-blue hover:border-baby-blue hover:border-b-2"
-                        onClick={goToPreviousStep}
-                        disabled={currentStep === 1}
-                      >
-                        Previous Step
+                        Next
                       </button>
                     </div>
                   </>

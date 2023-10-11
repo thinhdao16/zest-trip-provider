@@ -36,7 +36,7 @@ const AccomType: React.FC = () => {
     return null;
   }
   return (
-    <BannerContainer>
+    <BannerContainer className="global-scrollbar">
       <div className="flex items-center justify-center">
         <BannerContent>
           <CreateTitle variant="h6">

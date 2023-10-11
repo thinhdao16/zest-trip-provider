@@ -1,13 +1,14 @@
 import { AiFillPlusSquare, AiOutlineSearch } from "react-icons/ai";
 import { FaSliders } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 
 function DashBoardTrip() {
   return (
     <div className="relative">
-      <p className="font-medium text-xl mb-4">Your Trips</p>
+      <p className="font-medium text-xl mb-4">Your Tours</p>
       <div className="p-3 bg-white rounded-xl shadow-custom-card-mui">
         <div className="flex justify-between mb-3">
-          <p className="text-gray-500">Trips list</p>
+          <p className="text-gray-500">Tours list</p>
           <div className="flex gap-5">
             <AiOutlineSearch />
             <FaSliders />
@@ -35,10 +36,12 @@ function DashBoardTrip() {
             alt="error"
           />
           <div className="items-center flex  justify-center">
-            <button className="bg-navy-blue rounded-xl p-2 flex items-center justify-center w-28">
-              <AiFillPlusSquare className="w-6 h-6 rounded-xl text-gray-50" />
-              <p className="font-medium text-white  ">New trip</p>
-            </button>
+            <Link to="/createtour">
+              <button className="bg-navy-blue rounded-xl p-2 flex items-center justify-center w-28">
+                <AiFillPlusSquare className="w-6 h-6 rounded-xl text-gray-50" />
+                <p className="font-medium text-white  ">New tour</p>
+              </button>
+            </Link>
           </div>
         </div>
         <div className="absolute bottom-6 inset-x-1/2 transform -translate-x-1/2"></div>

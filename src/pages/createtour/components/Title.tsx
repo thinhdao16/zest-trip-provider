@@ -60,6 +60,7 @@ Write a short descriptive title to help customers understand your product. It sh
               <div className="relative">
                 <AiOutlineLock className="absolute top-4 left-2" />
                 <input
+                  value={title}
                   className="w-full shadow-custom-card-mui rounded-lg py-3 pl-8 focus:ring-navy-blue focus:ring-1 focus:outline-none   hover:ring-1 hover:ring-navy-blue  border border-gray-400 "
                   name="apartment"
                   placeholder="e.g. Stephen King"
@@ -70,6 +71,7 @@ Write a short descriptive title to help customers understand your product. It sh
               </div>
             </div>
             <InputArea
+              value={description}
               label="Description"
               onChange={handleDescription}
               icon={<AiOutlineLock />}

@@ -35,13 +35,17 @@ const initialState = {
 
 export const fetchTours = createAsyncThunk("tour/fetchTours", async () => {
   try {
-    const response = await axiosInstance.get(`${BASE_URL}/tour/provider`, {});
+    const response = await axiosInstance.get(`${BASE_URL}/tour/provider`, {
+      params: {
+        limit: 100,
+      },
+    });
 
     if (response.status === 200) {
-      toast.success("This is tour!"); // Thông báo lấy danh sách tour thành công
+      // toast.success("This is tour!"); // Thông báo lấy danh sách tour thành công
       return response.data.data;
     } else {
-      toast.error("Failed to fetch tours!"); // Thông báo lỗi khi lấy danh sách tour
+      // toast.error("Failed to fetch tours!"); // Thông báo lỗi khi lấy danh sách tour
       throw new Error("Failed to fetch tours");
     }
   } catch (error) {
@@ -126,20 +130,48 @@ export const postCreateAvailabilityTour = createAsyncThunk(
         }
       );
       if (response.status === 201) {
-        toast.success("Availability created successfully!"); // Thông báo tạo Availability thành công
+        // toast.success("Availability created successfully!"); // Thông báo tạo Availability thành công
         return response.data;
       } else {
-        toast.error("Failed to create Availability!"); // Thông báo lỗi khi tạo Availability
+        // toast.error("Failed to create Availability!"); // Thông báo lỗi khi tạo Availability
         throw new Error("Failed to create Availability");
       }
     } catch (error) {
       console.log(error);
-      toast.error("Failed to create Availability!"); // Thông báo lỗi khi tạo Availability
+      // toast.error("Failed to create Availability!");
       throw new Error("Failed to create Availability");
     }
   }
 );
 
+export const postCreateTicketTour = createAsyncThunk(
+  "tour/postCreateTicketTour", // Slice name: "tour"
+  async (requestDataTicket: any) => {
+    try {
+      const response = await axiosInstance.post(
+        `${BASE_URL}/pricing`,
+        requestDataTicket,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log(response);
+      if (response.status === 201) {
+        // toast.success("Availability created successfully!"); // Thông báo tạo Availability thành công
+        return response.data;
+      } else {
+        // toast.error("Failed to create Availability!"); // Thông báo lỗi khi tạo Availability
+        throw new Error("Failed to create Availability");
+      }
+    } catch (error) {
+      console.log(error);
+      // toast.error("Failed to create Availability!");
+      throw new Error("Failed to create Availability");
+    }
+  }
+);
 const tourSlice = createSlice({
   name: "tour",
   initialState,

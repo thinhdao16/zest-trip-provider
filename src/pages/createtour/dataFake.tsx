@@ -16,6 +16,7 @@ export interface DataPrice {
   type: string;
   labelMain: string;
   icon: JSX.Element;
+  main: string;
 }
 export const dataType: DataItem[] = [
   {
@@ -70,15 +71,17 @@ export const dataTypeDuration: DataItemDuration[] = [
 
 export const dataTypePrice: DataPrice[] = [
   {
-    id: 0,
-    type: "text",
-    labelMain: "Name (e.g. Summer 2020, German guide ...)",
-    icon: <GoLocation />,
-  },
-  {
     id: 1,
     type: "number",
     labelMain: "Minimum participants per booking",
     icon: <GoLocation />,
+    main: "Mini",
+  },
+  {
+    id: 2,
+    type: "number",
+    labelMain: "Maximum participants per booking",
+    icon: <GoLocation />,
+    main: "Max",
   },
 ];

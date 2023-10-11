@@ -21,7 +21,8 @@ import { useDispatch } from "react-redux";
 import { getTagTour, getVehicleTour } from "../../store/redux/silce/tourSlice";
 
 const steps = [
-  Welcome,
+  Price,
+  // Welcome,
   Tourtype,
   Title,
   TransportType,
@@ -29,7 +30,8 @@ const steps = [
   Location,
   DurationCheckIn,
   Capacity,
-  Price,
+  Welcome,
+  // Price,
   Media,
   Review,
   Congratulation,

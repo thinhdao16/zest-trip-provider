@@ -6,6 +6,7 @@ import {
   faMessage,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useSelector } from "react-redux";
 
 interface DashboardHeaderProps {
   user: {
@@ -15,25 +16,20 @@ interface DashboardHeaderProps {
   toggle: () => void;
 }
 
-function DashboardHeader({
-  user,
-  avatar,
-  toggle,
-}: DashboardHeaderProps): JSX.Element {
+function DashboardHeader({ toggle }: DashboardHeaderProps): JSX.Element {
   const handleToggleClick = () => {
     toggle();
   };
-
+  const personalInfo = useSelector((state: any) => state.auth.personalInfo);
+  const updateInfo = "Thinh dao";
   return (
     <div className=" flex flex-wrap w-full justify-between items-center">
       <div className="flex flex-row ">
         <div id="nameSection">
           <h1 className="font-semibold  text-3xl text-black mb-1">
-            {user?.name}
+            {personalInfo?.full_name || updateInfo}
           </h1>
-          <span className="text-gray-400">
-            Welcome back and explore the world
-          </span>
+          <span className="text-gray-400">Welcome back</span>
         </div>
       </div>
       <div className="avaterSection flex items-center gap-2 sm:gap-6 text-slate-400">

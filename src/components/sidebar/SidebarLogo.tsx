@@ -17,9 +17,14 @@ function SidebarLogo({ icon, text, toggle }: SidebarLogoProps) {
   };
 
   return (
-    <div className="relative flex flex-row font-semibold text-3xl md:items-center md:mx-auto text-green-700 mb-5 p-4 justify-between">
-      <Link to="/">
-        <FontAwesomeIcon icon={icon} /> {text}
+    <div className="relative flex flex-row font-semibold text-3xl md:items-center md:mx-auto text-navy-blue mb-5 p-4 justify-between">
+      <Link to="/" className="flex items-center">
+        <img
+          src="src\assets\File-logo-Zest-Travel.svg"
+          alt="error"
+          className="w-14"
+        />{" "}
+        {text}
       </Link>
       <button
         onClick={handleButtonClick}

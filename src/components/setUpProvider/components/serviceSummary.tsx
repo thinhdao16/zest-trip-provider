@@ -25,21 +25,21 @@ export const ServiceSummary = ({
         <Grid item xs={4}>
           <InformationSum
             icon={<FaHotel />}
-            title="nameCompany"
+            title="Name Company"
             description={userInfo?.nameCompany}
           />
         </Grid>{" "}
         <Grid item xs={4}>
           <InformationSum
             icon={<FaEarthEurope />}
-            title="region"
+            title="Region"
             description={userInfo?.region}
           />
         </Grid>{" "}
         <Grid item xs={4}>
           <InformationSum
             icon={<FaLocationDot />}
-            title="address"
+            title="Address"
             description={userInfo?.address}
           />
         </Grid>

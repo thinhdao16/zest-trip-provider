@@ -15,7 +15,6 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { IoPersonOutline, IoAlertCircleOutline } from "react-icons/io5";
-import { useTimer } from "react-timer-hook";
 import "./signUp.scss";
 import {
   ButtonGlobal,
@@ -228,62 +227,25 @@ export default function SignUp() {
       </Backdrop>
       <ContainerPageFullHalf>
         <Grid container>
-          <Grid
-            item
-            xs={4}
-            style={{
-              backgroundColor: "#f9fbfc",
-              borderRadius: "8px 0 0 8px",
-              padding: "30px",
-              display: "flex",
-              // flexDirection: "column",
-              height: "100vh",
-              alignItems: "center",
-              justifyContent: "center",
-              position: "relative",
-            }}
-          >
-            <div className="absolute top-5 left-5">
-              <div className="flex items-center text-2xl font-medium">
-                {/* <AiOutlineShop /> <p>DiTour</p> */}
-              </div>
-            </div>
-            <div className="flex items-center justify-center flex-col">
-              <p className="font-bold text-4xl mb-6">Create Account</p>
-              <ul className="mb-6">
-                <li>⨀ Exclusive discounts 🎉🎉🎉</li>
-                <li>⨀ Tailored recommendation</li>
-                <li>⨀ Advance custiomer support</li>
-                <li>⨀ Save details for next up </li>
-              </ul>
-              <div
-                style={{
-                  marginTop: "auto",
-                  display: "flex",
-                  justifyContent: "center ",
-                }}
-              >
-                <div>
-                  <Link to="/login">
-                    <Button
-                      fullWidth
-                      style={{
-                        backgroundColor: "#e7e7eb",
-                        border: "1px solid #e7e7eb",
-                        color: "black",
-                        width: "250px",
-                        borderRadius: "10px",
-                        textTransform: "none",
-                      }}
-                    >
-                      You have an account
-                    </Button>
-                  </Link>
+          <Grid item xs={5} className="login-main">
+            <div className="relative flex items-center justify-center h-[100vh] flex-col">
+              <div className="flex items-center justify-center flex-col gap-3 ">
+                <div className="flex gap-2 font-medium items-center text-3xl ">
+                  <p>Welcome to</p>
+                  <p className="  text-navy-blue ">Zest Travel</p>
                 </div>
+                <ul className="">
+                  <li className="font-base">Exclusive discounts 🎉🎉🎉</li>
+                </ul>
               </div>
+              <img
+                src="src\assets\register.svg"
+                className="w-[50vh] h-[50vh]"
+                alt="error"
+              />
             </div>
           </Grid>
-          <Grid item xs={8}>
+          <Grid item xs={7}>
             <ContainerPageFullHalfContent>
               <Box
                 component="main"
@@ -294,7 +256,7 @@ export default function SignUp() {
                   display: "flex",
                   flexDirection: "column",
                   gap: 2,
-                  width: 400,
+                  width: 450,
                   maxWidth: "100%",
                   mx: "auto",
                   borderRadius: "sm",
@@ -429,6 +391,19 @@ export default function SignUp() {
                   >
                     Sign Up
                   </ButtonGlobal>
+
+                  <div className="flex items-center justify-center">
+                    <div className="flex gap-4">
+                      <span className="font-medium text-gray-600">
+                        You have an account ?
+                      </span>
+                      <Link to="/login">
+                        <button className="font-medium text-navy-blue hover:text-black border-b-2 border-navy-blue hover:border-b-black">
+                          Login
+                        </button>
+                      </Link>
+                    </div>
+                  </div>
                   {/* </Box> */}
                 </form>
                 <div>

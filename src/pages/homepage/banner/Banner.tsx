@@ -26,6 +26,7 @@ export default function Banner() {
   const { refeshTour } = React.useContext(DataContext);
   const dispatch: AppDispatch = useDispatch();
   const { tours } = useSelector((state: any) => state.tour);
+  console.log(tours);
   React.useEffect(() => {
     dispatch(fetchTours());
   }, [dispatch, refeshTour]);
@@ -34,20 +35,19 @@ export default function Banner() {
   };
 
   return (
-    <BannerContainer>
-      <BannerContent>
-        <BannerHomePageList>
-          <TitlePage
+    <div className="mt-8">
+      <div className="  p-6 mainCard bg-slate-50 container-dashboard rounded-3xl global-scrollbar">
+        <div>
+          {/* <TitlePage
             title="Welcome back"
             titleList="All tour of you"
             rest={`All tour bookings (${tours.length})`}
-          />
+          /> */}
           <Box
             justifyContent="center"
             alignItems="center"
             gap={2}
             marginBottom={1}
-            marginTop={2}
           >
             <TabContext value={value}>
               <Box sx={{}}>
@@ -69,72 +69,93 @@ export default function Banner() {
                 <TabPanel value="1">
                   <Grid container spacing={5}>
                     {tours.length > 0 ? (
-                      tours.map((data: any, index: number) => (
-                        <Grid item xs={12} sm={6} lg={4} key={index}>
-                          <Link to={`/${data?.id}`} key={data?.id}>
-                            <Card style={{ boxShadow: "none" }}>
-                              {data?.tour_images[0] ? (
-                                <img
-                                  style={{
-                                    width: "100%",
-                                    borderRadius: "25px",
-                                    objectFit: "cover",
-                                    height: "235px",
-                                  }}
-                                  src={data?.tour_images[0]}
-                                  alt="nothing"
-                                />
-                              ) : (
-                                <Skeleton
-                                  variant="rectangular"
-                                  height={200}
-                                  animation="wave"
-                                />
-                              )}
-                              <Box style={{ margin: "32px 0 40px" }}>
-                                <button className=" bg-navy-blue px-3 text-white font-medium py-1.5 rounded-lg">
-                                  {data ? (
-                                    <p>Tour in country</p>
-                                  ) : (
-                                    <Skeleton width={100} />
-                                  )}
-                                </button>
-                                <div>
-                                  <p className="font-medium text-xl">
+                      Array.isArray(tours) &&
+                      [...tours]
+                        .sort((a, b) => {
+                          return (
+                            new Date(b?.updated_at).getTime() -
+                            new Date(a?.updated_at).getTime()
+                          );
+                        })
+                        .map((data: any, index: number) => (
+                          <Grid item xs={12} sm={6} lg={4} key={index}>
+                            <Link to={`/${data?.id}`} key={data?.id}>
+                              <Card
+                                style={{
+                                  boxShadow: "none",
+                                  background: "#f8fafc",
+                                }}
+                              >
+                                {data?.tour_images[0] ? (
+                                  <img
+                                    style={{
+                                      width: "100%",
+                                      borderRadius: "25px",
+                                      objectFit: "cover",
+                                      height: "235px",
+                                    }}
+                                    src={data?.tour_images[0]}
+                                    alt="nothing"
+                                  />
+                                ) : (
+                                  <Skeleton
+                                    variant="rectangular"
+                                    height={200}
+                                    animation="wave"
+                                  />
+                                )}
+                                <Box style={{ margin: "10px 0 40px" }}>
+                                  <div>
+                                    <p className="font-medium text-xl">
+                                      {data ? (
+                                        data.name
+                                      ) : (
+                                        <Skeleton width={200} />
+                                      )}
+                                    </p>
+                                  </div>
+                                  <p>
                                     {data ? (
-                                      data.name
+                                      data.description
                                     ) : (
-                                      <Skeleton width={200} />
+                                      <Skeleton
+                                        variant="rectangular"
+                                        height={200}
+                                        animation="wave"
+                                      />
                                     )}
                                   </p>
-                                </div>
-                                <p>
-                                  {data ? (
-                                    data.description
-                                  ) : (
-                                    <Skeleton
-                                      variant="rectangular"
-                                      height={200}
-                                      animation="wave"
-                                    />
+                                  <div>
+                                    {data ? (
+                                      // `vnđ ${data.price}`
+                                      <p className="font-medium flex items-center">
+                                        <span className="text-gray-600">
+                                          vnđ
+                                        </span>
+                                        <span className="text-lg">250.000</span>
+                                      </p>
+                                    ) : (
+                                      <Skeleton width={60} />
+                                    )}
+                                  </div>
+                                  {data?.tag_id?.map(
+                                    (
+                                      dataTag: { name: string },
+                                      index: string
+                                    ) => (
+                                      <button
+                                        key={index}
+                                        className="  text-navy-blue hover:text-black font-medium rounded-lg mr-2"
+                                      >
+                                        <p>#{dataTag?.name}</p>
+                                      </button>
+                                    )
                                   )}
-                                </p>
-                                <div>
-                                  {data ? (
-                                    // `vnđ ${data.price}`
-                                    <p className="font-medium flex items-center">
-                                      <span className="text-gray-600">vnđ</span>
-                                      <span className="text-lg">250.000</span>
-                                    </p>
-                                  ) : (
-                                    <Skeleton width={60} />
-                                  )}
-                                </div>
-                              </Box>
-                            </Card>
-                          </Link>
-                        </Grid>
-                      ))
+                                </Box>
+                              </Card>
+                            </Link>
+                          </Grid>
+                        ))
                     ) : (
                       <Grid item xs={12} sm={6} lg={4}>
                         <Card style={{ boxShadow: "none" }}>
@@ -214,8 +235,8 @@ export default function Banner() {
               </Box>
             </TabContext>
           </Box>
-        </BannerHomePageList>
-      </BannerContent>
-    </BannerContainer>
+        </div>
+      </div>
+    </div>
   );
 }

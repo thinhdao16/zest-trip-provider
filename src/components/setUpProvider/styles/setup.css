@@ -31,3 +31,20 @@
   line-height: 0.9;
   text-align: center;
 }
+.setup-main {
+  flex-direction: column;
+  height: 100vh;
+  position: relative;
+}
+
+.setup-main::before {
+  content: "";
+  background: #05445e;
+  background-size: cover;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  opacity: 0.1;
+}

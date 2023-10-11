@@ -2,10 +2,9 @@ import React, { useEffect, useState } from "react";
 import Box from "@mui/joy/Box";
 import FormLabel, { formLabelClasses } from "@mui/joy/FormLabel";
 import Typography from "@mui/joy/Typography";
-import { AiOutlinePhone, AiOutlineLock, AiOutlineShop } from "react-icons/ai";
+import { AiOutlinePhone } from "react-icons/ai";
 import {
   Backdrop,
-  Button,
   CircularProgress,
   FormControl,
   Grid,
@@ -23,7 +22,7 @@ interface FormElements extends HTMLFormControlsCollection {
 interface SignInFormElement extends HTMLFormElement {
   readonly elements: FormElements;
 }
-import "./login.scss";
+import "../login/login.scss";
 import {
   ButtonGlobal,
   ContainerPageFullHalf,
@@ -35,14 +34,14 @@ import axios from "axios";
 import { AppDispatch } from "../../store/redux/store";
 import { useDispatch } from "react-redux";
 import { BASE_URL } from "../../store/apiInterceptors";
+import { FaArrowLeft } from "react-icons/fa6";
 
-function Login() {
+function ForgotPassWord() {
   const navigate = useNavigate();
   const { refeshLogin, setRefeshLogin, setRefeshTour } =
     React.useContext(DataContext);
   const dispatch: AppDispatch = useDispatch();
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [password, setPassword] = useState("");
   const [openLoading, setOpenLoading] = useState(false);
   useEffect(() => {
     checkAccessToken();
@@ -51,18 +50,18 @@ function Login() {
   const checkAccessToken = async () => {
     const accessToken = localStorage.getItem("access_token");
     if (accessToken) {
-      navigate("/");
+      navigate("/listtour");
     }
   };
 
-  const handleSignIn = async () => {
+  const handleOtp = async () => {
     setOpenLoading(true);
     try {
       const response = await axios.post(
-        `${BASE_URL}/auth/signin`,
+        `${BASE_URL}/otp/generate`,
         {
           email: phoneNumber,
-          password: password,
+          type: "REGISTER_USER",
         },
         {
           headers: {
@@ -71,30 +70,8 @@ function Login() {
         }
       );
       console.log(response);
-      localStorage.setItem("access_token", response.data.data.access_token);
-      localStorage.setItem("refresh_token", response.data.data.refresh_token);
-      setRefeshTour((prev) => !prev);
       setRefeshLogin((prev) => !prev);
-      navigate("/listtour");
-      if (response.status === 200) {
-        if (response !== undefined) {
-          const additionalResponse = await axios.get(`${BASE_URL}/users/me`, {
-            headers: {
-              Authorization: `Bearer ${response.data.data.access_token}`,
-            },
-          });
-          if (additionalResponse.status === 200) {
-            // dispatch(personalInfo(additionalResponse.data));
-          }
-          toast.success("SignIn success!"); // Thông báo đăng nhập thành công
-        } else {
-          console.log("Lỗi khi đăng nhập");
-          toast.error("SignIn fail!"); // Thông báo đăng nhập thất bại
-        }
-      } else {
-        console.log("Lỗi khi đăng nhập");
-        toast.error("SignIn fail!"); // Thông báo đăng nhập thất bại
-      }
+
       setOpenLoading(false);
     } catch (error: any) {
       console.error(error);
@@ -139,7 +116,7 @@ function Login() {
                 </ul>
               </div>
               <img
-                src="src/assets/login.svg"
+                src="src\assets\forgot.svg"
                 className="w-[50vh] h-[50vh]"
                 alt="error"
               />
@@ -171,9 +148,7 @@ function Login() {
                 }}
               >
                 <div>
-                  <p className="font-medium text-2xl">
-                    Sign in to your account
-                  </p>
+                  <p className="font-medium text-2xl">Forgot password?</p>
                   <p className="font-medium text-sm text-gray-600">
                     Enter your credentials to continue
                   </p>
@@ -188,7 +163,7 @@ function Login() {
                       persistent: formElements.persistent.checked,
                     };
                     alert(JSON.stringify(data, null, 2));
-                    handleSignIn();
+                    handleOtp();
                   }}
                 >
                   <FormControl required>
@@ -207,102 +182,23 @@ function Login() {
                       className="input-form-text-ready"
                     />
                   </FormControl>
-                  <FormControl required>
-                    <p className="font-medium mb-1">Password</p>
-                    <TextField
-                      required
-                      value={password}
-                      type="password"
-                      onChange={(e) => setPassword(e.target.value)}
-                      onKeyPress={(e) => {
-                        if (e.key === "Enter") {
-                          e.preventDefault(); // Ngăn chặn sự kiện mặc định khi nhấn Enter
-                          handleSignIn(); // Gọi hàm xử lý đăng nhập
-                        }
-                      }}
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <AiOutlineLock />
-                          </InputAdornment>
-                        ),
-                      }}
-                      className="input-form-text-ready"
-                    />
-                  </FormControl>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                    }}
-                  >
-                    <div className="flex items-center">
-                      <input
-                        defaultChecked
-                        id="checked-checkbox"
-                        type="checkbox"
-                        className="w-4 h-4 rounded-full  text-navy-blue  border-gray-300  focus:ring-navy-blue dark:focus:ring-navy-blue dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                      />
-                      <label
-                        htmlFor="checked-checkbox"
-                        className="ml-2 text-sm font-medium text-gray-600 dark:text-gray-300"
-                      >
-                        Remember me
-                      </label>
-                    </div>
-                    <Link to="/forgotpassword">
-                      <button className="font-medium   text-navy-blue hover:text-black">
-                        Forgot Password ?
-                      </button>
-                    </Link>
-                  </Box>
-                  <ButtonGlobal
-                    style={{ width: "450px" }}
-                    type="submit"
-                    fullWidth
-                    onClick={handleSignIn}
-                  >
-                    Sign in
-                  </ButtonGlobal>
                 </form>
 
-                <div className="flex items-center justify-center">
-                  <div className="flex gap-4">
-                    <span className="font-medium text-gray-600">
-                      Don't have an account?
-                    </span>
-                    <Link to="/signup">
-                      <button className="font-medium text-navy-blue hover:text-black border-b-2 border-navy-blue hover:border-b-black">
-                        Sign up here
-                      </button>
-                    </Link>
-                  </div>
-                </div>
-
-                {/* <Box sx={{ position: "relative", margin: 0.5 }}>
-                  <span
-                    style={{
-                      position: "absolute",
-                      top: "50%",
-                      left: "50%",
-                      transform: "translate(-50%, -50%)",
-                      backgroundColor: "#fff",
-                      padding: "0 10px 0 10px",
-                    }}
-                  >
-                    or
-                  </span>
-                  <hr
-                    style={{
-                      borderColor: "#000",
-                      borderTop: "1px solid #dfdfdf",
-                      width: "100%",
-                      marginTop: 3,
-                    }}
-                  />
-                </Box> */}
-                {/* <ContinueGoogle /> */}
+                <ButtonGlobal
+                  style={{ width: "450px" }}
+                  type="submit"
+                  fullWidth
+                  onClick={handleOtp}
+                >
+                  Reset password
+                </ButtonGlobal>
+                <Link
+                  to="/login"
+                  className="flex items-center justify-center gap-2 text-navy-blue hover:text-black "
+                >
+                  <FaArrowLeft className="text-navy-blue" />
+                  <button className="font-medium ">Sign up here</button>
+                </Link>
               </Box>
               <Box component="footer" sx={{ py: 3 }}>
                 <Typography level="body-md" textAlign="center">
@@ -317,4 +213,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default ForgotPassWord;

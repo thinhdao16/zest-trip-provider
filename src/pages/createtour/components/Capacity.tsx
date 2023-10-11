@@ -336,7 +336,7 @@ const Capacity: React.FC = () => {
     return null;
   }
   return (
-    <BannerContainer>
+    <BannerContainer className="global-scrollbar">
       <div className="flex items-center justify-center">
         <BannerContentPrice>
           <CreateTitleNullDes>Availability</CreateTitleNullDes>
@@ -428,7 +428,7 @@ const Capacity: React.FC = () => {
                   ))}
                   {startingTimes?.Mon.length < 1 && (
                     <button
-                      className="flex items-center bg-white border-none mr-3"
+                      className="flex items-center  border-none mr-3"
                       onClick={() => addStartingTime("Mon")}
                     >
                       <FaRegClock className="text-navy-blue mr-1" />{" "}
@@ -439,7 +439,7 @@ const Capacity: React.FC = () => {
                   )}
 
                   <button
-                    className="flex items-center bg-white border-none"
+                    className="flex items-center  border-none"
                     onClick={() => copyToWholeWeek("Mon")}
                   >
                     <FaCheck className="text-navy-blue mr-1" />{" "}
@@ -492,7 +492,7 @@ const Capacity: React.FC = () => {
                   ))}
                   {startingTimes?.Tue.length < 1 && (
                     <button
-                      className="flex items-center bg-white border-none mr-3  "
+                      className="flex items-center  border-none mr-3  "
                       onClick={() => addStartingTime("Tue")}
                     >
                       <FaRegClock className="text-navy-blue mr-1" />{" "}
@@ -502,7 +502,7 @@ const Capacity: React.FC = () => {
                     </button>
                   )}
                   <button
-                    className="flex items-center bg-white border-none"
+                    className="flex items-center  border-none"
                     onClick={() => copyToWholeWeek("Tue")}
                   >
                     <FaCheck className="text-navy-blue mr-1" />{" "}
@@ -556,7 +556,7 @@ const Capacity: React.FC = () => {
 
                   {startingTimes?.Wed.length < 1 && (
                     <button
-                      className="flex items-center bg-white border-none  mr-3"
+                      className="flex items-center  border-none  mr-3"
                       onClick={() => addStartingTime("Wed")}
                     >
                       <FaRegClock className="text-navy-blue mr-1" />{" "}
@@ -566,7 +566,7 @@ const Capacity: React.FC = () => {
                     </button>
                   )}
                   <button
-                    className="flex items-center bg-white border-none"
+                    className="flex items-center  border-none"
                     onClick={() => copyToWholeWeek("Wed")}
                   >
                     <FaCheck className="text-navy-blue mr-1" />{" "}
@@ -619,7 +619,7 @@ const Capacity: React.FC = () => {
                   ))}
                   {startingTimes?.Thu.length < 1 && (
                     <button
-                      className="flex items-center bg-white border-none  mr-3"
+                      className="flex items-center  border-none  mr-3"
                       onClick={() => addStartingTime("Thu")}
                     >
                       <FaRegClock className="text-navy-blue mr-1" />{" "}
@@ -629,7 +629,7 @@ const Capacity: React.FC = () => {
                     </button>
                   )}
                   <button
-                    className="flex items-center bg-white border-none"
+                    className="flex items-center  border-none"
                     onClick={() => copyToWholeWeek("Thu")}
                   >
                     <FaCheck className="text-navy-blue mr-1" />{" "}
@@ -682,7 +682,7 @@ const Capacity: React.FC = () => {
                   ))}
                   {startingTimes?.Fri.length < 1 && (
                     <button
-                      className="flex items-center bg-white border-none  mr-3"
+                      className="flex items-center  border-none  mr-3"
                       onClick={() => addStartingTime("Fri")}
                     >
                       <FaRegClock className="text-navy-blue mr-1" />{" "}
@@ -692,7 +692,7 @@ const Capacity: React.FC = () => {
                     </button>
                   )}
                   <button
-                    className="flex items-center bg-white border-none"
+                    className="flex items-center  border-none"
                     onClick={() => copyToWholeWeek("Fri")}
                   >
                     <FaCheck className="text-navy-blue mr-1" />{" "}
@@ -744,7 +744,7 @@ const Capacity: React.FC = () => {
                   ))}
                   {startingTimes?.Sat.length < 1 && (
                     <button
-                      className="flex items-center bg-white border-none  mr-3"
+                      className="flex items-center  border-none  mr-3"
                       onClick={() => addStartingTime("Sat")}
                     >
                       <FaRegClock className="text-navy-blue mr-1" />{" "}
@@ -754,7 +754,7 @@ const Capacity: React.FC = () => {
                     </button>
                   )}
                   <button
-                    className="flex items-center bg-white border-none"
+                    className="flex items-center  border-none"
                     onClick={() => copyToWholeWeek("Sat")}
                   >
                     <FaCheck className="text-navy-blue mr-1" />{" "}
@@ -806,7 +806,7 @@ const Capacity: React.FC = () => {
                   ))}
                   {startingTimes?.Sun.length < 1 && (
                     <button
-                      className="flex items-center bg-white border-none  mr-3"
+                      className="flex items-center  border-none  mr-3"
                       onClick={() => addStartingTime("Sun")}
                     >
                       <FaRegClock className="text-navy-blue mr-1" />{" "}
@@ -816,7 +816,7 @@ const Capacity: React.FC = () => {
                     </button>
                   )}
                   <button
-                    className="flex items-center bg-white border-none"
+                    className="flex items-center  border-none"
                     onClick={() => copyToWholeWeek("Sun")}
                   >
                     <FaCheck className="text-navy-blue mr-1" />{" "}

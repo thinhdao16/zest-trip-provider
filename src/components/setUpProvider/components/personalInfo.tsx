@@ -2,6 +2,7 @@ import React, { FormEvent, useState } from "react";
 import { Input } from "./input";
 import { Plan, UserInfo } from "AppTypes";
 import {
+  AiFillCodepenCircle,
   AiFillFileAdd,
   AiOutlineBulb,
   AiOutlineDelete,
@@ -17,6 +18,7 @@ import {
 } from "@mui/material";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import {
+  FaEarthAfrica,
   FaEarthEurope,
   FaHotel,
   FaLocationDot,
@@ -74,7 +76,6 @@ export const PersonalInfo = ({
   const [selectedFiles, setSelectedFiles] = useState<any[]>([]);
   const [imageSrc, setImageSrc] = useState<any>();
   const [imageAvt, setImageAvt] = useState<any>();
-
   const handlePersonalInfo = (
     event: FormEvent<HTMLInputElement>,
     key: keyof UserInfo
@@ -163,10 +164,8 @@ export const PersonalInfo = ({
       ...selectedPlan!,
       [attributeName]: selectedValue,
     };
-    console.log(updatedPlan);
     updateSelectedPlan(updatedPlan);
   };
-
   return (
     <div className="flex flex-col items-center gap-2 ">
       <div
@@ -181,8 +180,8 @@ export const PersonalInfo = ({
         <p className="font-bold text-2xl">Secure Info</p>
       </div>
       <Input
-        labels="Company’s legal name"
-        placeholder="e.g. Stephen King"
+        labels="Name Company"
+        placeholder="Novaland"
         icon={<FaHotel />}
         // showRequired={ userInfo.nameCompany}
         value={userInfo.nameCompany}
@@ -190,41 +189,68 @@ export const PersonalInfo = ({
           handlePersonalInfo(e, "nameCompany")
         }
       />
-      <Input
-        labels="Region"
-        placeholder="e.g. Stephen King"
-        icon={<FaEarthEurope />}
-        value={userInfo.region}
-        onChange={(e: FormEvent<HTMLInputElement>) =>
-          handlePersonalInfo(e, "region")
-        }
-      />
 
       <Input
-        labels="Address"
-        placeholder="e.g. Stephen King"
-        icon={<FaLocationDot />}
-        value={userInfo.address}
-        onChange={(e: FormEvent<HTMLInputElement>) =>
-          handlePersonalInfo(e, "address")
-        }
-      />
-      {/* <Input
-        labels="Company Website"
-        placeholder="e.g. Stephen King"
-        icon={<FaConnectdevelop />}
-        value={userInfo.webCompnany}
-        onChange={(e: FormEvent<HTMLInputElement>) =>
-          handlePersonalInfo(e, "webCompnany")
-        }
-      /> */}
-      <Input
-        labels="Social media"
+        labels="Facebook"
         placeholder="e.g. Stephen King"
         icon={<FaStaylinked />}
         value={userInfo.mediaSocial}
         onChange={(e: FormEvent<HTMLInputElement>) =>
           handlePersonalInfo(e, "mediaSocial")
+        }
+      />
+      <Input
+        labels="Tax Code"
+        placeholder="500"
+        icon={<AiFillCodepenCircle />}
+        value={userInfo.taxCode}
+        onChange={(e: FormEvent<HTMLInputElement>) =>
+          handlePersonalInfo(e, "taxCode")
+        }
+      />
+      <Input
+        labels="Address name"
+        placeholder="VietNam"
+        icon={<FaEarthAfrica />}
+        value={userInfo.address_name}
+        onChange={(e: FormEvent<HTMLInputElement>) =>
+          handlePersonalInfo(e, "address_name")
+        }
+      />
+      <Input
+        labels="Address district"
+        placeholder="Dong Hoa, Di An"
+        icon={<FaStaylinked />}
+        value={userInfo.address_district}
+        onChange={(e: FormEvent<HTMLInputElement>) =>
+          handlePersonalInfo(e, "address_district")
+        }
+      />
+      <Input
+        labels="Address Ward"
+        placeholder="e.g. Stephen King"
+        icon={<FaStaylinked />}
+        value={userInfo.address_ward}
+        onChange={(e: FormEvent<HTMLInputElement>) =>
+          handlePersonalInfo(e, "address_ward")
+        }
+      />
+      <Input
+        labels="Address province"
+        placeholder="e.g. Stephen King"
+        icon={<FaStaylinked />}
+        value={userInfo.address_province}
+        onChange={(e: FormEvent<HTMLInputElement>) =>
+          handlePersonalInfo(e, "address_province")
+        }
+      />
+      <Input
+        labels="Address country"
+        placeholder="e.g. Stephen King"
+        icon={<FaStaylinked />}
+        value={userInfo.address_country}
+        onChange={(e: FormEvent<HTMLInputElement>) =>
+          handlePersonalInfo(e, "address_country")
         }
       />
       <div style={{ width: "450px" }}>
@@ -297,7 +323,7 @@ export const PersonalInfo = ({
                                 alignItems: "center",
                               }}
                             >
-                              {file.name}
+                              {file.name || userInfo.file[0].name}
                               <AiOutlineDelete
                                 onClick={() => handleRemoveFile(index, "file")}
                               />

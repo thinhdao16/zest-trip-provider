@@ -37,8 +37,8 @@ const TransportType: React.FC = () => {
     return null;
   }
   return (
-    <BannerContainer>
-      <div className="items-center flex justify-center">
+    <BannerContainer className="global-scrollbar">
+      <div className="items-center flex justify-center ">
         <BannerContent>
           <CreateTitle variant="h6">
             Choose the transportations included in the tour

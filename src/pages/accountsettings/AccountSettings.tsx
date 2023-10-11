@@ -14,7 +14,6 @@ import { AiOutlineProfile } from "react-icons/ai";
 function AccountSettings() {
   return (
     <React.Fragment>
-      <Header />
       <BannerContainer>
         <BannerContent>
           <BannerPageList>

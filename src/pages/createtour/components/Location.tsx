@@ -49,7 +49,7 @@ const Location: React.FC = () => {
   }
 
   return (
-    <BannerContainer>
+    <BannerContainer className="global-scrollbar">
       <div className="flex items-center justify-center">
         <BannerContent>
           <CreateTitleNullDes variant="h6">

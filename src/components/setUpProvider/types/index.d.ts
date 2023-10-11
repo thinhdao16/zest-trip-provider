@@ -12,14 +12,20 @@ declare module "AppTypes" {
     address: string;
     webCompnany: string;
     mediaSocial: string;
+
+    taxCode: string;
+    address_name: string;
+    address_district: string;
+    address_ward: string;
+    address_province: string;
+    address_country: string;
     file: file;
   }
 
   export interface Plan {
-   
     serviceType: any;
-	policyCancell:any;
-	policyConfirm: any;
+    policyCancell: any;
+    policyConfirm: any;
   }
 
   export interface Addon {

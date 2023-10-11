@@ -1,20 +1,33 @@
 import { faLeaf, faSignOut } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import initMenus from "../../data/menus.ts";
 import "./sidebar.css";
 import SidebarLogo from "./SidebarLogo.jsx";
 import MenuList from "./MenuList.js";
 import { useNavigate } from "react-router-dom";
+import { DataContext } from "../../store/dataContext/DataContext.tsx";
+import { AppDispatch } from "../../store/redux/store.ts";
+import { useDispatch } from "react-redux";
+import { getPersonalInfo } from "../../store/redux/silce/authSilce.ts";
 
 function Sidebar({ ...props }) {
-  const navigate = useNavigate();
+  const navigation = useNavigate();
+  const { setRefeshLogin } = useContext(DataContext);
+  const dispatch: AppDispatch = useDispatch();
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [menus] = useState(initMenus);
 
-  const logout = () => {
-    navigate("/auth/login");
+  const handleLogout = () => {
+    setAnchorEl(null);
+    localStorage.clear();
+    setRefeshLogin((prev) => !prev);
+    navigation("/login");
   };
-
+  useEffect(() => {
+    dispatch(getPersonalInfo());
+  }, [dispatch]);
   return (
     <>
       <aside
@@ -28,7 +41,7 @@ function Sidebar({ ...props }) {
             <div className="px-8 py-4">
               <button
                 className=" py-3.5 px-5 font-medium text-navy-blue w-full rounded-xl flex items-center  border border-navy-blue gap-3 hover:bg-navy-blue hover:text-white"
-                onClick={() => logout()}
+                onClick={() => handleLogout()}
               >
                 <FontAwesomeIcon icon={faSignOut}></FontAwesomeIcon> Logout
               </button>

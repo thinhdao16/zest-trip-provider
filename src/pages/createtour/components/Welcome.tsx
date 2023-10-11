@@ -7,7 +7,7 @@ import { useStepContext } from "../context/ui/useStepContext";
 
 export default function Welcome() {
   const { currentStep } = useStepContext();
-  if (currentStep !== 1) {
+  if (currentStep !== 9) {
     return null;
   }
 

@@ -146,13 +146,16 @@ const FormModal: React.FC<FormModalProps> = ({ open, onClose, onSubmit }) => {
               </div>
             ))}
           </div>
-          <button
-            style={{}}
-            className=" p-2 bg-navy-blue border border-navy-blue rounded-lg text-white hover:border-navy-blue hover:bg-white hover:text-navy-blue hover:border"
-            onClick={handleSubmit}
-          >
-            Add schedule
-          </button>
+          <div className="flex justify-between">
+            <div></div>
+            <button
+              style={{}}
+              className=" p-2 bg-navy-blue border border-navy-blue rounded-lg text-white hover:border-navy-blue hover:bg-white hover:text-navy-blue hover:border"
+              onClick={handleSubmit}
+            >
+              Add schedule
+            </button>
+          </div>
         </Box>
       </Modal>
     </div>

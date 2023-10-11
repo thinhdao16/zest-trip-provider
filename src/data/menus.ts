@@ -19,12 +19,12 @@ const initMenu: MenuItem[] = [
   {
     label: "Halaman",
   },
-  {
-    label: "Blank",
-    path: "/blank",
-    icon: faPage4,
-    name: "Blank", // Thêm 'name' cho mục này
-  },
+  // {
+  //   label: "Blank",
+  //   path: "/blank",
+  //   icon: faPage4,
+  //   name: "Blank",
+  // },
   {
     label: "Listtour",
     path: "/listtour",
@@ -40,12 +40,12 @@ const initMenu: MenuItem[] = [
   {
     label: "Otentikasi",
   },
-  {
-    label: "Login",
-    path: "/auth/login",
-    icon: faLock,
-    name: "Login", // Thêm 'name' cho mục này
-  },
+  // {
+  //   label: "Login",
+  //   path: "/auth/login",
+  //   icon: faLock,
+  //   name: "Login",
+  // },
 ];
 
 export default initMenu;

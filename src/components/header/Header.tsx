@@ -113,15 +113,7 @@ function Header() {
                   aria-haspopup="true"
                   aria-expanded={open ? "true" : undefined}
                 >
-                  <Avatar sx={{ width: 32, height: 32 }}>
-                    <img
-                      src={
-                        personalInfo?.avatar_image_url ||
-                        "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-                      }
-                      alt="Avatar"
-                    />
-                  </Avatar>
+                  <Avatar sx={{ width: 32, height: 32 }}></Avatar>
                 </IconButton>
               </Tooltip>
               <Menu
