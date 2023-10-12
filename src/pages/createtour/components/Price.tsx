@@ -43,7 +43,7 @@ const Price: React.FC = () => {
     {
       id: 0,
       numberOfPeople: 0,
-      numberOfPeopleAfter: 1,
+      numberOfPeopleAfter: 3,
       retailPrice: 0,
       payoutPerPerson: 0,
     },
@@ -52,7 +52,7 @@ const Price: React.FC = () => {
     {
       id: 0,
       numberOfPeople: 0,
-      numberOfPeopleAfter: 1,
+      numberOfPeopleAfter: 3,
       retailPrice: 0,
       payoutPerPerson: 0,
     },
@@ -61,7 +61,7 @@ const Price: React.FC = () => {
     {
       id: 0,
       numberOfPeople: 0,
-      numberOfPeopleAfter: 1,
+      numberOfPeopleAfter: 3,
       retailPrice: 0,
       payoutPerPerson: 0,
     },
@@ -487,7 +487,6 @@ const Price: React.FC = () => {
       });
     }
   };
-  console.log(dataTicket);
   React.useEffect(() => {
     if (currentStep === 9) {
       updateFormValues(6, { ticket: dataTicket });
@@ -512,43 +511,15 @@ const Price: React.FC = () => {
     typeDefault,
   ]);
 
-  if (currentStep !== 1) {
+  if (currentStep !== 9) {
     return null;
   }
-  const createTicket = () => {
-    const pricing_data = dataTicket.map((item: any) => {
-      const pricingData: any = {
-        ticket_type: item.role,
-        pricing_type: item.type,
-        maximum_booking_quantity: parseInt(item.max),
-        minimum_booking_quantity: parseInt(item.min),
-      };
 
-      if (item.price_range) {
-        pricingData.price_range = item.price_range.map((formItem: any) => ({
-          from_amount: parseInt(formItem.numberOfPeople),
-          to_amount: parseInt(formItem.numberOfPeopleAfter),
-          price: parseInt(formItem.payoutPerPerson),
-        }));
-      }
-
-      return pricingData;
-    });
-
-    const data = {
-      tour_id: "3e1dab9e-d129-4b0b-8159-0da83ae2bddc",
-      pricing_data,
-    };
-    console.log(data);
-    dispatch(postCreateTicketTour(data));
-  };
   return (
     <BannerContainer className="global-scrollbar">
       <div className="flex items-center justify-center">
         <div className="py-5">
-          <CreateTitleNullDes onClick={() => createTicket()}>
-            Setting price and tickets
-          </CreateTitleNullDes>
+          <CreateTitleNullDes>Setting price and tickets</CreateTitleNullDes>
           <CreateDescription>Enter the pricing information</CreateDescription>
 
           {/* <select

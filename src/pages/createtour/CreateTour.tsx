@@ -21,8 +21,7 @@ import { useDispatch } from "react-redux";
 import { getTagTour, getVehicleTour } from "../../store/redux/silce/tourSlice";
 
 const steps = [
-  Price,
-  // Welcome,
+  Welcome,
   Tourtype,
   Title,
   TransportType,
@@ -30,8 +29,7 @@ const steps = [
   Location,
   DurationCheckIn,
   Capacity,
-  Welcome,
-  // Price,
+  Price,
   Media,
   Review,
   Congratulation,
@@ -89,6 +87,7 @@ const StepRenderer: React.FC = () => {
             </Grid>
           )}
         </Grid>
+
         {/* {!isLastStep && (
           <div
             style={{

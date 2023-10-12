@@ -157,7 +157,6 @@ export const postCreateTicketTour = createAsyncThunk(
           },
         }
       );
-      console.log(response);
       if (response.status === 201) {
         // toast.success("Availability created successfully!"); // Thông báo tạo Availability thành công
         return response.data;

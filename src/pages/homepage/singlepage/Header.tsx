@@ -9,9 +9,9 @@ export default function Header() {
     (state: StateTour) => state.tour.tourGetDetail
   );
   return (
-    <div className="h-[12.8vh]">
+    <div className="h-[12.8vh] ">
       <Box sx={{ flexGrow: 1, width: "100vw" }}>
-        <div className=" py-6 px-4 ">
+        <div className=" py-6 px-4 bg-white">
           <div className="flex justify-between items-center ">
             <Link to="/" className=" flex items-center justify-center gap-x-4">
               <FaAngleLeft />

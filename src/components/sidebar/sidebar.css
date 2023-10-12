@@ -19,11 +19,13 @@
 
 #menu li a.active,
 li.active {
-  @apply text-white bg-navy-blue rounded-lg;
+  @apply text-navy-blue bg-white rounded-lg;
   border-radius: 0.875rem !important;
-  color: #ffffff !important;
+  color: #14445e !important;
 }
-
+#menu li a.active .rounded-full {
+  background: #14445e !important;
+}
 #menu ul > li > a.link {
   @apply font-normal;
   position: relative;
@@ -72,7 +74,7 @@ li.active > svg {
 
 #menu .link,
 button.link {
-  @apply flex items-center px-6 py-4 text-base text-slate-500 rounded-lg gap-6 cursor-pointer;
+  @apply flex items-center font-medium py-4  text-base text-slate-400 rounded-lg gap-8 cursor-pointer;
 }
 
 #menu .link:hover {

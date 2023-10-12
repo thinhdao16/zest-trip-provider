@@ -5,6 +5,7 @@ import { Button } from "@mui/material";
 import { DataContext } from "../../../../store/dataContext/DataContext";
 import {
   postCreateAvailabilityTour,
+  postCreateTicketTour,
   postCreateTour,
 } from "../../../../store/redux/silce/tourSlice";
 import { useNavigate } from "react-router-dom";
@@ -38,7 +39,7 @@ function CreateTourNav() {
   } = useStepContext();
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
-
+  console.log(formValues);
   const { setRefeshTour } = useContext(DataContext);
   const [lengthValue, setLengthValue] = useState("");
   const isLastStep = currentStep === totalSteps;
@@ -76,10 +77,10 @@ function CreateTourNav() {
       //end
       duration: parseInt(formValues[4]?.DurationCheckIn[0][0]?.no),
       location: formValues[3]?.Location,
-      // tag_id: formValues[1]?.TransportType?.map((tag: any) => tag?.id),
-      tag_id: [3, 4],
-      // vehicle_id: formValues[2]?.AccomType?.map((acc: any) => acc?.id),
-      vehicle_id: [5],
+      tag_id: formValues[1]?.TransportType?.map((tag: any) => tag?.id),
+      // tag_id: [3, 4, 6],
+      vehicle_id: formValues[2]?.AccomType?.map((acc: any) => acc?.id),
+      // vehicle_id: [5, 1],
       // TourComponent: formValues[8]?.Title[2]?.map((boxes: any, index: any) => ({
       //   title: `Day ${index + 1}`,
       //   description: boxes?.boxes,
@@ -113,7 +114,7 @@ function CreateTourNav() {
     };
     dispatch(postCreateTour(requestData.formData))
       .then((tourResponse) => {
-        // console.log(tourResponse);
+        console.log(tourResponse);
         if (postCreateTour.fulfilled.match(tourResponse)) {
           const dataValueCreateAvailability = {
             name: formValues[5]?.Capacity?.Title,
@@ -165,6 +166,34 @@ function CreateTourNav() {
             .catch((availabilityError) => {
               console.error("Error:", availabilityError);
             });
+          const dataTicket = formValues[6]?.ticket;
+          const pricing_data = dataTicket.map((item: any) => {
+            const pricingData: any = {
+              ticket_type: item.role,
+              pricing_type: item.type,
+              maximum_booking_quantity: parseInt(item.max),
+              minimum_booking_quantity: parseInt(item.min),
+            };
+
+            if (item.price_range) {
+              pricingData.price_range = item.price_range.map(
+                (formItem: any) => ({
+                  from_amount: parseInt(formItem.numberOfPeople),
+                  to_amount: parseInt(formItem.numberOfPeopleAfter),
+                  price: parseInt(formItem.payoutPerPerson),
+                })
+              );
+            }
+
+            return pricingData;
+          });
+
+          const data = {
+            tour_id: tourResponse.payload.data.id,
+            pricing_data,
+          };
+          console.log(data);
+          dispatch(postCreateTicketTour(data));
         } else {
           console.log("postCreateTour failed");
         }
@@ -172,7 +201,7 @@ function CreateTourNav() {
       .catch((tourError) => {
         console.error("Error:", tourError);
       });
-    goToNextStep();
+    // goToNextStep();
   };
   const chooseCurrentStep = (data: number) => {
     if (data < currentStep) {
@@ -253,24 +282,33 @@ function CreateTourNav() {
 
   return (
     <div className="">
-      <div className=" border-r-2 border-gray-100 h-full flex-col flex flex-shrink-0">
-        <div className="flex flex-col justify-center px-8 py-4">
-          <p className="font-medium pl-5 pb-3">Information</p>
-          <div className="h-[68vh] overflow-auto scrollbar-none gap-4 grid">
+      <div className=" border-r-2 border-gray-200 border-solid h-full flex-col flex flex-shrink-0 ">
+        <div className="flex flex-col justify-center pl-1 pr-6 py-4">
+          <p className="font-medium pl-12 text-lg pb-3">Information</p>
+          <div className="h-[68vh] overflow-auto scrollbar-none gap-2 flex flex-col">
             {step.map((item) => (
               <div
                 key={item.id}
                 onClick={() => {
                   chooseCurrentStep(item.id);
                 }}
-                className={`flex items-center justify-start font-base py-3.5 px-5 w-full rounded-xl border  relative ${
+                className={`gap-6 flex items-center font-medium  font-base py-3.5 w-full rounded-xl border  relative ${
                   currentStep === item.id
-                    ? "bg-navy-blue text-white"
+                    ? "bg-white text-navy-blue"
                     : currentStep < item.id
-                    ? "bg-gray-300 text-gray-700"
-                    : " bg-white text-navy-blue border border-navy-blue border-solid"
+                    ? "bg-white text-gray-400"
+                    : " bg-white text-navy-blue "
                 }`}
               >
+                <div
+                  className={` ${
+                    currentStep === item.id
+                      ? "bg-navy-blue   h-7 w-1.5 rounded-full"
+                      : currentStep < item.id
+                      ? "bg-white h-7 w-1.5 rounded-full"
+                      : "bg-white h-7 w-1.5 rounded-full"
+                  }`}
+                ></div>
                 <p className="mr-4 font-medium">{item?.id}.</p>
                 {item.name}
                 <FaCircleCheck

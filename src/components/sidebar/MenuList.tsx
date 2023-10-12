@@ -17,7 +17,7 @@ interface MenuListProps {
 
 function MenuList({ menus, ...props }: MenuListProps): JSX.Element {
   return (
-    <div className="navWrapper px-8 py-4">
+    <div className="navWrapper px-0.5 py-4">
       <ul id="menu" className="">
         {menus?.map(
           (menu: any) =>
@@ -25,11 +25,14 @@ function MenuList({ menus, ...props }: MenuListProps): JSX.Element {
               <SubMenu key={menu.label} menu={menu} props={props} />
             ) : (
               menu.path && (
-                <li key={menu.label} className="my-4" onClick={props.toggle}>
-                  <NavLink to={`${menu.path}`} className="link">
-                    {menu.icon && <FontAwesomeIcon icon={menu.icon} />}
-                    {menu.label}
-                  </NavLink>
+                <li key={menu.label} className="my-1" onClick={props.toggle}>
+                  <div className="flex items-center">
+                    <NavLink to={`${menu.path}`} className="link">
+                      <div className="h-7 w-1.5 rounded-full"></div>
+                      {menu.icon && <FontAwesomeIcon icon={menu.icon} />}
+                      {menu.label}
+                    </NavLink>
+                  </div>
                 </li>
               )
             )

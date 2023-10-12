@@ -32,7 +32,7 @@ function Sidebar({ ...props }) {
     <>
       <aside
         id="sidebar"
-        className={`sidebarWrapper md:translate-x-0 -translate-x-full md:z-0 z-50 no-scrollbar ${props.className}`}
+        className={`sidebarWrapper md:translate-x-0 -translate-x-full md:z-0 z-50 no-scrollbar ${props.className} border-r-2 border-solid border-gray-200 mr-4`}
       >
         <div className="md:w-64 border-r-2 border-gray-100 h-full flex-col flex flex-shrink-0">
           <SidebarLogo toggle={props.toggle} icon={faLeaf} text="Zest Travel" />
