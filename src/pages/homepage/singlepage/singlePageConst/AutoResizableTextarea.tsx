@@ -9,7 +9,12 @@ function AutoResizableTextarea({
   defaultValue,
   onChange,
 }: AutoResizableTextareaProps) {
-  const [text, setText] = useState<string>(defaultValue);
+  useEffect(() => {
+    if (defaultValue) {
+      setText(defaultValue);
+    }
+  }, [defaultValue]);
+  const [text, setText] = useState(defaultValue);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {

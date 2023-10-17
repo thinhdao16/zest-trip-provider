@@ -17,5 +17,5 @@ export function ConstructionDes({ children }: ConstructionProps) {
   return <div className="col-span-10 flex flex-col gap-2">{children}</div>;
 }
 export function ConstructionTitletext({ children }: ConstructionProps) {
-  return <p className="font-medium">{children}</p>;
+  return <p className="font-medium text-end pt-2">{children}</p>;
 }

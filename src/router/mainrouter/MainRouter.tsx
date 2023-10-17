@@ -14,6 +14,7 @@ import AuthLayout from "../../components/Layout/AuthLayout";
 import Dashboard from "../../pages/dashboard/Dashboard";
 import Blank from "../../pages/Blank";
 import ForgotPassWord from "../../components/forgotPassword/ForgotPassword";
+import Review from "../../pages/review/Review";
 
 function MainRouter() {
   const { refeshLogin } = React.useContext(DataContext);
@@ -48,6 +49,7 @@ function MainRouter() {
                       <Route path="/" element={<Dashboard />}></Route>
                       <Route path="/blank" element={<Blank />}></Route>
                       <Route path="/profile" element={<Blank />}></Route>
+                      <Route path="/review" element={<Review />}></Route>
                       <Route path="/listtour" element={<HomePage />} />
                       <Route path="/account-settings">
                         <Route path="" element={<AccountSettings />} />

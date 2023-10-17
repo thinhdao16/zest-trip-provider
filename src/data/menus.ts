@@ -32,6 +32,12 @@ const initMenu: MenuItem[] = [
     name: "Listtour", // Thêm 'name' cho mục này
   },
   {
+    label: "Review",
+    path: "/review",
+    icon: faPage4,
+    name: "Listtour", // Thêm 'name' cho mục này
+  },
+  {
     label: "Create Tour",
     path: "/createtour",
     icon: faPage4,

@@ -36,7 +36,7 @@ export default function Banner() {
 
   return (
     <div className="mt-8">
-      <div className="  p-6 mainCard bg-slate-50 container-dashboard rounded-3xl global-scrollbar">
+      <div className="  p-6 mainCard bg-main container-dashboard rounded-3xl global-scrollbar">
         <div>
           {/* <TitlePage
             title="Welcome back"

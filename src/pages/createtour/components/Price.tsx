@@ -31,7 +31,6 @@ const typeDefault = {
   type: "DEFAULT",
 };
 const Price: React.FC = () => {
-  const dispatch: AppDispatch = useDispatch();
   const { currentStep, updateFormValues } = useStepContext();
   const [selectedCountries, setSelectedCountries]: any = useState([]);
   const [dataTicket, setDataTicket]: any = useState([]);
@@ -314,15 +313,16 @@ const Price: React.FC = () => {
   };
   const handleNumberOfPeopleChange = (e: any, id: number, field: string) => {
     const newNumberOfPeople = parseInt(e.target.value);
+
     if (field === "default") {
       const updatedFormList = formList.map((form, index) => {
         if (form.id === id) {
           const updatedForm = {
             ...form,
             numberOfPeopleAfter:
-              newNumberOfPeople >= form.numberOfPeople
+              newNumberOfPeople >= form.numberOfPeopleAfter
                 ? newNumberOfPeople
-                : form.numberOfPeople,
+                : form.numberOfPeopleAfter,
             payoutPerPerson: (form.retailPrice * 30) / 100,
           };
           return updatedForm;
@@ -330,12 +330,12 @@ const Price: React.FC = () => {
           const updatedForm = {
             ...form,
             numberOfPeople: newNumberOfPeople >= 0 ? newNumberOfPeople + 1 : 0,
+            numberOfPeopleAfter: newNumberOfPeople,
           };
           return updatedForm;
         }
         return form;
       });
-
       setFormList(updatedFormList);
     }
     if (field === "adult") {
@@ -491,6 +491,9 @@ const Price: React.FC = () => {
     if (currentStep === 9) {
       updateFormValues(6, { ticket: dataTicket });
     }
+  }, [currentStep, dataTicket]);
+
+  React.useEffect(() => {
     if (selectedCountries.length === 0) {
       const convertArray = {
         price_range: formList,
@@ -499,9 +502,11 @@ const Price: React.FC = () => {
       };
       setDataTicket([convertArray]);
     }
-    funcUpdateTicketRole();
+  }, [selectedCountries, formList, quantityDefault, typeDefault]);
+
+  React.useEffect(() => {
+    funcUpdateTicketRole(); // Hàm này sẽ được gọi lại khi các dependency thay đổi
   }, [
-    formList,
     selectedCountries,
     selectedRadio,
     formListChildren,
@@ -524,7 +529,7 @@ const Price: React.FC = () => {
 
           {/* <select
             id="countries_disabled"
-            className="w-44 text-navy-blue font-medium text-lg bg-slate-50 hover:text-black focus:border-none"
+            className="w-44 text-navy-blue font-medium text-lg bg-main hover:text-black focus:border-none"
             value={selectedCountries}
             onChange={handleCountryChange}
           >

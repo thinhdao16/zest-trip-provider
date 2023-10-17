@@ -35,6 +35,7 @@ import { StateTour } from "../../createtour/types/index.t";
 import Header from "./Header";
 import NavBar from "./NavBar";
 import ScreenMain from "./ScreenMain";
+import ScreenSP from "./ScreenSP";
 
 // interface tourDetail{
 //   tour_images:[],
@@ -72,7 +73,7 @@ function SinglePage() {
         <Grid item xs={12} sm={6} md={5}>
           <ScreenMain />
         </Grid>
-        <Grid item xs={12} sm={6} md={4} className="bg-slate-50 rounded-xl">
+        <Grid item xs={12} sm={6} md={4} className="bg-main rounded-xl">
           kjhgfd
         </Grid>
       </Grid> */}
@@ -134,13 +135,28 @@ function SinglePage() {
           }`}
           aria-label="Sidebar"
         >
-          <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800 global-scrollbar">
+          <div className="h-full  overflow-y-auto border-solid bg-white border-r-2 border-gray-100  dark:bg-gray-800 global-scrollbar">
             <NavBar />
           </div>
         </aside>
-        <div className={`p-4  sm:ml-64 ${isSidebarOpen ? "pt-24" : "top-0"}`}>
+        <div
+          className={`p-4  sm:ml-64 sm:mr-96 h-screen ${
+            isSidebarOpen ? "pt-24" : "top-0"
+          }`}
+        >
           <ScreenMain />
         </div>
+        <aside
+          id="default-sidebar"
+          className={`fixed right-0 z-10 w-96 h-screen transition-transform ${
+            isSidebarOpen ? "translate-x-0 top-24" : "-translate-x-full top-0 "
+          }`}
+          aria-label="Sidebar"
+        >
+          <div className="h-[85vh] px-3 py-4 overflow-y-auto bg-main dark:bg-gray-800 global-scrollbar">
+            <ScreenSP />
+          </div>
+        </aside>
       </div>
     </div>
   );

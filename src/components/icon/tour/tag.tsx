@@ -13,7 +13,6 @@ export function VehicleTag(field: { field: string; style: string }) {
     </div>
   );
 }
-k;
 export function TourTag(field: { field: string; style: string }) {
   let imagePath;
   switch (field.field) {

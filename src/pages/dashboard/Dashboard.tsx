@@ -83,7 +83,7 @@ function Dashboard() {
       <Grid container className="mt-8">
         <Grid item xs={12} sm={9}>
           <main className="h-full">
-            <div className="  p-6 mainCard bg-slate-50 container-dashboard rounded-3xl">
+            <div className="  p-6 mainCard bg-main container-dashboard rounded-3xl">
               <div className="flex flex-col gap-4 ">
                 <DashboardHeader
                   toggle={sidebarToggle}

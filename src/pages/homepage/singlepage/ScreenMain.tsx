@@ -6,21 +6,39 @@ import Construction, {
   ConstructionTitletext,
 } from "./singlePageConst/Construction";
 import { FaHardDrive } from "react-icons/fa6";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AutoResizableTextarea from "./singlePageConst/AutoResizableTextarea";
-import { TourTag } from "../../../components/icon/tour/tag";
+import { TourTag, VehicleTag } from "../../../components/icon/tour/tag";
 
 function ScreenMain() {
   const tourDetail: any = useSelector(
     (state: StateTour) => state.tour.tourGetDetail
   );
-  const [name, setName] = useState(tourDetail?.name);
 
-  const [description, setDescription] = useState(tourDetail?.description);
-  const [footnote, setFootnote] = useState(tourDetail?.footnote);
-  console.log(tourDetail);
+  // Sử dụng useEffect để cập nhật state khi dữ liệu thay đổi
+  useEffect(() => {
+    if (tourDetail) {
+      setName(tourDetail?.name);
+      setDescription(tourDetail.description);
+      setFootnote(tourDetail.footnote);
+      setAddressName(tourDetail?.address_name);
+      setAddressDis(tourDetail?.address_district);
+      setAddressPro(tourDetail?.address_province);
+      setAddressWard(tourDetail?.address_ward);
+    }
+  }, [tourDetail]);
+
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [footnote, setFootnote] = useState("");
+  const [addressName, setAddressName] = useState("");
+  const [addressCountry, setAddressCountry] = useState("");
+  const [addressDis, setAddressDis] = useState("");
+  const [addressPro, setAddressPro] = useState("");
+  const [addressWard, setAddressWard] = useState("");
+
   return (
-    <div className="bg-slate-50 rounded-xl p-4">
+    <div className="bg-main rounded-xl p-4 h-full overflow-y-auto global-scrollbar">
       <div className="mb-4">
         <span className="font-medium text-xl">Infomation basic</span>
       </div>
@@ -31,7 +49,7 @@ function ScreenMain() {
               <ConstructionTitletext>Tour type</ConstructionTitletext>
             </div>
             <div className="col-span-8  ">
-              <div className="border-gray-300 border p-2 rounded-lg bg-white cursor-not-allowed border-solid ">
+              <div className="border-navy-blue  border-l-4 p-2 rounded-lg bg-white cursor-not-allowed border-solid ">
                 {tourDetail?.tour_location_type}
               </div>
             </div>
@@ -41,7 +59,7 @@ function ScreenMain() {
               <ConstructionTitletext>Status</ConstructionTitletext>
             </div>
             <div className="col-span-8 ">
-              <div className="border-gray-300 border p-2 rounded-lg bg-white cursor-not-allowed border-solid ">
+              <div className="border-navy-blue border-l-4 p-2 rounded-lg bg-white cursor-not-allowed border-solid ">
                 {tourDetail?.status}
               </div>
             </div>
@@ -52,8 +70,8 @@ function ScreenMain() {
             <ConstructionTitletext>Image product</ConstructionTitletext>
           </ConstructionTitle>
           <ConstructionDes>
-            <ConstructionTitletext>*Image ratio 1:1</ConstructionTitletext>
-            <div className="grid grid-cols-8 gap-4 border">
+            <span className="font-medium">*Image ratio 1:1</span>
+            <div className="grid grid-cols-5 gap-4 border">
               {tourDetail?.tour_images?.map((img: string, index: number) => (
                 <div
                   key={index}
@@ -95,7 +113,7 @@ function ScreenMain() {
             <div className="relative">
               <FaHardDrive className="absolute top-3 left-3 " />
               <AutoResizableTextarea
-                defaultValue={description || tourDetail?.description}
+                defaultValue={description}
                 onChange={(e) => setDescription(e)}
               />
             </div>
@@ -122,8 +140,8 @@ function ScreenMain() {
             <ConstructionTitletext>Tag for tour</ConstructionTitletext>
           </ConstructionTitle>
           <ConstructionDes>
-            <div className="border border-solid border-gray-300 p-2 rounded-lg">
-              <div className="grid grid-cols-8 gap-4">
+            <div className="bg-white p-2 rounded-lg">
+              <div className="grid grid-cols-5 gap-4">
                 {tourDetail?.tag_id?.map(
                   (tag: { name: string; id: number }) => (
                     <div
@@ -139,6 +157,102 @@ function ScreenMain() {
             </div>
           </ConstructionDes>
         </Construction>
+        <Construction>
+          <ConstructionTitle>
+            <ConstructionTitletext>Vehicle for tour</ConstructionTitletext>
+          </ConstructionTitle>
+          <ConstructionDes>
+            <div className="bg-white   p-2 rounded-lg">
+              <div className="grid grid-cols-5 gap-4">
+                {tourDetail?.vehicle_id?.map(
+                  (tag: { name: string; id: number }) => (
+                    <div
+                      key={tag?.id}
+                      className="flex bg-white items-center gap-2 border border-gray-400 border-solid rounded-lg p-3 shadow-custom-card-mui"
+                    >
+                      <VehicleTag field={tag?.name} style="w-k8 h-8" />
+                      <p>{tag?.name}</p>
+                    </div>
+                  )
+                )}
+              </div>
+            </div>
+          </ConstructionDes>
+        </Construction>
+        <Construction>
+          <ConstructionTitle>
+            <ConstructionTitletext>Address name</ConstructionTitletext>
+          </ConstructionTitle>
+          <ConstructionDes>
+            <div className="relative">
+              <FaHardDrive className="absolute top-3 left-3 " />
+              <input
+                className="border border-gray-300 rounded-lg py-2 px-8 w-full"
+                defaultValue={addressName || tourDetail?.address_name}
+                onChange={(e) => setAddressName(e.target.value)}
+                type="text"
+              />
+            </div>
+          </ConstructionDes>
+        </Construction>
+        <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-12 gap-4">
+            <div className="col-span-4 flex justify-end">
+              <ConstructionTitletext>Address country</ConstructionTitletext>
+            </div>
+            <div className="col-span-8 relative">
+              <FaHardDrive className="absolute top-3 left-3 " />
+              <input
+                className="border border-gray-300 rounded-lg py-2 px-8 w-full"
+                defaultValue={addressCountry || tourDetail?.address_country}
+                onChange={(e) => setAddressCountry(e.target.value)}
+                type="text"
+              />
+            </div>
+          </div>
+          <div className="grid grid-cols-12 gap-4">
+            <div className="col-span-4 flex justify-end">
+              <ConstructionTitletext>Address district</ConstructionTitletext>
+            </div>
+            <div className="col-span-8 relative">
+              <FaHardDrive className="absolute top-3 left-3 " />
+              <input
+                className="border border-gray-300 rounded-lg py-2 px-8 w-full"
+                defaultValue={addressDis || tourDetail?.address_district}
+                onChange={(e) => setAddressDis(e.target.value)}
+                type="text"
+              />
+            </div>
+          </div>
+          <div className="grid grid-cols-12 gap-4">
+            <div className="col-span-4 flex justify-end">
+              <ConstructionTitletext>Address province</ConstructionTitletext>
+            </div>
+            <div className="col-span-8 relative">
+              <FaHardDrive className="absolute top-3 left-3 " />
+              <input
+                className="border border-gray-300 rounded-lg py-2 px-8 w-full"
+                defaultValue={addressPro || tourDetail?.address_province}
+                onChange={(e) => setAddressPro(e.target.value)}
+                type="text"
+              />
+            </div>
+          </div>{" "}
+          <div className="grid grid-cols-12 gap-4">
+            <div className="col-span-4 flex justify-end">
+              <ConstructionTitletext>Address ward</ConstructionTitletext>
+            </div>
+            <div className="col-span-8 relative">
+              <FaHardDrive className="absolute top-3 left-3 " />
+              <input
+                className="border border-gray-300 rounded-lg py-2 px-8 w-full"
+                defaultValue={addressWard || tourDetail?.address_ward}
+                onChange={(e) => setAddressWard(e.target.value)}
+                type="text"
+              />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

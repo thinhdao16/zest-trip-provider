@@ -34,7 +34,7 @@ function SidebarSearch({
           id=""
           onChange={handleChange}
           ref={search}
-          className="border rounded-full text-sm w-full px-3 py-2 focus:outline-none focus:border-green-300 bg-slate-50"
+          className="border rounded-full text-sm w-full px-3 py-2 focus:outline-none focus:border-green-300 bg-main"
         />
 
         {!scButton && (
