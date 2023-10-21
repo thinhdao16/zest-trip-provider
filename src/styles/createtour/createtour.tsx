@@ -227,7 +227,7 @@ interface CardProps {
   selectedCard: number;
 }
 export const CardOptionStyles = ({ index, selectedCard }: CardProps) => ({
-  border: selectedCard === index ? "2px solid #05445E" : "1px solid #ccc",
+  border: selectedCard === index ? "1px solid #05445E" : "1px solid #ccc",
   backgroundColor: selectedCard === index ? "#f7f7f7" : "white",
   cursor: "pointer",
   borderRadius: "12px",

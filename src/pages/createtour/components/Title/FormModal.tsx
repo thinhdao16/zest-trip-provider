@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
@@ -9,7 +9,8 @@ import { FaCircle, FaEnvelopeOpenText } from "react-icons/fa6";
 interface FormModalProps {
   open: boolean;
   onClose: () => void;
-  onSubmit: (boxes: BoxData[]) => void;
+  onSubmit: (boxes: BoxData[], title: string, day: number) => void;
+  day: number | undefined;
 }
 
 const style = {
@@ -31,11 +32,19 @@ interface BoxData {
   toTime: string;
 }
 
-const FormModal: React.FC<FormModalProps> = ({ open, onClose, onSubmit }) => {
+const FormModal: React.FC<FormModalProps> = ({
+  open,
+  onClose,
+  onSubmit,
+  day,
+}) => {
   const [formData, setFormData] = useState("");
   const [fromTime, setFromTime] = useState("00:00");
   const [toTime, setToTime] = useState("00:00");
+  const [title, setTitle] = useState("");
+  const dayModal = useMemo(() => (day !== undefined ? day : 0), [day]);
   const [formEntries, setFormEntries] = useState<BoxData[]>([]);
+
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFormData(event.target.value);
   };
@@ -54,15 +63,13 @@ const FormModal: React.FC<FormModalProps> = ({ open, onClose, onSubmit }) => {
       fromTime: fromTime,
       toTime: toTime,
     };
-
     setFormEntries((prevBoxes) => [...prevBoxes, newBox]);
     setFormData("");
     setFromTime("00:00");
     setToTime("00:00");
   };
-
   const handleSubmit = () => {
-    onSubmit(formEntries);
+    onSubmit(formEntries, title, dayModal);
     setFormEntries([]);
     setFormData("");
     setFromTime("00:00");
@@ -78,14 +85,41 @@ const FormModal: React.FC<FormModalProps> = ({ open, onClose, onSubmit }) => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Schedule information
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            These periods normally correspond with normal working hours for the
-            work week and reduced hours for weekends and holidays.
-          </Typography>
+        <Box sx={style} className="flex flex-col gap-5">
+          <div className="flex flex-col  gap-1">
+            <p className="font-medium text-2xl">Schedule information</p>
+            <p>
+              These periods normally correspond with normal working hours for
+              the work week and reduced hours for weekends and holidays.
+            </p>
+          </div>
+
+          <div className="flex flex-col ">
+            <span className="font-medium text-lg">Infomation day</span>
+            <div className="grid grid-cols-12 gap-7">
+              {" "}
+              <div className="flex flex-col col-span-2">
+                <span className="font-medium mb-1">day:</span>
+                <input
+                  defaultValue={dayModal || ""}
+                  disabled
+                  className=" border cursor-not-allowed border-gray-300 p-2 rounded-lg shadow-custom-card-mui hover:border-navy-blue focus:outline-none focus:border-navy-blue"
+                  // onChange={(e) => setDayModal(parseInt(e.target.value, 10))}
+                  placeholder="input day"
+                />
+              </div>
+              <div className="flex flex-col col-span-6">
+                <span className="font-medium mb-1">Title:</span>
+                <input
+                  defaultValue={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  placeholder="Input title"
+                  className=" border border-gray-300 p-2 rounded-lg shadow-custom-card-mui hover:border-navy-blue focus:outline-none focus:border-navy-blue"
+                />
+              </div>
+            </div>
+          </div>
+
           <Grid
             container
             style={{ display: "flex", alignItems: "center", marginTop: "12px" }}
@@ -129,7 +163,7 @@ const FormModal: React.FC<FormModalProps> = ({ open, onClose, onSubmit }) => {
           </Grid>
 
           <div
-            className="mt-5 w-1/2 gap-6 grid mb-6"
+            className=" w-1/2 gap-6 flex flex-col "
             style={{ overflowWrap: "break-word" }}
           >
             {formEntries.map((boxData, index) => (

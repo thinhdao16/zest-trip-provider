@@ -15,10 +15,10 @@ import Media from "./components/Media";
 import Title from "./components/Title";
 import Review from "./components/Review";
 import Congratulation from "./components/Congratulation";
-import CreateTourNav from "./components/Step/CreateTourNav";
 import { AppDispatch } from "../../store/redux/store";
 import { useDispatch } from "react-redux";
 import { getTagTour, getVehicleTour } from "../../store/redux/silce/tourSlice";
+import CreateTourNav from "./components/Step/CreateTourNav";
 
 const steps = [
   Welcome,

@@ -20,6 +20,8 @@ declare module "AppTypes" {
     address_province: string;
     address_country: string;
     file: file;
+    avt: file;
+    banner: file;
   }
 
   export interface Plan {

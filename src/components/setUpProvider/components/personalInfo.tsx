@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { FormEvent, useState } from "react";
 import { Input } from "./input";
 import { Plan, UserInfo } from "AppTypes";
@@ -17,13 +18,7 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import {
-  FaEarthAfrica,
-  FaEarthEurope,
-  FaHotel,
-  FaLocationDot,
-  FaStaylinked,
-} from "react-icons/fa6";
+import { FaEarthAfrica, FaHotel, FaStaylinked } from "react-icons/fa6";
 
 const plans: Plan[] = [
   {
@@ -73,9 +68,11 @@ export const PersonalInfo = ({
   selectedPlan,
   updateSelectedPlan,
 }: PersonalInfoProps) => {
-  const [selectedFiles, setSelectedFiles] = useState<any[]>([]);
-  const [imageSrc, setImageSrc] = useState<any>();
-  const [imageAvt, setImageAvt] = useState<any>();
+  const [selectedFiles, setSelectedFiles] = useState<any[]>(
+    userInfo?.file || []
+  );
+  const [imageSrc, setImageSrc] = useState<any>(userInfo?.banner || null);
+  const [imageAvt, setImageAvt] = useState<any>(userInfo?.avt || null);
   const handlePersonalInfo = (
     event: FormEvent<HTMLInputElement>,
     key: keyof UserInfo
@@ -90,7 +87,7 @@ export const PersonalInfo = ({
     setSelectedFiles(newSelectedFiles);
 
     const updatedUserInfo = { ...userInfo };
-    updatedUserInfo[key] = newSelectedFiles; // Không cần gán giá trị vào userInfo.file ở đây
+    updatedUserInfo[key] = newSelectedFiles;
     updateUserInfo(updatedUserInfo);
   };
 
@@ -144,6 +141,9 @@ export const PersonalInfo = ({
         file: selectedFile,
       };
       setImageSrc(newImages);
+      const updatedUserInfo = { ...userInfo };
+      updatedUserInfo[field] = newImages;
+      updateUserInfo(updatedUserInfo);
     }
     if (field === "avt") {
       const selectedFile = event.target.files[0];
@@ -153,6 +153,9 @@ export const PersonalInfo = ({
         file: selectedFile,
       };
       setImageAvt(newImages);
+      const updatedUserInfo = { ...userInfo };
+      updatedUserInfo[field] = newImages;
+      updateUserInfo(updatedUserInfo);
     }
   };
   const handleSelect = (
@@ -191,7 +194,7 @@ export const PersonalInfo = ({
       />
 
       <Input
-        labels="Facebook"
+        labels="Description"
         placeholder="e.g. Stephen King"
         icon={<FaStaylinked />}
         value={userInfo.mediaSocial}

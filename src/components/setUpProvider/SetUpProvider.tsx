@@ -2,18 +2,16 @@ import { useState } from "react";
 import { Plan, UserInfo, UserServiceConfiguration } from "AppTypes";
 import { Sidebar } from "./components/sidebar";
 import { PersonalInfo } from "./components/personalInfo";
-import { SelectPlan } from "./components/selectPlan";
 import { Addons } from "./components/Addons";
 import { ServiceSummary } from "./components/serviceSummary";
 import { ThankYou } from "./components/thankYou";
-import { Box, Button } from "@mui/material";
+import { Box } from "@mui/material";
 import { formLabelClasses } from "@mui/joy/FormLabel";
 import Typography from "@mui/joy/Typography";
-import { AiOutlineShop } from "react-icons/ai";
 import { ContainerPageFullHalf } from "../../styles/global/StyleGlobal";
 import { ContainerPageFullHalfContent } from "../../styles/global/ContainerPageFullHalfContent";
 import { Grid } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { AppDispatch } from "../../store/redux/store";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
@@ -26,9 +24,7 @@ function SetUpProvider() {
   const [showRequired, setShowRequiredFields] = useState(false);
 
   const dispatch: AppDispatch = useDispatch();
-  const personalInfo = useSelector((state: any) => state.auth.personalInfo);
-  const { loadingBecomeProvider } = useSelector((state: any) => state.provider);
-  console.log(loadingBecomeProvider);
+  useSelector((state: any) => state.provider);
   const [userServiceConfiguration, setUserServiceConfiguration] =
     useState<UserServiceConfiguration>({
       userInfo: {
@@ -44,11 +40,14 @@ function SetUpProvider() {
         address_province: "",
         address_country: "",
         file: [],
+        avt: [],
+        banner: [],
       },
       selectedPlan: null,
       monthly: true,
       addons: [],
     });
+  console.log(userServiceConfiguration);
   const updateUserInfo = (userInfo: UserInfo) => {
     setUserServiceConfiguration({ ...userServiceConfiguration, userInfo });
   };
@@ -94,7 +93,10 @@ function SetUpProvider() {
         "country_code",
         userServiceConfiguration?.userInfo?.region
       );
-      formData.append("description", "what the hell");
+      formData.append(
+        "description",
+        userServiceConfiguration?.userInfo?.mediaSocial
+      );
       formData.append("phone", "0975647951");
       formData.append("email", "daothinh1105@gmai.com");
       formData.append("address", userServiceConfiguration?.userInfo?.address);

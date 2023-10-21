@@ -15,7 +15,10 @@ function Index({ toggle }: IndexProps): JSX.Element {
         <div className="shadow-sm">
           <div className="relative bg-white flex w-full items-center px-5 py-2.5">
             <div className="flex-1">
-              <p className="block md:hidden cursor-pointer" onClick={toggle}>
+              <p
+                className="block md:hidden cursor-pointer"
+                // onClick={toggle}
+              >
                 <FontAwesomeIcon icon={faBars} />
               </p>
             </div>

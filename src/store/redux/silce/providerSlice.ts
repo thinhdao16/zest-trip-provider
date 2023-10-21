@@ -1,16 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { BASE_URL } from "../../apiInterceptors";
-import { useNavigate } from "react-router-dom";
 
-const getTokenFromLocalStorage = () => {
-  const token = localStorage.getItem("access_token");
-  if (token !== null) {
-    const parsedToken = JSON.parse(token); // Parse the JSON token
-    return parsedToken;
-  }
-  return null; // Handle the case when token is not found or null
-};
 const initialState = {
   profile: [],
   becomeProvider: [],

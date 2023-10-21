@@ -14,7 +14,7 @@ import { Card, Grid, Typography } from "@mui/material";
 import { GoNoEntry, GoPlusCircle } from "react-icons/go";
 import { dataTypeDuration } from "../dataFake";
 import FormModal from "./Title/FormModal";
-import { FaCircle } from "react-icons/fa6";
+import { FaCircle, FaTrashCan } from "react-icons/fa6";
 export interface BoxData {
   data: string;
   fromTime: string;
@@ -22,12 +22,15 @@ export interface BoxData {
 }
 interface NestedData {
   boxes: BoxData[];
+  title: string;
+  day: number;
 }
 const DurationCheckIn: React.FC = () => {
   const { currentStep, updateFormValues } = useStepContext();
   const [dataDuration, setDataDuration] = useState(dataTypeDuration);
   const [modalOpen, setModalOpen] = useState(false);
   const [nestedDataArray, setNestedDataArray] = useState<NestedData[]>([]);
+  const [day, setDay] = useState<number | undefined>(undefined);
   const handleModalOpen = () => {
     setModalOpen(true);
   };
@@ -36,9 +39,12 @@ const DurationCheckIn: React.FC = () => {
     setModalOpen(false);
   };
 
-  const handleFormSubmit = (boxes: BoxData[]) => {
+  const handleFormSubmit = (boxes: BoxData[], title: string, day: number) => {
+    console.log(title);
     const newNestedData: NestedData = {
       boxes: boxes,
+      title: title,
+      day: day,
     };
     setNestedDataArray((prevData) => [...prevData, newNestedData]);
   };
@@ -55,10 +61,29 @@ const DurationCheckIn: React.FC = () => {
     );
     setDataDuration(updatedData);
   };
+  const handleRemove = (index: number) => {
+    const updatedNestedDataArray = [...nestedDataArray];
+    updatedNestedDataArray.splice(index, 1); // Xóa phần tử tại vị trí index
+    setNestedDataArray(updatedNestedDataArray);
+  };
   React.useEffect(() => {
     updateFormValues(4, {
       DurationCheckIn: [dataDuration, nestedDataArray],
     });
+    nestedDataArray?.forEach((data) => {
+      if (data?.day) {
+        const dayValue: any = Number(data.day);
+        if (!isNaN(dayValue)) {
+          if (dayValue >= (day || 0)) {
+            setDay(dayValue + 1);
+          }
+        }
+      }
+    });
+
+    if (day === undefined) {
+      setDay(1);
+    }
   }, [dataDuration, nestedDataArray]);
   if (currentStep !== 7) {
     return null;
@@ -103,29 +128,43 @@ const DurationCheckIn: React.FC = () => {
             <p className="font-medium mb-1 text-lg">Tour Schedule</p>
 
             {nestedDataArray?.length > 0 ? (
-              <Card className="p-7 border border-gray-400  border-solid">
+              <Card className="p-7 border border-gray-400 border-solid">
                 <div>
                   <div className="gap-4 grid">
                     {nestedDataArray.map((data, index) => (
-                      <div key={index}>
+                      <div key={`nested_${index}`}>
                         <div className="flex gap-3">
                           <div className="">
-                            <button className="font-medium p-2 bg-navy-blue text-white rounded-lg ">
-                              Day {index + 1}
-                            </button>
+                            <div className="flex gap-4 items-center">
+                              <button className="font-medium p-2 bg-navy-blue text-white rounded-lg h-10 w-16">
+                                Day {data?.day}
+                              </button>
 
-                            {data.boxes.map((data, index) => (
-                              <div className="relative mt-3">
+                              <span className="font-medium text-navy-blue flex flex-wrap">
+                                {data?.title}
+                              </span>
+
+                              {index === nestedDataArray.length - 1 && (
+                                <div className="flex items-center">
+                                  <FaTrashCan
+                                    onClick={() => handleRemove(index)}
+                                  />
+                                </div>
+                              )}
+                            </div>
+
+                            {data.boxes.map((box, boxIndex) => (
+                              <div
+                                key={`box_${boxIndex}`}
+                                className="relative mt-3"
+                              >
                                 <FaCircle className="absolute inset-y-1/3 w-2" />
                                 <div className="pl-5 pr-7">
-                                  <div
-                                    key={index}
-                                    className="flex font-medium text-gray-700"
-                                  >
-                                    <p>{data?.toTime}</p> -
-                                    <p>{data?.fromTime}</p>
+                                  <div className="flex font-medium text-gray-700">
+                                    <p>{box?.toTime}</p> -{" "}
+                                    <p>{box?.fromTime}</p>
                                   </div>
-                                  <p className=" font-normal">{data?.data}</p>
+                                  <p className="font-normal">{box?.data}</p>
                                 </div>
                               </div>
                             ))}
@@ -154,6 +193,7 @@ const DurationCheckIn: React.FC = () => {
                     </div>
                   )}
                   <FormModal
+                    day={day}
                     open={modalOpen}
                     onClose={handleModalClose}
                     onSubmit={handleFormSubmit}
@@ -161,17 +201,18 @@ const DurationCheckIn: React.FC = () => {
                 </div>
               </Card>
             ) : (
-              <Card className="p-16 border border-gray-400  border-solid">
+              <Card className="p-16 border border-gray-400 border-solid">
                 <div>
                   <div className="flex items-center justify-center">
                     <button
                       onClick={handleModalOpen}
-                      className="border bg-gray-200 font-medium py-2 px-4 rounded-lg hover:bg-white hover:border-gray-200"
+                      className="border bg-gray-200 font-medium py-2 px-4 rounded-lg hover.bg-white hover.border-gray-200"
                     >
                       Add schedule day {nestedDataArray.length + 1}
                     </button>
                   </div>
                   <FormModal
+                    day={day}
                     open={modalOpen}
                     onClose={handleModalClose}
                     onSubmit={handleFormSubmit}

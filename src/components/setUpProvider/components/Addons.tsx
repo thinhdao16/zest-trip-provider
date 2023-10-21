@@ -31,11 +31,16 @@ export const Addons = () => {
                 {data?.header}
               </p>
               <p className="text-gray-500">{data?.title}</p>
-              {data?.description?.map((data: any) => (
-                <Box>
-                  <p className="text-gray-500 ">{data?.list}</p>
-                </Box>
-              ))}
+              {data?.description?.map(
+                (
+                  desc: any,
+                  descIndex: number // Unique key for description
+                ) => (
+                  <Box key={descIndex}>
+                    <p className="text-gray-500 ">{desc?.list}</p>
+                  </Box>
+                )
+              )}
             </Box>
           ))}
         </Box>

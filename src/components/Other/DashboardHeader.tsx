@@ -1,10 +1,5 @@
 import { Link } from "react-router-dom";
-import {
-  faBars,
-  faBell,
-  faCog,
-  faMessage,
-} from "@fortawesome/free-solid-svg-icons";
+import { faBars, faBell } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSelector } from "react-redux";
 

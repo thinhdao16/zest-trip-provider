@@ -1,7 +1,7 @@
 import jwt_decode from "jwt-decode";
 import axios from "axios";
 
-export const BASE_URL = "https://manager-ecom-cllh63fgua-df.a.run.app";
+export const BASE_URL = "https://zesttravel.monoinfinity.net";
 
 const getTokenFromLocalStorage = () => {
   const token = localStorage.getItem("access_token");
@@ -27,6 +27,7 @@ export const isTokenExpired = (tokenPayload: string) => {
 
 const refreshToken = async () => {
   const refreshToken = getRefreshTokenFromLocalStorage();
+  console.log(refreshToken);
   if (refreshToken) {
     try {
       const refreshResponse = await axios.post(
@@ -40,6 +41,8 @@ const refreshToken = async () => {
       );
       const newAccessToken = refreshResponse.data.data.access_token;
       localStorage.setItem("access_token", newAccessToken);
+      const newRefeshToken = refreshResponse.data.data.refresh_token;
+      localStorage.setItem("refresh_token", newRefeshToken);
       return newAccessToken;
     } catch (error) {
       console.error("Failed to refresh access token:", error);

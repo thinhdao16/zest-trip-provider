@@ -39,7 +39,6 @@ function CreateTourNav() {
   } = useStepContext();
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
-  console.log(formValues);
   const { setRefeshTour } = useContext(DataContext);
   const [lengthValue, setLengthValue] = useState("");
   const isLastStep = currentStep === totalSteps;
@@ -65,6 +64,7 @@ function CreateTourNav() {
 
     return `${year}-${month}-${day}`;
   }
+  console.log(formValues);
   const handleCreateTourAndAvailability = () => {
     const formData = new FormData();
     const dataValueCreate = {
@@ -78,20 +78,22 @@ function CreateTourNav() {
       duration: parseInt(formValues[4]?.DurationCheckIn[0][0]?.no),
       location: formValues[3]?.Location,
       tag_id: formValues[1]?.TransportType?.map((tag: any) => tag?.id),
-      // tag_id: [3, 4, 6],
       vehicle_id: formValues[2]?.AccomType?.map((acc: any) => acc?.id),
-      // vehicle_id: [5, 1],
-      // TourComponent: formValues[8]?.Title[2]?.map((boxes: any, index: any) => ({
-      //   title: `Day ${index + 1}`,
-      //   description: boxes?.boxes,
-      // })),
-      TourSchedule: [
-        {
-          title: "Day 1",
-          description:
-            "Commence your extraordinary adventure with a warm welcome and an engaging introductory session.",
-        },
-      ],
+      TourSchedule: formValues[4]?.DurationCheckIn[1]?.map(
+        (data: {
+          day: number;
+          title: string;
+          boxes: { data: string; fromTime: string; toTime: string }[];
+        }) => ({
+          title: `Day ${data?.day}`,
+          description: data?.title,
+          schedule_detail: data?.boxes?.map((box) => ({
+            from: box?.fromTime,
+            to: box?.toTime,
+            description: box?.data,
+          })),
+        })
+      ),
       address_ward: "phuong xa",
       address_name: "179 Tran Phu",
       tour_location_type: "INTERNATIONAL",
