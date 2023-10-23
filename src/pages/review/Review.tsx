@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import Navbar from "../../components/Navbar/Index";
@@ -8,6 +9,8 @@ import { useSelector } from "react-redux";
 import { fetchTours } from "../../store/redux/silce/tourSlice";
 import { Rating } from "@mui/material";
 import SpringModal from "./SpringModal";
+import { getReview } from "../../store/redux/silce/reviewSlice";
+import dayjs from "dayjs";
 
 function Review() {
   const sidebarToggle = useOutletContext() as () => void;
@@ -17,8 +20,15 @@ function Review() {
   const { refeshTour } = React.useContext(DataContext);
   const dispatch: AppDispatch = useDispatch();
   const { tours } = useSelector((state: any) => state.tour);
+  const { review } = useSelector((state: any) => state.review);
+  const apiCalledRef = React.useRef(false);
+
   React.useEffect(() => {
-    dispatch(fetchTours());
+    if (!apiCalledRef.current) {
+      dispatch(fetchTours());
+      dispatch(getReview());
+      apiCalledRef.current = true;
+    }
   }, [dispatch, refeshTour]);
   const renderComponent = () => {
     let content;
@@ -32,6 +42,7 @@ function Review() {
         );
         break;
       case 3:
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         content = tours?.filter((tour: any) => tour.TicketPricing.length > 0);
         break;
       default:
@@ -163,7 +174,7 @@ function Review() {
               <div className="col-span-2 text-center">action</div>
             </div>
             <div className="flex flex-col gap-3">
-              {renderedContentChoose?.map((item: any, index: number) => (
+              {review?.map((item: any, index: number) => (
                 <div
                   key={index}
                   className=" bg-white rounded-lg shadow-custom-card-mui border border-solid border-gray-200 "
@@ -177,13 +188,13 @@ function Review() {
                         src="https://png.pngtree.com/png-vector/20190413/ourmid/pngtree-img-file-document-icon-png-image_935399.png"
                       />
                       <span className="font-normal text-gray-500">
-                        dao duc thinh
+                        {item?.user?.full_name || "person"}
                       </span>
                     </div>
                     <div className="font-medium flex gap-1">
                       ID product:
                       <span className="font-normal text-gray-500">
-                        {item?.id}
+                        {item?.user?.id}
                       </span>
                     </div>
                   </div>
@@ -193,12 +204,14 @@ function Review() {
                         <img
                           className="w-12 h-12 object-cover rounded-lg"
                           alt="wait"
-                          src={item?.tour_images[0]}
+                          src={item?.tour?.tour_images[0]}
                         />
                         <div className="flex flex-col gap-2">
-                          <span className="font-medium">{item?.name}</span>
+                          <span className="font-medium">
+                            {item?.tour?.name}
+                          </span>
                           <div className="flex flex-wrap gap-1">
-                            {item?.TicketPricing?.map(
+                            {/* {item?.TicketPricing?.map(
                               (ticket: any, index: number) => (
                                 <React.Fragment key={index}>
                                   {ticket?.price_range?.map(
@@ -216,8 +229,10 @@ function Review() {
                                   )}
                                 </React.Fragment>
                               )
-                            )}
-                            <div></div>
+                            )} */}
+                            <span className="text-gray-500">
+                              {item?.tour?.description}
+                            </span>
                           </div>
                         </div>
                       </div>
@@ -226,21 +241,19 @@ function Review() {
                       <div className="flex flex-col gap-2">
                         <Rating
                           name="half-rating-read"
-                          defaultValue={4}
+                          defaultValue={item?.rating}
                           precision={0.5}
                           readOnly
                         />
-                        <span>
-                          đươpvpfdựnqopdvjwqjdjợpđjjợpnd jwjopd ưdj ưdị ư d ựd
-                          ựd ựd
-                        </span>
+                        <span className="text-gray-700">{item?.content}</span>
                         <img
                           className="w-12 h-12  rounded-lg object-cover"
                           alt="wait"
                           src="https://static.thenounproject.com/png/777906-200.png"
                         />
                         <span className="text-gray-500 text-sm">
-                          18:57 18/10/2023
+                          {item?.updated_at &&
+                            dayjs(item?.updated_at).format("HH:mm DD/MM/YYYY ")}
                         </span>
                       </div>
                     </div>

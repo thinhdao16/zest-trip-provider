@@ -6,6 +6,9 @@ import Typography from "@mui/material/Typography";
 import { useSpring, animated } from "@react-spring/web";
 import { Rating } from "@mui/material";
 import { AiOutlineClose } from "react-icons/ai";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../store/redux/store";
+import { replyReview } from "../../store/redux/silce/reviewSlice";
 
 interface FadeProps {
   children: React.ReactElement;
@@ -66,19 +69,38 @@ const style = {
 
 export default function SpringModal(data: any) {
   const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  const handelChooseId = () => {
-    console.log(data.data.id);
+  const [reply, setReply] = React.useState("");
+  const handleOpen = () => {
+    setOpen(true);
   };
+  const handleClose = () => setOpen(false);
+  const dispatch: AppDispatch = useDispatch();
+
+  const handelReply = () => {
+    dispatch(
+      replyReview({
+        id: data.data.id,
+        content: reply,
+        tourId: data.data.tour.id,
+      })
+    );
+  };
+  console.log(data?.data?.ReviewReplies?.length);
   return (
     <div>
       <button
-        onClick={handleOpen}
-        className="bg-white font-medium border-navy-blue border rounded-lg px-2 py-1 text-navy-blue"
+        onClick={() =>
+          data?.data?.ReviewReplies != null ? handleOpen() : null
+        }
+        className={`font-medium  border rounded-lg px-2 py-1 ${
+          data?.data?.ReviewReplies != null
+            ? "bg-white text-navy-blue border-navy-blue"
+            : "bg-gray-300 text-gray-600 cursor-not-allowed border-gray-300"
+        }`}
       >
         Answer
       </button>
+
       <Modal
         aria-labelledby="spring-modal-title"
         aria-describedby="spring-modal-description"
@@ -105,32 +127,40 @@ export default function SpringModal(data: any) {
               <div className="flex flex-col">
                 <div className="flex gap-2 items-center">
                   <img
-                    src="https://static.thenounproject.com/png/777906-200.png"
+                    src={
+                      data?.data?.user?.avatar_image_url ||
+                      "https://static.thenounproject.com/png/777906-200.png"
+                    }
                     alt="wait me"
                     className="w-6 h-6 object-cover rounded-full"
                   />
-                  <span className="text-gray-500">dao duc thinh</span>
+                  <span className="text-gray-500">
+                    {data?.data?.user?.full_name || "person"}
+                  </span>
                   <Rating
                     name="half-rating-read"
-                    defaultValue={4}
+                    defaultValue={data?.data?.rating}
                     precision={0.5}
                     readOnly
                   />
                 </div>
-                <span>
-                  đươpvpfdựnqopdvjwqjdjợpđjjợpnd jwjopd ưdj ưdị ư d ựd ựd ựds
-                </span>
+                <span className="text-gray-700">{data?.data?.content}</span>
               </div>
               <div className="flex flex-col gap-1">
                 <span className="font-medium">
                   Do you follow have any thought you like to share?
                 </span>
-                <textarea className="h-32 p-4 border border-gray-300 rounded-lg focus:outline-none flex items-start justify-start" />
+                <textarea
+                  defaultValue={reply}
+                  onChange={(e) => setReply(e.target.value)}
+                  className="h-32 p-4 border bg-main border-gray-300 rounded-lg focus:outline-none flex items-start justify-start"
+                />
               </div>
               <div className="flex gap-3 justify-center">
                 <button
                   type="button"
                   className="bg-navy-blue rounded-lg py-2 px-6 text-white font-medium w-full"
+                  onClick={() => handelReply()}
                 >
                   Send
                 </button>

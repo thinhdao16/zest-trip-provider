@@ -26,9 +26,12 @@ export default function Banner() {
   const { refeshTour } = React.useContext(DataContext);
   const dispatch: AppDispatch = useDispatch();
   const { tours } = useSelector((state: any) => state.tour);
-  console.log(tours);
+  const apiCalledRef = React.useRef(false);
   React.useEffect(() => {
-    dispatch(fetchTours());
+    if (!apiCalledRef.current) {
+      dispatch(fetchTours());
+      apiCalledRef.current = true;
+    }
   }, [dispatch, refeshTour]);
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);

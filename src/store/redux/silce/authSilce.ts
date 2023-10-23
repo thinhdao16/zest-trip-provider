@@ -14,7 +14,8 @@ export const getPersonalInfo = createAsyncThunk(
   "auth/getInfo", // Slice name: "tour"
   async () => {
     try {
-      const response = await axiosInstance.get(`${BASE_URL}/users/me`);
+      const response = await axiosInstance.get(`${BASE_URL}/provider/profile`);
+      localStorage.setItem("id_provider", response.data.data.id);
       return response.data;
     } catch (error) {
       console.log(error);

@@ -178,6 +178,29 @@ function ScreenSP() {
                       )
                     )}
                   </div>
+                  {data?.special_dates.length > 0 && (
+                    <>
+                      <hr />
+                      <div className="flex flex-wrap gap-3">
+                        {data?.special_dates?.map(
+                          (
+                            special: { date: string; timeSlot: string },
+                            index: number
+                          ) => (
+                            <div
+                              key={index}
+                              className="flex gap-1  border border-solid border-gray-300 rounded-md text-sm px-2 py-1 text-gray-500"
+                            >
+                              <span className="font-medium">
+                                {special?.date}:{" "}
+                              </span>
+                              <span>{special?.timeSlot}</span>
+                            </div>
+                          )
+                        )}
+                      </div>
+                    </>
+                  )}
                 </div>
               </React.Fragment>
             ))}

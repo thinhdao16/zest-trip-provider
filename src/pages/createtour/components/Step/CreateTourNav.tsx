@@ -64,7 +64,6 @@ function CreateTourNav() {
 
     return `${year}-${month}-${day}`;
   }
-  console.log(formValues);
   const handleCreateTourAndAvailability = () => {
     const formData = new FormData();
     const dataValueCreate = {

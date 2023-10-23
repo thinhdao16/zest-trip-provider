@@ -46,7 +46,7 @@ export default function SignUp() {
   const [otp, setOtp] = useState("");
   const [fullName, setFullName] = useState("");
   const [open, setOpen] = React.useState(false);
-  const [minutes, setMinutes] = useState(3);
+  const [minutes, setMinutes] = useState(1);
   const [seconds, setSeconds] = useState(0);
   const [openLoading, setOpenLoading] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -119,7 +119,7 @@ export default function SignUp() {
     setOpenLoading(true);
     try {
       const response = await axios.post(
-        `${BASE_URL}/otp/generate`,
+        `${BASE_URL}/otp/generate/provider`,
         {
           email: email,
           type: "REGISTER_USER",
@@ -133,8 +133,8 @@ export default function SignUp() {
       console.log(response);
       if (response.status === 201) {
         setOpen(true);
-        setMinutes(3);
-        setSeconds(0);
+        setMinutes(1);
+        setSeconds(1);
         toast.warn("OTP sent to mail successfully!"); // Thông báo OTP đã gửi thành công
       } else {
         alert("email unknow");
@@ -143,18 +143,26 @@ export default function SignUp() {
       setOpenLoading(false);
     } catch (error: any) {
       setOpenLoading(false);
-      console.error(error);
       if (
         error.response &&
         error.response.data &&
         error.response.data.message
       ) {
         const errorMessages = error.response.data.message;
-        errorMessages.forEach((errorMessage: string) => {
-          toast.error(errorMessage); // Thông báo đăng nhập thất bại
-        });
+
+        if (Array.isArray(errorMessages)) {
+          errorMessages.forEach((errorMessage: string) => {
+            console.log(errorMessage);
+            toast.error(errorMessage);
+          });
+        } else if (typeof errorMessages === "string") {
+          console.log(errorMessages);
+          toast.error(errorMessages);
+        } else {
+          toast.error("SignIn fail!"); // Thông báo đăng nhập thất bại mặc định
+        }
       } else {
-        toast.error("SignIn fail!"); // Thông báo đăng nhập thất bại mặc định
+        toast.error("SignUp fail!"); // Thông báo đăng nhập thất bại mặc định
       }
     }
   };

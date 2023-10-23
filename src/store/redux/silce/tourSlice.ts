@@ -8,16 +8,6 @@ interface CreatTour {
   formData: FormData;
 }
 
-// Function to retrieve token from localStorage
-const getTokenFromLocalStorage = () => {
-  const token = localStorage.getItem("access_token");
-  if (token !== null) {
-    const parsedToken = JSON.parse(token); // Parse the JSON token
-    return parsedToken;
-  }
-  return null; // Handle the case when token is not found or null
-};
-
 const initialState = {
   tours: [],
   otherData: [],
@@ -40,7 +30,7 @@ export const fetchTours = createAsyncThunk("tour/fetchTours", async () => {
         limit: 100,
       },
     });
-
+    console.log(response);
     if (response.status === 200) {
       // toast.success("This is tour!"); // Thông báo lấy danh sách tour thành công
       return response.data.data;
@@ -61,7 +51,7 @@ export const fetchTourDetail = createAsyncThunk(
       const response = await axiosInstance.get(
         `${BASE_URL}/tour/detail/${index}`
       );
-      return response.data.data.data;
+      return response.data.data;
     } catch (error) {
       throw new Error("Failed to fetch tours");
     }

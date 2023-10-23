@@ -237,7 +237,7 @@ const Price: React.FC = () => {
     min: 1,
   });
   const handleInputChange = (e: any, field: string, type: string) => {
-    const value = e.target.value;
+    const value = parseInt(e.target.value);
     if (type === "default") {
       setQuantityDefault((prev) => ({
         ...prev,

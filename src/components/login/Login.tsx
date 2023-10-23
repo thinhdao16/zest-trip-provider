@@ -76,25 +76,6 @@ function Login() {
       setRefeshTour((prev) => !prev);
       setRefeshLogin((prev) => !prev);
       navigate("/listtour");
-      if (response.status === 200) {
-        if (response !== undefined) {
-          const additionalResponse = await axios.get(`${BASE_URL}/users/me`, {
-            headers: {
-              Authorization: `Bearer ${response.data.data.access_token}`,
-            },
-          });
-          if (additionalResponse.status === 200) {
-            // dispatch(personalInfo(additionalResponse.data));
-          }
-          toast.success("SignIn success!"); // Thông báo đăng nhập thành công
-        } else {
-          console.log("Lỗi khi đăng nhập");
-          toast.error("SignIn fail!"); // Thông báo đăng nhập thất bại
-        }
-      } else {
-        console.log("Lỗi khi đăng nhập");
-        toast.error("SignIn fail!"); // Thông báo đăng nhập thất bại
-      }
       setOpenLoading(false);
     } catch (error: any) {
       console.error(error);
@@ -107,9 +88,18 @@ function Login() {
         error.response.data.message
       ) {
         const errorMessages = error.response.data.message;
-        errorMessages.forEach((errorMessage: string) => {
-          toast.error(errorMessage); // Thông báo đăng nhập thất bại
-        });
+
+        if (Array.isArray(errorMessages)) {
+          errorMessages.forEach((errorMessage: string) => {
+            console.log(errorMessage);
+            toast.error(errorMessage);
+          });
+        } else if (typeof errorMessages === "string") {
+          console.log(errorMessages);
+          toast.error(errorMessages);
+        } else {
+          toast.error("SignIn fail!"); // Thông báo đăng nhập thất bại mặc định
+        }
       } else {
         toast.error("SignIn fail!"); // Thông báo đăng nhập thất bại mặc định
       }

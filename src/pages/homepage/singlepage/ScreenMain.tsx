@@ -9,12 +9,32 @@ import { FaHardDrive } from "react-icons/fa6";
 import { useEffect, useState } from "react";
 import AutoResizableTextarea from "./singlePageConst/AutoResizableTextarea";
 import { TourTag, VehicleTag } from "../../../components/icon/tour/tag";
+import TabContext from "@mui/lab/TabContext";
+import { Box, Tab } from "@mui/material";
+import TabList from "@mui/lab/TabList";
+import TabPanel from "@mui/lab/TabPanel";
 
+interface tourSche {
+  id: number;
+  description: string;
+  title: string;
+  tour_id: string;
+  created_at: string;
+  updated_at: string;
+  TourScheduleDetail: {
+    created_at: string;
+    description: string;
+    from: string;
+    to: string;
+    tour_schedule_id: number;
+    id: number;
+    updated_at: string;
+  }[];
+}
 function ScreenMain() {
   const tourDetail: any = useSelector(
     (state: StateTour) => state.tour.tourGetDetail
   );
-
   // Sử dụng useEffect để cập nhật state khi dữ liệu thay đổi
   useEffect(() => {
     if (tourDetail) {
@@ -36,7 +56,11 @@ function ScreenMain() {
   const [addressDis, setAddressDis] = useState("");
   const [addressPro, setAddressPro] = useState("");
   const [addressWard, setAddressWard] = useState("");
-
+  const [valueTab, setValueTab] = useState("1");
+  const handleValueTab = (event: React.SyntheticEvent, newValue: string) => {
+    console.log(newValue);
+    setValueTab(newValue);
+  };
   return (
     <div className="bg-main rounded-xl p-4 h-full overflow-y-auto global-scrollbar">
       <div className="mb-4">
@@ -253,6 +277,36 @@ function ScreenMain() {
             </div>
           </div>
         </div>
+        <Construction>
+          <ConstructionTitle>
+            <ConstructionTitletext>Tour Schedule</ConstructionTitletext>
+          </ConstructionTitle>
+          <ConstructionDes>
+            <div className="bg-white border border-solid border-gray-300 "></div>
+            <TabContext value={valueTab}>
+              <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+                <TabList
+                  onChange={handleValueTab}
+                  aria-label="lab API tabs example"
+                >
+                  {tourDetail?.TourSchedule?.map(
+                    (scheTit: tourSche, index: number) => {
+                      console.log(scheTit);
+                      return (
+                        <Tab label={`${scheTit?.title}`} value={index + 1} />
+                      );
+                    }
+                  )}
+                </TabList>
+              </Box>
+              {tourDetail?.TourSchedule?.map(
+                (scheDes: tourSche, index: string) => (
+                  <TabPanel value={index + 1}>{scheDes?.title}</TabPanel>
+                )
+              )}
+            </TabContext>
+          </ConstructionDes>
+        </Construction>
       </div>
     </div>
   );

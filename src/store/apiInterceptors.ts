@@ -27,7 +27,6 @@ export const isTokenExpired = (tokenPayload: string) => {
 
 const refreshToken = async () => {
   const refreshToken = getRefreshTokenFromLocalStorage();
-  console.log(refreshToken);
   if (refreshToken) {
     try {
       const refreshResponse = await axios.post(
@@ -39,6 +38,7 @@ const refreshToken = async () => {
           },
         }
       );
+      console.log(refreshResponse);
       const newAccessToken = refreshResponse.data.data.access_token;
       localStorage.setItem("access_token", newAccessToken);
       const newRefeshToken = refreshResponse.data.data.refresh_token;

@@ -47,7 +47,6 @@ function SetUpProvider() {
       monthly: true,
       addons: [],
     });
-  console.log(userServiceConfiguration);
   const updateUserInfo = (userInfo: UserInfo) => {
     setUserServiceConfiguration({ ...userServiceConfiguration, userInfo });
   };
@@ -57,7 +56,7 @@ function SetUpProvider() {
       selectedPlan: plan,
     });
   };
-
+  // console.log(userServiceConfiguration);
   const nextStep = (onGoingStep?: number) => {
     if (step === 5) return;
     if (step === 1 || (onGoingStep && onGoingStep !== 1 && step === 1)) {
@@ -131,15 +130,11 @@ function SetUpProvider() {
         // userServiceConfiguration?.selectedPlan?.serviceType
         "Domestic"
       );
-      // const file = userServiceConfiguration?.userInfo?.file[0]; // Lấy đối tượng File hoặc Blob từ userInfo
-      formData.append("file", userServiceConfiguration?.userInfo?.file[0]);
-      // Chuyển đổi File/Blob thành chuỗi base64
-      // const fileReader = new FileReader();
-      // fileReader.onload = (event: any) => {
-      //   const base64Data = event.target.result;
-      //   formData.append("file", base64Data); // Thêm chuỗi base64 vào FormData
-      // };
-      // fileReader.readAsDataURL(file);
+      formData.append(
+        "business_license",
+        userServiceConfiguration?.userInfo?.file[0]
+      );
+
       dispatch(
         becomeProvider({
           formData,

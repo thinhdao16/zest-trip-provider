@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import { Input } from "./input";
 import { Plan, UserInfo } from "AppTypes";
 import {
-  AiFillCodepenCircle,
+  AiFillCreditCard,
   AiFillFileAdd,
+  AiOutlineBook,
   AiOutlineBulb,
   AiOutlineDelete,
   AiOutlineSync,
@@ -18,7 +19,10 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { FaEarthAfrica, FaHotel, FaStaylinked } from "react-icons/fa6";
+import { FaEarthAfrica, FaRegAddressCard, FaStaylinked } from "react-icons/fa6";
+import { FcBriefcase, FcSurvey } from "react-icons/fc";
+import axios from "axios";
+import { BASE_URL } from "../../../store/apiInterceptors";
 
 const plans: Plan[] = [
   {
@@ -68,6 +72,10 @@ export const PersonalInfo = ({
   selectedPlan,
   updateSelectedPlan,
 }: PersonalInfoProps) => {
+  const [addressProvince, setAddressProvince] = useState<[]>();
+  const [addressDistrict, setAddressDistrict] = useState<[]>();
+  const [addressWard, setAddressWard] = useState<[]>();
+
   const [selectedFiles, setSelectedFiles] = useState<any[]>(
     userInfo?.file || []
   );
@@ -169,6 +177,46 @@ export const PersonalInfo = ({
     };
     updateSelectedPlan(updatedPlan);
   };
+  const handleSelectLocation = (
+    e: SelectChangeEvent<any>,
+    key: keyof UserInfo
+  ) => {
+    const selectValue = e.target.value;
+    console.log(selectValue);
+    const updatedUserInfo = { ...userInfo };
+    updatedUserInfo[key] = selectValue.full_name;
+    updateUserInfo(updatedUserInfo);
+    if (key === "address_province") {
+      axios
+        .get(`${BASE_URL}/resource/district/provinceCode/${selectValue?.code}`)
+        .then((response) => {
+          setAddressDistrict(response.data.data);
+        })
+        .catch((error) => {
+          console.error("Lỗi khi gọi API:", error);
+        });
+    }
+    if (key === "address_district") {
+      axios
+        .get(`${BASE_URL}/resource/ward/districtCode/${selectValue?.code}`)
+        .then((response) => {
+          setAddressWard(response.data.data);
+        })
+        .catch((error) => {
+          console.error("Lỗi khi gọi API:", error);
+        });
+    }
+  };
+  useEffect(() => {
+    axios
+      .get(`${BASE_URL}/resource/province/all`)
+      .then((response: any) => {
+        setAddressProvince(response.data.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
   return (
     <div className="flex flex-col items-center gap-2 ">
       <div
@@ -185,7 +233,7 @@ export const PersonalInfo = ({
       <Input
         labels="Name Company"
         placeholder="Novaland"
-        icon={<FaHotel />}
+        icon={<FcBriefcase />}
         // showRequired={ userInfo.nameCompany}
         value={userInfo.nameCompany}
         onChange={(e: FormEvent<HTMLInputElement>) =>
@@ -196,7 +244,7 @@ export const PersonalInfo = ({
       <Input
         labels="Description"
         placeholder="e.g. Stephen King"
-        icon={<FaStaylinked />}
+        icon={<FcSurvey />}
         value={userInfo.mediaSocial}
         onChange={(e: FormEvent<HTMLInputElement>) =>
           handlePersonalInfo(e, "mediaSocial")
@@ -205,7 +253,7 @@ export const PersonalInfo = ({
       <Input
         labels="Tax Code"
         placeholder="500"
-        icon={<AiFillCodepenCircle />}
+        icon={<AiFillCreditCard className="text-red-700" />}
         value={userInfo.taxCode}
         onChange={(e: FormEvent<HTMLInputElement>) =>
           handlePersonalInfo(e, "taxCode")
@@ -214,7 +262,7 @@ export const PersonalInfo = ({
       <Input
         labels="Address name"
         placeholder="VietNam"
-        icon={<FaEarthAfrica />}
+        icon={<FaEarthAfrica className="text-blue-700" />}
         value={userInfo.address_name}
         onChange={(e: FormEvent<HTMLInputElement>) =>
           handlePersonalInfo(e, "address_name")
@@ -223,7 +271,7 @@ export const PersonalInfo = ({
       <Input
         labels="Address district"
         placeholder="Dong Hoa, Di An"
-        icon={<FaStaylinked />}
+        icon={<FaRegAddressCard className="text-green-700" />}
         value={userInfo.address_district}
         onChange={(e: FormEvent<HTMLInputElement>) =>
           handlePersonalInfo(e, "address_district")
@@ -232,7 +280,7 @@ export const PersonalInfo = ({
       <Input
         labels="Address Ward"
         placeholder="e.g. Stephen King"
-        icon={<FaStaylinked />}
+        icon={<FaRegAddressCard className="text-red-700" />}
         value={userInfo.address_ward}
         onChange={(e: FormEvent<HTMLInputElement>) =>
           handlePersonalInfo(e, "address_ward")
@@ -241,7 +289,7 @@ export const PersonalInfo = ({
       <Input
         labels="Address province"
         placeholder="e.g. Stephen King"
-        icon={<FaStaylinked />}
+        icon={<FaRegAddressCard className="text-purple-700" />}
         value={userInfo.address_province}
         onChange={(e: FormEvent<HTMLInputElement>) =>
           handlePersonalInfo(e, "address_province")
@@ -250,7 +298,7 @@ export const PersonalInfo = ({
       <Input
         labels="Address country"
         placeholder="e.g. Stephen King"
-        icon={<FaStaylinked />}
+        icon={<FaRegAddressCard className="text-zinc-700" />}
         value={userInfo.address_country}
         onChange={(e: FormEvent<HTMLInputElement>) =>
           handlePersonalInfo(e, "address_country")
@@ -259,9 +307,9 @@ export const PersonalInfo = ({
       <div style={{ width: "450px" }}>
         <p className="font-medium mb-1">Service type</p>
         <FormControl fullWidth className="relative">
-          {/* <FaStaylinked className="absolute top-3 left-3" /> */}
+          <FaStaylinked className="absolute top-3 left-3" />
           <Select
-            style={{ borderRadius: "8px", height: "40px" }}
+            style={{ borderRadius: "8px", height: "40px", paddingLeft: "20px" }}
             displayEmpty
             inputProps={{ "aria-label": "Without label" }}
             value={selectedPlan?.serviceType || ""}
@@ -273,6 +321,72 @@ export const PersonalInfo = ({
             {plans[0]?.serviceType?.map((data: any) => (
               <MenuItem key={data?.id} value={data?.name}>
                 {data?.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </div>
+      <div style={{ width: "450px" }}>
+        <p className="font-medium mb-1">Address province</p>
+        <FormControl fullWidth className="relative">
+          <FaStaylinked className="absolute top-3 left-3" />
+          <Select
+            style={{ borderRadius: "8px", height: "40px", paddingLeft: "20px" }}
+            displayEmpty
+            inputProps={{ "aria-label": "Without label" }}
+            value={userInfo?.address_province}
+            onChange={(e) => handleSelectLocation(e, "address_province")}
+          >
+            <MenuItem value="">
+              <em>Please choose type</em>
+            </MenuItem>
+            {addressProvince?.map((data: any) => (
+              <MenuItem key={data?.code} value={data}>
+                {data?.full_name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </div>
+      <div style={{ width: "450px" }}>
+        <p className="font-medium mb-1">Address district</p>
+        <FormControl fullWidth className="relative">
+          <FaStaylinked className="absolute top-3 left-3" />
+          <Select
+            style={{ borderRadius: "8px", height: "40px", paddingLeft: "20px" }}
+            displayEmpty
+            inputProps={{ "aria-label": "Without label" }}
+            value={userInfo?.address_district}
+            onChange={(e) => handleSelectLocation(e, "address_district")}
+          >
+            <MenuItem value="">
+              <em>Please choose type</em>
+            </MenuItem>
+            {addressDistrict?.map((data: any) => (
+              <MenuItem key={data?.code} value={data}>
+                {data?.full_name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </div>
+      <div style={{ width: "450px" }}>
+        <p className="font-medium mb-1">Address ward</p>
+        <FormControl fullWidth className="relative">
+          <FaStaylinked className="absolute top-3 left-3" />
+          <Select
+            style={{ borderRadius: "8px", height: "40px", paddingLeft: "20px" }}
+            displayEmpty
+            inputProps={{ "aria-label": "Without label" }}
+            value={userInfo?.address_ward}
+            onChange={(e) => handleSelectLocation(e, "address_ward")}
+          >
+            <MenuItem value="">
+              <em>Please choose type</em>
+            </MenuItem>
+            {addressWard?.map((data: any) => (
+              <MenuItem key={data?.code} value={data}>
+                {data?.full_name}
               </MenuItem>
             ))}
           </Select>
