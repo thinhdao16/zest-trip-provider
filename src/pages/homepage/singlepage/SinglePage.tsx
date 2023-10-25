@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { BannerTitle } from "../../../styles/homepage/banner/banner";
 import {
@@ -28,7 +28,11 @@ import {
 import { useSelector } from "react-redux";
 import { FiMoon, FiSun } from "react-icons/fi";
 import { useDispatch } from "react-redux";
-import { fetchTourDetail } from "../../../store/redux/silce/tourSlice";
+import {
+  fetchTourDetail,
+  getTagTour,
+  getVehicleTour,
+} from "../../../store/redux/silce/tourSlice";
 import { AppDispatch } from "../../../store/redux/store";
 import { Carousel } from "react-responsive-carousel";
 import { StateTour } from "../../createtour/types/index.t";
@@ -36,6 +40,7 @@ import Header from "./Header";
 import NavBar from "./NavBar";
 import ScreenMain from "./ScreenMain";
 import ScreenSP from "./ScreenSP";
+import { DataContext } from "../../../store/dataContext/DataContext";
 
 // interface tourDetail{
 //   tour_images:[],
@@ -49,12 +54,14 @@ import ScreenSP from "./ScreenSP";
 
 function SinglePage() {
   const dispatch: AppDispatch = useDispatch();
-
+  const { refreshTourDetail } = useContext(DataContext);
   const { index }: any = useParams();
 
   useEffect(() => {
     dispatch(fetchTourDetail(index));
-  }, [dispatch, index]);
+    dispatch(getTagTour());
+    dispatch(getVehicleTour());
+  }, [dispatch, index, refreshTourDetail]);
   const [isSidebarOpen, setSidebarOpen] = useState(true);
 
   const toggleSidebar = () => {

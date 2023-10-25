@@ -21,6 +21,7 @@ const initialState = {
   errorDetail: null as string | null,
   loadingCreateTour: false,
   errorCreateTour: null as boolean | null,
+  loadingTourImageDetail: false,
 };
 
 export const fetchTours = createAsyncThunk("tour/fetchTours", async () => {
@@ -161,6 +162,34 @@ export const postCreateTicketTour = createAsyncThunk(
     }
   }
 );
+
+export const addTourImage = createAsyncThunk(
+  "tour/addTourImage", // Slice name: "tour"
+  async (requestData: any) => {
+    try {
+      console.log(requestData);
+      const response = await axiosInstance.patch(
+        `${BASE_URL}/tour/tourImage/${requestData?.id}`,
+        requestData?.formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      if (response.status === 200) {
+        return response.data;
+      } else {
+        toast.error("Failed to create tour!"); // Thông báo lỗi khi tạo tour
+        throw new Error("Failed to create tour");
+      }
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error?.response?.data?.message); // Thông báo lỗi khi tạo tour
+      throw new Error("Failed to create tour");
+    }
+  }
+);
 const tourSlice = createSlice({
   name: "tour",
   initialState,
@@ -234,6 +263,18 @@ const tourSlice = createSlice({
       .addCase(getVehicleTour.fulfilled, (state, action) => {
         state.loading = false;
         state.vehicleTour = action.payload;
+        state.error = null;
+      })
+      .addCase(addTourImage.pending, (state) => {
+        state.loadingTourImageDetail = true;
+        state.error = null;
+      })
+      .addCase(addTourImage.fulfilled, (state) => {
+        state.loadingTourImageDetail = false;
+        state.error = null;
+      })
+      .addCase(addTourImage.rejected, (state) => {
+        state.loadingTourImageDetail = false;
         state.error = null;
       });
   },

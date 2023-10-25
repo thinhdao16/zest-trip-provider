@@ -172,7 +172,7 @@ export const BannerMapContainer = styled(Box)(({ theme }) => ({
   width: "100%",
   minHeight: "20vw",
   // padding: "34px",
-  background: Colors.white,
+  // background: Colors.white,
   [theme.breakpoints.down("sm")]: {
     flexDirection: "column",
     alignItems: "center",

@@ -54,7 +54,7 @@ const InputArea: FC<TextAreaWithIconProps> = ({
             paddingTop: "5px",
             paddingLeft: "32px",
             width: "100%",
-            minHeight: "60px",
+            minHeight: "100px",
             borderRadius: "8px",
           }}
           className=" focus:ring-navy-blue focus:ring-1 focus:outline-none hover:ring-1 hover:ring-navy-blue  shadow-custom-card-mui"

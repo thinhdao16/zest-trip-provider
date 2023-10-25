@@ -5,7 +5,6 @@ import { Plan, UserInfo } from "AppTypes";
 import {
   AiFillCreditCard,
   AiFillFileAdd,
-  AiOutlineBook,
   AiOutlineBulb,
   AiOutlineDelete,
   AiOutlineSync,
@@ -110,7 +109,6 @@ export const PersonalInfo = ({
     setSelectedFiles(reorderedFiles);
   };
   const handleRemoveFile = (index: number, field: string) => {
-    console.log(field);
     if (field === "file") {
       const newSelectedFiles = [...selectedFiles];
       newSelectedFiles.splice(index, 1);

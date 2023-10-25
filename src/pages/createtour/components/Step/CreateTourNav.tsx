@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useStepContext } from "../../context/ui/useStepContext";
 import { Box } from "@mui/system";
 import { Button } from "@mui/material";
@@ -75,9 +75,12 @@ function CreateTourNav() {
         parseInt(formValues[6]?.Adults) + parseInt(formValues[6]?.Children),
       //end
       duration: parseInt(formValues[4]?.DurationCheckIn[0][0]?.no),
-      location: formValues[3]?.Location,
-      tag_id: formValues[1]?.TransportType?.map((tag: any) => tag?.id),
-      vehicle_id: formValues[2]?.AccomType?.map((acc: any) => acc?.id),
+      tag_id: formValues[1]?.TransportType?.map(
+        (tag: { id: number }) => tag?.id
+      ),
+      vehicle_id: formValues[2]?.AccomType?.map(
+        (acc: { id: number }) => acc?.id
+      ),
       TourSchedule: formValues[4]?.DurationCheckIn[1]?.map(
         (data: {
           day: number;
@@ -93,13 +96,12 @@ function CreateTourNav() {
           })),
         })
       ),
-      address_ward: "phuong xa",
-      address_name: "179 Tran Phu",
+      address_ward: formValues[3]?.Location.address_ward?.full_name,
+      address_name: formValues[3]?.Location?.address_name,
       tour_location_type: "INTERNATIONAL",
-      address_city: "Bao  Loc",
-      address_province: "Lam Dong",
-      address_country: "Viet Nam",
-      address_district: "quan 9",
+      address_province: formValues[3]?.Location?.address_province?.full_name,
+      address_country: formValues[3]?.Location?.address_country,
+      address_district: formValues[3]?.Location?.address_district?.full_name,
     };
 
     formData.append("data", JSON.stringify(dataValueCreate));
@@ -208,6 +210,7 @@ function CreateTourNav() {
       chooseStep(data);
     }
   };
+  console.log(formValues);
   const constraintLength = () => {
     let classSkip = "no"; // Mặc định là "no"
 
@@ -230,7 +233,12 @@ function CreateTourNav() {
       }
     }
     if (currentStep === 6) {
-      if (formValues[3].Location.length > 0) {
+      if (
+        formValues[3].Location.address_name?.length > 0 &&
+        formValues[3].Location.address_province?.full_name?.length > 0 &&
+        formValues[3].Location.address_district?.full_name?.length > 0 &&
+        formValues[3].Location.address_ward?.full_name?.length > 0
+      ) {
         classSkip = "yes"; // Nếu điều kiện thỏa mãn, thì set thành "yes"
       }
     }
@@ -275,7 +283,6 @@ function CreateTourNav() {
 
     setLengthValue(classSkip);
   };
-
   useEffect(() => {
     constraintLength();
   }, [currentStep, formValues]);

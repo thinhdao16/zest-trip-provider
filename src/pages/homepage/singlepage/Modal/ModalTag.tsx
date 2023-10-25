@@ -1,0 +1,116 @@
+import { useEffect, useState } from "react";
+import { FcEditImage } from "react-icons/fc";
+import { Backdrop, Fade, Grid, Modal } from "@mui/material";
+import { Box } from "@mui/system";
+import { useSelector } from "react-redux";
+import { DataSelectCard, StateTour } from "../../../createtour/types/index.t";
+import { TourTag, VehicleTag } from "../../../../components/icon/tour/tag";
+import { TitleIconCardOptions } from "../../../../styles/createtour/createtour";
+
+const style = {
+  position: "absolute" as const,
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  borderRadius: "12px",
+  background: "white",
+  boxShadow: 24,
+  p: 8,
+};
+
+function ModalTag({
+  dataTag: { tourTag, setTourTag },
+}: {
+  dataTag: { tourTag: { id: number; name: string }[]; setTourTag: any };
+}) {
+  const tagTour = useSelector((state: StateTour) => state.tour.tagTour);
+  const [open, setOpen] = useState(false);
+  const [dataTag, setDataTag] = useState<any>([]);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  function addItem(itemToAdd: any) {
+    const updatedTourTag = [...tourTag, itemToAdd];
+    setTourTag(updatedTourTag);
+    const updatedDataTag = dataTag.filter(
+      (item: { id: number }) => item.id !== itemToAdd.id
+    );
+    setDataTag(updatedDataTag);
+  }
+
+  function removeItem(idToRemove: any) {
+    console.log(idToRemove);
+    const updatedTourTag = tourTag.filter(
+      (item: { id: number }) => item.id !== idToRemove.id
+    );
+    setTourTag(updatedTourTag);
+    const updatedDataTag = [...dataTag, idToRemove];
+    setDataTag(updatedDataTag);
+  }
+  useEffect(() => {
+    const updatedDataTag = tagTour.filter(
+      (dataItem: any) =>
+        !tourTag?.some(
+          (tourTag: { name: string }) => tourTag.name === dataItem.name
+        )
+    );
+    setDataTag(updatedDataTag);
+  }, [tagTour]);
+
+  return (
+    <div className="">
+      <div className="rounded-full p-1.5 shadow-custom-card-mui border border-solid border-navy-blue">
+        <FcEditImage onClick={handleOpen} />
+      </div>
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={open}
+        onClose={handleClose}
+        closeAfterTransition
+        slots={{ backdrop: Backdrop }}
+        slotProps={{
+          backdrop: {
+            timeout: 500,
+          },
+        }}
+      >
+        <Fade in={open}>
+          <Box
+            sx={style}
+            className="overflow-auto h-2/3 global-scrollbar outline-none sm:w-screen md:w-2/3"
+          >
+            <span className="font-medium">Tag tour of you</span>
+            <Grid container spacing={2}>
+              {tourTag?.map((data: DataSelectCard) => (
+                <Grid key={data.id} item xs={12} sm={6} md={2}>
+                  <div className="p-4 border border-solid border-gray-300 rounded-lg shadow-custom-card-mui">
+                    <TourTag field={data?.name} style="w-8 h-8" />
+                    <TitleIconCardOptions>{data?.name}</TitleIconCardOptions>
+                    <span onClick={() => removeItem(data)}>xóa</span>
+                  </div>
+                </Grid>
+              ))}
+            </Grid>
+            <span className="font-medium">Choose tag you want </span>
+            <Grid container spacing={2}>
+              {dataTag.map((data: DataSelectCard) => (
+                <Grid key={data.id} item xs={12} sm={6} md={2}>
+                  <div className="p-4 border border-solid border-gray-300 rounded-lg shadow-custom-card-mui">
+                    <TourTag field={data?.name} style="w-8 h-8" />
+                    <TitleIconCardOptions>{data?.name}</TitleIconCardOptions>
+                    <span onClick={() => addItem(data)}>add</span>
+                  </div>
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
+        </Fade>
+      </Modal>
+    </div>
+  );
+}
+
+ModalTag.propTypes = {};
+
+export default ModalTag;

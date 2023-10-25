@@ -13,6 +13,8 @@ interface User {
 }
 type RefeshLogin = boolean;
 type RefeshTour = boolean;
+type RefeshTourDetail = boolean;
+
 interface AuthContextValue {
   googleSignIn: () => Promise<void>;
   accessToken: string;
@@ -21,6 +23,10 @@ interface AuthContextValue {
   setRefeshLogin: React.Dispatch<React.SetStateAction<RefeshLogin | null>>;
   refeshTour: RefeshTour | null;
   setRefeshTour: React.Dispatch<React.SetStateAction<RefeshTour | null>>;
+  refreshTourDetail: RefeshTourDetail | null;
+  setRefreshTourDetail: React.Dispatch<
+    React.SetStateAction<RefeshTourDetail | null>
+  >;
 }
 
 export const DataContext = createContext<AuthContextValue>(
@@ -35,8 +41,9 @@ export function DataContextProvider({
   const [user, setUser] = useState<User | null>(null);
   const [accessToken, setAccessToken] = useState("");
   const [refeshLogin, setRefeshLogin] = useState<RefeshLogin | null>(null);
-  const [refeshTour, setRefeshTour] = useState<RefeshLogin | null>(null);
-
+  const [refeshTour, setRefeshTour] = useState<RefeshTour | null>(null);
+  const [refreshTourDetail, setRefreshTourDetail] =
+    useState<RefeshTourDetail | null>(null);
   const abc = "abe";
   const googleSignIn = async () => {
     const provider = new GoogleAuthProvider();
@@ -78,6 +85,8 @@ export function DataContextProvider({
         setRefeshLogin,
         refeshTour,
         setRefeshTour,
+        refreshTourDetail,
+        setRefreshTourDetail,
       }}
     >
       {children}

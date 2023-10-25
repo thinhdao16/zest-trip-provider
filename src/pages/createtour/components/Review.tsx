@@ -27,7 +27,6 @@ import "../styles/createtour.css";
 
 const Review: React.FC = () => {
   const { currentStep, formValues } = useStepContext();
-  console.log(formValues);
   if (currentStep !== 11) {
     return null;
   }
@@ -262,7 +261,7 @@ const Review: React.FC = () => {
                         <FaLocationDot className="mr-2" />
                         <div className="block">
                           <p className="font-medium mb-1 text-lg"> location</p>
-                          <div>{formValues?.[3]?.Location}</div>
+                          {/* <div>{formValues?.[3]?.Location}</div> */}
                         </div>
                       </div>
                       <div></div>
