@@ -133,12 +133,12 @@ export default function SignUp() {
       console.log(response);
       if (response.status === 201) {
         setOpen(true);
-        setMinutes(1);
+        setMinutes(3);
         setSeconds(1);
-        toast.warn("OTP sent to mail successfully!"); // Thông báo OTP đã gửi thành công
+        toast.warn("OTP sent to mail successfully!");
       } else {
         alert("email unknow");
-        toast.error("Failed to send OTP!"); // Thông báo gửi OTP thất bại
+        toast.error("Failed to send OTP!");
       }
       setOpenLoading(false);
     } catch (error: any) {
@@ -156,19 +156,20 @@ export default function SignUp() {
             toast.error(errorMessage);
           });
         } else if (typeof errorMessages === "string") {
-          console.log(errorMessages);
+          console.log(error);
           toast.error(errorMessages);
         } else {
-          toast.error("SignIn fail!"); // Thông báo đăng nhập thất bại mặc định
+          toast.error("SignIn fail!");
         }
       } else {
-        toast.error("SignUp fail!"); // Thông báo đăng nhập thất bại mặc định
+        toast.error("SignUp fail!");
       }
     }
   };
 
   const handleSignUp = async () => {
     setOpenLoading(true);
+    console.log(otp);
     try {
       const response = await axios.post(
         `${BASE_URL}/auth/signup`,
@@ -191,10 +192,8 @@ export default function SignUp() {
         setMinutes(3);
         setSeconds(1);
         navigate("/setupprovider");
-        localStorage.setItem(
-          "access_token_signup",
-          response.data.data.access_token
-        );
+        localStorage.setItem("access_token", response.data.data.access_token);
+        localStorage.setItem("refresh_token", response.data.data.refresh_token);
         toast.success("SignUp success!"); // Thông báo đăng ký thành công
       } else {
         alert("email unknow");

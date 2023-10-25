@@ -38,7 +38,6 @@ const refreshToken = async () => {
           },
         }
       );
-      console.log(refreshResponse);
       const newAccessToken = refreshResponse.data.data.access_token;
       localStorage.setItem("access_token", newAccessToken);
       const newRefeshToken = refreshResponse.data.data.refresh_token;

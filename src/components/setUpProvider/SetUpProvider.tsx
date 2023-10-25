@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Plan, UserInfo, UserServiceConfiguration } from "AppTypes";
 import { Sidebar } from "./components/sidebar";
 import { PersonalInfo } from "./components/personalInfo";
@@ -15,15 +15,22 @@ import { useNavigate } from "react-router-dom";
 import { AppDispatch } from "../../store/redux/store";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { becomeProvider } from "../../store/redux/silce/providerSlice";
+import {
+  becomeProvider,
+  createProviderAvt,
+  createProviderBanner,
+} from "../../store/redux/silce/providerSlice";
 import jwt_decode from "jwt-decode";
 import "./styles/setup.css";
+import { DataContext } from "../../store/dataContext/DataContext";
 function SetUpProvider() {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [showRequired, setShowRequiredFields] = useState(false);
 
   const dispatch: AppDispatch = useDispatch();
+
+  const { setRefeshLogin } = useContext(DataContext);
   useSelector((state: any) => state.provider);
   const [userServiceConfiguration, setUserServiceConfiguration] =
     useState<UserServiceConfiguration>({
@@ -35,9 +42,9 @@ function SetUpProvider() {
         mediaSocial: "",
         taxCode: "",
         address_name: "",
-        address_district: "",
-        address_ward: "",
-        address_province: "",
+        address_district: { full_name: "", code: "" },
+        address_ward: { full_name: "", code: "" },
+        address_province: { full_name: "", code: "" },
         address_country: "",
         file: [],
         avt: [],
@@ -79,7 +86,7 @@ function SetUpProvider() {
   };
 
   const Confirm = () => {
-    const token: any = localStorage.getItem("access_token_signup");
+    const token: any = localStorage.getItem("access_token");
     const decode: any = jwt_decode(token);
     if (decode.id) {
       const formData = new FormData();
@@ -111,15 +118,15 @@ function SetUpProvider() {
       );
       formData.append(
         "address_district",
-        userServiceConfiguration?.userInfo?.address_district
+        userServiceConfiguration?.userInfo?.address_district?.full_name
       );
       formData.append(
         "address_ward",
-        userServiceConfiguration?.userInfo?.address_ward
+        userServiceConfiguration?.userInfo?.address_ward?.full_name
       );
       formData.append(
         "address_province",
-        userServiceConfiguration?.userInfo?.address_province
+        userServiceConfiguration?.userInfo?.address_province?.full_name
       );
       formData.append(
         "address_country",
@@ -139,10 +146,27 @@ function SetUpProvider() {
         becomeProvider({
           formData,
           onSuccessCallback: () => {
-            navigate("/login");
+            navigate("/");
+            setRefeshLogin((prev) => !prev);
           },
         })
-      );
+      )
+        .then((provider) => {
+          console.log(becomeProvider.fulfilled.match(provider));
+          if (becomeProvider.fulfilled.match(provider)) {
+            dispatch(
+              createProviderAvt(userServiceConfiguration?.userInfo?.avt?.file)
+            );
+            dispatch(
+              createProviderBanner(
+                userServiceConfiguration?.userInfo?.banner?.file
+              )
+            );
+          }
+        })
+        .catch((error) => {
+          console.log("create provider error", error);
+        });
     } else {
       alert("dont have userId");
     }
@@ -242,6 +266,7 @@ function SetUpProvider() {
                           <button
                             className="nextSetupProvider bg-navy-blue font-medium border border-navy-blue px-4 py-1.5 rounded-lg text-white hover:border hover:border-navy-blue hover:bg-white hover:text-navy-blue"
                             onClick={() => nextStep()}
+                            // onClick={() => Confirm()}
                           >
                             Next step
                           </button>

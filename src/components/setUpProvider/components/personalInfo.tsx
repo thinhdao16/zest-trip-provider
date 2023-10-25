@@ -75,7 +75,6 @@ export const PersonalInfo = ({
   const [addressProvince, setAddressProvince] = useState<[]>();
   const [addressDistrict, setAddressDistrict] = useState<[]>();
   const [addressWard, setAddressWard] = useState<[]>();
-
   const [selectedFiles, setSelectedFiles] = useState<any[]>(
     userInfo?.file || []
   );
@@ -119,11 +118,16 @@ export const PersonalInfo = ({
     }
     if (field === "banner") {
       setImageSrc(undefined);
+      // Assuming userInfo.banner is an array
+      userInfo && (userInfo.banner = {});
     }
     if (field === "avt") {
       setImageAvt(undefined);
+      // Assuming userInfo.avt is an array
+      userInfo && (userInfo.avt = {});
     }
   };
+
   const handleImageChange = (
     field: string,
     e: React.MouseEvent<HTMLButtonElement>
@@ -184,7 +188,7 @@ export const PersonalInfo = ({
     const selectValue = e.target.value;
     console.log(selectValue);
     const updatedUserInfo = { ...userInfo };
-    updatedUserInfo[key] = selectValue.full_name;
+    updatedUserInfo[key] = selectValue;
     updateUserInfo(updatedUserInfo);
     if (key === "address_province") {
       axios
@@ -269,33 +273,6 @@ export const PersonalInfo = ({
         }
       />
       <Input
-        labels="Address district"
-        placeholder="Dong Hoa, Di An"
-        icon={<FaRegAddressCard className="text-green-700" />}
-        value={userInfo.address_district}
-        onChange={(e: FormEvent<HTMLInputElement>) =>
-          handlePersonalInfo(e, "address_district")
-        }
-      />
-      <Input
-        labels="Address Ward"
-        placeholder="e.g. Stephen King"
-        icon={<FaRegAddressCard className="text-red-700" />}
-        value={userInfo.address_ward}
-        onChange={(e: FormEvent<HTMLInputElement>) =>
-          handlePersonalInfo(e, "address_ward")
-        }
-      />
-      <Input
-        labels="Address province"
-        placeholder="e.g. Stephen King"
-        icon={<FaRegAddressCard className="text-purple-700" />}
-        value={userInfo.address_province}
-        onChange={(e: FormEvent<HTMLInputElement>) =>
-          handlePersonalInfo(e, "address_province")
-        }
-      />
-      <Input
         labels="Address country"
         placeholder="e.g. Stephen King"
         icon={<FaRegAddressCard className="text-zinc-700" />}
@@ -304,28 +281,6 @@ export const PersonalInfo = ({
           handlePersonalInfo(e, "address_country")
         }
       />
-      <div style={{ width: "450px" }}>
-        <p className="font-medium mb-1">Service type</p>
-        <FormControl fullWidth className="relative">
-          <FaStaylinked className="absolute top-3 left-3" />
-          <Select
-            style={{ borderRadius: "8px", height: "40px", paddingLeft: "20px" }}
-            displayEmpty
-            inputProps={{ "aria-label": "Without label" }}
-            value={selectedPlan?.serviceType || ""}
-            onChange={(e) => handleSelect(e, "serviceType")}
-          >
-            <MenuItem value="">
-              <em>Please choose type</em>
-            </MenuItem>
-            {plans[0]?.serviceType?.map((data: any) => (
-              <MenuItem key={data?.id} value={data?.name}>
-                {data?.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </div>
       <div style={{ width: "450px" }}>
         <p className="font-medium mb-1">Address province</p>
         <FormControl fullWidth className="relative">
@@ -359,14 +314,17 @@ export const PersonalInfo = ({
             value={userInfo?.address_district}
             onChange={(e) => handleSelectLocation(e, "address_district")}
           >
-            <MenuItem value="">
-              <em>Please choose type</em>
-            </MenuItem>
-            {addressDistrict?.map((data: any) => (
-              <MenuItem key={data?.code} value={data}>
-                {data?.full_name}
+            {addressDistrict && addressDistrict.length > 0 ? (
+              addressDistrict.map((data: any) => (
+                <MenuItem key={data.code} value={data}>
+                  {data.full_name}
+                </MenuItem>
+              ))
+            ) : (
+              <MenuItem value="">
+                <em>Please choose address province</em>
               </MenuItem>
-            ))}
+            )}
           </Select>
         </FormControl>
       </div>
@@ -381,17 +339,43 @@ export const PersonalInfo = ({
             value={userInfo?.address_ward}
             onChange={(e) => handleSelectLocation(e, "address_ward")}
           >
+            {addressWard && addressWard.length > 0 ? (
+              addressWard.map((data: any) => (
+                <MenuItem key={data.code} value={data.full_name}>
+                  {data.full_name}
+                </MenuItem>
+              ))
+            ) : (
+              <MenuItem value="">
+                <em>Please choose address ward</em>
+              </MenuItem>
+            )}
+          </Select>
+        </FormControl>
+      </div>
+      <div style={{ width: "450px" }}>
+        <p className="font-medium mb-1">Service type</p>
+        <FormControl fullWidth className="relative">
+          <FaStaylinked className="absolute top-3 left-3" />
+          <Select
+            style={{ borderRadius: "8px", height: "40px", paddingLeft: "20px" }}
+            displayEmpty
+            inputProps={{ "aria-label": "Without label" }}
+            value={selectedPlan?.serviceType || ""}
+            onChange={(e) => handleSelect(e, "serviceType")}
+          >
             <MenuItem value="">
               <em>Please choose type</em>
             </MenuItem>
-            {addressWard?.map((data: any) => (
-              <MenuItem key={data?.code} value={data}>
-                {data?.full_name}
+            {plans[0]?.serviceType?.map((data: any) => (
+              <MenuItem key={data?.id} value={data?.name}>
+                {data?.name}
               </MenuItem>
             ))}
           </Select>
         </FormControl>
       </div>
+
       <div>
         <p className="font-medium">Business license</p>
         <Box
@@ -607,7 +591,7 @@ export const PersonalInfo = ({
               />
             </div>
           )}
-          {imageSrc ? (
+          {userInfo?.banner?.length === undefined ? (
             <button
               className="bg-white border border-navy-blue text-navy-blue px-3 rounded-2xl hover:border hover:border-navy-blue hover:bg-navy-blue hover:text-white h-10 m-3"
               onClick={(e) => handleImageChange("banner", e)}
@@ -622,7 +606,7 @@ export const PersonalInfo = ({
               Add banner
             </button>
           )}
-          {imageAvt ? (
+          {userInfo?.avt?.length === undefined ? (
             <button
               className="bg-white border border-blue-grotto text-blue-grotto rounded-2xl hover:border hover:border-solid hover:border-blue-grotto hover:bg-blue-grotto hover:text-white hover:rounded-2xl h-10 mt-3 px-3 "
               onClick={(e) => handleImageChange("avt", e)}

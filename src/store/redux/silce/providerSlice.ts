@@ -1,12 +1,13 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
-import { BASE_URL } from "../../apiInterceptors";
+import axiosInstance, { BASE_URL } from "../../apiInterceptors";
 
 const initialState = {
   profile: [],
   becomeProvider: [],
   loadingBecomeProvider: false,
   errorBecomeProvider: null as string | null,
+  loading: false,
+  error: null as string | null,
 };
 export const becomeProvider = createAsyncThunk(
   "provider/becomeProvider",
@@ -17,16 +18,18 @@ export const becomeProvider = createAsyncThunk(
     formData: FormData;
     onSuccessCallback: () => void;
   }) => {
-    const token = localStorage.getItem("access_token_signup");
     try {
-      const response = await axios.post(`${BASE_URL}/provider`, formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await axiosInstance.post(
+        `${BASE_URL}/provider`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
       // alert("Please wait for admin approval.");
-      onSuccessCallback(); // Gọi callback sau khi hoàn thành request
+      onSuccessCallback();
       console.log(response);
       return response.data;
     } catch (error) {
@@ -35,7 +38,65 @@ export const becomeProvider = createAsyncThunk(
     }
   }
 );
-
+export const createProviderAvt = createAsyncThunk(
+  "provider/createProviderProfile", // Slice name: "tour"
+  async (requestData: any) => {
+    try {
+      const response = await axiosInstance.patch(
+        `${BASE_URL}/provider/avatar`,
+        { file: requestData },
+        {
+          headers: {
+            // "Content-Type": "application/json",
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log(response);
+      if (response.status === 200) {
+        // toast.success("Availability created successfully!"); // Thông báo tạo Availability thành công
+        return response.data;
+      } else {
+        // toast.error("Failed to create Availability!"); // Thông báo lỗi khi tạo Availability
+        throw new Error("Failed to create Availability");
+      }
+    } catch (error) {
+      console.log(error);
+      // toast.error("Failed to create Availability!");
+      throw new Error("Failed to create Availability");
+    }
+  }
+);
+export const createProviderBanner = createAsyncThunk(
+  "provider/createProviderBanner", // Slice name: "tour"
+  async (requestData: any) => {
+    try {
+      console.log(requestData);
+      const response = await axiosInstance.patch(
+        `${BASE_URL}/provider/banner`,
+        { file: requestData },
+        {
+          headers: {
+            // "Content-Type": "application/json",
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log(response);
+      if (response.status === 200) {
+        // toast.success("Availability created successfully!"); // Thông báo tạo Availability thành công
+        return response.data;
+      } else {
+        // toast.error("Failed to create Availability!"); // Thông báo lỗi khi tạo Availability
+        throw new Error("Failed to create Availability");
+      }
+    } catch (error) {
+      console.log(error);
+      // toast.error("Failed to create Availability!");
+      throw new Error("Failed to create Availability");
+    }
+  }
+);
 const providerSice = createSlice({
   name: "provider",
   initialState,

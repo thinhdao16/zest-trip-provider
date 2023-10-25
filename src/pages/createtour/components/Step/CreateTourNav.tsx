@@ -193,7 +193,6 @@ function CreateTourNav() {
             tour_id: tourResponse.payload.data.id,
             pricing_data,
           };
-          console.log(data);
           dispatch(postCreateTicketTour(data));
         } else {
           console.log("postCreateTour failed");

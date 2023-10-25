@@ -15,9 +15,9 @@ declare module "AppTypes" {
 
     taxCode: string;
     address_name: string;
-    address_district: string;
-    address_ward: string;
-    address_province: string;
+    address_district: { full_name: string; code: string };
+    address_ward: { full_name: string; code: string };
+    address_province: { full_name: string; code: string };
     address_country: string;
     file: file;
     avt: file;

@@ -30,7 +30,6 @@ export const fetchTours = createAsyncThunk("tour/fetchTours", async () => {
         limit: 100,
       },
     });
-    console.log(response);
     if (response.status === 200) {
       // toast.success("This is tour!"); // Thông báo lấy danh sách tour thành công
       return response.data.data;
@@ -39,6 +38,7 @@ export const fetchTours = createAsyncThunk("tour/fetchTours", async () => {
       throw new Error("Failed to fetch tours");
     }
   } catch (error) {
+    console.log(error);
     toast.error("Failed to fetch tours!"); // Thông báo lỗi khi lấy danh sách tour
     throw new Error("Failed to fetch tours");
   }
