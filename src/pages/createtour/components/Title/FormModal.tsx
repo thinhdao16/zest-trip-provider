@@ -85,7 +85,10 @@ const FormModal: React.FC<FormModalProps> = ({
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style} className="flex flex-col gap-5">
+        <Box
+          sx={style}
+          className="flex flex-col gap-5 h-2/3 overflow-auto global-scrollbar"
+        >
           <div className="flex flex-col  gap-1">
             <p className="font-medium text-2xl">Schedule information</p>
             <p>

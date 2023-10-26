@@ -205,15 +205,7 @@ const Capacity: React.FC = () => {
     );
     setStartingTimes(updatedStartingTimes);
   };
-  const removeTimeFromDay = (dayIndex: number, timeIndex: number) => {
-    if (dayIndex >= 0 && dayIndex < startingTimeSingle.length) {
-      const updatedStartingTimeSingle = [...startingTimeSingle];
-      const updatedDay = { ...updatedStartingTimeSingle[dayIndex] };
-      updatedDay.time.splice(timeIndex, 1);
-      updatedStartingTimeSingle[dayIndex] = updatedDay;
-      setStartingTimeSingle(updatedStartingTimeSingle);
-    }
-  };
+
   const removeDay = (dayIndex: number) => {
     if (dayIndex >= 0 && dayIndex < startingTimeSingle.length) {
       const updatedStartingTimeSingle = [...startingTimeSingle];

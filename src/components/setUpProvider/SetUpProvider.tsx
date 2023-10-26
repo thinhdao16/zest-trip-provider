@@ -152,7 +152,6 @@ function SetUpProvider() {
         })
       )
         .then((provider) => {
-          console.log(becomeProvider.fulfilled.match(provider));
           if (becomeProvider.fulfilled.match(provider)) {
             dispatch(
               createProviderAvt(userServiceConfiguration?.userInfo?.avt?.file)

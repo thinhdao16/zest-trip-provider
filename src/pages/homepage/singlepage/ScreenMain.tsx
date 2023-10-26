@@ -10,7 +10,7 @@ import React, { useContext, useEffect, useState } from "react";
 import AutoResizableTextarea from "./singlePageConst/AutoResizableTextarea";
 import { TourTag, VehicleTag } from "../../../components/icon/tour/tag";
 import TabContext from "@mui/lab/TabContext";
-import { Backdrop, Box, CircularProgress, Tab } from "@mui/material";
+import { Backdrop, CircularProgress, Tab } from "@mui/material";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import "./detail.css";
@@ -20,6 +20,10 @@ import { AppDispatch } from "../../../store/redux/store";
 import { useDispatch } from "react-redux";
 import { addTourImage } from "../../../store/redux/silce/tourSlice";
 import { DataContext } from "../../../store/dataContext/DataContext";
+import { FcEmptyTrash } from "react-icons/fc";
+import axios from "axios";
+import { BASE_URL } from "../../../store/apiInterceptors";
+import ModalTourScheDetail from "./Modal/ModalTourScheDetail";
 interface tourSche {
   id: number;
   description: string;
@@ -46,21 +50,6 @@ function ScreenMain() {
   );
   const dispatch: AppDispatch = useDispatch();
   const { setRefreshTourDetail } = useContext(DataContext);
-  useEffect(() => {
-    if (tourDetail) {
-      setName(tourDetail?.name);
-      setDescription(tourDetail.description);
-      setFootnote(tourDetail.footnote);
-      setAddressName(tourDetail?.address_name);
-      setAddressDis(tourDetail?.address_district);
-      setAddressPro(tourDetail?.address_province);
-      setAddressWard(tourDetail?.address_ward);
-      setSchedule(tourDetail?.TourSchedule);
-      setTourTag(tourDetail?.tag_id);
-      setTourVehicle(tourDetail?.vehicle_id);
-      setTourImages(tourDetail?.tour_images);
-    }
-  }, [tourDetail]);
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -75,7 +64,13 @@ function ScreenMain() {
   const [tourTag, setTourTag] = useState([]);
   const [tourVehicle, setTourVehicle] = useState([]);
   const [tourImages, setTourImages] = useState([]);
+  const [addressProvince, setAddressProvince] = useState<[]>();
+  const [addressDistrict, setAddressDistrict] = useState<[]>();
+  const [addressWards, setAddressWards] = useState<[]>();
+
   const [selectedImages, setSelectedImages] = useState<any>([]);
+
+  const [hasChanges, setHasChanges] = useState(false);
 
   const handleValueTab = (event: React.SyntheticEvent, newValue: string) => {
     setValueTab(newValue);
@@ -98,12 +93,87 @@ function ScreenMain() {
     });
     setSelectedImages([]);
   };
+
   const removeImage = (imageURL: string) => {
-    console.log(imageURL);
-    const updatedImages = tourImages.filter((image) => image !== imageURL);
-    setTourImages(updatedImages);
+    const indexToRemove = tourImages.findIndex((image) => image === imageURL);
+    if (indexToRemove >= 0) {
+      const updatedImages = [...tourImages];
+      updatedImages.splice(indexToRemove, 1);
+      setTourImages(updatedImages);
+    }
   };
-  console.log(tourDetail);
+
+  const handleDataChange = () => {
+    setHasChanges(true);
+  };
+
+  const handleCountryChange = (e: any, field: string) => {
+    const selectedValue = e.target.value; // Lấy giá trị của option đã chọn
+    if (field === "pro") {
+      setAddressPro(selectedValue);
+      const findPro: any = addressProvince?.find(
+        (pro: any) => pro.full_name === selectedValue
+      );
+      axios
+        .get(`${BASE_URL}/resource/district/provinceCode/${findPro?.code}`)
+        .then((response) => {
+          setAddressDistrict(response.data.data);
+        })
+        .catch((error) => {
+          console.error("Lỗi khi gọi API:", error);
+        });
+    }
+    if (field === "dis") {
+      setAddressDis(selectedValue);
+      const findPro: any = addressDistrict?.find(
+        (pro: any) => pro.full_name === selectedValue
+      );
+      axios
+        .get(`${BASE_URL}/resource/ward/districtCode/${findPro?.code}`)
+        .then((response) => {
+          setAddressWards(response.data.data);
+        })
+        .catch((error) => {
+          console.error("Lỗi khi gọi API:", error);
+        });
+    }
+    if (field === "ward") {
+      setAddressWard(selectedValue);
+    }
+  };
+
+  useEffect(() => {
+    if (tourDetail) {
+      setName(tourDetail?.name);
+      setDescription(tourDetail.description);
+      setFootnote(tourDetail.footnote);
+      setAddressName(tourDetail?.address_name);
+      setAddressDis(tourDetail?.address_district);
+      setAddressPro(tourDetail?.address_province);
+      setAddressWard(tourDetail?.address_ward);
+      setSchedule(tourDetail?.TourSchedule);
+      setTourTag(tourDetail?.tag_id);
+      setTourVehicle(tourDetail?.vehicle_id);
+      setTourImages(tourDetail?.tour_images);
+    }
+  }, [tourDetail]);
+  useEffect(() => {
+    axios
+      .get(`${BASE_URL}/resource/province/all`)
+      .then((response: any) => {
+        setAddressProvince(response.data.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+  window.addEventListener("beforeunload", (e) => {
+    if (hasChanges) {
+      e.preventDefault();
+      e.returnValue = "Bạn có muốn lưu thay đổi trước khi rời khỏi trang?";
+    }
+  });
+
   return (
     <>
       <Backdrop
@@ -113,7 +183,10 @@ function ScreenMain() {
       >
         <CircularProgress color="inherit" />
       </Backdrop>
-      <div className="bg-main rounded-xl p-4 h-full overflow-y-auto global-scrollbar">
+      <div
+        className="bg-main rounded-xl p-4 h-full overflow-y-auto global-scrollbar"
+        onClick={handleDataChange}
+      >
         <div className="mb-4">
           <span className="font-medium text-xl">Infomation basic</span>
         </div>
@@ -160,7 +233,7 @@ function ScreenMain() {
                 {tourImages?.map((img: string, index: number) => (
                   <div
                     key={index}
-                    className="border border-solid bg-white border-gray-300 rounded-lg p-1"
+                    className="border border-solid bg-white border-gray-300 rounded-lg p-1 relative"
                     style={{ display: "flex" }}
                   >
                     <img
@@ -169,7 +242,11 @@ function ScreenMain() {
                       alt="error"
                       style={{ width: "100px", height: "100px", flexGrow: 1 }}
                     />
-                    <button onClick={() => removeImage(img)}>Xóa</button>
+
+                    <FcEmptyTrash
+                      className="absolute top-2 right-2"
+                      onClick={() => removeImage(img)}
+                    />
                   </div>
                 ))}
                 <div className="border border-solid bg-white border-gray-300 rounded-lg p-1 h-20">
@@ -299,30 +376,56 @@ function ScreenMain() {
             </div>
             <div className="grid grid-cols-12 gap-4">
               <div className="col-span-4 flex justify-end">
-                <ConstructionTitletext>Address district</ConstructionTitletext>
-              </div>
-              <div className="col-span-8 relative">
-                <FaHardDrive className="absolute top-3 left-3 " />
-                <input
-                  className="border border-gray-300 rounded-lg py-2 px-8 w-full"
-                  defaultValue={addressDis || tourDetail?.address_district}
-                  onChange={(e) => setAddressDis(e.target.value)}
-                  type="text"
-                />
-              </div>
-            </div>
-            <div className="grid grid-cols-12 gap-4">
-              <div className="col-span-4 flex justify-end">
                 <ConstructionTitletext>Address province</ConstructionTitletext>
               </div>
               <div className="col-span-8 relative">
                 <FaHardDrive className="absolute top-3 left-3 " />
-                <input
-                  className="border border-gray-300 rounded-lg py-2 px-8 w-full"
-                  defaultValue={addressPro || tourDetail?.address_province}
-                  onChange={(e) => setAddressPro(e.target.value)}
-                  type="text"
-                />
+
+                <div>
+                  <select
+                    value={addressPro}
+                    onChange={(e) => handleCountryChange(e, "pro")}
+                    id="countries"
+                    className="pl-8 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  >
+                    {addressProvince ? (
+                      addressProvince?.map((pro: any) => (
+                        <option key={pro.code_name} value={pro.full_name}>
+                          {pro.full_name}
+                        </option>
+                      ))
+                    ) : (
+                      <option value={addressPro}>{addressPro}</option>
+                    )}
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div className="grid grid-cols-12 gap-4">
+              <div className="col-span-4 flex justify-end">
+                <ConstructionTitletext>Address district</ConstructionTitletext>
+              </div>
+              <div className="col-span-8 relative">
+                <FaHardDrive className="absolute top-3 left-3 " />
+
+                <div>
+                  <select
+                    value={addressDis}
+                    onChange={(e) => handleCountryChange(e, "dis")}
+                    id="countries"
+                    className=" pl-8 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  >
+                    {addressDistrict ? (
+                      addressDistrict?.map((pro: any) => (
+                        <option key={pro.code_name} value={pro.full_name}>
+                          {pro.full_name}
+                        </option>
+                      ))
+                    ) : (
+                      <option value={addressDis}>{addressDis}</option>
+                    )}
+                  </select>
+                </div>
               </div>
             </div>{" "}
             <div className="grid grid-cols-12 gap-4">
@@ -331,12 +434,24 @@ function ScreenMain() {
               </div>
               <div className="col-span-8 relative">
                 <FaHardDrive className="absolute top-3 left-3 " />
-                <input
-                  className="border border-gray-300 rounded-lg py-2 px-8 w-full"
-                  defaultValue={addressWard || tourDetail?.address_ward}
-                  onChange={(e) => setAddressWard(e.target.value)}
-                  type="text"
-                />
+                <div>
+                  <select
+                    value={addressWard}
+                    onChange={(e) => handleCountryChange(e, "ward")}
+                    id="countries"
+                    className="pl-8 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  >
+                    {addressWards ? (
+                      addressWards?.map((pro: any) => (
+                        <option key={pro.code_name} value={pro.full_name}>
+                          {pro.full_name}
+                        </option>
+                      ))
+                    ) : (
+                      <option value={addressWard}>{addressWard}</option>
+                    )}
+                  </select>
+                </div>
               </div>
             </div>
           </div>
@@ -352,84 +467,79 @@ function ScreenMain() {
                     aria-label="lab API tabs example"
                     className="tab-lish"
                   >
-                    {tourDetail?.TourSchedule?.map(
-                      (scheTit: tourSche, index: string) => {
-                        return (
-                          <Tab
-                            label={`${scheTit?.title}`}
-                            value={(index + 1).toString()}
-                            key={index}
-                            sx={{
-                              "&.MuiButtonBase-root.Mui-selected": {
-                                color: "white",
-                                background: "#05445E",
-                                borderRadius: "8px",
-                                height: "40px",
-                                minHeight: "40px",
-                                textTransform: "none",
-                                fontWeight: "550",
-                              },
-                              "&.MuiButtonBase-root": {
-                                color: "black",
-                                borderRadius: "8px",
-                                height: "40px",
-                                minHeight: "40px",
-                                textTransform: "none",
-                                fontWeight: "550",
-                              },
-                            }}
-                          />
-                        );
-                      }
-                    )}
+                    {schedule?.map((scheTit: any, index: number) => {
+                      return (
+                        <Tab
+                          label={`${scheTit?.title}`}
+                          value={(index + 1).toString()}
+                          key={index}
+                          sx={{
+                            "&.MuiButtonBase-root.Mui-selected": {
+                              color: "white",
+                              background: "#05445E",
+                              borderRadius: "8px",
+                              height: "40px",
+                              minHeight: "40px",
+                              textTransform: "none",
+                              fontWeight: "550",
+                            },
+                            "&.MuiButtonBase-root": {
+                              color: "black",
+                              borderRadius: "8px",
+                              height: "40px",
+                              minHeight: "40px",
+                              textTransform: "none",
+                              fontWeight: "550",
+                            },
+                          }}
+                        />
+                      );
+                    })}
                   </TabList>
-                  {tourDetail?.TourSchedule?.map(
-                    (scheDes: tourSche, index: number) => (
-                      <TabPanel
-                        value={(index + 1).toString()}
-                        key={index}
-                        sx={{
-                          "&.MuiTabPanel-root": {
-                            padding: "0px ",
-                            position: "relative",
-                          },
-                        }}
-                      >
-                        <React.Fragment>
-                          <div className="flex flex-col gap-3">
-                            <span className="font-medium">
-                              {scheDes?.description}
-                            </span>
-                            <div className="flex flex-col gap-2">
-                              {scheDes?.TourScheduleDetail?.map(
-                                (detail, index: number) => (
-                                  <div className="relative pl-5 " key={index}>
-                                    <FaCircle className="absolute inset-y-1/3 w-2 left-0" />
-                                    <div className="flex gap-1 text-gray-600 font-medium">
-                                      <p>{detail?.from}</p>-<p>{detail?.to}</p>
-                                    </div>
-                                    <span className="text-gray-500">
-                                      {detail?.description}
-                                    </span>
+                  {schedule?.map((scheDes: tourSche, index: number) => (
+                    <TabPanel
+                      value={(index + 1).toString()}
+                      key={index}
+                      sx={{
+                        "&.MuiTabPanel-root": {
+                          padding: "0px ",
+                          position: "relative",
+                        },
+                      }}
+                    >
+                      <React.Fragment>
+                        <div className="flex flex-col gap-3">
+                          <span className="font-medium">
+                            {scheDes?.description}
+                          </span>
+                          <div className="flex flex-col gap-2">
+                            {scheDes?.TourScheduleDetail?.map(
+                              (detail, index: number) => (
+                                <div className="relative pl-5 " key={index}>
+                                  <FaCircle className="absolute inset-y-1/3 w-2 left-0" />
+                                  <div className="flex gap-1 text-gray-600 font-medium">
+                                    <p>{detail?.from}</p>-<p>{detail?.to}</p>
                                   </div>
-                                )
-                              )}
-                            </div>
+                                  <span className="text-gray-500">
+                                    {detail?.description}
+                                  </span>
+                                </div>
+                              )
+                            )}
                           </div>
-                        </React.Fragment>
-                      </TabPanel>
-                    )
-                  )}
+                        </div>
+                      </React.Fragment>
+                    </TabPanel>
+                  ))}
                 </div>
               </TabContext>
             </ConstructionDes>
           </Construction>
+          <ModalTourScheDetail dataScheDetail={{ schedule, setSchedule }} />
         </div>
       </div>
     </>
   );
 }
-
-ScreenMain.propTypes = {};
 
 export default ScreenMain;

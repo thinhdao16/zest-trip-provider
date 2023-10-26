@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FcEditImage } from "react-icons/fc";
+import { FcEditImage, FcEmptyTrash, FcPlus } from "react-icons/fc";
 import { Backdrop, Fade, Grid, Modal } from "@mui/material";
 import { Box } from "@mui/system";
 import { useSelector } from "react-redux";
@@ -87,10 +87,13 @@ function ModalVehicle({
             <Grid container spacing={2}>
               {tourVehicle?.map((data: DataSelectCard) => (
                 <Grid key={data.id} item xs={12} sm={6} md={2}>
-                  <div className="p-4 border border-solid border-gray-300 rounded-lg shadow-custom-card-mui">
+                  <div className="p-4 border border-solid border-gray-300 rounded-lg shadow-custom-card-mui relative">
                     <VehicleTag field={data?.name} style="w-8 h-8" />
                     <TitleIconCardOptions>{data?.name}</TitleIconCardOptions>
-                    <span onClick={() => removeItem(data)}>xóa</span>
+                    <FcEmptyTrash
+                      className="absolute top-2 right-2"
+                      onClick={() => removeItem(data)}
+                    />
                   </div>
                 </Grid>
               ))}
@@ -99,10 +102,13 @@ function ModalVehicle({
             <Grid container spacing={2}>
               {dataVehicle.map((data: DataSelectCard) => (
                 <Grid key={data.id} item xs={12} sm={6} md={2}>
-                  <div className="p-4 border border-solid border-gray-300 rounded-lg shadow-custom-card-mui">
+                  <div className="p-4 border border-solid border-gray-300 rounded-lg shadow-custom-card-mui relative">
                     <VehicleTag field={data?.name} style="w-8 h-8" />
                     <TitleIconCardOptions>{data?.name}</TitleIconCardOptions>
-                    <span onClick={() => addItem(data)}>add</span>
+                    <FcPlus
+                      onClick={() => addItem(data)}
+                      className="absolute top-2 right-2"
+                    />
                   </div>
                 </Grid>
               ))}

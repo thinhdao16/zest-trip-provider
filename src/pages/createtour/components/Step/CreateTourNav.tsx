@@ -148,16 +148,19 @@ function CreateTourNav() {
                 : []),
             ],
 
-            ...(formValues[5]?.Capacity?.SingleTime?.length > 0
-              ? formValues[5]?.Capacity?.SingleTime.map((item: any) => ({
-                  date: formatDate(item.day),
-                  timeSlot: item.time, // Chuyển thành mảng gồm một chuỗi thời gian
-                }))
-              : []),
+            specialDates: [
+              ...(formValues[5]?.Capacity?.SingleTime?.length > 0
+                ? // eslint-disable-next-line no-unsafe-optional-chaining
+                  formValues[5]?.Capacity?.SingleTime.map((item: any) => ({
+                    date: formatDate(item.day),
+                    timeSlot: item.time,
+                  }))
+                : []),
+            ],
           };
-
           dispatch(postCreateAvailabilityTour(dataValueCreateAvailability))
             .then((availabilityResponse) => {
+              console.log(availabilityResponse);
               if (
                 postCreateAvailabilityTour.fulfilled.match(availabilityResponse)
               ) {

@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { FcEditImage } from "react-icons/fc";
+import { FcEditImage, FcEmptyTrash, FcPlus } from "react-icons/fc";
 import { Backdrop, Fade, Grid, Modal } from "@mui/material";
 import { Box } from "@mui/system";
 import { useSelector } from "react-redux";
 import { DataSelectCard, StateTour } from "../../../createtour/types/index.t";
-import { TourTag, VehicleTag } from "../../../../components/icon/tour/tag";
+import { TourTag } from "../../../../components/icon/tour/tag";
 import { TitleIconCardOptions } from "../../../../styles/createtour/createtour";
 
 const style = {
@@ -80,30 +80,48 @@ function ModalTag({
             sx={style}
             className="overflow-auto h-2/3 global-scrollbar outline-none sm:w-screen md:w-2/3"
           >
-            <span className="font-medium">Tag tour of you</span>
-            <Grid container spacing={2}>
-              {tourTag?.map((data: DataSelectCard) => (
-                <Grid key={data.id} item xs={12} sm={6} md={2}>
-                  <div className="p-4 border border-solid border-gray-300 rounded-lg shadow-custom-card-mui">
-                    <TourTag field={data?.name} style="w-8 h-8" />
-                    <TitleIconCardOptions>{data?.name}</TitleIconCardOptions>
-                    <span onClick={() => removeItem(data)}>xóa</span>
-                  </div>
+            <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-2">
+                <span className="font-medium text-lg">Tag tour of you</span>
+                <Grid container spacing={2}>
+                  {tourTag?.map((data: DataSelectCard) => (
+                    <Grid key={data.id} item xs={12} sm={6} md={2}>
+                      <div className="p-4 border border-solid border-gray-300 rounded-lg shadow-custom-card-mui relative">
+                        <TourTag field={data?.name} style="w-8 h-8" />
+                        <TitleIconCardOptions>
+                          {data?.name}
+                        </TitleIconCardOptions>
+                        <FcEmptyTrash
+                          className="absolute top-2 right-2"
+                          onClick={() => removeItem(data)}
+                        />
+                      </div>
+                    </Grid>
+                  ))}
                 </Grid>
-              ))}
-            </Grid>
-            <span className="font-medium">Choose tag you want </span>
-            <Grid container spacing={2}>
-              {dataTag.map((data: DataSelectCard) => (
-                <Grid key={data.id} item xs={12} sm={6} md={2}>
-                  <div className="p-4 border border-solid border-gray-300 rounded-lg shadow-custom-card-mui">
-                    <TourTag field={data?.name} style="w-8 h-8" />
-                    <TitleIconCardOptions>{data?.name}</TitleIconCardOptions>
-                    <span onClick={() => addItem(data)}>add</span>
-                  </div>
+              </div>
+              <div className="flex flex-col gap-2">
+                <span className="font-medium text-lg">
+                  Choose tag you want{" "}
+                </span>
+                <Grid container spacing={2}>
+                  {dataTag.map((data: DataSelectCard) => (
+                    <Grid key={data.id} item xs={12} sm={6} md={2}>
+                      <div className="p-4 border border-solid border-gray-300 rounded-lg shadow-custom-card-mui relative">
+                        <TourTag field={data?.name} style="w-8 h-8" />
+                        <TitleIconCardOptions>
+                          {data?.name}
+                        </TitleIconCardOptions>
+                        <FcPlus
+                          onClick={() => addItem(data)}
+                          className="absolute top-2 right-2"
+                        />
+                      </div>
+                    </Grid>
+                  ))}
                 </Grid>
-              ))}
-            </Grid>
+              </div>
+            </div>
           </Box>
         </Fade>
       </Modal>
