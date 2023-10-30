@@ -8,9 +8,13 @@ import {
 import { useStepContext } from "../context/ui/useStepContext";
 import { GoLocation } from "react-icons/go";
 import { FaCheck, FaRegClock, FaRegTrashCan } from "react-icons/fa6";
+import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
+import dayjs from "dayjs";
 
 const Capacity: React.FC = () => {
-  const { currentStep, updateFormValues } = useStepContext();
+  const { currentStep, updateFormValues, formValues } = useStepContext();
   const [capacity, setCapacity] = useState("");
   const [startingTimes, setStartingTimes] = useState<any>({
     Mon: [],
@@ -25,6 +29,7 @@ const Capacity: React.FC = () => {
     DateTo: "",
   });
   const [startingTimeSingle, setStartingTimeSingle] = useState<any>([]);
+
   function formatTimeToHourAndMinute(date: any) {
     const hours = date.getHours();
     const minutes = date.getMinutes();
@@ -108,17 +113,17 @@ const Capacity: React.FC = () => {
       [field]: [...prevSelectedMinute[field], newTime.getMinutes()],
     }));
   };
-  const addDayWithTime = () => {
-    const currentDate = new Date();
-    const formattedDate = `${currentDate.getDate()}/${
-      currentDate.getMonth() + 1
-    }/${currentDate.getFullYear()}`;
-    const newDay = {
-      day: formattedDate,
-      time: ["10:00"],
-    };
-
-    setStartingTimeSingle([...startingTimeSingle, newDay]);
+  const addDayWithTime = (e: any) => {
+    const newDateFrom = dayjs(e).format("YYYY-MM-DD");
+    if (!startingTimeSingle.some((date: any) => date.day === newDateFrom)) {
+      const newDay = {
+        day: newDateFrom,
+        time: ["10:00"],
+      };
+      setStartingTimeSingle([...startingTimeSingle, newDay]);
+    } else {
+      alert("Ngày đã tồn tại trong special_dates");
+    }
   };
 
   const addTimeToDay = (dayIndex: number) => {
@@ -235,19 +240,20 @@ const Capacity: React.FC = () => {
     setStartingTimes(updatedStartingTimes);
   };
   const onChangeDateFrom = (e: any, field: string) => {
+    const newDateFrom = dayjs(e).format("YYYY-MM-DD");
+
     if (field === "from") {
-      const newDateFrom = e.target.value;
-      setStartingTimes((prevStartingTimes: any) => ({
-        ...prevStartingTimes,
-        DateFrom: newDateFrom,
-      }));
-    }
-    if (field === "to") {
-      const newDateFrom = e.target.value;
-      setStartingTimes((prevStartingTimes: any) => ({
-        ...prevStartingTimes,
-        DateTo: newDateFrom,
-      }));
+      setStartingTimes((prevStartingTimes: any) => {
+        const newDateTo = dayjs(newDateFrom)
+          .add(formValues[4]?.DurationCheckIn[0][0]?.no, "day")
+          .format("YYYY-MM-DD");
+
+        return {
+          ...prevStartingTimes,
+          DateFrom: newDateFrom,
+          DateTo: newDateTo,
+        };
+      });
     }
   };
 
@@ -327,6 +333,20 @@ const Capacity: React.FC = () => {
   if (currentStep !== 8) {
     return null;
   }
+  const tomorrow = dayjs().add(0, "day");
+  const handleClickTimeSingleDate = (
+    e: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    e.preventDefault();
+    const addButton: HTMLButtonElement | null = document.querySelector(
+      ".single-date-celandar .MuiButtonBase-root"
+    );
+
+    if (addButton) {
+      addButton.click();
+    }
+  };
+
   return (
     <BannerContainer className="global-scrollbar">
       <div className="flex items-center justify-center">
@@ -337,7 +357,6 @@ const Capacity: React.FC = () => {
             dates and times by connecting your booking system or by manually
             entering the information for your product and options.
           </CreateDescription>
-
           <div>
             <p className="font-medium mb-1">
               Name (e.g. Summer Season, Autumn 2011... )
@@ -357,22 +376,47 @@ const Capacity: React.FC = () => {
             <p className="font-medium">Validity of this season</p>{" "}
             <div className="flex items-center gap-3 mt-2">
               <p className="font-medium">Valid from </p>
-              <div>
-                <input
-                  className="flex items-center justify-center font-medium border border-solid border-gray-300 rounded-md p-2   focus:outline-none focus:ring-1 focus:ring-sky-500"
-                  type="date"
-                  value={startingTimes?.DateFrom}
-                  onChange={(e) => onChangeDateFrom(e, "from")}
-                />
+              <div className="create-tour-valid-date">
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DemoContainer
+                    components={[
+                      "DatePicker",
+                      "DateTimePicker",
+                      "DateRangePicker",
+                    ]}
+                  >
+                    <DemoItem>
+                      <DatePicker
+                        value={dayjs(startingTimes?.DateFrom)}
+                        minDate={tomorrow}
+                        onChange={(e) => onChangeDateFrom(e, "from")}
+                      />
+                    </DemoItem>
+                  </DemoContainer>
+                </LocalizationProvider>
               </div>
               <p className="font-medium">to</p>
               <div>
-                <input
-                  className="flex items-center justify-center font-medium border border-solid border-gray-300 rounded-md p-2   focus:outline-none focus:ring-1 focus:ring-sky-500"
-                  type="date"
-                  value={startingTimes?.DateTo}
-                  onChange={(e) => onChangeDateFrom(e, "to")}
-                />
+                <div className="create-tour-valid-date">
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DemoContainer
+                      components={[
+                        "DatePicker",
+                        "DateTimePicker",
+                        "DateRangePicker",
+                      ]}
+                    >
+                      <DemoItem>
+                        <DatePicker
+                          disabled
+                          value={dayjs(startingTimes?.DateTo)}
+                          minDate={tomorrow}
+                          onChange={(e) => onChangeDateFrom(e, "from")}
+                        />
+                      </DemoItem>
+                    </DemoContainer>
+                  </LocalizationProvider>
+                </div>
               </div>
             </div>
           </div>
@@ -902,13 +946,32 @@ const Capacity: React.FC = () => {
                     </div>
                   )
                 )}
-
-                <button
-                  className="flex items-center bg-white border-2 px-3 py-2 border-navy-blue rounded-xl   text-navy-blue hover:text-white hover:bg-navy-blue hover:border-sky-900"
-                  onClick={() => addDayWithTime()}
-                >
-                  <span className="font-medium text-md  ">Add new date</span>
-                </button>
+                <div className="single-date-celandar ">
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DemoContainer
+                      components={[
+                        "DatePicker",
+                        "DateTimePicker",
+                        "DateRangePicker",
+                      ]}
+                    >
+                      <DemoItem>
+                        <DatePicker
+                          value={dayjs(startingTimes?.DateFrom)}
+                          minDate={dayjs(startingTimes?.DateFrom)}
+                          maxDate={dayjs(startingTimes?.DateTo)}
+                          onChange={(e) => addDayWithTime(e)}
+                        />
+                      </DemoItem>
+                    </DemoContainer>
+                  </LocalizationProvider>
+                  <button
+                    className="flex items-center bg-white border-2 px-3 py-2 border-navy-blue rounded-xl   text-navy-blue hover:text-white hover:bg-navy-blue hover:border-sky-900"
+                    onClick={(e) => handleClickTimeSingleDate(e)}
+                  >
+                    <span className="font-medium text-md  ">Add new date</span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>

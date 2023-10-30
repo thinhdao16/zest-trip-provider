@@ -1,19 +1,24 @@
-import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
+import React, { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { StateTour } from "../../createtour/types/index.t";
 import { LuMoveRight } from "react-icons/lu";
+import ModalTicketAdult from "./Modal/ModalTicketAdult";
+import ModalAvailability from "./Modal/ModalAvailability";
+import dayjs from "dayjs";
 function ScreenSP() {
   const tourDetail: any = useSelector(
     (state: StateTour) => state.tour.tourGetDetail
   );
   const [ticketPricing, setTicketPricing] = useState([]);
-
-  // Sử dụng useEffect để cập nhật state khi tourDetail thay đổi
+  const [availability, setAvailability] = useState([]);
+  const duration = useMemo(() => {
+    return tourDetail.duration;
+  }, [tourDetail]);
   useEffect(() => {
     if (tourDetail && tourDetail.TicketPricing) {
       setTicketPricing(tourDetail.TicketPricing);
     }
+    setAvailability(tourDetail?.TourAvailability);
   }, [tourDetail]);
   function formatDate(dateString: string) {
     const date = new Date(dateString);
@@ -42,9 +47,7 @@ function ScreenSP() {
         return "Unknown";
     }
   }
-  const editTicket = (data: any) => {
-    console.log(data);
-  };
+
   return (
     <div>
       <div className="mb-4">
@@ -52,7 +55,13 @@ function ScreenSP() {
       </div>
       <div className="p-1 flex flex-col gap-3">
         <div>
-          <span className="font-medium text-lg"> Ticket</span>
+          <div className="flex gap-3">
+            <span className="font-medium text-lg"> Ticket</span>
+
+            <ModalTicketAdult
+              dataTicket={{ ticketPricing, setTicketPricing, duration }}
+            />
+          </div>
           <div className="flex flex-col gap-4">
             {ticketPricing?.map((ticket: any, index: number) => (
               <React.Fragment key={index}>
@@ -81,12 +90,6 @@ function ScreenSP() {
                         </div>
                       </div>
                     </div>
-                    <button
-                      onClick={() => editTicket(ticket)}
-                      className="h-7 border-solid border border-navy-blue p-0 px-2 font-medium text-navy-blue rounded-md  flex items-center"
-                    >
-                      Edit
-                    </button>
                   </div>
                   <div className="grid grid-cols-2 gap-3">
                     <>
@@ -118,9 +121,14 @@ function ScreenSP() {
           </div>
         </div>
         <div>
-          <span className="font-medium text-lg">Avalibility</span>
+          <div className="flex">
+            <span className="font-medium text-lg">Avalibility</span>
+            <ModalAvailability
+              dataAvailability={{ availability, setAvailability }}
+            />
+          </div>
           <div className="flex flex-col gap-4">
-            {tourDetail?.TourAvailability?.map((data: any, index: number) => (
+            {availability?.map((data: any, index: number) => (
               <React.Fragment key={index}>
                 <div className="flex flex-col gap-4 bg-white p-4 rounded-xl">
                   <div className="flex justify-between text-sm">
@@ -183,16 +191,23 @@ function ScreenSP() {
                       <div className="flex flex-wrap gap-3">
                         {data?.special_dates?.map(
                           (
-                            special: { date: string; timeSlot: string },
+                            special: { date: any; timeSlot: string },
                             index: number
                           ) => (
                             <div
                               key={index}
                               className="flex gap-1  border border-solid border-gray-300 rounded-md text-sm px-2 py-1 text-gray-500"
                             >
-                              <span className="font-medium">
-                                {special?.date}:{" "}
-                              </span>
+                              {special.date && dayjs.isDayjs(special.date) ? (
+                                <span className="font-medium">
+                                  {special.date.format("DD/MM/YYYY")}:
+                                </span>
+                              ) : (
+                                <span className="font-medium">
+                                  {special.date}:
+                                </span>
+                              )}
+
                               <span>{special?.timeSlot}</span>
                             </div>
                           )

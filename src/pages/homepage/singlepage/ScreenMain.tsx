@@ -46,7 +46,8 @@ function ScreenMain() {
     (state: StateTour) => state.tour.tourGetDetail
   );
   const loadingTourImageDetail: any = useSelector(
-    (state: any) => state.tour.loadingTourImageDetail
+    (state: { tour: { loadingTourImageDetail: boolean } }) =>
+      state.tour.loadingTourImageDetail
   );
   const dispatch: AppDispatch = useDispatch();
   const { setRefreshTourDetail } = useContext(DataContext);
@@ -457,11 +458,11 @@ function ScreenMain() {
           </div>
           <Construction>
             <ConstructionTitle>
-              <ConstructionTitletext>Tour Schedule</ConstructionTitletext>
+              <ConstructionTitletext>Tour Schedules</ConstructionTitletext>
             </ConstructionTitle>
             <ConstructionDes>
               <TabContext value={valueTab}>
-                <div className="bg-white  rounded-lg shadow-custom-card-mui p-4">
+                <div className="bg-white  rounded-lg shadow-custom-card-mui p-4 relative">
                   <TabList
                     onChange={handleValueTab}
                     aria-label="lab API tabs example"
@@ -531,11 +532,13 @@ function ScreenMain() {
                       </React.Fragment>
                     </TabPanel>
                   ))}
+                  <ModalTourScheDetail
+                    dataScheDetail={{ schedule, setSchedule }}
+                  />
                 </div>
               </TabContext>
             </ConstructionDes>
           </Construction>
-          <ModalTourScheDetail dataScheDetail={{ schedule, setSchedule }} />
         </div>
       </div>
     </>

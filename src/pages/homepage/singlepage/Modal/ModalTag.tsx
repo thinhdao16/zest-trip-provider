@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { FcEditImage, FcEmptyTrash, FcPlus } from "react-icons/fc";
+import { FcEmptyTrash, FcPlus } from "react-icons/fc";
 import { Backdrop, Fade, Grid, Modal } from "@mui/material";
 import { Box } from "@mui/system";
 import { useSelector } from "react-redux";
 import { DataSelectCard, StateTour } from "../../../createtour/types/index.t";
 import { TourTag } from "../../../../components/icon/tour/tag";
 import { TitleIconCardOptions } from "../../../../styles/createtour/createtour";
+import { FaRegPenToSquare } from "react-icons/fa6";
 
 const style = {
   position: "absolute" as const,
@@ -25,9 +26,16 @@ function ModalTag({
 }) {
   const tagTour = useSelector((state: StateTour) => state.tour.tagTour);
   const [open, setOpen] = useState(false);
+  const [reload, setReload] = useState(0);
   const [dataTag, setDataTag] = useState<any>([]);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleOpen = () => {
+    setReload(reload + 1);
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setReload(reload + 1);
+    setOpen(false);
+  };
 
   function addItem(itemToAdd: any) {
     const updatedTourTag = [...tourTag, itemToAdd];
@@ -55,12 +63,12 @@ function ModalTag({
         )
     );
     setDataTag(updatedDataTag);
-  }, [tagTour]);
+  }, [tagTour, reload]);
 
   return (
     <div className="">
-      <div className="rounded-full p-1.5 shadow-custom-card-mui border border-solid border-navy-blue">
-        <FcEditImage onClick={handleOpen} />
+      <div className="">
+        <FaRegPenToSquare onClick={handleOpen} />
       </div>
       <Modal
         aria-labelledby="transition-modal-title"

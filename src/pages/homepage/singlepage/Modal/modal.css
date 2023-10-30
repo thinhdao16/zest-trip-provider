@@ -1,0 +1,33 @@
+.modal-ava-pick-time .MuiStack-root {
+  padding: 0;
+  overflow: hidden;
+}
+.modal-ava-pick-time .MuiStack-root input {
+  padding: 6px 6px;
+  color: rgb(107 114 128);
+  font-size: 15px;
+}
+.modal-ava-pick-time .MuiOutlinedInput-root {
+  border-radius: 8px;
+}
+.modal-ava-pick-time .MuiIconButton-root svg {
+  font-size: 18px;
+}
+.modal-ava-add-single-time .MuiStack-root {
+  height: 30px;
+  overflow: hidden;
+  padding-top: 7px;
+}
+.modal-ava-add-single-time input {
+  display: none;
+}
+.modal-ava-add-single-time fieldset {
+  border: none;
+}
+.modal-ava-add-single-time button {
+  padding: 0;
+}
+
+.modal-ava-add-single-time .MuiOutlinedInput-root {
+  padding: 0;
+}

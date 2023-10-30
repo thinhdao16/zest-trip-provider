@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { DataSelectCard, StateTour } from "../../../createtour/types/index.t";
 import { VehicleTag } from "../../../../components/icon/tour/tag";
 import { TitleIconCardOptions } from "../../../../styles/createtour/createtour";
+import { FaRegPenToSquare } from "react-icons/fa6";
 
 const style = {
   position: "absolute" as const,
@@ -62,8 +63,8 @@ function ModalVehicle({
 
   return (
     <div className="">
-      <div className="rounded-full p-1.5 shadow-custom-card-mui border border-solid border-navy-blue">
-        <FcEditImage onClick={handleOpen} />
+      <div className="">
+        <FaRegPenToSquare onClick={handleOpen} />
       </div>
       <Modal
         aria-labelledby="transition-modal-title"

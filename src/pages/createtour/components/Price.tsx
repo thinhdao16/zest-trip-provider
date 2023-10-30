@@ -317,6 +317,7 @@ const Price: React.FC = () => {
     if (field === "default") {
       const updatedFormList = formList.map((form, index) => {
         if (form.id === id) {
+          console.log(form.id, id, index);
           const updatedForm = {
             ...form,
             numberOfPeopleAfter:

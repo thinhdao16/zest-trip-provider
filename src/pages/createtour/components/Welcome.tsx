@@ -18,7 +18,6 @@ export default function Welcome() {
 
   const [defaultDate, setDefaultDate] = useState(dayjs());
   const [storedDate, setStoredDate] = useState("");
-  console.log(storedDate);
   const [restoredDate, setRestoredDate] = useState("");
   const handleDateChange = (newDate: any) => {
     setStoredDate(JSON.stringify(newDate));

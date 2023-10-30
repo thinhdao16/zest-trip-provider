@@ -47,23 +47,25 @@ function CreateTourNav() {
     setRefeshTour((prev) => !prev);
     navigate("/listtour");
   };
+  console.log(formValues);
   function formatDate(inputDate: string | undefined): string | undefined {
     if (!inputDate) {
-      return undefined; // Handle empty input gracefully
+      return undefined; // Xử lý trường hợp đầu vào rỗng gracefully
     }
 
-    const match = inputDate.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+    const match = inputDate.match(/^(\d{4})-(\d{2})-(\d{2})$/);
 
     if (!match) {
-      throw new Error('Invalid date format. Expected "dd/mm/yyyy".');
+      throw new Error('Invalid date format. Expected "yyyy-mm-dd".');
     }
 
-    const day = match[1].padStart(2, "0");
-    const month = match[2].padStart(2, "0");
-    const year = match[3];
+    const year = match[1];
+    const month = match[2];
+    const day = match[3];
 
-    return `${year}-${month}-${day}`;
+    return `${day.padStart(2, "0")}/${month.padStart(2, "0")}/${year}`;
   }
+
   const handleCreateTourAndAvailability = () => {
     const formData = new FormData();
     const dataValueCreate = {
@@ -152,8 +154,9 @@ function CreateTourNav() {
               ...(formValues[5]?.Capacity?.SingleTime?.length > 0
                 ? // eslint-disable-next-line no-unsafe-optional-chaining
                   formValues[5]?.Capacity?.SingleTime.map((item: any) => ({
-                    date: formatDate(item.day),
-                    timeSlot: item.time,
+                    // date: formatDate(item.day),
+                    date: item?.day,
+                    timeSlot: item?.time,
                   }))
                 : []),
             ],
@@ -173,12 +176,14 @@ function CreateTourNav() {
               console.error("Error:", availabilityError);
             });
           const dataTicket = formValues[6]?.ticket;
-          const pricing_data = dataTicket.map((item: any) => {
+          const pricing_data = dataTicket?.map((item: any) => {
             const pricingData: any = {
-              ticket_type: item.role,
-              pricing_type: item.type,
-              maximum_booking_quantity: parseInt(item.max),
-              minimum_booking_quantity: parseInt(item.min),
+              ticket_type: item?.role,
+              pricing_type: item?.type,
+              maximum_booking_quantity: parseInt(item?.max),
+              minimum_booking_quantity: parseInt(item?.min),
+              from_age: item?.ageStart?.toString(),
+              to_age: item?.ageEnd?.toString(),
             };
 
             if (item.price_range) {
@@ -213,7 +218,6 @@ function CreateTourNav() {
       chooseStep(data);
     }
   };
-  console.log(formValues);
   const constraintLength = () => {
     let classSkip = "no"; // Mặc định là "no"
 
@@ -247,7 +251,8 @@ function CreateTourNav() {
     }
     if (currentStep === 7) {
       if (
-        formValues[4].DurationCheckIn[1].length > 0 &&
+        formValues[4].DurationCheckIn[1].length >=
+          formValues[4].DurationCheckIn[0][0].no &&
         formValues[4].DurationCheckIn[0].length > 0
       ) {
         classSkip = "yes"; // Nếu điều kiện thỏa mãn, thì set thành "yes"

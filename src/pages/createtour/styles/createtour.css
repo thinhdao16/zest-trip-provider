@@ -9,3 +9,22 @@
   object-fit: cover;
   border-radius: 6px;
 }
+.single-date-celandar input {
+  display: none;
+}
+.single-date-celandar .MuiInputAdornment-root {
+  display: none;
+}
+.single-date-celandar fieldset {
+  display: none;
+}
+.create-tour-valid-date .MuiStack-root {
+  overflow: hidden;
+  background: white;
+  padding: 0;
+}
+.create-tour-valid-date .MuiInputBase-root {
+  height: 42px;
+  border-radius: 8px;
+  font-weight: 500;
+}
