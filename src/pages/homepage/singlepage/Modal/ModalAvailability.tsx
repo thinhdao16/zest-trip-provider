@@ -47,8 +47,6 @@ const ModalAvailability = ({
 }: {
   dataAvailability: { availability: any; setAvailability: any };
 }) => {
-  console.log(availability);
-
   const [open, setOpen] = useState(false);
   const [dataWeekChoose, setDataWeekChoose] = useState<any>([]);
 

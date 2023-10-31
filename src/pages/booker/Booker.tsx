@@ -8,11 +8,10 @@ import { AppDispatch } from "../../store/redux/store";
 import { useSelector } from "react-redux";
 import { fetchTours } from "../../store/redux/silce/tourSlice";
 import { Rating } from "@mui/material";
-import SpringModal from "./SpringModal";
 import { getReview } from "../../store/redux/silce/reviewSlice";
 import dayjs from "dayjs";
 
-function Review() {
+function Booker() {
   const sidebarToggle: any = useOutletContext() as () => void;
   const [activeButton, setActiveButton] = useState(1);
   const [filterImg, setFilterImg] = useState(1);
@@ -100,7 +99,7 @@ function Review() {
               }`}
               onClick={() => setActiveButton(2)}
             >
-              TourAvailability
+              TourAvailabilitys
               {
                 tours?.filter((tour: any) => tour.TourAvailability.length > 0)
                   .length
@@ -167,103 +166,9 @@ function Review() {
         </div>
         <div className="container mx-auto p-4">
           <h1 className="text-2xl font-semibold mb-4">List of Items</h1>
-          <div className="flex flex-col gap-4">
-            <div className="grid grid-cols-12 bg-gray-300 rounded-lg p-2 font-medium">
-              <div className="col-span-4 text-center">Infomation product</div>
-              <div className="col-span-6 text-center">Rate person</div>
-              <div className="col-span-2 text-center">action</div>
-            </div>
-            <div className="flex flex-col gap-3">
-              {review?.map((item: any, index: number) => (
-                <div
-                  key={index}
-                  className=" bg-white rounded-lg shadow-custom-card-mui border border-solid border-gray-200 "
-                >
-                  <div className="flex justify-between px-4 py-2 bg-gray-200">
-                    <div className="font-medium flex gap-1">
-                      Buyer:{" "}
-                      <img
-                        className="w-6 h-6 rounded-full object-cover"
-                        alt="wait"
-                        src="https://png.pngtree.com/png-vector/20190413/ourmid/pngtree-img-file-document-icon-png-image_935399.png"
-                      />
-                      <span className="font-normal text-gray-500">
-                        {item?.user?.full_name || "person"}
-                      </span>
-                    </div>
-                    <div className="font-medium flex gap-1">
-                      ID product:
-                      <span className="font-normal text-gray-500">
-                        {item?.user?.id}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-12 ">
-                    <div className="col-span-4 p-4 ">
-                      <div className="flex gap-2">
-                        <img
-                          className="w-12 h-12 object-cover rounded-lg"
-                          alt="wait"
-                          src={item?.tour?.tour_images[0]}
-                        />
-                        <div className="flex flex-col gap-2">
-                          <span className="font-medium">
-                            {item?.tour?.name}
-                          </span>
-                          <div className="flex flex-wrap gap-1">
-                            {/* {item?.TicketPricing?.map(
-                              (ticket: any, index: number) => (
-                                <React.Fragment key={index}>
-                                  {ticket?.price_range?.map(
-                                    (price: any, index: number) => (
-                                      <div
-                                        key={index}
-                                        className="border border-solid border-gray-300 px-1 rounded-md text-sm text-gray-500 flex gap-1"
-                                      >
-                                        <span>from: {price?.from_amount}</span>
-                                        <span>to: {price?.to_amount}</span>
-                                        <p>-</p>
-                                        <p>{price?.price}</p>
-                                      </div>
-                                    )
-                                  )}
-                                </React.Fragment>
-                              )
-                            )} */}
-                            <span className="text-gray-500">
-                              {item?.tour?.description}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-span-6 border-l p-4 border-solid border-gray-200 rounded-bl-lg">
-                      <div className="flex flex-col gap-2">
-                        <Rating
-                          name="half-rating-read"
-                          defaultValue={item?.rating}
-                          precision={0.5}
-                          readOnly
-                        />
-                        <span className="text-gray-700">{item?.content}</span>
-                        <img
-                          className="w-12 h-12  rounded-lg object-cover"
-                          alt="wait"
-                          src="https://static.thenounproject.com/png/777906-200.png"
-                        />
-                        <span className="text-gray-500 text-sm">
-                          {item?.updated_at &&
-                            dayjs(item?.updated_at).format("HH:mm DD/MM/YYYY ")}
-                        </span>
-                      </div>
-                    </div>
-                    <div className="col-span-2 border-l p-4 border-solid border-gray-200 rounded-bl-lg text-center">
-                      <SpringModal data={item} />
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+          <div className="bg-white p-4 relative">
+            <button className="top-4 absolute right-4">abc</button>
+            <span>búabd</span>
           </div>
         </div>
       </main>
@@ -271,6 +176,4 @@ function Review() {
   );
 }
 
-Review.propTypes = {};
-
-export default Review;
+export default Booker;

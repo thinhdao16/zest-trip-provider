@@ -5,12 +5,13 @@ import { LuMoveRight } from "react-icons/lu";
 import ModalTicketAdult from "./Modal/ModalTicketAdult";
 import ModalAvailability from "./Modal/ModalAvailability";
 import dayjs from "dayjs";
+import { useEditContext } from "./Context/useEditContext";
 function ScreenSP() {
   const tourDetail: any = useSelector(
     (state: StateTour) => state.tour.tourGetDetail
   );
-  const [ticketPricing, setTicketPricing] = useState([]);
-  const [availability, setAvailability] = useState([]);
+  const { ticketPricing, setTicketPricing, availability, setAvailability } =
+    useEditContext();
   const duration = useMemo(() => {
     return tourDetail.duration;
   }, [tourDetail]);

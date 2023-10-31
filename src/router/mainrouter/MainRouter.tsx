@@ -15,6 +15,7 @@ import Dashboard from "../../pages/dashboard/Dashboard";
 import Blank from "../../pages/Blank";
 import ForgotPassWord from "../../components/forgotPassword/ForgotPassword";
 import Review from "../../pages/review/Review";
+import Booker from "../../pages/booker/Booker";
 
 function MainRouter() {
   const { refeshLogin } = React.useContext(DataContext);
@@ -51,6 +52,7 @@ function MainRouter() {
                       <Route path="/profile" element={<Blank />}></Route>
                       <Route path="/review" element={<Review />}></Route>
                       <Route path="/listtour" element={<HomePage />} />
+                      <Route path="/booker" element={<Booker />}></Route>
                       <Route path="/account-settings">
                         <Route path="" element={<AccountSettings />} />
                         <Route

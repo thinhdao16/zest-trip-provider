@@ -24,6 +24,7 @@ import { FcEmptyTrash } from "react-icons/fc";
 import axios from "axios";
 import { BASE_URL } from "../../../store/apiInterceptors";
 import ModalTourScheDetail from "./Modal/ModalTourScheDetail";
+import { useEditContext } from "./Context/useEditContext";
 interface tourSche {
   id: number;
   description: string;
@@ -51,20 +52,34 @@ function ScreenMain() {
   );
   const dispatch: AppDispatch = useDispatch();
   const { setRefreshTourDetail } = useContext(DataContext);
+  const {
+    name,
+    setName,
+    description,
+    setDescription,
+    footnote,
+    setFootnote,
+    addressName,
+    setAddressName,
+    addressCountry,
+    setAddressCountry,
+    addressDis,
+    setAddressDis,
+    addressPro,
+    setAddressPro,
+    addressWard,
+    setAddressWard,
+    schedule,
+    setSchedule,
+    tourTag,
+    setTourTag,
+    tourVehicle,
+    setTourVehicle,
+    tourImages,
+    setTourImages,
+  } = useEditContext();
 
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [footnote, setFootnote] = useState("");
-  const [addressName, setAddressName] = useState("");
-  const [addressCountry, setAddressCountry] = useState("");
-  const [addressDis, setAddressDis] = useState("");
-  const [addressPro, setAddressPro] = useState("");
-  const [addressWard, setAddressWard] = useState("");
   const [valueTab, setValueTab] = useState("1");
-  const [schedule, setSchedule] = useState([]);
-  const [tourTag, setTourTag] = useState([]);
-  const [tourVehicle, setTourVehicle] = useState([]);
-  const [tourImages, setTourImages] = useState([]);
   const [addressProvince, setAddressProvince] = useState<[]>();
   const [addressDistrict, setAddressDistrict] = useState<[]>();
   const [addressWards, setAddressWards] = useState<[]>();
@@ -73,6 +88,9 @@ function ScreenMain() {
 
   const [hasChanges, setHasChanges] = useState(false);
 
+  const [imageSrc, setImageSrc] = useState<any>([]);
+
+  const [allImage, setAllImage] = useState<any>([]);
   const handleValueTab = (event: React.SyntheticEvent, newValue: string) => {
     setValueTab(newValue);
   };
@@ -96,11 +114,29 @@ function ScreenMain() {
   };
 
   const removeImage = (imageURL: string) => {
-    const indexToRemove = tourImages.findIndex((image) => image === imageURL);
+    const indexToRemove = tourImages.findIndex(
+      (image: string) => image === imageURL
+    );
+    const indexToRemoveImgSrc = imageSrc.findIndex(
+      (image: { url: string }) => image.url === imageURL
+    );
+    const indexToRemoveAllImg = allImage.findIndex(
+      (image: string) => image === imageURL
+    );
     if (indexToRemove >= 0) {
       const updatedImages = [...tourImages];
       updatedImages.splice(indexToRemove, 1);
       setTourImages(updatedImages);
+    }
+    if (indexToRemoveImgSrc >= 0) {
+      const updatedImages = [...imageSrc];
+      updatedImages.splice(indexToRemove, 1);
+      setImageSrc(updatedImages);
+    }
+    if (indexToRemoveAllImg >= 0) {
+      const updatedImages = [...allImage];
+      updatedImages.splice(indexToRemove, 1);
+      setAllImage(updatedImages);
     }
   };
 
@@ -143,8 +179,42 @@ function ScreenMain() {
     }
   };
 
+  const handleAddImage = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    const inputFile: any = document.getElementById("imageInputImageEdit");
+    inputFile.click();
+  };
+
+  const handleImageInputChange = async (event: any) => {
+    const selectedFiles = event.target.files;
+    const newImages: any = [];
+
+    for (let i = 0; i < selectedFiles.length; i++) {
+      const selectedFile = selectedFiles[i];
+      if (selectedFile instanceof File) {
+        const imageUrl = URL.createObjectURL(selectedFile);
+        newImages.push({
+          id: selectedFile.name,
+          url: imageUrl,
+          file: selectedFile,
+        });
+      }
+    }
+    await new Promise((resolve: any) => {
+      setImageSrc((prevImages: any) => [...prevImages, ...newImages]);
+      resolve();
+    });
+    const urlsFromImageSrc = newImages.map((image: any) => image.url);
+    const updatedTourImages = [...allImage, ...urlsFromImageSrc];
+    setAllImage(updatedTourImages);
+  };
   useEffect(() => {
     if (tourDetail) {
+      const urlsFromImageSrc = imageSrc?.map((image: any) => image.url);
+      const getTourImg = Array.isArray(tourDetail?.tour_images)
+        ? tourDetail.tour_images
+        : [];
+      const updatedTourImages = [...getTourImg, ...urlsFromImageSrc];
       setName(tourDetail?.name);
       setDescription(tourDetail.description);
       setFootnote(tourDetail.footnote);
@@ -156,8 +226,10 @@ function ScreenMain() {
       setTourTag(tourDetail?.tag_id);
       setTourVehicle(tourDetail?.vehicle_id);
       setTourImages(tourDetail?.tour_images);
+      setAllImage(updatedTourImages);
     }
   }, [tourDetail]);
+
   useEffect(() => {
     axios
       .get(`${BASE_URL}/resource/province/all`)
@@ -231,7 +303,7 @@ function ScreenMain() {
             <ConstructionDes>
               <span className="font-medium">*Image ratio 1:1</span>
               <div className="grid grid-cols-5 gap-4 border">
-                {tourImages?.map((img: string, index: number) => (
+                {allImage?.map((img: string, index: number) => (
                   <div
                     key={index}
                     className="border border-solid bg-white border-gray-300 rounded-lg p-1 relative"
@@ -252,6 +324,21 @@ function ScreenMain() {
                 ))}
                 <div className="border border-solid bg-white border-gray-300 rounded-lg p-1 h-20">
                   <input type="file" multiple onChange={handleImageChange} />
+
+                  <input
+                    id="imageInputImageEdit"
+                    type="file"
+                    accept="image/*"
+                    style={{ display: "none" }}
+                    multiple
+                    onChange={(e) => handleImageInputChange(e)}
+                  />
+                  <button
+                    className="bg-white border border-navy-blue text-navy-blue px-3 rounded-2xl hover:border hover:border-navy-blue hover:bg-navy-blue hover:text-white h-10 m-3"
+                    onClick={(e) => handleAddImage(e)}
+                  >
+                    Change banner
+                  </button>
                 </div>
               </div>
             </ConstructionDes>
@@ -352,6 +439,7 @@ function ScreenMain() {
               <div className="relative">
                 <FaHardDrive className="absolute top-3 left-3 " />
                 <input
+                  disabled
                   className="border border-gray-300 rounded-lg py-2 px-8 w-full"
                   defaultValue={addressName || tourDetail?.address_name}
                   onChange={(e) => setAddressName(e.target.value)}
@@ -368,6 +456,7 @@ function ScreenMain() {
               <div className="col-span-8 relative">
                 <FaHardDrive className="absolute top-3 left-3 " />
                 <input
+                  disabled
                   className="border border-gray-300 rounded-lg py-2 px-8 w-full"
                   defaultValue={addressCountry || tourDetail?.address_country}
                   onChange={(e) => setAddressCountry(e.target.value)}
@@ -384,6 +473,7 @@ function ScreenMain() {
 
                 <div>
                   <select
+                    disabled
                     value={addressPro}
                     onChange={(e) => handleCountryChange(e, "pro")}
                     id="countries"
@@ -411,6 +501,7 @@ function ScreenMain() {
 
                 <div>
                   <select
+                    disabled
                     value={addressDis}
                     onChange={(e) => handleCountryChange(e, "dis")}
                     id="countries"
@@ -437,6 +528,7 @@ function ScreenMain() {
                 <FaHardDrive className="absolute top-3 left-3 " />
                 <div>
                   <select
+                    disabled
                     value={addressWard}
                     onChange={(e) => handleCountryChange(e, "ward")}
                     id="countries"

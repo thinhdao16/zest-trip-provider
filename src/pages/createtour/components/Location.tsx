@@ -51,10 +51,13 @@ const Location: React.FC = () => {
   const [locationStart, setLocationStart] = useState("");
 
   const [address, setAddress] = React.useState("");
-  const [coordinates, setCoordinates] = React.useState<{
-    latitude: number;
-    longitude: number;
-  } | null>(null);
+  const [coordinates, setCoordinates] = React.useState<
+    | {
+        latitude: number;
+        longitude: number;
+      }
+    | any
+  >(null);
 
   const [selectedData, setSelectedData] = useState<any>();
 
@@ -187,13 +190,17 @@ const Location: React.FC = () => {
       {text.lat} - {text.lng}: {text.text}
     </div>
   );
+  const lat = parseFloat(coordinates?.latitude || "10.8422931");
+  const lng = parseFloat(coordinates?.longitude || "106.8061656");
+
   const defaultProps = {
     center: {
-      lat: 10.8233715,
-      lng: 106.7622164,
+      lat: lat,
+      lng: lng,
     },
-    zoom: 11,
+    zoom: 13,
   };
+  console.log(defaultProps.center);
   return (
     <BannerContainer className="global-scrollbar">
       <div className="flex flex-col items-center justify-center">
@@ -543,8 +550,8 @@ const Location: React.FC = () => {
             >
               <AnyReactComponent
                 text={{
-                  lat: 10.8233715,
-                  lng: 106.7622164,
+                  lat: defaultProps.center.lat,
+                  lng: defaultProps.center.lng,
                   text: "My Marker",
                 }}
               />
