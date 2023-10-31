@@ -7,9 +7,6 @@ import {
 import { useStepContext } from "../context/ui/useStepContext";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { GoLocation } from "react-icons/go";
-import { AppDispatch } from "../../../store/redux/store";
-import { useDispatch } from "react-redux";
-import { postCreateTicketTour } from "../../../store/redux/silce/tourSlice";
 
 interface InputValue {
   main: string;
@@ -41,7 +38,7 @@ const Price: React.FC = () => {
   const [formList, setFormList] = useState([
     {
       id: 0,
-      numberOfPeople: 0,
+      numberOfPeople: 1,
       numberOfPeopleAfter: 3,
       retailPrice: 0,
       payoutPerPerson: 0,
@@ -50,7 +47,7 @@ const Price: React.FC = () => {
   const [formListChildren, setFormListChildren] = useState([
     {
       id: 0,
-      numberOfPeople: 0,
+      numberOfPeople: 1,
       numberOfPeopleAfter: 3,
       retailPrice: 0,
       payoutPerPerson: 0,
@@ -59,7 +56,7 @@ const Price: React.FC = () => {
   const [formListAdult, setFormListAdult] = useState([
     {
       id: 0,
-      numberOfPeople: 0,
+      numberOfPeople: 1,
       numberOfPeopleAfter: 3,
       retailPrice: 0,
       payoutPerPerson: 0,
@@ -313,17 +310,16 @@ const Price: React.FC = () => {
   };
   const handleNumberOfPeopleChange = (e: any, id: number, field: string) => {
     const newNumberOfPeople = parseInt(e.target.value);
-
+    console.log(newNumberOfPeople);
     if (field === "default") {
       const updatedFormList = formList.map((form, index) => {
         if (form.id === id) {
-          console.log(form.id, id, index);
           const updatedForm = {
             ...form,
             numberOfPeopleAfter:
-              newNumberOfPeople >= form.numberOfPeopleAfter
+              newNumberOfPeople >= form.numberOfPeople
                 ? newNumberOfPeople
-                : form.numberOfPeopleAfter,
+                : form.numberOfPeople,
             payoutPerPerson: (form.retailPrice * 30) / 100,
           };
           return updatedForm;
@@ -511,6 +507,7 @@ const Price: React.FC = () => {
     selectedCountries,
     selectedRadio,
     formListChildren,
+    formList,
     formListAdult,
     quantityAdult,
     quantityChildren,
@@ -527,29 +524,6 @@ const Price: React.FC = () => {
         <div className="py-5">
           <CreateTitleNullDes>Setting price and tickets</CreateTitleNullDes>
           <CreateDescription>Enter the pricing information</CreateDescription>
-
-          {/* <select
-            id="countries_disabled"
-            className="w-44 text-navy-blue font-medium text-lg bg-main hover:text-black focus:border-none"
-            value={selectedCountries}
-            onChange={handleCountryChange}
-          >
-            <option value="" disabled>
-              Choose type ticket
-            </option>
-            {countries.map((country, index) => {
-              if (!selectedCountries.includes(country.code)) {
-                return (
-                  <React.Fragment key={index}>
-                    <option key={country.code} value={country.code}>
-                      {country.name}
-                    </option>
-                  </React.Fragment>
-                );
-              }
-              return null; 
-            })}
-          </select> */}
 
           {selectedCountries.length === 0 && (
             <div className="mt-3 flex flex-col items-start gap-4">
@@ -572,9 +546,18 @@ const Price: React.FC = () => {
                   </div>
                 </div>
                 <div className="">
-                  <p className="font-medium mb-1">
-                    Maximum participants per booking
-                  </p>
+                  <div className="mb-1 flex flex-col">
+                    <span className="font-medium">
+                      Maximum participants per booking
+                    </span>
+                    {formList[formList.length - 1]?.numberOfPeopleAfter >
+                      quantityDefault?.max && (
+                      <span className="text-red-700 text-sm">
+                        Max greater than or equal max number of people
+                      </span>
+                    )}
+                  </div>
+
                   <div className=" relative ">
                     <p className="absolute top-4 left-2">
                       <GoLocation />
@@ -713,9 +696,18 @@ const Price: React.FC = () => {
                     </div>
                   </div>
                   <div className="mb-3">
-                    <p className="font-medium mb-1">
-                      Maximum adult participants per booking
-                    </p>
+                    <div className="mb-1 flex flex-col">
+                      <span className="font-medium mb-1">
+                        Maximum adult participants per booking
+                      </span>
+                      {formListAdult[formListAdult.length - 1]
+                        ?.numberOfPeopleAfter > quantityAdult?.max && (
+                        <span className="text-red-700 text-sm">
+                          Max greater than or equal max number of people
+                        </span>
+                      )}
+                    </div>
+
                     <div className=" relative ">
                       <p className="absolute top-4 left-2">
                         <GoLocation />
@@ -749,9 +741,17 @@ const Price: React.FC = () => {
                     </div>
                   </div>
                   <div className="mb-3">
-                    <p className="font-medium mb-1">
-                      Maximum children participants per booking
-                    </p>
+                    <div className="mb-1 flex flex-col">
+                      <span className="font-medium mb-1">
+                        Maximum children participants per booking
+                      </span>
+                      {formListChildren[formListChildren.length - 1]
+                        ?.numberOfPeopleAfter > quantityChildren?.max && (
+                        <span className="text-red-700 text-sm">
+                          Max greater than or equal max number of people
+                        </span>
+                      )}
+                    </div>
                     <div className=" relative ">
                       <p className="absolute top-4 left-2">
                         <GoLocation />

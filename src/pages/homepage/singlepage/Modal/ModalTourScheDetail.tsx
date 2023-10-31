@@ -91,7 +91,6 @@ const ModalTourScheDetail = ({
   };
   function getMaxToAmount(schedule: any) {
     let maxToAmount = "00:00";
-    console.log(schedule);
     schedule.TourScheduleDetail.forEach((scheduleDetail: any) => {
       const toTime = scheduleDetail.to;
 

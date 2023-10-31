@@ -16,6 +16,8 @@ import dayjs from "dayjs";
 const Capacity: React.FC = () => {
   const { currentStep, updateFormValues, formValues } = useStepContext();
   const [capacity, setCapacity] = useState("");
+  const [bookBefore, setBoookBefore] = useState<number>(0);
+
   const [startingTimes, setStartingTimes] = useState<any>({
     Mon: [],
     Tue: [],
@@ -69,6 +71,7 @@ const Capacity: React.FC = () => {
     DateFrom: startingTimes.DateFrom,
     DateTo: startingTimes.DateTo,
     Title: capacity,
+    BookBefore: bookBefore,
   };
 
   const [selectedHour, setSelectedHour] = useState<any>({
@@ -240,18 +243,21 @@ const Capacity: React.FC = () => {
     setStartingTimes(updatedStartingTimes);
   };
   const onChangeDateFrom = (e: any, field: string) => {
-    const newDateFrom = dayjs(e).format("YYYY-MM-DD");
+    const newDate = dayjs(e).format("YYYY-MM-DD");
 
     if (field === "from") {
       setStartingTimes((prevStartingTimes: any) => {
-        const newDateTo = dayjs(newDateFrom)
-          .add(formValues[4]?.DurationCheckIn[0][0]?.no, "day")
-          .format("YYYY-MM-DD");
-
         return {
           ...prevStartingTimes,
-          DateFrom: newDateFrom,
-          DateTo: newDateTo,
+          DateFrom: newDate,
+        };
+      });
+    }
+    if (field === "to") {
+      setStartingTimes((prevStartingTimes: any) => {
+        return {
+          ...prevStartingTimes,
+          DateTo: newDate,
         };
       });
     }
@@ -328,12 +334,12 @@ const Capacity: React.FC = () => {
   };
   useEffect(() => {
     updateFormValues(5, { Capacity: formattedStartingTimes });
-  }, [startingTimes, startingTimeSingle, capacity]);
+  }, [startingTimes, startingTimeSingle, capacity, bookBefore]);
 
   if (currentStep !== 8) {
     return null;
   }
-  const tomorrow = dayjs().add(0, "day");
+  const tomorrow = dayjs().add(formValues[5]?.Capacity?.BookBefore, "day");
   const handleClickTimeSingleDate = (
     e: React.MouseEvent<HTMLButtonElement>
   ) => {
@@ -368,6 +374,25 @@ const Capacity: React.FC = () => {
                 placeholder="New availability"
                 type="text"
                 onChange={handlePersonalInfo}
+              />
+            </div>
+          </div>
+          <div>
+            <p className="font-medium mb-1">
+              Book Before (e.g. Summer Season, Autumn 2011... )
+            </p>
+            <div className="  relative ">
+              <GoLocation className="absolute top-4 left-2" />
+              <input
+                className="w-1/2 border rounded-lg px-8 py-3 border-gray-400 shadow-custom-card-mui focus:outline-none hover:border-navy-blue focus:border-navy-blue"
+                placeholder="New availability"
+                value={bookBefore}
+                type="text"
+                onChange={(e) => {
+                  const inputValue = parseInt(e.target.value, 10);
+                  const newValue = isNaN(inputValue) ? 0 : inputValue;
+                  setBoookBefore(newValue);
+                }}
               />
             </div>
           </div>
@@ -408,10 +433,9 @@ const Capacity: React.FC = () => {
                     >
                       <DemoItem>
                         <DatePicker
-                          disabled
                           value={dayjs(startingTimes?.DateTo)}
-                          minDate={tomorrow}
-                          onChange={(e) => onChangeDateFrom(e, "from")}
+                          minDate={dayjs(startingTimes?.DateFrom)}
+                          onChange={(e) => onChangeDateFrom(e, "to")}
                         />
                       </DemoItem>
                     </DemoContainer>
