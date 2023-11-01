@@ -7,9 +7,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../store/redux/store";
 import { useSelector } from "react-redux";
 import { fetchTours } from "../../store/redux/silce/tourSlice";
-import { Rating } from "@mui/material";
 import { getReview } from "../../store/redux/silce/reviewSlice";
-import dayjs from "dayjs";
 
 function Booker() {
   const sidebarToggle: any = useOutletContext() as () => void;
@@ -166,7 +164,7 @@ function Booker() {
         </div>
         <div className="container mx-auto p-4">
           <h1 className="text-2xl font-semibold mb-4">List of Items</h1>
-          <div className="bg-white p-4 relative">
+          <div className="bg-white p-4 relative shadow-custom-card-mui rounded-lg">
             <button className="top-4 absolute right-4">abc</button>
             <span>búabd</span>
           </div>

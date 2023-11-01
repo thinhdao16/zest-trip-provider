@@ -85,21 +85,23 @@ export default function SpringModal(data: any) {
       })
     );
   };
-  console.log(data?.data?.ReviewReplies?.length);
   return (
     <div>
-      <button
-        onClick={() =>
-          data?.data?.ReviewReplies != null ? handleOpen() : null
-        }
-        className={`font-medium  border rounded-lg px-2 py-1 ${
-          data?.data?.ReviewReplies != null
-            ? "bg-white text-navy-blue border-navy-blue"
-            : "bg-gray-300 text-gray-600 cursor-not-allowed border-gray-300"
-        }`}
-      >
-        Answer
-      </button>
+      <div className="flex flex-col gap-3 flex-wrap">
+        <button
+          onClick={() =>
+            data?.data?.ReviewReplies === null ? handleOpen() : null
+          }
+          className={`font-medium  border rounded-lg px-2 py-1 ${
+            data?.data?.ReviewReplies === null
+              ? "bg-white text-navy-blue border-navy-blue"
+              : "bg-gray-300 text-gray-600 cursor-not-allowed border-gray-300"
+          }`}
+        >
+          Reply
+        </button>
+        <span>{data?.data?.ReviewReplies?.content}</span>
+      </div>
 
       <Modal
         aria-labelledby="spring-modal-title"

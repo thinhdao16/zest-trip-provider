@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../store/redux/store";
 import { useSelector } from "react-redux";
 import { fetchTours } from "../../store/redux/silce/tourSlice";
-import { Rating } from "@mui/material";
+import { Fade, Rating } from "@mui/material";
 import SpringModal from "./SpringModal";
 import { getReview } from "../../store/redux/silce/reviewSlice";
 import dayjs from "dayjs";
@@ -73,7 +73,11 @@ function Review() {
     return content;
   };
   const renderedContentChoose = renderComponentChoose();
+  const [isContentVisible, setContentVisible] = useState(false);
 
+  const toggleContentVisibility = () => {
+    setContentVisible(!isContentVisible);
+  };
   return (
     <>
       <Navbar />
@@ -167,6 +171,19 @@ function Review() {
         </div>
         <div className="container mx-auto p-4">
           <h1 className="text-2xl font-semibold mb-4">List of Items</h1>
+          <div>
+            <button onClick={toggleContentVisibility}>Hiển thị nội dung</button>
+            <div>
+              {isContentVisible && (
+                <Fade in={isContentVisible} timeout={500}>
+                  <div>
+                    <p>Nội dung bổ sung</p>
+                  </div>
+                </Fade>
+              )}
+            </div>
+          </div>
+
           <div className="flex flex-col gap-4">
             <div className="grid grid-cols-12 bg-gray-300 rounded-lg p-2 font-medium">
               <div className="col-span-4 text-center">Infomation product</div>

@@ -226,6 +226,7 @@ function ScreenMain() {
       setTourTag(tourDetail?.tag_id);
       setTourVehicle(tourDetail?.vehicle_id);
       setTourImages(tourDetail?.tour_images);
+      setAddressCountry(tourDetail?.address_country);
       setAllImage(updatedTourImages);
     }
   }, [tourDetail]);
@@ -322,9 +323,7 @@ function ScreenMain() {
                     />
                   </div>
                 ))}
-                <div className="border border-solid bg-white border-gray-300 rounded-lg p-1 h-20">
-                  <input type="file" multiple onChange={handleImageChange} />
-
+                <div className="border border-solid bg-white border-gray-300 rounded-lg p-1 flex items-center justify-center h-28">
                   <input
                     id="imageInputImageEdit"
                     type="file"
@@ -333,11 +332,8 @@ function ScreenMain() {
                     multiple
                     onChange={(e) => handleImageInputChange(e)}
                   />
-                  <button
-                    className="bg-white border border-navy-blue text-navy-blue px-3 rounded-2xl hover:border hover:border-navy-blue hover:bg-navy-blue hover:text-white h-10 m-3"
-                    onClick={(e) => handleAddImage(e)}
-                  >
-                    Change banner
+                  <button className="" onClick={(e) => handleAddImage(e)}>
+                    Add image
                   </button>
                 </div>
               </div>

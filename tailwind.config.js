@@ -24,7 +24,7 @@ export default {
         'blue-green': '#75E6DA',
         'baby-blue': '#D4F1F4',
         'main': "#f8f9fa",
-
+        'navy-blue-opacity-5': 'rgba(5, 68, 94, 0.4)',
         // Thêm nhiều màu sắc khác nếu cần
       },
       scrollbarWidth: {

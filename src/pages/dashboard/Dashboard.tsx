@@ -8,6 +8,7 @@ import ActionDashBoard from "../../components/Other/ActionDashBoard";
 import DashBoardOverView from "../../components/Other/DashBoardOverview";
 import DashBoardTrip from "../../components/Other/DashBoardTrip";
 import DashboardInfo from "./DashboardInfo";
+import DashBoardBooker from "../../components/Other/DashBoardBooker";
 interface UserData {
   name: string;
 }
@@ -83,7 +84,7 @@ function Dashboard() {
       <Grid container className="mt-8">
         <Grid item xs={12} sm={9}>
           <main className="h-full">
-            <div className="  p-6 mainCard bg-main container-dashboard rounded-3xl">
+            <div className="  p-6 mainCard bg-main container-dashboard rounded-3xl global-scrollbar">
               <div className="flex flex-col gap-4 ">
                 <DashboardHeader
                   toggle={sidebarToggle}
@@ -106,7 +107,11 @@ function Dashboard() {
                 </div> */}
               </div>
 
-              <div className="lg:w-full w-[1024px] overflow-hidden flex flex-row justify-between text-slate-700 gap-2 lg:max-h-screen overflow-x-auto whitespace-nowrap"></div>
+              <div className="lg:w-full w-[1024px] overflow-hidden flex flex-row justify-between text-slate-700 gap-2 lg:max-h-screen overflow-x-auto whitespace-nowrap">
+                <div>
+                  <DashBoardBooker />
+                </div>
+              </div>
             </div>
           </main>
         </Grid>

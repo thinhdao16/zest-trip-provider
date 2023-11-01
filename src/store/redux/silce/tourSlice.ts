@@ -190,6 +190,63 @@ export const addTourImage = createAsyncThunk(
     }
   }
 );
+
+export const editContentTour = createAsyncThunk(
+  "tour/editContentTour", // Slice name: "tour"
+  async (requestData: any) => {
+    try {
+      console.log(requestData);
+      const response = await axiosInstance.patch(
+        `${BASE_URL}/tour/content/${requestData?.id}`,
+        requestData?.dataValue,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log(response);
+      if (response.status === 200) {
+        return response.data;
+      } else {
+        toast.error("Failed to create tour!"); // Thông báo lỗi khi tạo tour
+        throw new Error("Failed to create tour");
+      }
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error?.response?.data?.message); // Thông báo lỗi khi tạo tour
+      throw new Error("Failed to create tour");
+    }
+  }
+);
+
+export const editTicketTour = createAsyncThunk(
+  "tour/editTicketTour", // Slice name: "tour"
+  async (requestDataTicket: any) => {
+    try {
+      const response = await axiosInstance.put(
+        `${BASE_URL}/pricing/update`,
+        requestDataTicket,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response.status === 201) {
+        // toast.success("Availability created successfully!"); // Thông báo tạo Availability thành công
+        return response.data;
+      } else {
+        // toast.error("Failed to create Availability!"); // Thông báo lỗi khi tạo Availability
+        throw new Error("Failed to create Availability");
+      }
+    } catch (error) {
+      console.log(error);
+      // toast.error("Failed to create Availability!");
+      throw new Error("Failed to create Availability");
+    }
+  }
+);
 const tourSlice = createSlice({
   name: "tour",
   initialState,
