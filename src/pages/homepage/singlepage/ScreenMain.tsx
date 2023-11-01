@@ -6,7 +6,7 @@ import Construction, {
   ConstructionTitletext,
 } from "./singlePageConst/Construction";
 import { FaCircle, FaHardDrive } from "react-icons/fa6";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import AutoResizableTextarea from "./singlePageConst/AutoResizableTextarea";
 import { TourTag, VehicleTag } from "../../../components/icon/tour/tag";
 import TabContext from "@mui/lab/TabContext";
@@ -16,10 +16,6 @@ import TabPanel from "@mui/lab/TabPanel";
 import "./detail.css";
 import ModalTag from "./Modal/ModalTag";
 import ModalVehicle from "./Modal/ModalVehicle";
-import { AppDispatch } from "../../../store/redux/store";
-import { useDispatch } from "react-redux";
-import { addTourImage } from "../../../store/redux/silce/tourSlice";
-import { DataContext } from "../../../store/dataContext/DataContext";
 import { FcEmptyTrash } from "react-icons/fc";
 import axios from "axios";
 import { BASE_URL } from "../../../store/apiInterceptors";
