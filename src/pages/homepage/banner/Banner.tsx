@@ -11,13 +11,7 @@ import { useDispatch } from "react-redux";
 import { fetchTours } from "../../../store/redux/silce/tourSlice";
 import { AppDispatch } from "../../../store/redux/store";
 
-import { TitlePage } from "../../../components/titlepage/TitlePage";
-import {
-  BannerContainer,
-  BannerContent,
-  BannerHomePageButtonListTab,
-  BannerHomePageList,
-} from "../../../styles/global/StyleGlobal";
+import { BannerHomePageButtonListTab } from "../../../styles/global/StyleGlobal";
 import { DontHaveTour } from "../../../components/donthave/DontHaveTour";
 import { DataContext } from "../../../store/dataContext/DataContext";
 
@@ -34,6 +28,7 @@ export default function Banner() {
     }
   }, [dispatch, refeshTour]);
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+    console.log(event);
     setValue(newValue);
   };
 

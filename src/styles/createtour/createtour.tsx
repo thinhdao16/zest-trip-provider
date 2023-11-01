@@ -104,14 +104,14 @@ export const BannerShopButton = styled(Button, {
   },
 }));
 
-export const WelcomTitle = styled(Typography)(({ theme }) => ({
+export const WelcomTitle = styled(Typography)(() => ({
   lineHeight: "54px",
   fontWeight: "600",
   fontSize: "48px",
   marginBottom: "20px",
   color: "black",
 }));
-export const CreateDescription = styled(Typography)(({ theme }) => ({
+export const CreateDescription = styled(Typography)(() => ({
   lineHeight: "24px",
   fontSize: "18px",
   fontWeight: "500",
@@ -145,20 +145,20 @@ export const CreateTitleImage = styled(Typography)(({ theme }) => ({
     fontSize: "42px",
   },
 }));
-export const TitleCardOptions = styled(Typography)(({ theme }) => ({
+export const TitleCardOptions = styled(Typography)(() => ({
   fontSize: "18px",
   lineHeight: "20px",
   fontWeight: "600",
   color: "#222222",
 }));
-export const TitleIconCardOptions = styled(Typography)(({ theme }) => ({
+export const TitleIconCardOptions = styled(Typography)(() => ({
   fontSize: "18px",
   lineHeight: "20px",
   fontWeight: "600",
   color: "#222222",
   marginTop: "4px",
 }));
-export const DescriptionCardOptions = styled(Typography)(({ theme }) => ({
+export const DescriptionCardOptions = styled(Typography)(() => ({
   fontSize: "14px",
   lineHeight: "18px",
   fontWeight: "400",
@@ -196,29 +196,29 @@ export const BannerMapContainer = styled(Box)(({ theme }) => ({
     opacity: 0.1,
   },
 }));
-export const CreateIconContent = styled(Box)(({ theme }) => ({
+export const CreateIconContent = styled(Box)(() => ({
   display: "flex",
   justifyContent: "center",
   fontSize: "50px",
   color: "white",
 }));
-export const CreateDurationContent = styled(Box)(({ theme }) => ({
+export const CreateDurationContent = styled(Box)(() => ({
   display: "block",
   // borderBottom: "1px solid #e0e0e0",
   padding: "25px 0 25px 0",
 }));
 
-export const CreateChooseContent = styled(Box)(({ theme }) => ({
+export const CreateChooseContent = styled(Box)(() => ({
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
   flex: "1",
 }));
-export const CreateKnotPre = styled(Box)(({ theme }) => ({
+export const CreateKnotPre = styled(Box)(() => ({
   fontSize: "32px",
   color: "#838383",
 }));
-export const CreateKnotHidden = styled(Box)(({ theme }) => ({
+export const CreateKnotHidden = styled(Box)(() => ({
   fontSize: "32px",
   color: "#f3f3f3",
 }));

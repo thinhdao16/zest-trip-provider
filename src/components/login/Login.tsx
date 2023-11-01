@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Box from "@mui/joy/Box";
-import FormLabel, { formLabelClasses } from "@mui/joy/FormLabel";
+import { formLabelClasses } from "@mui/joy/FormLabel";
 import Typography from "@mui/joy/Typography";
-import { AiOutlinePhone, AiOutlineLock, AiOutlineShop } from "react-icons/ai";
+import { AiOutlinePhone, AiOutlineLock } from "react-icons/ai";
 import {
   Backdrop,
-  Button,
   CircularProgress,
   FormControl,
   Grid,
@@ -32,15 +31,12 @@ import { ContainerPageFullHalfContent } from "../../styles/global/ContainerPageF
 import { Link, useNavigate } from "react-router-dom";
 import { DataContext } from "../../store/dataContext/DataContext";
 import axios from "axios";
-import { AppDispatch } from "../../store/redux/store";
-import { useDispatch } from "react-redux";
 import { BASE_URL } from "../../store/apiInterceptors";
 
 function Login() {
   const navigate = useNavigate();
   const { refeshLogin, setRefeshLogin, setRefeshTour } =
     React.useContext(DataContext);
-  const dispatch: AppDispatch = useDispatch();
   const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   const [openLoading, setOpenLoading] = useState(false);

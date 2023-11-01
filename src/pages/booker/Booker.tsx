@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
-import { useOutletContext } from "react-router-dom";
 import Navbar from "../../components/Navbar/Index";
 import { DataContext } from "../../store/dataContext/DataContext";
 import { useDispatch } from "react-redux";
@@ -10,14 +9,13 @@ import { fetchTours } from "../../store/redux/silce/tourSlice";
 import { getReview } from "../../store/redux/silce/reviewSlice";
 
 function Booker() {
-  const sidebarToggle: any = useOutletContext() as () => void;
   const [activeButton, setActiveButton] = useState(1);
   const [filterImg, setFilterImg] = useState(1);
 
   const { refeshTour } = React.useContext(DataContext);
   const dispatch: AppDispatch = useDispatch();
   const { tours } = useSelector((state: any) => state.tour);
-  const { review } = useSelector((state: any) => state.review);
+  useSelector((state: any) => state.review);
   const apiCalledRef = React.useRef(false);
 
   React.useEffect(() => {
@@ -48,28 +46,6 @@ function Booker() {
     return content;
   };
   const renderedContent = renderComponent();
-  const renderComponentChoose = () => {
-    let content;
-    switch (filterImg) {
-      case 1:
-        content = renderedContent;
-        break;
-      case 2:
-        content = renderedContent?.filter(
-          (tour: any) => tour?.tour_images?.length > 2
-        );
-        break;
-      case 3:
-        content = renderedContent?.filter(
-          (tour: any) => tour?.tag_id?.length > 0
-        );
-        break;
-      default:
-        content = null;
-    }
-    return content;
-  };
-  const renderedContentChoose = renderComponentChoose();
 
   return (
     <>

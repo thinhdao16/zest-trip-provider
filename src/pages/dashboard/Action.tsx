@@ -1,7 +1,4 @@
-import React from "react";
-import PropTypes from "prop-types";
-
-function Action(props) {
+function Action() {
   return <div>Action</div>;
 }
 

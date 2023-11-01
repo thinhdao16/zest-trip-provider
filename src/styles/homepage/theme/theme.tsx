@@ -1,5 +1,5 @@
 import { createTheme, Components } from "@mui/material/styles";
-import { darken, lighten } from "polished";
+import { lighten } from "polished";
 
 export const DrawerWidth = 250;
 
@@ -38,13 +38,13 @@ interface CustomComponents extends Components {
       };
       primary: {
         background: string;
-        '&:hover': {
+        "&:hover": {
           background: string;
         };
       };
       secondary: {
         background: string;
-        '&:hover': {
+        "&:hover": {
           background: string;
         };
       };
@@ -85,20 +85,20 @@ const theme = createTheme({
     MuiDrawer: {
       styleOverrides: {
         paper: {
-          width: DrawerWidth,          
+          width: DrawerWidth,
           background: Colors.primary,
           color: Colors.secondary,
-          borderRadius: '0px 100px 0px 0px',
-          borderRight: `1px solid ${Colors.primary}`
-        }
-      }
+          borderRadius: "0px 100px 0px 0px",
+          borderRight: `1px solid ${Colors.primary}`,
+        },
+      },
     },
     MuiDivider: {
       styleOverrides: {
         root: {
-          borderColor: lighten(0.2, Colors.primary)
-        }
-      }
+          borderColor: lighten(0.2, Colors.primary),
+        },
+      },
     },
     MyShopButton: {
       styleOverrides: {
@@ -122,4 +122,5 @@ const theme = createTheme({
   } as CustomComponents, // Add type assertion here
 });
 
+// eslint-disable-next-line react-refresh/only-export-components
 export default theme;

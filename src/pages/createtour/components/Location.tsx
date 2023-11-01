@@ -48,9 +48,6 @@ const Location: React.FC = () => {
 
   const [addWardStart, setAddWardStart] = useState<any>();
 
-  const [locationStart, setLocationStart] = useState("");
-
-  const [address, setAddress] = React.useState("");
   const [coordinates, setCoordinates] = React.useState<
     | {
         latitude: number;

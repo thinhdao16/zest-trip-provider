@@ -1,4 +1,4 @@
-import { Button, Tab, Typography, styled, Box, Card } from "@mui/material";
+import { Button, Tab, styled, Box } from "@mui/material";
 
 export const BannerContainer = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -89,7 +89,7 @@ export const ContainerPageFullHalf = styled(Box)(() => ({
   width: "100vw ",
 }));
 
-export const ContainerPageFullHalfContent = styled(Box)(({ theme }) => ({
+export const ContainerPageFullHalfContent = styled(Box)(() => ({
   display: "flex",
   flexDirection: "column",
   padding: "12px 0 12px 0",

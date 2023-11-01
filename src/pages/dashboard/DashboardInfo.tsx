@@ -1,15 +1,6 @@
-import Logout from "@mui/icons-material/Logout";
 import PersonAdd from "@mui/icons-material/PersonAdd";
 import Settings from "@mui/icons-material/Settings";
-import {
-  Avatar,
-  Divider,
-  IconButton,
-  ListItemIcon,
-  Menu,
-  MenuItem,
-  Tooltip,
-} from "@mui/material";
+import { Avatar, Divider, ListItemIcon, Menu, MenuItem } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 import { AiOutlineDown } from "react-icons/ai";

@@ -1,4 +1,4 @@
-import React, { MouseEvent } from "react";
+import { MouseEvent } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
@@ -10,7 +10,7 @@ interface SidebarLogoProps {
   toggle: () => void;
 }
 
-function SidebarLogo({ icon, text, toggle }: SidebarLogoProps) {
+function SidebarLogo({ text, toggle }: SidebarLogoProps) {
   const handleButtonClick = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     toggle();

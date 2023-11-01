@@ -2,14 +2,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NavLink } from "react-router-dom";
 import SubMenu from "./SubMenu";
 
-interface Menu {
-  label: string;
-  submenu?: Array<any>;
-  path?: string | undefined;
-  icon?: any;
-  role?: string;
-}
-
 interface MenuListProps {
   menus: any; // Đảm bảo rằng mỗi phần tử có thuộc tính path
   toggle: () => void;

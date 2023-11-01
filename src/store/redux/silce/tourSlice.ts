@@ -4,9 +4,6 @@ import { toast } from "react-toastify";
 interface DetailTour {
   index: string;
 }
-interface CreatTour {
-  formData: FormData;
-}
 
 const initialState = {
   tours: [],

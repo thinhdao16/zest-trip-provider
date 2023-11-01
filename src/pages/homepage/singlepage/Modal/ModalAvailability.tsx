@@ -127,7 +127,7 @@ const ModalAvailability = ({
           return {
             ...avaibilityItem,
             weekdays: avaibilityItem.weekdays.filter(
-              (detailItem: any, dIndex: any) => dIndex !== detailIndex
+              (_detailItem: any, dIndex: any) => dIndex !== detailIndex
             ),
           };
         }
@@ -233,7 +233,7 @@ const ModalAvailability = ({
           return {
             ...avabilityItem,
             special_dates: avabilityItem.special_dates.filter(
-              (detailItem: any, dIndex: any) => dIndex !== detailIndex
+              (_detailItem: any, dIndex: any) => dIndex !== detailIndex
             ),
           };
         }

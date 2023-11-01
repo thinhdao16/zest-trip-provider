@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, useRef, useEffect } from "react";
+import { useState, ChangeEvent, useRef, useEffect } from "react";
 
 interface AutoResizableTextareaProps {
   defaultValue: string;
@@ -33,6 +33,7 @@ function AutoResizableTextarea({
   };
 
   const handleInput = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    console.log(e);
     adjustTextarea();
   };
 

@@ -8,15 +8,6 @@ import { useStepContext } from "../context/ui/useStepContext";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { GoLocation } from "react-icons/go";
 
-interface InputValue {
-  main: string;
-}
-
-const countries = [
-  { code: "Infant", name: "Infant" },
-  { code: "Children", name: "Children" },
-  { code: "Adults", name: "Adults" },
-];
 const radioItems = [
   "Standard",
   "Free - ticket required",
@@ -217,6 +208,7 @@ const Price: React.FC = () => {
     // const updatedSelectedCountries = selectedCountries.filter(
     //   (code: any) => code !== countryCode
     // );
+    console.log(countryCode);
     setSelectedCountries([]);
   };
 

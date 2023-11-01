@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FcEditImage, FcEmptyTrash, FcPlus } from "react-icons/fc";
+import { FcEmptyTrash, FcPlus } from "react-icons/fc";
 import { Backdrop, Fade, Grid, Modal } from "@mui/material";
 import { Box } from "@mui/system";
 import { useSelector } from "react-redux";

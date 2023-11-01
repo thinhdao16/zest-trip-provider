@@ -38,7 +38,7 @@ export function DataContextProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [user, setUser] = useState<User | null>(null);
+  const [, setUser] = useState<User | null>(null);
   const [accessToken, setAccessToken] = useState("");
   const [refeshLogin, setRefeshLogin] = useState<RefeshLogin | null>(null);
   const [refeshTour, setRefeshTour] = useState<RefeshTour | null>(null);
@@ -52,12 +52,6 @@ export function DataContextProvider({
     const token = await users.getIdToken();
     setAccessToken(token);
     setUser(users);
-  };
-
-  const logOut = () => {
-    signOut(auth);
-    localStorage.clear();
-    window.location.reload();
   };
 
   useEffect(() => {

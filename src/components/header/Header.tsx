@@ -3,7 +3,6 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
 import { Link, useNavigate } from "react-router-dom";
-import { AiFillHome } from "react-icons/ai";
 import React, { useContext, useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
@@ -16,7 +15,6 @@ import PersonAdd from "@mui/icons-material/PersonAdd";
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import { DataContext } from "../../store/dataContext/DataContext";
-import { useSelector } from "react-redux";
 import "./header.css";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../store/redux/store";
@@ -27,7 +25,6 @@ function Header() {
   const dispatch: AppDispatch = useDispatch();
   const { setRefeshLogin } = useContext(DataContext);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const personalInfo = useSelector((state: any) => state.auth.personalInfo);
 
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {

@@ -21,9 +21,7 @@ function NavBar() {
     schedule,
     tourTag,
     tourVehicle,
-    tourImages,
     ticketPricing,
-    availability,
   } = useEditContext();
   const tourDetail: any = useSelector(
     (state: StateTour) => state.tour.tourGetDetail

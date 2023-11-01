@@ -2,7 +2,6 @@ import * as React from "react";
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
-import Typography from "@mui/material/Typography";
 import { useSpring, animated } from "@react-spring/web";
 import { Rating } from "@mui/material";
 import { AiOutlineClose } from "react-icons/ai";

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Box from "@mui/joy/Box";
-import FormLabel, { formLabelClasses } from "@mui/joy/FormLabel";
+import { formLabelClasses } from "@mui/joy/FormLabel";
 import Typography from "@mui/joy/Typography";
 import { AiOutlinePhone } from "react-icons/ai";
 import {
@@ -31,16 +31,12 @@ import { ContainerPageFullHalfContent } from "../../styles/global/ContainerPageF
 import { Link, useNavigate } from "react-router-dom";
 import { DataContext } from "../../store/dataContext/DataContext";
 import axios from "axios";
-import { AppDispatch } from "../../store/redux/store";
-import { useDispatch } from "react-redux";
 import { BASE_URL } from "../../store/apiInterceptors";
 import { FaArrowLeft } from "react-icons/fa6";
 
 function ForgotPassWord() {
   const navigate = useNavigate();
-  const { refeshLogin, setRefeshLogin, setRefeshTour } =
-    React.useContext(DataContext);
-  const dispatch: AppDispatch = useDispatch();
+  const { refeshLogin, setRefeshLogin } = React.useContext(DataContext);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [openLoading, setOpenLoading] = useState(false);
   useEffect(() => {

@@ -1,5 +1,4 @@
 import React, { ReactNode } from "react";
-import PropTypes from "prop-types";
 import { Box, Card } from "@mui/material";
 import { styled } from "@mui/system";
 import { useNavigate } from "react-router-dom";
@@ -8,11 +7,11 @@ interface CardHoverList {
   icon: ReactNode;
   title: string;
   description: string;
-  to:string
+  to: string;
 }
 
 // Define a styled Card component with the hover effect
-const StyledCard = styled(Card)(({ theme }) => ({
+const StyledCard = styled(Card)(() => ({
   padding: "16px",
   borderRadius: "12px",
   boxShadow: "0px 6px 16px rgba(0, 0, 0, 0.12) !important",
@@ -28,11 +27,11 @@ export const CardList: React.FC<CardHoverList> = ({
   icon,
   title,
   description,
-  to
+  to,
 }) => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const handleCardClick = () => {
-   navigate(to)
+    navigate(to);
   };
   return (
     <React.Fragment>

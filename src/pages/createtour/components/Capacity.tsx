@@ -451,7 +451,7 @@ const Capacity: React.FC = () => {
               <div className="mt-2">
                 <div className="flex flex-wrap items-center mb-1">
                   <p className="font-medium mr-5 w-5 ">Mon</p>
-                  {startingTimes?.Mon?.map((item: any, index: number) => (
+                  {startingTimes?.Mon?.map((_item: any, index: number) => (
                     <div key={index} className="flex items-center mr-8">
                       <select
                         className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
@@ -515,7 +515,7 @@ const Capacity: React.FC = () => {
               <div className="mt-2">
                 <div className="flex flex-wrap items-center mb-1">
                   <p className="font-medium mr-5 w-5">Tue</p>
-                  {startingTimes?.Tue?.map((item: any, index: number) => (
+                  {startingTimes?.Tue?.map((_item: any, index: number) => (
                     <div key={index} className="flex items-center mr-8">
                       <select
                         className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
@@ -578,7 +578,7 @@ const Capacity: React.FC = () => {
               <div className="mt-2">
                 <div className="flex flex-wrap items-center mb-1">
                   <p className="font-medium mr-5 w-5">Wed</p>
-                  {startingTimes?.Wed?.map((item: any, index: number) => (
+                  {startingTimes?.Wed?.map((_item: any, index: number) => (
                     <div key={index} className="flex items-center mr-8">
                       <select
                         className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
@@ -642,7 +642,7 @@ const Capacity: React.FC = () => {
               <div className="mt-2">
                 <div className="flex flex-wrap items-center mb-1">
                   <p className="font-medium mr-5 w-5">Thu</p>
-                  {startingTimes?.Thu?.map((item: any, index: number) => (
+                  {startingTimes?.Thu?.map((_item: any, index: number) => (
                     <div key={index} className="flex items-center mr-8">
                       <select
                         className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
@@ -705,7 +705,7 @@ const Capacity: React.FC = () => {
               <div className="mt-2">
                 <div className="flex flex-wrap items-center mb-1">
                   <p className="font-medium mr-5 w-5">Fri</p>
-                  {startingTimes?.Fri?.map((item: any, index: number) => (
+                  {startingTimes?.Fri?.map((_item: any, index: number) => (
                     <div key={index} className="flex items-center mr-8">
                       <select
                         className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
@@ -767,7 +767,7 @@ const Capacity: React.FC = () => {
               <div className="mt-2">
                 <div className="flex flex-wrap items-center mb-1">
                   <p className="font-medium mr-5 w-5">Sat</p>
-                  {startingTimes?.Sat?.map((item: any, index: number) => (
+                  {startingTimes?.Sat?.map((_item: any, index: number) => (
                     <div key={index} className="flex items-center mr-8">
                       <select
                         className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"
@@ -829,7 +829,7 @@ const Capacity: React.FC = () => {
               <div className="mt-2">
                 <div className="flex flex-wrap items-center mb-1">
                   <p className="font-medium mr-5 w-5">Sun</p>
-                  {startingTimes?.Sun?.map((item: any, index: number) => (
+                  {startingTimes?.Sun?.map((_item: any, index: number) => (
                     <div key={index} className="flex items-center mr-8">
                       <select
                         className="border-solid border border-gray-300 rounded-md p-1 text-sm font-medium"

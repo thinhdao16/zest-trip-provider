@@ -16,7 +16,7 @@ function Sidebar({ ...props }) {
   const { setRefeshLogin } = useContext(DataContext);
   const dispatch: AppDispatch = useDispatch();
 
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [, setAnchorEl] = useState<null | HTMLElement>(null);
   const [menus] = useState(initMenus);
 
   const handleLogout = () => {

@@ -48,23 +48,6 @@ function CreateTourNav() {
     navigate("/listtour");
   };
   console.log(formValues);
-  function formatDate(inputDate: string | undefined): string | undefined {
-    if (!inputDate) {
-      return undefined; // Xử lý trường hợp đầu vào rỗng gracefully
-    }
-
-    const match = inputDate.match(/^(\d{4})-(\d{2})-(\d{2})$/);
-
-    if (!match) {
-      throw new Error('Invalid date format. Expected "yyyy-mm-dd".');
-    }
-
-    const year = match[1];
-    const month = match[2];
-    const day = match[3];
-
-    return `${day.padStart(2, "0")}/${month.padStart(2, "0")}/${year}`;
-  }
 
   const handleCreateTourAndAvailability = () => {
     const formData = new FormData();

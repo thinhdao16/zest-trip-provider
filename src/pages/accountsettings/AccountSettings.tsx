@@ -1,11 +1,9 @@
 import React from "react";
-import PropTypes from "prop-types";
 import {
   BannerContainer,
   BannerContent,
   BannerPageList,
 } from "../../styles/global/StyleGlobal";
-import Header from "../../components/header/Header";
 import { TitlePage } from "../../components/titlepage/TitlePage";
 import { Box, Grid } from "@mui/material";
 import { CardList } from "../../components/card/CardList";

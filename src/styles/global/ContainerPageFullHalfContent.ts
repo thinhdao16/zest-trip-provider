@@ -1,6 +1,6 @@
 import { styled, Box } from "@mui/material";
 
-export const ContainerPageFullHalfContent = styled(Box)(({ theme }) => ({
+export const ContainerPageFullHalfContent = styled(Box)(() => ({
   display: "flex",
   flexDirection: "column",
   padding: "12px 0 12px 0",

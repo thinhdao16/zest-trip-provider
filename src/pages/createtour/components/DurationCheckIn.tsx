@@ -10,7 +10,7 @@ import {
   CreateTitleNullDes,
 } from "../../../styles/createtour/createtour";
 import { useStepContext } from "../context/ui/useStepContext";
-import { Card, Grid, Typography } from "@mui/material";
+import { Card, Typography } from "@mui/material";
 import { GoNoEntry, GoPlusCircle } from "react-icons/go";
 import { dataTypeDuration } from "../dataFake";
 import FormModal from "./Title/FormModal";

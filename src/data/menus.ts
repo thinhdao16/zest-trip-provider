@@ -1,5 +1,5 @@
 import { faPage4 } from "@fortawesome/free-brands-svg-icons";
-import { faTachometer, faLock } from "@fortawesome/free-solid-svg-icons";
+import { faTachometer } from "@fortawesome/free-solid-svg-icons";
 import { IconDefinition } from "@fortawesome/fontawesome-common-types";
 
 interface MenuItem {

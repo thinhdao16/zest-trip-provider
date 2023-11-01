@@ -92,25 +92,8 @@ function ScreenMain() {
 
   const [allImage, setAllImage] = useState<any>([]);
   const handleValueTab = (event: React.SyntheticEvent, newValue: string) => {
+    console.log(event);
     setValueTab(newValue);
-  };
-
-  const handleImageChange = (e: any) => {
-    const files = e.target.files;
-    console.log(files);
-    setSelectedImages([...selectedImages, ...files]);
-    const formData = new FormData();
-    for (const image of files) {
-      formData.append("tour_images", image);
-    }
-
-    const allForm = { formData, id: tourDetail?.id };
-    dispatch(addTourImage(allForm)).then((response) => {
-      if (addTourImage?.fulfilled.match(response)) {
-        setRefreshTourDetail((prev) => !prev);
-      }
-    });
-    setSelectedImages([]);
   };
 
   const removeImage = (imageURL: string) => {

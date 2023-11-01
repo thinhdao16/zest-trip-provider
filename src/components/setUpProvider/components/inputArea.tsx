@@ -1,10 +1,5 @@
 import { FC, ChangeEventHandler, ReactNode, useState } from "react";
-import {
-  FormControl,
-  FormLabel,
-  InputAdornment,
-  TextareaAutosize,
-} from "@mui/material";
+import { FormControl, FormLabel, InputAdornment } from "@mui/material";
 
 interface TextAreaWithIconProps {
   label: string;

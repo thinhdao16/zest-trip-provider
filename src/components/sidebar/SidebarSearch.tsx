@@ -1,4 +1,4 @@
-import React, { ChangeEvent, MouseEvent, RefObject } from "react";
+import { ChangeEvent, MouseEvent, RefObject } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faMagnifyingGlass,

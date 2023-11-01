@@ -1,11 +1,9 @@
-import React from "react";
-import PropTypes from "prop-types";
 import {
   AiOutlineArrowDown,
   AiOutlineArrowUp,
   AiOutlineDown,
 } from "react-icons/ai";
-function DashBoardOverview(props: any) {
+function DashBoardOverview() {
   return (
     <div className="grid gap-4">
       <p className="text-xl font-medium check">Overview</p>

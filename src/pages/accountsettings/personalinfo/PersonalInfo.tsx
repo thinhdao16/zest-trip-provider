@@ -1,10 +1,5 @@
 import React from "react";
-import Header from "../../../components/header/Header";
-import {
-  BannerContainer,
-  BannerContent,
-  BannerPageList,
-} from "../../../styles/global/StyleGlobal";
+import { BannerPageList } from "../../../styles/global/StyleGlobal";
 import { Box, Breadcrumbs, Grid } from "@mui/material";
 import { Link } from "react-router-dom";
 import { AiFillHome } from "react-icons/ai";
