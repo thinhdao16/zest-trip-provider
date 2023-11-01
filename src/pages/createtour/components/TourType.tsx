@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Card } from "@mui/material";
+import { Card } from "@mui/material";
 import { useStepContext } from "../context/ui/useStepContext";
 import {
   BannerContainer,

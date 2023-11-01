@@ -132,7 +132,7 @@ const ModalTourScheDetail = ({
         return {
           ...scheduleItem,
           TourScheduleDetail: scheduleItem.TourScheduleDetail.filter(
-            (detailItem: any, dIndex: any) => dIndex !== detailIndex
+            (_detailItem: any, dIndex: any) => dIndex !== detailIndex
           ),
         };
       }

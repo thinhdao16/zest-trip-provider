@@ -50,8 +50,6 @@ function ScreenMain() {
     (state: { tour: { loadingTourImageDetail: boolean } }) =>
       state.tour.loadingTourImageDetail
   );
-  const dispatch: AppDispatch = useDispatch();
-  const { setRefreshTourDetail } = useContext(DataContext);
   const {
     name,
     setName,
@@ -83,8 +81,6 @@ function ScreenMain() {
   const [addressProvince, setAddressProvince] = useState<[]>();
   const [addressDistrict, setAddressDistrict] = useState<[]>();
   const [addressWards, setAddressWards] = useState<[]>();
-
-  const [selectedImages, setSelectedImages] = useState<any>([]);
 
   const [hasChanges, setHasChanges] = useState(false);
 
