@@ -22,6 +22,13 @@ export const DataBook = [
         paid_price: "400000",
         original_price: "400000",
       },
+      {
+        booking_id: "27e0d567-555c-41af-bcec-fb81380c60c8",
+        ticket_type_id: 1,
+        quantity: 2,
+        paid_price: "400000",
+        original_price: "400000",
+      },
     ],
     BookingOnTour: {
       id: "24e3e639-8ff1-4c82-a568-233c6d851907",
