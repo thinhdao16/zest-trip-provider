@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import { sidebarToggle } from "../../utils/toggler";
 import BottomNavbar from "../BottomNavbar/Index";
-import Sidebar from "../Sidebar/Sidebar";
+import Sidebar from "../Sidebar/Sidebar.ts";
 
 function AuthLayout(): JSX.Element {
   const isDesktop = (): boolean => document.body.clientWidth > 768;
