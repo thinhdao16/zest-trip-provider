@@ -38,7 +38,7 @@ const Price: React.FC = () => {
   const [formListChildren, setFormListChildren] = useState([
     {
       id: 0,
-      numberOfPeople: 1,
+      numberOfPeople: 0,
       numberOfPeopleAfter: 3,
       retailPrice: 0,
       payoutPerPerson: 0,

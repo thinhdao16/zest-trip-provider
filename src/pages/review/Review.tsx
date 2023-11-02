@@ -5,7 +5,6 @@ import { DataContext } from "../../store/dataContext/DataContext";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../store/redux/store";
 import { useSelector } from "react-redux";
-import { fetchTours } from "../../store/redux/silce/tourSlice";
 import { Rating } from "@mui/material";
 import SpringModal from "./SpringModal";
 import { getReview } from "../../store/redux/silce/reviewSlice";
@@ -14,34 +13,31 @@ import dayjs from "dayjs";
 function Review() {
   const [activeButton, setActiveButton] = useState(1);
   const [filterImg, setFilterImg] = useState(1);
-
-  const { refeshTour } = React.useContext(DataContext);
+  const [refeshReview, setRefeshReview] = useState(1);
+  React.useContext(DataContext);
   const dispatch: AppDispatch = useDispatch();
-  const { tours } = useSelector((state: any) => state.tour);
   const { review } = useSelector((state: any) => state.review);
-  const apiCalledRef = React.useRef(false);
+  // const apiCalledRef = React.useRef(false);
 
   React.useEffect(() => {
-    if (!apiCalledRef.current) {
-      dispatch(fetchTours());
-      dispatch(getReview());
-      apiCalledRef.current = true;
-    }
-  }, [dispatch, refeshTour]);
+    // if (!apiCalledRef.current) {
+    dispatch(getReview());
+    // apiCalledRef.current = true;
+    // }
+  }, [dispatch, refeshReview]);
   const renderComponent = () => {
     let content;
     switch (activeButton) {
       case 1:
-        content = tours;
+        content = review;
         break;
       case 2:
-        content = tours?.filter(
-          (tour: any) => tour.TourAvailability.length > 0
+        content = review?.filter(
+          (review: any) => review.ReviewReplies === null
         );
         break;
       case 3:
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        content = tours?.filter((tour: any) => tour.TicketPricing.length > 0);
+        content = review?.filter((review: any) => review.ReviewReplies != null);
         break;
       default:
         content = null;
@@ -50,6 +46,43 @@ function Review() {
   };
   const renderedContent = renderComponent();
 
+  const renderComponentStar = () => {
+    let content;
+    switch (filterImg) {
+      case 1:
+        content = renderedContent;
+        break;
+      case 2:
+        content = renderedContent?.filter(
+          (review: any) => review?.rating === 5
+        );
+        break;
+      case 3:
+        content = renderedContent?.filter(
+          (review: any) => review?.rating === 4
+        );
+        break;
+      case 4:
+        content = renderedContent?.filter(
+          (review: any) => review?.rating === 3
+        );
+        break;
+      case 5:
+        content = renderedContent?.filter(
+          (review: any) => review?.rating === 2
+        );
+        break;
+      case 6:
+        content = renderedContent?.filter(
+          (review: any) => review?.rating === 1
+        );
+        break;
+      default:
+        content = null;
+    }
+    return content;
+  };
+  const renderedContentStar = renderComponentStar();
   return (
     <>
       <Navbar />
@@ -57,86 +90,133 @@ function Review() {
       <main className="h-full bg-main overflow-auto global-scrollbar rounded-lg">
         {/* Main Content */}
         <div className="mainCard">
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap mb-4">
             <button
-              className={`button ${
+              className={`button  px-4 py-3 ${
                 activeButton === 1
-                  ? "active rounded-lg px-4 py-1.5 bg-white border border-navy-blue text-navy-blue font-medium hover:bg-navy-blue hover:text-white"
-                  : "rounded-lg px-4 py-1.5 bg-white border border-gray-300 text-gray-500 font-medium hover:bg-gray-300 hover:text-black"
+                  ? "active  border-b border-navy-blue text-navy-blue font-medium hover:text-black"
+                  : " border-b border-gray-300 text-gray-500 font-medium hover:text-black"
               }`}
               onClick={() => setActiveButton(1)}
             >
-              Tour ({tours?.length})
+              All
+              {/* ({review?.length}) */}
             </button>
             <button
-              className={`button ${
+              className={`button px-4 py-3 ${
                 activeButton === 2
-                  ? "active rounded-lg px-4 py-1.5 bg-white border border-navy-blue text-navy-blue font-medium hover:bg-navy-blue hover:text-white"
-                  : "rounded-lg px-4 py-1.5 bg-white border border-gray-300 text-gray-500 font-medium hover:bg-gray-300 hover:text-black"
+                  ? "active  border-b border-navy-blue text-navy-blue font-medium hover:text-black"
+                  : " border-b border-gray-300 text-gray-500 font-medium hover:text-black"
               }`}
               onClick={() => setActiveButton(2)}
             >
-              TourAvailability
+              Not answered({" "}
               {
-                tours?.filter((tour: any) => tour.TourAvailability.length > 0)
+                review?.filter((review: any) => review.ReviewReplies === null)
                   .length
-              }
+              }{" "}
+              )
             </button>
             <button
-              className={`button ${
+              className={`button px-4 py-3 ${
                 activeButton === 3
-                  ? "active rounded-lg px-4 py-1.5 bg-white border border-navy-blue text-navy-blue font-medium hover:bg-navy-blue hover:text-white"
-                  : "rounded-lg px-4 py-1.5 bg-white border border-gray-300 text-gray-500 font-medium hover:bg-gray-300 hover:text-black"
+                  ? "active  border-b border-navy-blue text-navy-blue font-medium hover:text-black"
+                  : " border-b border-gray-300 text-gray-500 font-medium hover:text-black"
               }`}
               onClick={() => setActiveButton(3)}
             >
-              ticket(
+              Answered({" "}
               {
-                tours?.filter((tour: any) => tour.TicketPricing.length > 0)
+                review?.filter((review: any) => review.ReviewReplies != null)
                   .length
-              }
+              }{" "}
               )
             </button>
           </div>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap">
             <button
-              className={`button ${
+              className={`button rounded-sm px-4 py-1.5 bg-white border ${
                 filterImg === 1
-                  ? "active rounded-lg px-4 py-1.5 bg-white border border-navy-blue text-navy-blue font-medium hover:bg-navy-blue hover:text-white"
-                  : "rounded-lg px-4 py-1.5 bg-white border border-gray-300 text-gray-500 font-medium hover:bg-gray-300 hover:text-black"
+                  ? "active  border-navy-blue text-navy-blue font-medium hover:bg-navy-blue hover:text-white"
+                  : " border-gray-300 text-gray-500 font-medium hover:bg-gray-300 hover:text-black"
               }`}
               onClick={() => setFilterImg(1)}
             >
-              Tour ({renderedContent?.length})
+              All
             </button>
             <button
-              className={`button ${
+              className={`button rounded-sm px-4 py-1.5 bg-white border ${
                 filterImg === 2
-                  ? "active rounded-lg px-4 py-1.5 bg-white border border-navy-blue text-navy-blue font-medium hover:bg-navy-blue hover:text-white"
-                  : "rounded-lg px-4 py-1.5 bg-white border border-gray-300 text-gray-500 font-medium hover:bg-gray-300 hover:text-black"
+                  ? "active   border-navy-blue text-navy-blue font-medium hover:bg-navy-blue hover:text-white"
+                  : "  border-gray-300 text-gray-500 font-medium hover:bg-gray-300 hover:text-black"
               }`}
               onClick={() => setFilterImg(2)}
             >
-              Image ^ 2.
+              5 Star({" "}
               {
-                renderedContent?.filter(
-                  (tour: any) => tour?.tour_images?.length > 2
-                ).length
-              }
+                renderedContent?.filter((review: any) => review?.rating === 5)
+                  .length
+              }{" "}
+              )
             </button>
             <button
-              className={`button ${
+              className={`button rounded-sm px-4 py-1.5 bg-white border ${
                 filterImg === 3
-                  ? "active rounded-lg px-4 py-1.5 bg-white border border-navy-blue text-navy-blue font-medium hover:bg-navy-blue hover:text-white"
-                  : "rounded-lg px-4 py-1.5 bg-white border border-gray-300 text-gray-500 font-medium hover:bg-gray-300 hover:text-black"
+                  ? "active  border-navy-blue text-navy-blue font-medium hover:bg-navy-blue hover:text-white"
+                  : " border-gray-300 text-gray-500 font-medium hover:bg-gray-300 hover:text-black"
               }`}
               onClick={() => setFilterImg(3)}
             >
-              tag_id (
+              4 Star({" "}
               {
-                renderedContent?.filter((tour: any) => tour.tag_id.length > 0)
+                renderedContent?.filter((review: any) => review?.rating === 4)
                   .length
-              }
+              }{" "}
+              )
+            </button>
+            <button
+              className={`button rounded-sm px-4 py-1.5 bg-white border ${
+                filterImg === 4
+                  ? "active  border-navy-blue text-navy-blue font-medium hover:bg-navy-blue hover:text-white"
+                  : " border-gray-300 text-gray-500 font-medium hover:bg-gray-300 hover:text-black"
+              }`}
+              onClick={() => setFilterImg(4)}
+            >
+              3 Star({" "}
+              {
+                renderedContent?.filter((review: any) => review?.rating === 3)
+                  .length
+              }{" "}
+              )
+            </button>{" "}
+            <button
+              className={`button rounded-sm px-4 py-1.5 bg-white border ${
+                filterImg === 5
+                  ? "active  border-navy-blue text-navy-blue font-medium hover:bg-navy-blue hover:text-white"
+                  : " border-gray-300 text-gray-500 font-medium hover:bg-gray-300 hover:text-black"
+              }`}
+              onClick={() => setFilterImg(5)}
+            >
+              2 Star({" "}
+              {
+                renderedContent?.filter((review: any) => review?.rating === 2)
+                  .length
+              }{" "}
+              )
+            </button>{" "}
+            <button
+              className={`button rounded-sm px-4 py-1.5 bg-white border ${
+                filterImg === 6
+                  ? "active  border-navy-blue text-navy-blue font-medium hover:bg-navy-blue hover:text-white"
+                  : " border-gray-300 text-gray-500 font-medium hover:bg-gray-300 hover:text-black"
+              }`}
+              onClick={() => setFilterImg(6)}
+            >
+              1 Star({" "}
+              {
+                renderedContent?.filter((review: any) => review?.rating === 1)
+                  .length
+              }{" "}
               )
             </button>
           </div>
@@ -151,7 +231,7 @@ function Review() {
               <div className="col-span-2 text-center">action</div>
             </div>
             <div className="flex flex-col gap-3">
-              {review?.map((item: any, index: number) => (
+              {renderedContentStar?.map((item: any, index: number) => (
                 <div
                   key={index}
                   className=" bg-white rounded-lg shadow-custom-card-mui border border-solid border-gray-200 "
@@ -171,7 +251,7 @@ function Review() {
                     <div className="font-medium flex gap-1">
                       ID product:
                       <span className="font-normal text-gray-500">
-                        {item?.user?.id}
+                        {item?.tour?.id}
                       </span>
                     </div>
                   </div>
@@ -218,7 +298,7 @@ function Review() {
                       <div className="flex flex-col gap-2">
                         <Rating
                           name="half-rating-read"
-                          defaultValue={item?.rating}
+                          value={item?.rating}
                           precision={0.5}
                           readOnly
                         />
@@ -235,7 +315,10 @@ function Review() {
                       </div>
                     </div>
                     <div className="col-span-2 border-l p-4 border-solid border-gray-200 rounded-bl-lg text-center">
-                      <SpringModal data={item} />
+                      <SpringModal
+                        data={item}
+                        setRefeshReview={setRefeshReview}
+                      />
                     </div>
                   </div>
                 </div>

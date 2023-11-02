@@ -17,7 +17,7 @@ const Capacity: React.FC = () => {
   const { currentStep, updateFormValues, formValues } = useStepContext();
   const [capacity, setCapacity] = useState("");
   const [bookBefore, setBoookBefore] = useState<number>(0);
-
+  const [refundBefore, setRefundBefore] = useState<number>(0);
   const [startingTimes, setStartingTimes] = useState<any>({
     Mon: [],
     Tue: [],
@@ -72,6 +72,7 @@ const Capacity: React.FC = () => {
     DateTo: startingTimes.DateTo,
     Title: capacity,
     BookBefore: bookBefore,
+    RefundBefore: refundBefore,
   };
 
   const [selectedHour, setSelectedHour] = useState<any>({
@@ -334,7 +335,7 @@ const Capacity: React.FC = () => {
   };
   useEffect(() => {
     updateFormValues(5, { Capacity: formattedStartingTimes });
-  }, [startingTimes, startingTimeSingle, capacity, bookBefore]);
+  }, [startingTimes, startingTimeSingle, capacity, bookBefore, refundBefore]);
 
   if (currentStep !== 8) {
     return null;
@@ -396,7 +397,25 @@ const Capacity: React.FC = () => {
               />
             </div>
           </div>
-
+          <div>
+            <p className="font-medium mb-1">
+              Refund Before (e.g. Summer Season, Autumn 2011... )
+            </p>
+            <div className="  relative ">
+              <GoLocation className="absolute top-4 left-2" />
+              <input
+                className="w-1/2 border rounded-lg px-8 py-3 border-gray-400 shadow-custom-card-mui focus:outline-none hover:border-navy-blue focus:border-navy-blue"
+                placeholder="New availability"
+                value={refundBefore}
+                type="text"
+                onChange={(e) => {
+                  const inputValue = parseInt(e.target.value, 10);
+                  const newValue = isNaN(inputValue) ? 0 : inputValue;
+                  setRefundBefore(newValue);
+                }}
+              />
+            </div>
+          </div>
           <div className="mt-3">
             <p className="font-medium">Validity of this season</p>{" "}
             <div className="flex items-center gap-3 mt-2">

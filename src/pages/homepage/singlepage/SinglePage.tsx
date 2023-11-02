@@ -13,12 +13,16 @@ import ScreenMain from "./ScreenMain";
 import ScreenSP from "./ScreenSP";
 import { DataContext } from "../../../store/dataContext/DataContext";
 import { EditContextProvider } from "./Context/EditContext";
+import { useSelector } from "react-redux";
+import { Backdrop, CircularProgress } from "@mui/material";
 
 function SinglePage() {
   const dispatch: AppDispatch = useDispatch();
   const { refreshTourDetail } = useContext(DataContext);
   const { index }: any = useParams();
-
+  const loadingDetail = useSelector(
+    (detail: any) => detail?.tour?.loadingDetail
+  );
   useEffect(() => {
     dispatch(fetchTourDetail(index));
     dispatch(getTagTour());
@@ -34,6 +38,12 @@ function SinglePage() {
   };
   return (
     <EditContextProvider>
+      <Backdrop
+        sx={{ color: "#ffffff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loadingDetail}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <div className="h-[100vh]">
         <div>
           <div

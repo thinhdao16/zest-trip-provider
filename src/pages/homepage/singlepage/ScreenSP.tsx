@@ -56,7 +56,7 @@ function ScreenSP() {
       </div>
       <div className="p-1 flex flex-col gap-3">
         <div>
-          <div className="flex gap-3">
+          <div className="flex gap-3 items-center">
             <span className="font-medium text-lg"> Ticket</span>
 
             <ModalTicketAdult
@@ -122,7 +122,7 @@ function ScreenSP() {
           </div>
         </div>
         <div>
-          <div className="flex">
+          <div className="flex gap-3 items-center">
             <span className="font-medium text-lg">Avalibility</span>
             <ModalAvailability
               dataAvailability={{ availability, setAvailability }}

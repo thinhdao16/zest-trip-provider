@@ -17,14 +17,14 @@ export const DataBook = [
     TicketOnBooking: [
       {
         booking_id: "27e0d567-555c-41af-bcec-fb81380c60c8",
-        ticket_type_id: 1,
+        ticket_type_id: 1, //adult
         quantity: 2,
         paid_price: "400000",
         original_price: "400000",
       },
       {
         booking_id: "27e0d567-555c-41af-bcec-fb81380c60c8",
-        ticket_type_id: 1,
+        ticket_type_id: 2, //children
         quantity: 2,
         paid_price: "400000",
         original_price: "400000",

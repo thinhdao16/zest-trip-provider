@@ -82,7 +82,12 @@ export default function SpringModal(data: any) {
         content: reply,
         tourId: data.data.tour.id,
       })
-    );
+    ).then((respone) => {
+      if (replyReview.fulfilled.match(respone)) {
+        data.setRefeshReview((prev: number) => prev + 1);
+        setOpen(false);
+      }
+    });
   };
   return (
     <div>

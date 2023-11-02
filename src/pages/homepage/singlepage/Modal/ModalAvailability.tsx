@@ -7,6 +7,7 @@ import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 import { FcEmptyTrash } from "react-icons/fc";
 import "./modal.css";
+import { FaRegPenToSquare } from "react-icons/fa6";
 const style = {
   position: "absolute" as const,
   top: "50%",
@@ -258,7 +259,7 @@ const ModalAvailability = ({
 
   return (
     <div>
-      <button onClick={handleOpen}>edit</button>
+      <FaRegPenToSquare onClick={handleOpen} />
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"

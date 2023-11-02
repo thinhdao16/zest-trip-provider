@@ -246,7 +246,7 @@ function ScreenMain() {
                 <ConstructionTitletext>Tour type</ConstructionTitletext>
               </div>
               <div className="col-span-7  ">
-                <div className="border-navy-blue  border-l-4 p-2 rounded-lg bg-white cursor-not-allowed border-solid ">
+                <div className=" p-2 rounded-lg bg-gray-200 cursor-not-allowed border-solid ">
                   {tourDetail?.tour_location_type}
                 </div>
               </div>
@@ -256,7 +256,7 @@ function ScreenMain() {
                 <ConstructionTitletext>Status</ConstructionTitletext>
               </div>
               <div className="col-span-8 ">
-                <div className="border-navy-blue border-l-4 p-2 rounded-lg bg-white cursor-not-allowed border-solid ">
+                <div className=" p-2 rounded-lg bg-gray-200 cursor-not-allowed border-solid ">
                   {tourDetail?.status}
                 </div>
               </div>
@@ -266,7 +266,7 @@ function ScreenMain() {
                 <ConstructionTitletext>Duration</ConstructionTitletext>
               </div>
               <div className="col-span-8 ">
-                <div className="border-navy-blue border-l-4 p-2 rounded-lg bg-white cursor-not-allowed border-solid ">
+                <div className="p-2 rounded-lg bg-gray-200 cursor-not-allowed border-solid ">
                   {tourDetail?.duration}
                 </div>
               </div>

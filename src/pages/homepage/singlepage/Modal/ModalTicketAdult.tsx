@@ -1,6 +1,7 @@
 import { Backdrop, Fade, Modal } from "@mui/material";
 import { Box } from "@mui/system";
 import { useState } from "react";
+import { FaRegPenToSquare } from "react-icons/fa6";
 import { FcEmptyTrash } from "react-icons/fc";
 
 const style = {
@@ -13,6 +14,7 @@ const style = {
   background: "white",
   borderRadius: "12px",
   minWidth: "400px",
+  maxWidth: "600px",
 };
 
 const ModalTicketAdult = ({
@@ -135,7 +137,7 @@ const ModalTicketAdult = ({
   };
   return (
     <div>
-      <button onClick={handleOpen}>edit</button>
+      <FaRegPenToSquare onClick={handleOpen} />
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -156,115 +158,141 @@ const ModalTicketAdult = ({
                 style={{ marginTop: "-1px" }}
               >
                 <div className="flex items-center justify-center">
-                  <span className=" text-xl font-semibold">Tour Schedule</span>
+                  <span className=" text-xl font-semibold">Tour Ticket</span>
                 </div>
               </div>
               <div className="p-4">
                 <div className="flex flex-col gap-4 min-h-[20vh] max-h-[80vh] overflow-auto global-scrollbar py-16 p-4">
                   {ticketPricing?.map((ticket: any, ticketIndex: number) => (
                     <div key={ticketIndex} className="flex flex-col">
-                      <input
-                        type="text"
-                        className="px-2 py-1 border border-gray-300 rounded-lg"
-                        value={ticket?.Ticket?.name}
-                        onChange={(e) =>
-                          updateType(ticketIndex, e.target.value, "Ticket")
-                        }
-                      />
-                      <input
-                        type="text"
-                        className="px-2 py-1 border border-gray-300 rounded-lg"
-                        value={ticket?.PricingType?.name}
-                        onChange={(e) =>
-                          updateType(ticketIndex, e.target.value, "PricingType")
-                        }
-                      />
-                      <span>max</span>
-                      <input
-                        type="text"
-                        placeholder="max"
-                        className="px-2 py-1 border border-gray-300 rounded-lg"
-                        value={ticket?.maximum_booking_quantity}
-                        onChange={(e) =>
-                          updateScript(
-                            ticketIndex,
-                            e.target.value,
-                            "maximum_booking_quantity"
-                          )
-                        }
-                      />{" "}
-                      <span>min</span>
-                      <input
-                        type="text"
-                        placeholder="min"
-                        className="px-2 py-1 border border-gray-300 rounded-lg"
-                        value={ticket?.minimum_booking_quantity}
-                        onChange={(e) =>
-                          updateScript(
-                            ticketIndex,
-                            e.target.value,
-                            "minimum_booking_quantity"
-                          )
-                        }
-                      />
-                      <span>price</span>
+                      <div className="flex gap-3">
+                        <div className="flex flex-col gap-1">
+                          <span className="font-medium">Ticket name</span>
+                          <input
+                            type="text"
+                            disabled
+                            className="px-2 py-1 border border-gray-300 rounded-lg"
+                            value={ticket?.Ticket?.name}
+                            onChange={(e) =>
+                              updateType(ticketIndex, e.target.value, "Ticket")
+                            }
+                          />
+                        </div>
+                        <div className="flex flex-col gap-1">
+                          <span className="font-medium">Ticket type</span>
+                          <input
+                            disabled
+                            type="text"
+                            className="px-2 py-1 border border-gray-300 rounded-lg"
+                            value={ticket?.PricingType?.name}
+                            onChange={(e) =>
+                              updateType(
+                                ticketIndex,
+                                e.target.value,
+                                "PricingType"
+                              )
+                            }
+                          />
+                        </div>
+                      </div>
+                      <div className="flex gap-3">
+                        <div className="flex flex-col gap-1">
+                          <span className="font-medium">Max count</span>
+                          <input
+                            type="text"
+                            placeholder="max"
+                            className="px-2 py-1 border border-gray-300 rounded-lg"
+                            value={ticket?.maximum_booking_quantity}
+                            onChange={(e) =>
+                              updateScript(
+                                ticketIndex,
+                                e.target.value,
+                                "maximum_booking_quantity"
+                              )
+                            }
+                          />
+                        </div>
+                        <div className="flex flex-col gap-1">
+                          <span className="font-medium">Min count</span>
+                          <input
+                            type="text"
+                            placeholder="min"
+                            className="px-2 py-1 border border-gray-300 rounded-lg"
+                            value={ticket?.minimum_booking_quantity}
+                            onChange={(e) =>
+                              updateScript(
+                                ticketIndex,
+                                e.target.value,
+                                "minimum_booking_quantity"
+                              )
+                            }
+                          />
+                        </div>
+                      </div>
                       {ticket?.price_range?.map(
                         (price: any, detailIndex: number) => (
                           <div
                             key={detailIndex}
-                            className="flex flex-col border-b border-solid border-gray-400"
+                            className="flex gap-3 items-center  "
                           >
-                            <span>from</span>
-                            <input
-                              type="text"
-                              placeholder="min"
-                              disabled
-                              className="px-2 py-1 border border-gray-300 rounded-lg"
-                              value={price?.from_amount}
-                              onChange={(e) =>
-                                handleUpdatePrice(
-                                  price?.price,
-                                  parseInt(e.target.value, 10),
-                                  price?.to_amount,
-                                  ticketIndex,
-                                  detailIndex
-                                )
-                              }
-                            />
-                            <span>to</span>
-                            <input
-                              type="text"
-                              placeholder="min"
-                              className="px-2 py-1 border border-gray-300 rounded-lg"
-                              value={price.to_amount || ""}
-                              onChange={(e) => {
-                                const toAmount = parseInt(e.target.value, 10);
-                                handleUpdatePrice(
-                                  price.price,
-                                  price.from_amount,
-                                  toAmount,
-                                  ticketIndex,
-                                  detailIndex
-                                );
-                              }}
-                            />
+                            <div className="flex flex-col gap-1">
+                              <span className="font-medium">From</span>
+                              <input
+                                type="text"
+                                placeholder="min"
+                                disabled
+                                className="px-2 py-1 border border-gray-300 rounded-lg w-20"
+                                value={price?.from_amount}
+                                onChange={(e) =>
+                                  handleUpdatePrice(
+                                    price?.price,
+                                    parseInt(e.target.value, 10),
+                                    price?.to_amount,
+                                    ticketIndex,
+                                    detailIndex
+                                  )
+                                }
+                              />
+                            </div>
+                            <div className="flex flex-col gap-1">
+                              <span className="font-medium">to</span>
+                              <input
+                                type="text"
+                                placeholder="min"
+                                className="px-2 py-1 border border-gray-300 rounded-lg"
+                                value={price.to_amount || ""}
+                                onChange={(e) => {
+                                  const toAmount = parseInt(e.target.value, 10);
+                                  handleUpdatePrice(
+                                    price.price,
+                                    price.from_amount,
+                                    toAmount,
+                                    ticketIndex,
+                                    detailIndex
+                                  );
+                                }}
+                              />
+                            </div>
 
-                            <span>price</span>
-                            <input
-                              type="text"
-                              placeholder="min"
-                              className="px-2 py-1 border border-gray-300 rounded-lg"
-                              value={price?.price}
-                              onChange={(e) =>
-                                handleUpdatePrice(
-                                  parseInt(e.target.value, 10),
-                                  price?.from_amount,
-                                  price?.to_amount,
-                                  ticketIndex,
-                                  detailIndex
-                                )
-                              }
-                            />
+                            <div className="flex flex-col gap-1">
+                              <span className="font-medium">Price</span>
+                              <input
+                                type="text"
+                                placeholder="min"
+                                className="px-2 py-1 border border-gray-300 rounded-lg"
+                                value={price?.price}
+                                onChange={(e) =>
+                                  handleUpdatePrice(
+                                    parseInt(e.target.value, 10),
+                                    price?.from_amount,
+                                    price?.to_amount,
+                                    ticketIndex,
+                                    detailIndex
+                                  )
+                                }
+                              />
+                            </div>
+
                             <FcEmptyTrash
                               onClick={() =>
                                 handleDeleteDetail(ticketIndex, detailIndex)

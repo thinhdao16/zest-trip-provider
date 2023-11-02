@@ -48,7 +48,6 @@ function CreateTourNav() {
     navigate("/listtour");
   };
   console.log(formValues);
-
   const handleCreateTourAndAvailability = () => {
     const formData = new FormData();
     const dataValueCreate = {
@@ -81,6 +80,8 @@ function CreateTourNav() {
           })),
         })
       ),
+      book_before: formValues[5]?.Capacity?.BookBefore,
+      refund_before: formValues[5]?.Capacity?.RefundBefore,
       address_ward: formValues[3]?.Location.address_ward?.full_name,
       address_name: formValues[3]?.Location?.address_name,
       tour_location_type: "INTERNATIONAL",
@@ -96,7 +97,7 @@ function CreateTourNav() {
       const imageFile = mediaArray[i].file;
       formData.append("tour_images", imageFile[i]);
     }
-
+    console.log(dataValueCreate);
     const requestData = {
       formData,
     };
@@ -109,6 +110,7 @@ function CreateTourNav() {
             tour_id: tourResponse.payload.data.id,
             validity_date_range_from: formValues[5]?.Capacity?.DateFrom,
             validity_date_range_to: formValues[5]?.Capacity?.DateTo,
+
             weekdays: [
               ...(formValues[5]?.Capacity?.Sun?.length > 0
                 ? [{ day: 1, timeSlot: formValues[5]?.Capacity?.Sun }]
@@ -146,7 +148,6 @@ function CreateTourNav() {
           };
           dispatch(postCreateAvailabilityTour(dataValueCreateAvailability))
             .then((availabilityResponse) => {
-              console.log(availabilityResponse);
               if (
                 postCreateAvailabilityTour.fulfilled.match(availabilityResponse)
               ) {
@@ -163,8 +164,8 @@ function CreateTourNav() {
             const pricingData: any = {
               ticket_type: item?.role,
               pricing_type: item?.type,
-              maximum_booking_quantity: parseInt(item?.max),
-              minimum_booking_quantity: parseInt(item?.min),
+              maximum_ticket_count: parseInt(item?.max),
+              minimum_ticket_count: parseInt(item?.min),
               from_age: item?.ageStart?.toString(),
               to_age: item?.ageEnd?.toString(),
             };
@@ -181,7 +182,8 @@ function CreateTourNav() {
 
             return pricingData;
           });
-
+          console.log(pricing_data);
+          localStorage.setItem("dataResTicket", pricing_data);
           const data = {
             tour_id: tourResponse.payload.data.id,
             pricing_data,

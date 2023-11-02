@@ -8,13 +8,19 @@ import {
   AiOutlineFieldNumber,
   AiOutlineFieldTime,
   AiOutlinePhone,
+  AiOutlineSearch,
   AiOutlineUp,
 } from "react-icons/ai";
 import { useState } from "react";
 import { Fade } from "@mui/material";
 import { LuSubtitles } from "react-icons/lu";
 import { GrLocation } from "react-icons/gr";
-import { FaMoneyBill, FaMoneyBills, FaTicket } from "react-icons/fa6";
+import {
+  FaMoneyBill,
+  FaMoneyBills,
+  FaSliders,
+  FaTicket,
+} from "react-icons/fa6";
 function DashBoardBooker() {
   const dataFake = DataBook;
   console.log(dataFake);
@@ -28,10 +34,13 @@ function DashBoardBooker() {
   return (
     <div className="mt-3 flex flex-col gap-4 ">
       <p className="text-xl font-medium text-black">Booking history</p>
-      <div className="flex flex-col gap-3 bg-white shadow-custom-card-mui rounded-lg p-3">
+      <div className="flex flex-col gap-3 bg-white shadow-custom-card-mui rounded-lg p-4">
         <div className="flex justify-between">
-          <span>nothing</span>
-          <span>filter</span>
+          <span className="text-gray-500">6 Destination</span>
+          <div className="flex gap-5">
+            <AiOutlineSearch />
+            <FaSliders />
+          </div>
         </div>
         <div className="flex flex-col gap-2">
           {DataBook?.map((item, index: number) => {
