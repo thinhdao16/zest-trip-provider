@@ -8,7 +8,6 @@ import {
 } from "../../../store/redux/silce/tourSlice";
 import { AppDispatch } from "../../../store/redux/store";
 import Header from "./Header";
-import NavBar from "./NavBar";
 import ScreenMain from "./ScreenMain";
 import ScreenSP from "./ScreenSP";
 import { DataContext } from "../../../store/dataContext/DataContext";

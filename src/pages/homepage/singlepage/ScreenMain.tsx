@@ -10,7 +10,7 @@ import React, { useContext, useEffect, useState } from "react";
 import AutoResizableTextarea from "./singlePageConst/AutoResizableTextarea";
 import { TourTag, VehicleTag } from "../../../components/icon/tour/tag";
 import TabContext from "@mui/lab/TabContext";
-import { Backdrop, CircularProgress, Tab } from "@mui/material";
+import { Tab } from "@mui/material";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import "./detail.css";
@@ -79,7 +79,7 @@ function ScreenMain() {
   const [addressDistrict, setAddressDistrict] = useState<[]>();
   const [addressWards, setAddressWards] = useState<[]>();
 
-  const [hasChanges, setHasChanges] = useState(false);
+  const [, setHasChanges] = useState(false);
 
   const [allImage, setAllImage] = useState<any>([]);
 
