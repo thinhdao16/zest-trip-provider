@@ -165,7 +165,7 @@ function CreateTourNav() {
               ticket_type: item?.role,
               pricing_type: item?.type,
               maximum_ticket_count: parseInt(item?.max),
-              minimum_ticket_count: parseInt(item?.min),
+              minimum_ticket_count: 1,
               from_age: item?.ageStart?.toString(),
               to_age: item?.ageEnd?.toString(),
             };

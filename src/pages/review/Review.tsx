@@ -303,15 +303,11 @@ function Review() {
                           readOnly
                         />
                         <span className="text-gray-700">{item?.content}</span>
-                        <img
-                          className="w-12 h-12  rounded-lg object-cover"
-                          alt="wait"
-                          src="https://static.thenounproject.com/png/777906-200.png"
-                        />
                         <span className="text-gray-500 text-sm">
                           {item?.updated_at &&
                             dayjs(item?.updated_at).format("HH:mm DD/MM/YYYY ")}
                         </span>
+                        <span>{item?.ReviewReplies?.content}</span>
                       </div>
                     </div>
                     <div className="col-span-2 border-l p-4 border-solid border-gray-200 rounded-bl-lg text-center">

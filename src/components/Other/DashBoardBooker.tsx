@@ -49,9 +49,9 @@ function DashBoardBooker() {
                 <div className="text-xs bg-navy-blue-opacity-5 border border-solid border-navy-blue rounded-md p-1 absolute top-0 right-2 text-navy-blue">
                   {item?.status}
                 </div>
-                <div className="shadow-custom-0">
+                <div className="shadow-custom-0 rounded-lg">
                   <div
-                    className={`grid grid-cols-12 p-4 rounded-lg  items-center gap-2 relative`}
+                    className={`grid grid-cols-12 p-4  items-center gap-2 relative`}
                   >
                     {!expandedItems[index] ? (
                       <div className="absolute bottom-2 right-2 text-xs flex items-center gap-1">
@@ -86,8 +86,9 @@ function DashBoardBooker() {
                         </div>
                       </div>
                     </div>
-                    <div className="col-span-2 flex justify-center">
-                      <span>{item?.BookingOnTour?.duration} Night</span>
+                    <div className="col-span-1 flex justify-center gap-1">
+                      <span>{item?.BookingOnTour?.duration} </span>
+                      <div className="font-medium text-gray-700">Night</div>
                     </div>
                     <div className="col-span-3 flex justify-center">
                       <div className="flex items-center gap-1">
@@ -97,8 +98,20 @@ function DashBoardBooker() {
                         </span>
                       </div>
                     </div>
-                    <div className="col-span-1 flex justify-between">
-                      <span>6</span>
+                    <div className="col-span-2 flex flex-col justify-between">
+                      {item?.TicketOnBooking?.map(
+                        (ticketQuantity, index: number) => (
+                          <div key={index}>
+                            <span className="font-medium">
+                              {ticketQuantity?.ticket_type_id === 1
+                                ? "Adult"
+                                : "Children"}
+                              {": "}
+                            </span>
+                            <span>{ticketQuantity?.quantity}</span>
+                          </div>
+                        )
+                      )}
                     </div>
                     <div className="col-span-2 flex justify-end">
                       <div className="flex items-center gap-1">
@@ -121,31 +134,33 @@ function DashBoardBooker() {
                           </div>
                           <div className="flex flex-col">
                             {item?.TicketOnBooking?.map(
-                              (_ticket, index: number) => (
-                                <div key={index} className="flex gap-3">
-                                  <div className="flex gap-1 items-center">
-                                    <FaMoneyBills />
-                                    <span className="font-medium text-gray-600">
-                                      Price original:
-                                    </span>
-                                    <span>{_ticket?.original_price}</span>
+                              (_ticket, index: number) => {
+                                return (
+                                  <div key={index} className="flex gap-3">
+                                    <div className="flex gap-1 items-center">
+                                      <FaMoneyBills />
+                                      <span className="font-medium text-gray-600">
+                                        Price original:
+                                      </span>
+                                      <span>{_ticket?.original_price}</span>
+                                    </div>
+                                    <div className="flex gap-1 items-center">
+                                      <FaMoneyBill />
+                                      <span className="font-medium text-gray-600">
+                                        Price paid:
+                                      </span>
+                                      <span>{_ticket?.paid_price}</span>
+                                    </div>{" "}
+                                    <div className="flex gap-1 items-center">
+                                      <AiOutlineFieldNumber />
+                                      <span className="font-medium text-gray-600">
+                                        Quantity:
+                                      </span>
+                                      <span>{_ticket?.quantity}</span>
+                                    </div>
                                   </div>
-                                  <div className="flex gap-1 items-center">
-                                    <FaMoneyBill />
-                                    <span className="font-medium text-gray-600">
-                                      Price paid:
-                                    </span>
-                                    <span>{_ticket?.paid_price}</span>
-                                  </div>{" "}
-                                  <div className="flex gap-1 items-center">
-                                    <AiOutlineFieldNumber />
-                                    <span className="font-medium text-gray-600">
-                                      Quantity:
-                                    </span>
-                                    <span>{_ticket?.original_price}</span>
-                                  </div>
-                                </div>
-                              )
+                                );
+                              }
                             )}
                           </div>
                         </div>

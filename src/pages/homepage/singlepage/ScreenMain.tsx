@@ -6,7 +6,7 @@ import Construction, {
   ConstructionTitletext,
 } from "./singlePageConst/Construction";
 import { FaCircle, FaHardDrive } from "react-icons/fa6";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import AutoResizableTextarea from "./singlePageConst/AutoResizableTextarea";
 import { TourTag, VehicleTag } from "../../../components/icon/tour/tag";
 import TabContext from "@mui/lab/TabContext";
@@ -21,6 +21,7 @@ import axios from "axios";
 import { BASE_URL } from "../../../store/apiInterceptors";
 import ModalTourScheDetail from "./Modal/ModalTourScheDetail";
 import { useEditContext } from "./Context/useEditContext";
+import { DataContext } from "../../../store/dataContext/DataContext";
 interface tourSche {
   id: number;
   description: string;
@@ -42,10 +43,7 @@ function ScreenMain() {
   const tourDetail: any = useSelector(
     (state: StateTour) => state.tour.tourGetDetail
   );
-  const loadingTourImageDetail: any = useSelector(
-    (state: { tour: { loadingTourImageDetail: boolean } }) =>
-      state.tour.loadingTourImageDetail
-  );
+  console.log(tourDetail);
   const {
     name,
     setName,
@@ -71,7 +69,10 @@ function ScreenMain() {
     setTourVehicle,
     tourImages,
     setTourImages,
+    imageSrc,
+    setImageSrc,
   } = useEditContext();
+  const { refreshTourDetail } = useContext(DataContext);
 
   const [valueTab, setValueTab] = useState("1");
   const [addressProvince, setAddressProvince] = useState<[]>();
@@ -80,9 +81,8 @@ function ScreenMain() {
 
   const [hasChanges, setHasChanges] = useState(false);
 
-  const [imageSrc, setImageSrc] = useState<any>([]);
-
   const [allImage, setAllImage] = useState<any>([]);
+
   const handleValueTab = (event: React.SyntheticEvent, newValue: string) => {
     console.log(event);
     setValueTab(newValue);
@@ -204,7 +204,7 @@ function ScreenMain() {
       setAddressCountry(tourDetail?.address_country);
       setAllImage(updatedTourImages);
     }
-  }, [tourDetail]);
+  }, [tourDetail, refreshTourDetail]);
 
   useEffect(() => {
     axios
@@ -216,28 +216,21 @@ function ScreenMain() {
         console.log(error);
       });
   }, []);
-  window.addEventListener("beforeunload", (e) => {
-    if (hasChanges) {
-      e.preventDefault();
-      e.returnValue = "Bạn có muốn lưu thay đổi trước khi rời khỏi trang?";
-    }
-  });
+  // window.addEventListener("beforeunload", (e) => {
+  //   if (hasChanges) {
+  //     e.preventDefault();
+  //     e.returnValue = "Bạn có muốn lưu thay đổi trước khi rời khỏi trang?";
+  //   }
+  // });
 
   return (
     <>
-      <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={loadingTourImageDetail}
-        onClick={() => loadingTourImageDetail(false)}
-      >
-        <CircularProgress color="inherit" />
-      </Backdrop>
       <div
         className="bg-main rounded-xl p-4 h-full overflow-y-auto global-scrollbar"
         onClick={handleDataChange}
       >
         <div className="mb-4">
-          <span className="font-medium text-xl">Infomation basic</span>
+          <span className="font-medium text-xl">Infomation Tour detail</span>
         </div>
         <div className="flex flex-col gap-3 px-4">
           <div className="grid grid-cols-12">
@@ -278,7 +271,7 @@ function ScreenMain() {
             </ConstructionTitle>
             <ConstructionDes>
               <span className="font-medium">*Image ratio 1:1</span>
-              <div className="grid grid-cols-5 gap-4 border">
+              <div className="grid grid-cols-7 gap-4 border">
                 {allImage?.map((img: string, index: number) => (
                   <div
                     key={index}
@@ -529,7 +522,7 @@ function ScreenMain() {
                   <TabList
                     onChange={handleValueTab}
                     aria-label="lab API tabs example"
-                    className="tab-lish"
+                    className="tab-lish overflow-y-auto"
                   >
                     {schedule?.map((scheTit: any, index: number) => {
                       return (

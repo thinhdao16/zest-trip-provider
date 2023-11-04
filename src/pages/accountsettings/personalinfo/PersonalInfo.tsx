@@ -14,6 +14,7 @@ function PersonalInfo() {
   }
   const [isEditing, setIsEditing] = React.useState(false);
   const { personalInfo } = useSelector((state: any) => state.auth);
+  console.log(personalInfo);
   const [editedValue, setEditedValue] = React.useState(
     personalInfo?.full_name || "please input name"
   ); // Initial value

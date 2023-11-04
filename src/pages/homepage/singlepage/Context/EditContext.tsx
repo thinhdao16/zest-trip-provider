@@ -31,6 +31,8 @@ export type EditContextType = {
   setTicketPricing: any;
   availability: any;
   setAvailability: any;
+  imageSrc: any;
+  setImageSrc: any;
 };
 
 export const EditContext = createContext<EditContextType | undefined>(
@@ -59,6 +61,8 @@ export const EditContextProvider: React.FC<EditContextProps> = ({
   const [tourImages, setTourImages] = useState([]); //up
   const [ticketPricing, setTicketPricing] = useState([]); //up
   const [availability, setAvailability] = useState([]); //up
+  const [imageSrc, setImageSrc] = useState<any>([]); //up
+
   return (
     <EditContext.Provider
       value={{
@@ -92,6 +96,8 @@ export const EditContextProvider: React.FC<EditContextProps> = ({
         setTicketPricing,
         availability,
         setAvailability,
+        imageSrc,
+        setImageSrc,
       }}
     >
       {children}

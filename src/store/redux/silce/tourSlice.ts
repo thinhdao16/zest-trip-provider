@@ -164,10 +164,9 @@ export const addTourImage = createAsyncThunk(
   "tour/addTourImage", // Slice name: "tour"
   async (requestData: any) => {
     try {
-      console.log(requestData);
       const response = await axiosInstance.patch(
         `${BASE_URL}/tour/tourImage/${requestData?.id}`,
-        requestData?.formData,
+        requestData?.formDataImg,
         {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -192,7 +191,6 @@ export const editContentTour = createAsyncThunk(
   "tour/editContentTour", // Slice name: "tour"
   async (requestData: any) => {
     try {
-      console.log(requestData);
       const response = await axiosInstance.patch(
         `${BASE_URL}/tour/content/${requestData?.id}`,
         requestData?.dataValue,
@@ -202,7 +200,6 @@ export const editContentTour = createAsyncThunk(
           },
         }
       );
-      console.log(response);
       if (response.status === 200) {
         return response.data;
       } else {
@@ -230,7 +227,31 @@ export const editTicketTour = createAsyncThunk(
           },
         }
       );
-      if (response.status === 201) {
+      if (response.status === 200) {
+        return response.data;
+      } else {
+        throw new Error("Failed to create ticket");
+      }
+    } catch (error) {
+      console.log(error);
+      throw new Error("Failed to create ticket");
+    }
+  }
+);
+export const editTicketAvailability = createAsyncThunk(
+  "tour/editTicketAvailability", // Slice name: "tour"
+  async (requestDataAvai: any) => {
+    try {
+      const response = await axiosInstance.patch(
+        `${BASE_URL}/availability/update/${requestDataAvai?.id}`,
+        requestDataAvai,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response.status === 200) {
         // toast.success("Availability created successfully!"); // Thông báo tạo Availability thành công
         return response.data;
       } else {
@@ -320,15 +341,27 @@ const tourSlice = createSlice({
         state.error = null;
       })
       .addCase(addTourImage.pending, (state) => {
-        state.loadingTourImageDetail = true;
+        state.loadingDetail = true;
         state.error = null;
       })
       .addCase(addTourImage.fulfilled, (state) => {
-        state.loadingTourImageDetail = false;
+        state.loadingDetail = false;
         state.error = null;
       })
       .addCase(addTourImage.rejected, (state) => {
-        state.loadingTourImageDetail = false;
+        state.loadingDetail = false;
+        state.error = null;
+      })
+      .addCase(editContentTour.pending, (state) => {
+        state.loadingDetail = true;
+        state.error = null;
+      })
+      .addCase(editContentTour.fulfilled, (state) => {
+        state.loadingDetail = false;
+        state.error = null;
+      })
+      .addCase(editContentTour.rejected, (state) => {
+        state.loadingDetail = false;
         state.error = null;
       });
   },

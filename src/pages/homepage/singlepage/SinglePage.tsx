@@ -19,6 +19,7 @@ import { Backdrop, CircularProgress } from "@mui/material";
 function SinglePage() {
   const dispatch: AppDispatch = useDispatch();
   const { refreshTourDetail } = useContext(DataContext);
+
   const { index }: any = useParams();
   const loadingDetail = useSelector(
     (detail: any) => detail?.tour?.loadingDetail
@@ -95,7 +96,7 @@ function SinglePage() {
               </svg>
             </button>
           )}
-          <aside
+          {/* <aside
             id="default-sidebar"
             className={`fixed left-0 z-10 w-64 h-screen transition-transform ${
               isSidebarOpen
@@ -107,11 +108,10 @@ function SinglePage() {
             <div className="h-full  overflow-y-auto border-solid bg-white border-r-2 border-gray-100  dark:bg-gray-800 global-scrollbar">
               <NavBar />
             </div>
-          </aside>
+          </aside> */}
           <div
-            className={`p-4  sm:ml-64 sm:mr-96 h-screen ${
-              isSidebarOpen ? "pt-24" : "top-0"
-            }`}
+            className={`p-4
+             sm:mr-96 h-screen ${isSidebarOpen ? "pt-24" : "top-0"}`}
           >
             <ScreenMain />
           </div>

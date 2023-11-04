@@ -52,7 +52,7 @@ function ScreenSP() {
   return (
     <div>
       <div className="mb-4">
-        <span className="font-medium text-xl">Infomation basic</span>
+        <span className="font-medium text-xl">Ticket & Availability</span>
       </div>
       <div className="p-1 flex flex-col gap-3">
         <div>
@@ -77,9 +77,9 @@ function ScreenSP() {
                       <div className="flex flex-col ">
                         <div className="flex font-medium">
                           <span className="">
-                            {ticket?.PricingType?.name}
-                            <span className="">-</span>
                             <span className="">{ticket?.Ticket?.name}</span>
+                            <span className="">-</span>
+                            {ticket?.PricingType?.name}
                           </span>
                         </div>
 
@@ -149,9 +149,9 @@ function ScreenSP() {
                         </div>
                       </div>
                     </div>
-                    <button className="h-7 border-solid border border-navy-blue p-0 px-2 font-medium text-navy-blue rounded-md  flex items-center">
+                    {/* <button className="h-7 border-solid border border-navy-blue p-0 px-2 font-medium text-navy-blue rounded-md  flex items-center">
                       Edit
-                    </button>
+                    </button> */}
                   </div>
                   <div className="flex justify-between  font-medium text-sm">
                     <div className="flex flex-col">

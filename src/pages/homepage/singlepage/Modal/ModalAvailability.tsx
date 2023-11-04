@@ -259,7 +259,10 @@ const ModalAvailability = ({
 
   return (
     <div>
-      <FaRegPenToSquare onClick={handleOpen} />
+      <FaRegPenToSquare
+        onClick={handleOpen}
+        className="w-5 h-5 shadow-custom-card-mui"
+      />
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"

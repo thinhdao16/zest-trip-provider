@@ -137,7 +137,10 @@ const ModalTicketAdult = ({
   };
   return (
     <div>
-      <FaRegPenToSquare onClick={handleOpen} />
+      <FaRegPenToSquare
+        onClick={handleOpen}
+        className="w-5 h-5 shadow-custom-card-mui"
+      />
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -301,19 +304,21 @@ const ModalTicketAdult = ({
                           </div>
                         )
                       )}
-                      <button
-                        className="bg-black px-2 py-1 text-white rounded-lg"
-                        onClick={() => {
-                          const maxToAmount = getMaxToAmount(ticket);
-                          handleAddDetail(ticketIndex, {
-                            from_amount: maxToAmount + 1,
-                            to_amount: maxToAmount + 2,
-                            price: 0,
-                          });
-                        }}
-                      >
-                        Add Price
-                      </button>
+                      <div className="flex justify-end mt-3">
+                        <button
+                          className="bg-black px-2 py-1 text-white rounded-lg"
+                          onClick={() => {
+                            const maxToAmount = getMaxToAmount(ticket);
+                            handleAddDetail(ticketIndex, {
+                              from_amount: maxToAmount + 1,
+                              to_amount: maxToAmount + 2,
+                              price: 0,
+                            });
+                          }}
+                        >
+                          Add Price
+                        </button>
+                      </div>
                     </div>
                   ))}
                 </div>

@@ -4,9 +4,14 @@ import { StateTour } from "../../createtour/types/index.t";
 import { AppDispatch } from "../../../store/redux/store";
 import { useDispatch } from "react-redux";
 import {
+  addTourImage,
   editContentTour,
+  editTicketAvailability,
   editTicketTour,
 } from "../../../store/redux/silce/tourSlice";
+import dayjs from "dayjs";
+import { useContext } from "react";
+import { DataContext } from "../../../store/dataContext/DataContext";
 
 function NavBar() {
   const {
@@ -22,13 +27,16 @@ function NavBar() {
     tourTag,
     tourVehicle,
     ticketPricing,
+    tourImages,
+    imageSrc,
+    availability,
   } = useEditContext();
   const tourDetail: any = useSelector(
     (state: StateTour) => state.tour.tourGetDetail
   );
-  console.log(ticketPricing);
-  const dispatch: AppDispatch = useDispatch();
+  const { setRefreshTourDetail } = useContext(DataContext);
 
+  const dispatch: AppDispatch = useDispatch();
   const handleEditContent = () => {
     const dataValue = {
       name: name,
@@ -43,8 +51,9 @@ function NavBar() {
       address_ward: addressWard,
       address_province: addressPro,
       address_country: addressCountry,
+      tour_images: tourImages,
       TourSchedule: schedule?.map((data: any) => ({
-        title: `Day ${data?.title}`,
+        title: `${data?.title}`,
         description: data?.description,
         schedule_detail: data?.TourScheduleDetail?.map((detail: any) => ({
           from: detail?.from,
@@ -53,16 +62,18 @@ function NavBar() {
         })),
       })),
     };
+
     const pricing_data = ticketPricing?.map((item: any) => {
       const pricingData: any = {
         ticket_type: item?.Ticket?.name,
         pricing_type: item?.PricingType?.name,
-        maximum_booking_quantity: parseInt(item?.maximum_booking_quantity),
+        maximum_ticket_count: parseInt(item?.maximum_booking_quantity),
+        minimum_ticket_count: parseInt(item?.minimum_booking_quantity),
         minimum_booking_quantity: parseInt(item?.minimum_booking_quantity),
         from_age: item?.from_age?.toString(),
         to_age: item?.to_age?.toString(),
       };
-
+      console.log(pricingData);
       if (item.price_range) {
         pricingData.price_range = item.price_range.map((formItem: any) => ({
           from_amount: parseInt(formItem.from_amount),
@@ -77,9 +88,47 @@ function NavBar() {
       tour_id: tourDetail?.id,
       pricing_data,
     };
+    const formDataImg = new FormData();
+    for (const image of imageSrc) {
+      formDataImg.append("tour_images", image?.file);
+    }
+    const avaibility_data = availability?.map((availabilityItem: any) => {
+      return {
+        id: availabilityItem?.id,
+        name: availabilityItem?.name,
+        validity_date_range_from: dayjs(
+          availabilityItem?.validity_date_range_from
+        ).format("YYYY-MM-DD"),
+        validity_date_range_to: dayjs(
+          availabilityItem?.validity_date_range_to
+        ).format("YYYY-MM-DD"),
+        tour_id: availabilityItem?.tour_id,
+        special_dates: availabilityItem?.special_dates?.map(
+          (specialItem: any) => ({
+            date: specialItem?.date,
+            timeSlot: specialItem?.timeSlot,
+          })
+        ),
+        weekdays: availabilityItem?.weekdays?.map((weekday: any) => ({
+          day: weekday?.day,
+          timeSlot: weekday?.timeSlot,
+        })),
+      };
+    });
+    avaibility_data.forEach((availabilityItem: any) => {
+      dispatch(editTicketAvailability(availabilityItem));
+    });
+    const allFormImg = { formDataImg, id: tourDetail?.id };
     const allForm = { dataValue, id: tourDetail?.id };
-    dispatch(editContentTour(allForm));
+    dispatch(editContentTour(allForm)).then((response) => {
+      if (editContentTour.fulfilled.match(response)) {
+        setRefreshTourDetail((prev) => !prev);
+      }
+    });
     dispatch(editTicketTour(dataUpdateTicket));
+    if (imageSrc?.length > 0) {
+      dispatch(addTourImage(allFormImg));
+    }
   };
   return (
     <div className="">
