@@ -6,7 +6,7 @@ import Construction, {
   ConstructionTitletext,
 } from "./singlePageConst/Construction";
 import { FaCircle, FaHardDrive } from "react-icons/fa6";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import AutoResizableTextarea from "./singlePageConst/AutoResizableTextarea";
 import { TourTag, VehicleTag } from "../../../components/icon/tour/tag";
 import TabContext from "@mui/lab/TabContext";
@@ -22,6 +22,7 @@ import { BASE_URL } from "../../../store/apiInterceptors";
 import ModalTourScheDetail from "./Modal/ModalTourScheDetail";
 import { useEditContext } from "./Context/useEditContext";
 import { DataContext } from "../../../store/dataContext/DataContext";
+import ScreenSP from "./ScreenSP";
 interface tourSche {
   id: number;
   description: string;
@@ -71,6 +72,7 @@ function ScreenMain() {
     setTourImages,
     imageSrc,
     setImageSrc,
+    scrollNav,
   } = useEditContext();
   const { refreshTourDetail } = useContext(DataContext);
 
@@ -222,6 +224,12 @@ function ScreenMain() {
   //     e.returnValue = "Bạn có muốn lưu thay đổi trước khi rời khỏi trang?";
   //   }
   // });
+  // const goScrollNav = useMemo(() => {
+  //   const element = document.getElementById(scrollNav);
+  //   if (element) {
+  //     element.scrollIntoView({ behavior: "smooth" });
+  //   }
+  // }, [scrollNav]);
 
   return (
     <>
@@ -229,10 +237,10 @@ function ScreenMain() {
         className="bg-main rounded-xl p-4 h-full overflow-y-auto global-scrollbar"
         onClick={handleDataChange}
       >
-        <div className="mb-4">
+        <div className="mb-4" id="information_basic">
           <span className="font-medium text-xl">Infomation Tour detail</span>
         </div>
-        <div className="flex flex-col gap-3 px-4">
+        <div className="flex flex-col gap-6 px-6">
           <div className="grid grid-cols-12">
             <div className="grid grid-cols-12 gap-4 col-span-5">
               <div className="col-span-5 flex justify-end">
@@ -596,6 +604,7 @@ function ScreenMain() {
             </ConstructionDes>
           </Construction>
         </div>
+        <ScreenSP />
       </div>
     </>
   );

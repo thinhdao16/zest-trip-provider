@@ -19,11 +19,11 @@ export default {
       },
       colors: {
         // Thêm màu tùy chỉnh ở đây
-        'navy-blue': '#05445E',
+        'navy-blue': '#043730',
         'blue-grotto': '#189AB4',
         'blue-green': '#75E6DA',
         'baby-blue': '#D4F1F4',
-        'main': "#f8f9fa",
+        'main': "#fafafa",
         'navy-blue-opacity-5': 'rgba(5, 68, 94, 0.4)',
         // Thêm nhiều màu sắc khác nếu cần
       },

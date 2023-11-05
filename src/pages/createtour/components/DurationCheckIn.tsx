@@ -63,28 +63,32 @@ const DurationCheckIn: React.FC = () => {
   };
   const handleRemove = (index: number) => {
     const updatedNestedDataArray = [...nestedDataArray];
-    updatedNestedDataArray.splice(index, 1); // Xóa phần tử tại vị trí index
+    updatedNestedDataArray.splice(index, 1);
     setNestedDataArray(updatedNestedDataArray);
   };
   React.useEffect(() => {
     updateFormValues(4, {
       DurationCheckIn: [dataDuration, nestedDataArray],
     });
+
+    let maxDay = 0; // Initialize maxDay with 0
+
     nestedDataArray?.forEach((data) => {
       if (data?.day) {
-        const dayValue: any = Number(data.day);
+        const dayValue = Number(data.day);
         if (!isNaN(dayValue)) {
-          if (dayValue >= (day || 0)) {
-            setDay(dayValue + 1);
-          }
+          maxDay = Math.max(maxDay, dayValue);
         }
       }
     });
 
-    if (day === undefined) {
+    if (maxDay === 0) {
       setDay(1);
+    } else {
+      setDay(maxDay + 1);
     }
   }, [dataDuration, nestedDataArray]);
+
   if (currentStep !== 7) {
     return null;
   }

@@ -23,7 +23,7 @@ function CreateTourNav() {
     { id: 6, name: "Location" },
     { id: 7, name: "Schedule" },
     { id: 8, name: "Availability" },
-    { id: 9, name: "P ricing" },
+    { id: 9, name: "Pricing" },
     { id: 10, name: "Media" },
     { id: 11, name: "Review" },
     { id: 12, name: "Succesfull" },

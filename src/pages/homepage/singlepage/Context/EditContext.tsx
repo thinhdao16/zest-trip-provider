@@ -33,6 +33,8 @@ export type EditContextType = {
   setAvailability: any;
   imageSrc: any;
   setImageSrc: any;
+  scrollNav: any;
+  setScrollNav: any;
 };
 
 export const EditContext = createContext<EditContextType | undefined>(
@@ -62,7 +64,7 @@ export const EditContextProvider: React.FC<EditContextProps> = ({
   const [ticketPricing, setTicketPricing] = useState([]); //up
   const [availability, setAvailability] = useState([]); //up
   const [imageSrc, setImageSrc] = useState<any>([]); //up
-
+  const [scrollNav, setScrollNav] = useState<any>("information_basic");
   return (
     <EditContext.Provider
       value={{
@@ -98,6 +100,8 @@ export const EditContextProvider: React.FC<EditContextProps> = ({
         setAvailability,
         imageSrc,
         setImageSrc,
+        scrollNav,
+        setScrollNav,
       }}
     >
       {children}

@@ -6,6 +6,7 @@ import ModalTicketAdult from "./Modal/ModalTicketAdult";
 import ModalAvailability from "./Modal/ModalAvailability";
 import dayjs from "dayjs";
 import { useEditContext } from "./Context/useEditContext";
+import { HiArrowLongDown } from "react-icons/hi2";
 function ScreenSP() {
   const tourDetail: any = useSelector(
     (state: StateTour) => state.tour.tourGetDetail
@@ -51,48 +52,67 @@ function ScreenSP() {
 
   return (
     <div>
-      <div className="mb-4">
-        <span className="font-medium text-xl">Ticket & Availability</span>
+      <div className="mb-4 first-letter" id="ticket">
+        <span className="font-medium text-xl">Ticket Pricing</span>
       </div>
       <div className="p-1 flex flex-col gap-3">
-        <div>
-          <div className="flex gap-3 items-center">
+        <div className=" grid grid-cols-12 gap-3">
+          <div className="flex gap-3 col-span-2 justify-end">
             <span className="font-medium text-lg"> Ticket</span>
-
             <ModalTicketAdult
               dataTicket={{ ticketPricing, setTicketPricing, duration }}
             />
           </div>
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 col-span-10">
             {ticketPricing?.map((ticket: any, index: number) => (
               <React.Fragment key={index}>
-                <div className="flex flex-col gap-4 bg-white p-4 rounded-xl">
-                  <div className="flex justify-between text-sm">
-                    <div className="flex items-center gap-2">
-                      <img
-                        className="w-8 rounded-full"
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAvA_FsxqcMCXeY45MS5XigIi9f42Klg2GN87qbMQUTDHsr4wb1N_uIu279cLo1yB0-OA&usqp=CAU"
-                        alt="dont find"
-                      />
-                      <div className="flex flex-col ">
-                        <div className="flex font-medium">
-                          <span className="">
-                            <span className="">{ticket?.Ticket?.name}</span>
-                            <span className="">-</span>
-                            {ticket?.PricingType?.name}
-                          </span>
-                        </div>
-
-                        <div className="flex text-gray-500 gap-1">
-                          <span className="">
-                            Max: {ticket?.maximum_booking_quantity}
-                          </span>
-                          •<span>Min: {ticket?.minimum_booking_quantity}</span>
-                        </div>
-                      </div>
+                <div className="flex flex-col gap-4 bg-white p-4 rounded-xl shadow-custom-card-mui pr-10">
+                  <div className="flex items-center gap-8">
+                    <div className="flex items-center gap-1">
+                      <span className="text-lg font-medium">
+                        Ticket intended for:
+                      </span>
+                      <span className=" text-sm text-gray-500">
+                        {ticket?.Ticket?.name}
+                      </span>
+                    </div>
+                    <span className="text-2xl text-gray-500">•</span>
+                    <div className="flex items-center gap-1">
+                      <span className="text-lg font-medium">Ticket type:</span>
+                      <span className=" text-sm text-gray-500">
+                        <span className="">{ticket?.PricingType?.name}</span>
+                      </span>
                     </div>
                   </div>
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-4 gap-4">
+                    <div className="flex flex-col">
+                      <span className="font-medium">Min quantity</span>
+                      <span className="text-gray-500">
+                        {ticket?.minimum_ticket_count}
+                      </span>
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="font-medium">Max quantity</span>
+                      <span className="text-gray-500">
+                        {ticket?.maximum_ticket_count}
+                      </span>
+                    </div>{" "}
+                    <div className="flex flex-col">
+                      <span className="font-medium">From age</span>
+                      <span className="text-gray-500">{ticket?.from_age}</span>
+                    </div>{" "}
+                    <div className="flex flex-col">
+                      <span className="font-medium">To age</span>
+                      <span className="text-gray-500">{ticket?.to_age}</span>
+                    </div>
+                  </div>
+                  <div className="w-full flex items-center">
+                    <hr className="flex-1 border-b border-gray-300 mr-2" />
+                    <span className="font-medium">Ticket pricing</span>
+                    <hr className="flex-1 border-b border-gray-300 ml-2" />
+                  </div>
+
+                  <div className="grid grid-cols-4 gap-3">
                     <>
                       {ticket?.price_range?.map(
                         (
@@ -121,74 +141,75 @@ function ScreenSP() {
             ))}
           </div>
         </div>
-        <div>
-          <div className="flex gap-3 items-center">
-            <span className="font-medium text-lg">Avalibility</span>
-            <ModalAvailability
-              dataAvailability={{ availability, setAvailability }}
-            />
-          </div>
-          <div className="flex flex-col gap-4">
-            {availability?.map((data: any, index: number) => (
-              <React.Fragment key={index}>
-                <div className="flex flex-col gap-4 bg-white p-4 rounded-xl">
-                  <div className="flex justify-between text-sm">
-                    <div className="flex items-center gap-2">
-                      <img
-                        className="w-8 rounded-full"
-                        src="https://d1.awsstatic.com/Marketplace/solutions-center/icons/AWSMP-high-availability.3abd1f520a30ab4d2bf64fad5e34d3bd13f411b0.png"
-                        alt="dont find"
-                      />
-                      <div className="flex flex-col ">
-                        <div className="flex font-medium">
-                          <span className="">{data?.name}</span>
-                        </div>
+      </div>
+      <div className="mb-4" id="availability">
+        <span className="font-medium text-xl">Availability</span>
+      </div>
+      <div className="grid grid-cols-12">
+        <div className="flex gap-3 justify-end col-span-2">
+          <span className="font-medium text-lg">Avalibility</span>
+          <ModalAvailability
+            dataAvailability={{ availability, setAvailability }}
+          />
+        </div>
+        <div className="flex flex-col gap-4 col-span-10">
+          {availability?.map((data: any, index: number) => (
+            <React.Fragment key={index}>
+              <div className="flex items-center gap-4 bg-white p-4 rounded-xl shadow-custom-card-mui">
+                <div className="">
+                  <div className="flex items-center gap-1">
+                    <span className="font-medium">From:</span>
+                    <span className="text-navy-blue">
+                      {data ? formatDate(data.validity_date_range_from) : null}
+                    </span>
+                  </div>
 
-                        <div className="flex text-gray-500 gap-1 text-xs">
-                          <span className="">{data?.status}</span>
-                        </div>
-                      </div>
-                    </div>
-                    {/* <button className="h-7 border-solid border border-navy-blue p-0 px-2 font-medium text-navy-blue rounded-md  flex items-center">
-                      Edit
-                    </button> */}
+                  <div className="flex items-center gap-1">
+                    <span className="font-medium">to:</span>
+
+                    <span className="text-navy-blue">
+                      {data ? formatDate(data.validity_date_range_to) : null}
+                    </span>
                   </div>
-                  <div className="flex justify-between  font-medium text-sm">
-                    <div className="flex flex-col">
-                      <span>From</span>
-                      <span className="text-navy-blue">
-                        {data
-                          ? formatDate(data.validity_date_range_from)
-                          : null}
-                      </span>
+                </div>
+                <div className="w-1 h-full bg-gray-300 rounded-full"></div>
+                <div className="grid grid-cols-12 gap-4">
+                  <div className="col-span-3 flex flex-col gap-4 ">
+                    <div className="flex font-medium">
+                      <span className="">{data?.name}</span>
                     </div>
-                    <div className="flex flex-col text-end">
-                      <span>To</span>
-                      <span className="text-navy-blue">
-                        {data ? formatDate(data.validity_date_range_to) : null}
-                      </span>
+                    <div>
+                      <button
+                        type="button"
+                        className=" text-navy-blue font-medium   text-xs bg-navy-blue-opacity-5 px-1 py-0.5 rounded-sm"
+                      >
+                        {data?.status}
+                      </button>
                     </div>
                   </div>
-                  <hr />
-                  <div className="flex flex-wrap gap-3">
-                    {data?.weekdays?.map(
-                      (
-                        weekday: { day: number; timeSlot: string },
-                        index: number
-                      ) => (
-                        <div
-                          key={index}
-                          className="flex gap-1 border border-solid border-gray-300 rounded-md text-sm px-2 py-1 text-gray-500"
-                        >
-                          <span>{getDayName(weekday?.day)}</span>
-                          <span>{weekday?.timeSlot}</span>
-                        </div>
-                      )
-                    )}
+
+                  <div className="col-span-5 flex flex-col gap-4">
+                    <span className="font-medium">Weekdays</span>
+                    <div className="flex flex-wrap gap-3">
+                      {data?.weekdays?.map(
+                        (
+                          weekday: { day: number; timeSlot: string },
+                          index: number
+                        ) => (
+                          <div
+                            key={index}
+                            className="flex gap-1 border border-solid border-gray-300 rounded-md text-sm px-2 py-1 text-gray-500"
+                          >
+                            <span>{getDayName(weekday?.day)}</span>
+                            <span>{weekday?.timeSlot}</span>
+                          </div>
+                        )
+                      )}
+                    </div>
                   </div>
                   {data?.special_dates.length > 0 && (
-                    <>
-                      <hr />
+                    <div className="col-span-4 flex flex-col gap-4">
+                      <span className="font-medium">Special dates</span>
                       <div className="flex flex-wrap gap-3">
                         {data?.special_dates?.map(
                           (
@@ -214,12 +235,12 @@ function ScreenSP() {
                           )
                         )}
                       </div>
-                    </>
+                    </div>
                   )}
                 </div>
-              </React.Fragment>
-            ))}
-          </div>
+              </div>
+            </React.Fragment>
+          ))}
         </div>
       </div>
     </div>

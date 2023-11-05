@@ -43,7 +43,7 @@ const FormModal: React.FC<FormModalProps> = ({
   const [title, setTitle] = useState("");
   const dayModal = useMemo(() => (day !== undefined ? day : 0), [day]);
   const [formEntries, setFormEntries] = useState<BoxData[]>([]);
-
+  console.log(formEntries);
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFormData(event.target.value);
   };
@@ -185,9 +185,11 @@ const FormModal: React.FC<FormModalProps> = ({
           <div className="flex justify-between">
             <div></div>
             <button
-              style={{}}
-              className=" p-2 bg-navy-blue border border-navy-blue rounded-lg text-white hover:border-navy-blue hover:bg-white hover:text-navy-blue hover:border"
+              className={`p-2 bg-navy-blue border border-navy-blue rounded-lg text-white ${
+                formEntries.length === 0 ? "cursor-not-allowed" : ""
+              } hover:border-navy-blue hover:bg-white hover:text-navy-blue hover:border`}
               onClick={handleSubmit}
+              disabled={formEntries.length === 0}
             >
               Add schedule
             </button>

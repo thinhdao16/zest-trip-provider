@@ -14,6 +14,7 @@ import { DataContext } from "../../../store/dataContext/DataContext";
 import { EditContextProvider } from "./Context/EditContext";
 import { useSelector } from "react-redux";
 import { Backdrop, CircularProgress } from "@mui/material";
+import NavBar from "./NavBar";
 
 function SinglePage() {
   const dispatch: AppDispatch = useDispatch();
@@ -95,11 +96,11 @@ function SinglePage() {
               </svg>
             </button>
           )}
-          {/* <aside
+          <aside
             id="default-sidebar"
             className={`fixed left-0 z-10 w-64 h-screen transition-transform ${
               isSidebarOpen
-                ? "translate-x-0 top-24"
+                ? "translate-x-0 top-28"
                 : "-translate-x-full top-0 "
             }`}
             aria-label="Sidebar"
@@ -107,10 +108,10 @@ function SinglePage() {
             <div className="h-full  overflow-y-auto border-solid bg-white border-r-2 border-gray-100  dark:bg-gray-800 global-scrollbar">
               <NavBar />
             </div>
-          </aside> */}
+          </aside>
           <div
-            className={`p-4
-             sm:mr-96 h-screen ${isSidebarOpen ? "pt-24" : "top-0"}`}
+            className={`p-4 sm:ml-64
+             sm:mr-0 h-screen ${isSidebarOpen ? "pt-28" : "top-0"}`}
           >
             <ScreenMain />
           </div>
@@ -123,9 +124,9 @@ function SinglePage() {
             }`}
             aria-label="Sidebar"
           >
-            <div className="h-[85vh] px-3 py-4 overflow-y-auto bg-main dark:bg-gray-800 global-scrollbar">
+            {/* <div className="h-[85vh] px-3 py-4 overflow-y-auto bg-main dark:bg-gray-800 global-scrollbar">
               <ScreenSP />
-            </div>
+            </div> */}
           </aside>
         </div>
       </div>
