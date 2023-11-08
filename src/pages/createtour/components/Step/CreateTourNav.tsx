@@ -103,7 +103,6 @@ function CreateTourNav() {
     };
     dispatch(postCreateTour(requestData.formData))
       .then((tourResponse) => {
-        console.log(tourResponse);
         if (postCreateTour.fulfilled.match(tourResponse)) {
           const dataValueCreateAvailability = {
             name: formValues[5]?.Capacity?.Title,
@@ -139,7 +138,6 @@ function CreateTourNav() {
               ...(formValues[5]?.Capacity?.SingleTime?.length > 0
                 ? // eslint-disable-next-line no-unsafe-optional-chaining
                   formValues[5]?.Capacity?.SingleTime.map((item: any) => ({
-                    // date: formatDate(item.day),
                     date: item?.day,
                     timeSlot: item?.time,
                   }))

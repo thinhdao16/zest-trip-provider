@@ -1,5 +1,13 @@
 import { faPage4 } from "@fortawesome/free-brands-svg-icons";
-import { faTachometer } from "@fortawesome/free-solid-svg-icons";
+import {
+  faTachometer,
+  faList,
+  faCommenting,
+  faPlusSquare,
+  faBookmark,
+  faCalendar,
+  faTicket,
+} from "@fortawesome/free-solid-svg-icons";
 import { IconDefinition } from "@fortawesome/fontawesome-common-types";
 
 interface MenuItem {
@@ -28,26 +36,38 @@ const initMenu: MenuItem[] = [
   {
     label: "Listtour",
     path: "/listtour",
-    icon: faPage4,
+    icon: faList,
     name: "Listtour", // Thêm 'name' cho mục này
   },
   {
     label: "Review",
     path: "/review",
-    icon: faPage4,
+    icon: faCommenting,
     name: "Listtour", // Thêm 'name' cho mục này
   },
   {
     label: "Create Tour",
     path: "/createtour",
-    icon: faPage4,
+    icon: faPlusSquare,
     name: "Create Tour", // Thêm 'name' cho mục này
   },
   {
     label: "Booker",
     path: "/booker",
-    icon: faPage4,
+    icon: faBookmark,
     name: "Booker", // Thêm 'name' cho mục này
+  },
+  {
+    label: "Availability",
+    path: "/availability",
+    icon: faCalendar,
+    name: "Availability",
+  },
+  {
+    label: "Voucher",
+    path: "/voucher",
+    icon: faTicket,
+    name: "Voucher",
   },
   {
     label: "Otentikasi",

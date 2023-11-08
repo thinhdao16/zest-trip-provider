@@ -66,10 +66,10 @@ function ModalTag({
   }, [tagTour, reload]);
 
   return (
-    <div className="">
-      <div className="">
-        <FaRegPenToSquare onClick={handleOpen} />
-      </div>
+    <>
+      <button type="button" className="z-50" onClick={handleOpen}>
+        <FaRegPenToSquare />
+      </button>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -133,7 +133,7 @@ function ModalTag({
           </Box>
         </Fade>
       </Modal>
-    </div>
+    </>
   );
 }
 

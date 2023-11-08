@@ -27,6 +27,7 @@ const ModalTourScheDetail = ({
   const [scheCancel, setScheCancel] = useState<any>();
 
   const handleOpen = () => {
+    console.log("first");
     setOpen(true);
     setReload((prev) => ++prev);
   };
@@ -144,11 +145,8 @@ const ModalTourScheDetail = ({
   }, [reload]);
   return (
     <div>
-      <button>
-        <FaRegPenToSquare
-          className="absolute top-4 right-4"
-          onClick={handleOpen}
-        />
+      <button onClick={handleOpen} className="absolute top-4 right-4 z-50">
+        <FaRegPenToSquare />
       </button>
       <Modal
         aria-labelledby="transition-modal-title"

@@ -62,10 +62,10 @@ function ModalVehicle({
   }, [vehicleTour]);
 
   return (
-    <div className="">
-      <div className="">
-        <FaRegPenToSquare onClick={handleOpen} />
-      </div>
+    <>
+      <button type="button" className="" onClick={handleOpen}>
+        <FaRegPenToSquare />
+      </button>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -117,7 +117,7 @@ function ModalVehicle({
           </Box>
         </Fade>
       </Modal>
-    </div>
+    </>
   );
 }
 

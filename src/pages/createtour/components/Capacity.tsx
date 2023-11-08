@@ -965,13 +965,6 @@ const Capacity: React.FC = () => {
                             >
                               {optionsByDay["Single"].min}
                             </select>
-
-                            {/* <FaRegTrashCan
-                            className="ml-3 text-red-600 hover:text-red-900"
-                            onClick={() =>
-                              removeTimeFromDay(dayIndex, timeIndex)
-                            }
-                          /> */}
                           </div>
                         );
                       })}

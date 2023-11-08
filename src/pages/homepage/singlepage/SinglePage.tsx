@@ -115,7 +115,7 @@ function SinglePage() {
           >
             <ScreenMain />
           </div>
-          <aside
+          {/* <aside
             id="default-sidebar"
             className={`fixed right-0 z-10 w-96 h-screen transition-transform ${
               isSidebarOpen
@@ -124,10 +124,10 @@ function SinglePage() {
             }`}
             aria-label="Sidebar"
           >
-            {/* <div className="h-[85vh] px-3 py-4 overflow-y-auto bg-main dark:bg-gray-800 global-scrollbar">
+            <div className="h-[85vh] px-3 py-4 overflow-y-auto bg-main dark:bg-gray-800 global-scrollbar">
               <ScreenSP />
-            </div> */}
-          </aside>
+            </div>
+          </aside> */}
         </div>
       </div>
     </EditContextProvider>

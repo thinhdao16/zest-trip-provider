@@ -23,7 +23,6 @@ import {
 } from "react-icons/fa6";
 function DashBoardBooker() {
   const dataFake = DataBook;
-  console.log(dataFake);
 
   const [expandedItems, setExpandedItems] = useState<any>({});
   const toggleContentVisibility = (index: any) => {

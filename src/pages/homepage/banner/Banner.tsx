@@ -14,12 +14,16 @@ import { AppDispatch } from "../../../store/redux/store";
 import { BannerHomePageButtonListTab } from "../../../styles/global/StyleGlobal";
 import { DontHaveTour } from "../../../components/donthave/DontHaveTour";
 import { DataContext } from "../../../store/dataContext/DataContext";
+import { AiFillEdit } from "react-icons/ai";
+import { FaMobile } from "react-icons/fa6";
+import { LuMoreHorizontal } from "react-icons/lu";
 
 export default function Banner() {
   const [value, setValue] = React.useState("1");
   const { refeshTour } = React.useContext(DataContext);
   const dispatch: AppDispatch = useDispatch();
   const { tours } = useSelector((state: any) => state.tour);
+  console.log(tours);
   const apiCalledRef = React.useRef(false);
   React.useEffect(() => {
     if (!apiCalledRef.current) {
@@ -36,11 +40,6 @@ export default function Banner() {
     <div className="mt-8">
       <div className="  p-6 mainCard bg-main container-dashboard rounded-3xl global-scrollbar">
         <div>
-          {/* <TitlePage
-            title="Welcome back"
-            titleList="All tour of you"
-            rest={`All tour bookings (${tours.length})`}
-          /> */}
           <Box
             justifyContent="center"
             alignItems="center"
@@ -65,7 +64,7 @@ export default function Banner() {
               </Box>
               <Box className="tab-list-data-mui">
                 <TabPanel value="1">
-                  <Grid container spacing={5}>
+                  {/* <Grid container spacing={5}>
                     {tours.length > 0 ? (
                       Array.isArray(tours) &&
                       [...tours]
@@ -218,7 +217,95 @@ export default function Banner() {
                         </Card>
                       </Grid>
                     )}
-                  </Grid>
+                  </Grid> */}
+                  <div className="flex flex-col gap-4">
+                    {tours.length > 0 ? (
+                      Array.isArray(tours) &&
+                      [...tours]
+                        .sort((a, b) => {
+                          return (
+                            new Date(b?.updated_at).getTime() -
+                            new Date(a?.updated_at).getTime()
+                          );
+                        })
+                        .map((data: any, index: number) => (
+                          <Link to={`/${data?.id}`} key={data?.id}>
+                            <div
+                              key={index}
+                              className="bg-white shadow-custom-card-mui grid grid-cols-12 p-4 gap-3 "
+                            >
+                              <div className="col-span-1">
+                                <img
+                                  style={{
+                                    width: "75px",
+                                    borderRadius: "5px",
+                                    objectFit: "cover",
+                                    height: "75px",
+                                  }}
+                                  src={data?.tour_images[0]}
+                                  alt="nothing"
+                                />
+                              </div>
+
+                              <div className="col-span-9">
+                                <div>
+                                  <p className="font-medium ">{data.name}</p>
+                                </div>
+                                <div>
+                                  <p className="font-medium flex items-center">
+                                    <span className="text-gray-600">vnđ</span>
+                                    <span className="text-lg">250.000</span>
+                                  </p>
+                                </div>
+                                {data?.tag_id?.map(
+                                  (
+                                    dataTag: { name: string },
+                                    index: string
+                                  ) => (
+                                    <button
+                                      key={index}
+                                      className="  text-navy-blue hover:text-black font-medium rounded-lg mr-2"
+                                    >
+                                      <p>{dataTag?.name}</p>
+                                    </button>
+                                  )
+                                )}
+                              </div>
+                              <div className="col-span-2">
+                                <div className="flex gap-2 justify-between">
+                                  <div>
+                                    <button
+                                      type="button"
+                                      className={`text-sm px-1 rounded-sm ${
+                                        data?.status === "PUBLISHED"
+                                          ? "bg-green-300 text-green-900"
+                                          : "bg-red-300 text-red-900"
+                                      }`}
+                                    >
+                                      {data?.status}
+                                    </button>
+                                  </div>
+
+                                  <div className="flex flex-col gap-3 ">
+                                    <button>
+                                      <LuMoreHorizontal />
+                                    </button>
+                                    <button>
+                                      <AiFillEdit />
+                                    </button>
+                                    <button>
+                                      <FaMobile />
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </Link>
+                        ))
+                    ) : (
+                      <></>
+                    )}
+                  </div>
                 </TabPanel>
                 <TabPanel value="2">
                   {/* <TransitionGroup component={Grid} container spacing={2}> */}

@@ -19,6 +19,7 @@ const initialState = {
   loadingCreateTour: false,
   errorCreateTour: null as boolean | null,
   loadingTourImageDetail: false,
+  availabilityAll: [],
 };
 
 export const fetchTours = createAsyncThunk("tour/fetchTours", async () => {
@@ -265,6 +266,17 @@ export const editTicketAvailability = createAsyncThunk(
     }
   }
 );
+export const getAvailability = createAsyncThunk(
+  "tour/getAvailability",
+  async () => {
+    try {
+      const response = await axiosInstance.get(`${BASE_URL}/availability/all`);
+      return response.data.data;
+    } catch (error) {
+      throw new Error("Failed to fetch availability");
+    }
+  }
+);
 const tourSlice = createSlice({
   name: "tour",
   initialState,
@@ -362,6 +374,19 @@ const tourSlice = createSlice({
       })
       .addCase(editContentTour.rejected, (state) => {
         state.loadingDetail = false;
+        state.error = null;
+      })
+      .addCase(getAvailability.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getAvailability.fulfilled, (state, action) => {
+        state.loading = false;
+        state.availabilityAll = action.payload;
+        state.error = null;
+      })
+      .addCase(getAvailability.rejected, (state) => {
+        state.loading = false;
         state.error = null;
       });
   },

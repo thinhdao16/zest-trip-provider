@@ -218,18 +218,6 @@ function ScreenMain() {
         console.log(error);
       });
   }, []);
-  // window.addEventListener("beforeunload", (e) => {
-  //   if (hasChanges) {
-  //     e.preventDefault();
-  //     e.returnValue = "Bạn có muốn lưu thay đổi trước khi rời khỏi trang?";
-  //   }
-  // });
-  // const goScrollNav = useMemo(() => {
-  //   const element = document.getElementById(scrollNav);
-  //   if (element) {
-  //     element.scrollIntoView({ behavior: "smooth" });
-  //   }
-  // }, [scrollNav]);
 
   return (
     <>
@@ -247,8 +235,18 @@ function ScreenMain() {
                 <ConstructionTitletext>Tour type</ConstructionTitletext>
               </div>
               <div className="col-span-7  ">
-                <div className=" p-2 rounded-lg bg-gray-200 cursor-not-allowed border-solid ">
+                <div className=" p-2 rounded-lg bg-white shadow-custom-card-mui cursor-not-allowed border-solid ">
                   {tourDetail?.tour_location_type}
+                </div>
+              </div>
+            </div>
+            <div className="grid grid-cols-12 gap-4 col-span-3">
+              <div className="col-span-4 flex justify-end">
+                <ConstructionTitletext>Duration</ConstructionTitletext>
+              </div>
+              <div className="col-span-8 ">
+                <div className="p-2 rounded-lg bg-white shadow-custom-card-mui cursor-not-allowed border-solid ">
+                  {tourDetail?.duration}
                 </div>
               </div>
             </div>
@@ -259,16 +257,6 @@ function ScreenMain() {
               <div className="col-span-8 ">
                 <div className=" p-2 rounded-lg bg-gray-200 cursor-not-allowed border-solid ">
                   {tourDetail?.status}
-                </div>
-              </div>
-            </div>
-            <div className="grid grid-cols-12 gap-4 col-span-3">
-              <div className="col-span-4 flex justify-end">
-                <ConstructionTitletext>Duration</ConstructionTitletext>
-              </div>
-              <div className="col-span-8 ">
-                <div className="p-2 rounded-lg bg-gray-200 cursor-not-allowed border-solid ">
-                  {tourDetail?.duration}
                 </div>
               </div>
             </div>
@@ -410,13 +398,16 @@ function ScreenMain() {
             <ConstructionDes>
               <div className="relative">
                 <FaHardDrive className="absolute top-3 left-3 " />
-                <input
-                  disabled
-                  className="border border-gray-300 rounded-lg py-2 px-8 w-full"
+                {/* <input
+                  // disabled
+                  className="bg-white shadow-custom-card-mui rounded-lg py-2 px-8 w-full"
                   defaultValue={addressName || tourDetail?.address_name}
                   onChange={(e) => setAddressName(e.target.value)}
                   type="text"
-                />
+                /> */}
+                <div className="bg-white shadow-custom-card-mui rounded-lg py-2 px-8 w-full">
+                  {addressName}
+                </div>
               </div>
             </ConstructionDes>
           </Construction>
@@ -429,7 +420,7 @@ function ScreenMain() {
                 <FaHardDrive className="absolute top-3 left-3 " />
                 <input
                   disabled
-                  className="border border-gray-300 rounded-lg py-2 px-8 w-full"
+                  className="bg-white shadow-custom-card-mui rounded-lg py-2 px-8 w-full"
                   defaultValue={addressCountry || tourDetail?.address_country}
                   onChange={(e) => setAddressCountry(e.target.value)}
                   type="text"
@@ -443,13 +434,13 @@ function ScreenMain() {
               <div className="col-span-8 relative">
                 <FaHardDrive className="absolute top-3 left-3 " />
 
-                <div>
+                {/* <div>
                   <select
                     disabled
                     value={addressPro}
                     onChange={(e) => handleCountryChange(e, "pro")}
                     id="countries"
-                    className="pl-8 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="pl-8 bg-white text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   >
                     {addressProvince ? (
                       addressProvince?.map((pro: any) => (
@@ -461,6 +452,9 @@ function ScreenMain() {
                       <option value={addressPro}>{addressPro}</option>
                     )}
                   </select>
+                </div> */}
+                <div className="pl-8 bg-white text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                  {addressPro}
                 </div>
               </div>
             </div>
@@ -471,13 +465,13 @@ function ScreenMain() {
               <div className="col-span-8 relative">
                 <FaHardDrive className="absolute top-3 left-3 " />
 
-                <div>
+                {/* <div>
                   <select
                     disabled
                     value={addressDis}
                     onChange={(e) => handleCountryChange(e, "dis")}
                     id="countries"
-                    className=" pl-8 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                     className=" pl-8 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   >
                     {addressDistrict ? (
                       addressDistrict?.map((pro: any) => (
@@ -489,6 +483,9 @@ function ScreenMain() {
                       <option value={addressDis}>{addressDis}</option>
                     )}
                   </select>
+                </div> */}
+                <div className=" pl-8 bg-white shadow-custom-card-mui text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                  {addressDis}
                 </div>
               </div>
             </div>{" "}
@@ -498,7 +495,7 @@ function ScreenMain() {
               </div>
               <div className="col-span-8 relative">
                 <FaHardDrive className="absolute top-3 left-3 " />
-                <div>
+                {/* <div>
                   <select
                     disabled
                     value={addressWard}
@@ -516,6 +513,9 @@ function ScreenMain() {
                       <option value={addressWard}>{addressWard}</option>
                     )}
                   </select>
+                </div> */}
+                <div className="pl-8 bg-white shadow-custom-card-mui text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                  {addressWard}
                 </div>
               </div>
             </div>
@@ -526,7 +526,7 @@ function ScreenMain() {
             </ConstructionTitle>
             <ConstructionDes>
               <TabContext value={valueTab}>
-                <div className="bg-white  rounded-lg shadow-custom-card-mui p-4 relative">
+                <div className="bg-white  rounded-lg shadow-custom-card-mui p-4 relative border border-solid border-gray-300">
                   <TabList
                     onChange={handleValueTab}
                     aria-label="lab API tabs example"
