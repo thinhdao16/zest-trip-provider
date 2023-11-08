@@ -17,7 +17,7 @@ import ForgotPassWord from "../../components/forgotPassword/ForgotPassword";
 import Review from "../../pages/review/Review";
 import Booker from "../../pages/booker/Booker";
 import Availability from "../../pages/availability/Availability";
-import Voucher from "../../pages/voucher/Voucher";
+import DetailBook from "../../pages/booker/DetailBook";
 
 function MainRouter() {
   const { refeshLogin } = React.useContext(DataContext);
@@ -53,7 +53,6 @@ function MainRouter() {
                       <Route path="/blank" element={<Blank />}></Route>
                       <Route path="/profile" element={<Blank />}></Route>
                       <Route path="/review" element={<Review />}></Route>
-                      <Route path="/voucher" element={<Voucher />}></Route>
                       <Route path="/listtour" element={<HomePage />} />
                       <Route path="/booker" element={<Booker />}></Route>
                       <Route
@@ -74,6 +73,7 @@ function MainRouter() {
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<SignUp />} />
                     <Route path="/:index" element={<SinglePage />} />
+                    <Route path="/booker/:index" element={<DetailBook />} />
                     <Route path="/listwork" element={<ListWork />} />
                     <Route path="/setupprovider" element={<SetUpProvider />} />
                   </React.Fragment>

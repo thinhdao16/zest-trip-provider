@@ -1,148 +1,115 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from "react";
+import dayjs from "dayjs";
 import Navbar from "../../components/Navbar/Index";
-import { DataContext } from "../../store/dataContext/DataContext";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../store/redux/store";
-import { useSelector } from "react-redux";
-import { fetchTours } from "../../store/redux/silce/tourSlice";
-import { getReview } from "../../store/redux/silce/reviewSlice";
+import { DataManyBook } from "./dataManyBook";
+import { AiFillEye } from "react-icons/ai";
+import { Link } from "react-router-dom";
+import data from "../../data/nominativeLoan";
 
 function Booker() {
-  const [activeButton, setActiveButton] = useState(1);
-  const [filterImg, setFilterImg] = useState(1);
-
-  const { refeshTour } = React.useContext(DataContext);
-  const dispatch: AppDispatch = useDispatch();
-  const { tours } = useSelector((state: any) => state.tour);
-  useSelector((state: any) => state.review);
-  const apiCalledRef = React.useRef(false);
-
-  React.useEffect(() => {
-    if (!apiCalledRef.current) {
-      dispatch(fetchTours());
-      dispatch(getReview());
-      apiCalledRef.current = true;
-    }
-  }, [dispatch, refeshTour]);
-  const renderComponent = () => {
-    let content;
-    switch (activeButton) {
-      case 1:
-        content = tours;
-        break;
-      case 2:
-        content = tours?.filter(
-          (tour: any) => tour.TourAvailability.length > 0
-        );
-        break;
-      case 3:
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        content = tours?.filter((tour: any) => tour.TicketPricing.length > 0);
-        break;
-      default:
-        content = null;
-    }
-    return content;
-  };
-  const renderedContent = renderComponent();
-
   return (
     <>
       <Navbar />
 
       <main className="h-full bg-main overflow-auto global-scrollbar rounded-lg">
         {/* Main Content */}
-        <div className="mainCard">
-          <div className="flex flex-wrap gap-2">
-            <button
-              className={`button ${
-                activeButton === 1
-                  ? "active rounded-lg px-4 py-1.5 bg-white border border-navy-blue text-navy-blue font-medium hover:bg-navy-blue hover:text-white"
-                  : "rounded-lg px-4 py-1.5 bg-white border border-gray-300 text-gray-500 font-medium hover:bg-gray-300 hover:text-black"
-              }`}
-              onClick={() => setActiveButton(1)}
-            >
-              Tour ({tours?.length})
-            </button>
-            <button
-              className={`button ${
-                activeButton === 2
-                  ? "active rounded-lg px-4 py-1.5 bg-white border border-navy-blue text-navy-blue font-medium hover:bg-navy-blue hover:text-white"
-                  : "rounded-lg px-4 py-1.5 bg-white border border-gray-300 text-gray-500 font-medium hover:bg-gray-300 hover:text-black"
-              }`}
-              onClick={() => setActiveButton(2)}
-            >
-              TourAvailabilitys
-              {
-                tours?.filter((tour: any) => tour.TourAvailability.length > 0)
-                  .length
-              }
-            </button>
-            <button
-              className={`button ${
-                activeButton === 3
-                  ? "active rounded-lg px-4 py-1.5 bg-white border border-navy-blue text-navy-blue font-medium hover:bg-navy-blue hover:text-white"
-                  : "rounded-lg px-4 py-1.5 bg-white border border-gray-300 text-gray-500 font-medium hover:bg-gray-300 hover:text-black"
-              }`}
-              onClick={() => setActiveButton(3)}
-            >
-              ticket(
-              {
-                tours?.filter((tour: any) => tour.TicketPricing.length > 0)
-                  .length
-              }
-              )
-            </button>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            <button
-              className={`button ${
-                filterImg === 1
-                  ? "active rounded-lg px-4 py-1.5 bg-white border border-navy-blue text-navy-blue font-medium hover:bg-navy-blue hover:text-white"
-                  : "rounded-lg px-4 py-1.5 bg-white border border-gray-300 text-gray-500 font-medium hover:bg-gray-300 hover:text-black"
-              }`}
-              onClick={() => setFilterImg(1)}
-            >
-              Tour ({renderedContent?.length})
-            </button>
-            <button
-              className={`button ${
-                filterImg === 2
-                  ? "active rounded-lg px-4 py-1.5 bg-white border border-navy-blue text-navy-blue font-medium hover:bg-navy-blue hover:text-white"
-                  : "rounded-lg px-4 py-1.5 bg-white border border-gray-300 text-gray-500 font-medium hover:bg-gray-300 hover:text-black"
-              }`}
-              onClick={() => setFilterImg(2)}
-            >
-              Image ^ 2.
-              {
-                renderedContent?.filter(
-                  (tour: any) => tour?.tour_images?.length > 2
-                ).length
-              }
-            </button>
-            <button
-              className={`button ${
-                filterImg === 3
-                  ? "active rounded-lg px-4 py-1.5 bg-white border border-navy-blue text-navy-blue font-medium hover:bg-navy-blue hover:text-white"
-                  : "rounded-lg px-4 py-1.5 bg-white border border-gray-300 text-gray-500 font-medium hover:bg-gray-300 hover:text-black"
-              }`}
-              onClick={() => setFilterImg(3)}
-            >
-              tag_id (
-              {
-                renderedContent?.filter((tour: any) => tour.tag_id.length > 0)
-                  .length
-              }
-              )
-            </button>
-          </div>
-        </div>
+        <div className="mainCard"></div>
         <div className="container mx-auto p-4">
           <h1 className="text-2xl font-semibold mb-4">List of Items</h1>
-          <div className="bg-white p-4 relative shadow-custom-card-mui rounded-lg">
-            <button className="top-4 absolute right-4">abc</button>
-            <span>búabd</span>
+          <div className="flex flex-col gap-5 shadow-custom-card-mui">
+            {DataManyBook?.map((dataManyBook, index: number) => (
+              <div
+                className="bg-white  relative shadow-custom-card-mui rounded-lg flex flex-col"
+                key={index}
+              >
+                <Link to={`/booker/${dataManyBook?.id}`} key={dataManyBook?.id}>
+                  <AiFillEye className="absolute top-2 right-2 w-5 h-5" />
+                </Link>
+                {dataManyBook?.Booking?.map((dataBook, index: number) => (
+                  <div className="p-4" key={index}>
+                    <div className="grid grid-cols-12 gap-2">
+                      <div className="col-span-1 flex items-center ">
+                        <span className="font-medium">
+                          {dayjs(dataBook?.updated_at)?.format("YYYY-MM-DD")}
+                        </span>
+                      </div>
+                      <div className="col-span-3">
+                        <div className="flex gap-3">
+                          <div className="w-w-2 h-auto bg-gray-300 rounded-full"></div>
+                          <div className="flex flex-col">
+                            <span className="font-medium">
+                              {dataBook?.booker_email}
+                            </span>
+                            <div>
+                              <button
+                                type="button"
+                                className="px-1 text-sm border border-solid border-gray-300 rounded-md"
+                              >
+                                {dataBook?.status}
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-span-1">
+                        <span className="font-medium block">Duration</span>
+                        <span>{dataManyBook?.duration} Night</span>
+                      </div>
+                      <div className="col-span-2">
+                        <span className="font-medium">Time book</span>
+
+                        <button
+                          type="button"
+                          className="border border-solid border-gray-300 rounded-md px-1 block text-sm text-gray-600"
+                        >
+                          <span className="font-medium">
+                            {dayjs(dataBook?.booked_date).format("YYYY-MM-DD")}
+                          </span>{" "}
+                          {dataBook?.time_slot}
+                        </button>
+                      </div>
+                      <div className="col-span-3">
+                        <span className="font-medium">Ticket type</span>
+                        <div className="flex gap-1">
+                          {dataBook?.TicketOnBooking?.map(
+                            (ticketQuantity, index: number) => (
+                              <div
+                                key={index}
+                                className="border border-solid border-gray-300 rounded-md px-1 text-sm text-gray-700"
+                              >
+                                <span className="font-medium">
+                                  {ticketQuantity?.ticket_type_id === 1
+                                    ? "Adult"
+                                    : "Children"}
+                                  {": "}
+                                </span>
+                                <span>{ticketQuantity?.quantity}</span>
+                              </div>
+                            )
+                          )}
+                        </div>
+                      </div>
+                      <div className="col-span-2">
+                        <div className="flex flex-col">
+                          <span className="font-medium"> Payment</span>
+                          <span>{dataBook?.paid_price}</span>
+                        </div>
+                      </div>
+                    </div>
+                    {index < dataManyBook?.Booking.length - 1 && (
+                      <hr className="mt-2" />
+                    )}
+                  </div>
+                ))}
+                <div className="bg-white border-t border-solid p-4 rounded-b-md">
+                  <p className="font-medium">{dataManyBook?.name}</p>
+                  <span>
+                    {dataManyBook?.address_district},{" "}
+                    {dataManyBook?.address_province}, ,
+                    {dataManyBook?.address_country}
+                  </span>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </main>

@@ -26,6 +26,8 @@ interface AuthContextValue {
   setRefreshTourDetail: React.Dispatch<
     React.SetStateAction<RefeshTourDetail | null>
   >;
+  dataManyBookFake: any;
+  setDataManyBookFake: any;
 }
 
 export const DataContext = createContext<AuthContextValue>(
@@ -43,6 +45,8 @@ export function DataContextProvider({
   const [refeshTour, setRefeshTour] = useState<RefeshTour | null>(null);
   const [refreshTourDetail, setRefreshTourDetail] =
     useState<RefeshTourDetail | null>(null);
+  const [dataManyBookFake, setDataManyBookFake] = useState<any>();
+
   const abc = "abe";
   const googleSignIn = async () => {
     const provider = new GoogleAuthProvider();
@@ -80,6 +84,8 @@ export function DataContextProvider({
         setRefeshTour,
         refreshTourDetail,
         setRefreshTourDetail,
+        dataManyBookFake,
+        setDataManyBookFake,
       }}
     >
       {children}

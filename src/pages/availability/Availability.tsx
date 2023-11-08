@@ -51,8 +51,17 @@ function Availability() {
             <>
               <div
                 key={index}
-                className="shadow-custom-card-mui mb-4 bg-white rounded-lg"
+                className="shadow-custom-card-mui mb-4 bg-white rounded-lg pt-6 relative"
               >
+                <div className="absolute top-2 right-2 flex gap-2">
+                  <EditAvailability
+                    dataAvailability={dataTour?.TourAvailability}
+                  />
+                  <AddAvailability
+                    dataDetailTour={dataTour}
+                    setLoading={setLoading}
+                  />
+                </div>
                 {dataTour?.TourAvailability?.length > 0 ? (
                   dataTour?.TourAvailability?.map(
                     (
@@ -66,7 +75,7 @@ function Availability() {
                       },
                       index: number
                     ) => (
-                      <div className=" px-4 py-2  relative " key={index}>
+                      <div className=" px-4  mb-2  relative " key={index}>
                         <div className="grid grid-cols-12 gap-3">
                           <div className="col-span-1 flex items-center">
                             <div className="flex flex-col">
@@ -85,13 +94,13 @@ function Availability() {
 
                           <div className="col-span-4 flex gap-3 ">
                             <div
-                              className={`w-1 rounded-full  h-20  ${
+                              className={`w-0.5 h-auto rounded-full ${
                                 _availability?.status === "ACTIVE"
-                                  ? "bg-green-900"
+                                  ? "bg-green-tag"
                                   : "bg-red-900"
                               }`}
                             ></div>
-                            <div className="grid gap-2 content-between">
+                            <div className="flex flex-col gap-2 ">
                               <span className="font-medium">
                                 {_availability?.name}
                               </span>
@@ -109,7 +118,7 @@ function Availability() {
                               </div>
                             </div>
                           </div>
-                          <div className="col-span-3 grid gap-2 content-between">
+                          <div className="col-span-4 grid gap-2 content-between">
                             <span className="font-medium">weekdayss</span>
                             <div className="flex flex-wrap gap-3">
                               {" "}
@@ -147,17 +156,11 @@ function Availability() {
                               )}
                             </div>
                           </div>
-                          <div className="col-span-1  flex flex-col items-end justify-center">
-                            <EditAvailability
-                              dataAvailability={dataTour?.TourAvailability}
-                            />
-                            <AddAvailability
-                              dataDetailTour={dataTour}
-                              setLoading={setLoading}
-                            />
-                          </div>
                         </div>
-                        {dataTour?.TourAvailability?.length - 1 > 0 && <hr />}
+
+                        {index < dataTour?.TourAvailability?.length - 1 && (
+                          <hr className="mt-2" />
+                        )}
                       </div>
                     )
                   )
@@ -167,11 +170,11 @@ function Availability() {
                       type="button"
                       className="bg-main rounded-md py-1 px-2 shadow-custom-card-mui font-medium"
                     >
-                      Dont have Availability
+                      This tour does not have availability
                     </button>
                   </div>
                 )}
-                <div className="bg-gray-200 flex flex-col px-4 py-2 rounded-b-lg">
+                <div className="bg-white border-t border-solid flex flex-col p-4 rounded-b-lg">
                   <span className="font-medium">{dataTour?.name}</span>
                   <span className="text-gray-800">
                     {dataTour?.address_district},{dataTour?.address_province},{" "}

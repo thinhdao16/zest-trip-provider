@@ -20,12 +20,15 @@ function SinglePage() {
   const dispatch: AppDispatch = useDispatch();
   const { refreshTourDetail } = useContext(DataContext);
 
-  const { index }: any = useParams();
+  const { index } = useParams<{ index: string }>();
+
   const loadingDetail = useSelector(
     (detail: any) => detail?.tour?.loadingDetail
   );
   useEffect(() => {
-    dispatch(fetchTourDetail(index));
+    if (index) {
+      dispatch(fetchTourDetail(index));
+    }
     dispatch(getTagTour());
     dispatch(getVehicleTour());
   }, [dispatch, index, refreshTourDetail]);

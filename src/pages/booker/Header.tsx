@@ -1,12 +1,8 @@
 import Box from "@mui/material/Box";
 import { FaAngleLeft } from "react-icons/fa6";
-import { useSelector } from "react-redux";
-import { StateTour } from "../../createtour/types/index.t";
+// import { StateTour } from "../../createtour/types/index.t";
 
 export default function Header() {
-  const tourDetail: any = useSelector(
-    (state: StateTour) => state.tour.tourGetDetail
-  );
   const goBack = () => {
     window.history.back();
   };
@@ -21,7 +17,7 @@ export default function Header() {
               className=" flex items-center justify-center gap-x-4"
             >
               <FaAngleLeft />
-              <span className=" font-medium text-xl"> {tourDetail?.name}</span>
+              {/* <span className=" font-medium text-xl"> {tourDetail?.name}</span>  */}
             </div>
             <div className="flex gap-x-8">
               <button className="text-black font-medium border border-gray-300 px-3 py-2 rounded-3xl  hover:text-black hover:border-navy-blue ">

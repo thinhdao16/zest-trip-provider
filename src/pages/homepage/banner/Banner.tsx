@@ -1,4 +1,4 @@
-import { Box, Card, Grid, Skeleton } from "@mui/material";
+import { Box, Card, Grid, Rating, Skeleton } from "@mui/material";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
@@ -17,6 +17,7 @@ import { DataContext } from "../../../store/dataContext/DataContext";
 import { AiFillEdit } from "react-icons/ai";
 import { FaMobile } from "react-icons/fa6";
 import { LuMoreHorizontal } from "react-icons/lu";
+import { TourTag, VehicleTag } from "../../../components/icon/tour/tag";
 
 export default function Banner() {
   const [value, setValue] = React.useState("1");
@@ -38,7 +39,7 @@ export default function Banner() {
 
   return (
     <div className="mt-8">
-      <div className="  p-6 mainCard bg-main container-dashboard rounded-3xl global-scrollbar">
+      <div className="p-6 mainCard bg-main container-dashboard rounded-3xl global-scrollbar">
         <div>
           <Box
             justifyContent="center"
@@ -64,160 +65,6 @@ export default function Banner() {
               </Box>
               <Box className="tab-list-data-mui">
                 <TabPanel value="1">
-                  {/* <Grid container spacing={5}>
-                    {tours.length > 0 ? (
-                      Array.isArray(tours) &&
-                      [...tours]
-                        .sort((a, b) => {
-                          return (
-                            new Date(b?.updated_at).getTime() -
-                            new Date(a?.updated_at).getTime()
-                          );
-                        })
-                        .map((data: any, index: number) => (
-                          <Grid item xs={12} sm={6} lg={4} key={index}>
-                            <Link to={`/${data?.id}`} key={data?.id}>
-                              <Card
-                                style={{
-                                  boxShadow: "none",
-                                  background: "#f8fafc",
-                                }}
-                              >
-                                {data?.tour_images[0] ? (
-                                  <img
-                                    style={{
-                                      width: "100%",
-                                      borderRadius: "25px",
-                                      objectFit: "cover",
-                                      height: "235px",
-                                    }}
-                                    src={data?.tour_images[0]}
-                                    alt="nothing"
-                                  />
-                                ) : (
-                                  <Skeleton
-                                    variant="rectangular"
-                                    height={200}
-                                    animation="wave"
-                                  />
-                                )}
-                                <Box style={{ margin: "10px 0 40px" }}>
-                                  <div>
-                                    <p className="font-medium text-xl">
-                                      {data ? (
-                                        data.name
-                                      ) : (
-                                        <Skeleton width={200} />
-                                      )}
-                                    </p>
-                                  </div>
-                                  <p>
-                                    {data ? (
-                                      data.description
-                                    ) : (
-                                      <Skeleton
-                                        variant="rectangular"
-                                        height={200}
-                                        animation="wave"
-                                      />
-                                    )}
-                                  </p>
-                                  <div>
-                                    {data ? (
-                                      // `vnđ ${data.price}`
-                                      <p className="font-medium flex items-center">
-                                        <span className="text-gray-600">
-                                          vnđ
-                                        </span>
-                                        <span className="text-lg">250.000</span>
-                                      </p>
-                                    ) : (
-                                      <Skeleton width={60} />
-                                    )}
-                                  </div>
-                                  {data?.tag_id?.map(
-                                    (
-                                      dataTag: { name: string },
-                                      index: string
-                                    ) => (
-                                      <button
-                                        key={index}
-                                        className="  text-navy-blue hover:text-black font-medium rounded-lg mr-2"
-                                      >
-                                        <p>#{dataTag?.name}</p>
-                                      </button>
-                                    )
-                                  )}
-                                </Box>
-                              </Card>
-                            </Link>
-                          </Grid>
-                        ))
-                    ) : (
-                      <Grid item xs={12} sm={6} lg={4}>
-                        <Card style={{ boxShadow: "none" }}>
-                          <Skeleton
-                            variant="rectangular"
-                            height={200}
-                            animation="wave"
-                            className="rounded-3xl"
-                          />
-                          <Box style={{ margin: "32px 0 40px" }}>
-                            <Box
-                              style={{
-                                background: "#8fcaf7",
-                                padding: "4px 7px",
-                                borderRadius: "12px",
-                                display: "inline-block",
-                                fontSize: "18px",
-                                color: "#4F4F4F",
-                                margin: "0 0 0.7rem 0",
-                              }}
-                            >
-                              <Skeleton width={100} />
-                            </Box>
-                            <Box>
-                              <p
-                                style={{
-                                  color: "#091f44",
-                                  fontSize: "24px",
-                                  lineHeight: "1.5",
-                                  margin: "8px 0 16px 0",
-                                }}
-                              >
-                                <Skeleton width={200} className="rounded-2xl" />
-                              </p>
-                            </Box>
-                            <p
-                              style={{
-                                fontSize: "18px",
-                                fontWeight: 300,
-                                opacity: "0.8",
-                                paddingBottom: "8px",
-                              }}
-                            >
-                              <Skeleton
-                                variant="rectangular"
-                                height={50}
-                                animation="wave"
-                                className="rounded-lg"
-                              />
-                            </p>
-                            <Box>
-                              <p
-                                style={{
-                                  fontSize: "16px",
-                                  fontWeight: 300,
-                                }}
-                              >
-                                <Skeleton width={60} className="rounded-3xl" />
-                              </p>
-                            </Box>
-                          </Box>
-                        </Card>
-                      </Grid>
-                    )}
-                  </Grid> */}
                   <div className="flex flex-col gap-4">
                     {tours.length > 0 ? (
                       Array.isArray(tours) &&
@@ -229,34 +76,34 @@ export default function Banner() {
                           );
                         })
                         .map((data: any, index: number) => (
-                          <Link to={`/${data?.id}`} key={data?.id}>
-                            <div
-                              key={index}
-                              className="bg-white shadow-custom-card-mui grid grid-cols-12 p-4 gap-3 "
-                            >
-                              <div className="col-span-1">
-                                <img
-                                  style={{
-                                    width: "75px",
-                                    borderRadius: "5px",
-                                    objectFit: "cover",
-                                    height: "75px",
-                                  }}
-                                  src={data?.tour_images[0]}
-                                  alt="nothing"
-                                />
-                              </div>
+                          <div
+                            key={index}
+                            className="bg-white shadow-custom-card-mui grid grid-cols-12 p-4 gap-3 "
+                          >
+                            <div className="col-span-1">
+                              <img
+                                style={{
+                                  width: "75px",
+                                  borderRadius: "5px",
+                                  objectFit: "cover",
+                                  height: "75px",
+                                }}
+                                src={data?.tour_images[0]}
+                                alt="nothing"
+                              />
+                            </div>
 
-                              <div className="col-span-9">
-                                <div>
-                                  <p className="font-medium ">{data.name}</p>
-                                </div>
-                                <div>
-                                  <p className="font-medium flex items-center">
-                                    <span className="text-gray-600">vnđ</span>
-                                    <span className="text-lg">250.000</span>
-                                  </p>
-                                </div>
+                            <div className="col-span-9 grid gap-2  content-between">
+                              <div>
+                                <p className="font-medium ">{data.name}</p>
+                              </div>
+                              <Rating
+                                name="half-rating-read"
+                                defaultValue={2.5}
+                                precision={0.5}
+                                readOnly
+                              />
+                              <div className="flex items-center flex-wrap gap-3 text-sm">
                                 {data?.tag_id?.map(
                                   (
                                     dataTag: { name: string },
@@ -264,43 +111,67 @@ export default function Banner() {
                                   ) => (
                                     <button
                                       key={index}
-                                      className="  text-navy-blue hover:text-black font-medium rounded-lg mr-2"
+                                      className=" border px-1 rounded-md shadow-custom-card-mui text-navy-blue hover:text-black   flex items-center gap-1"
                                     >
+                                      <TourTag
+                                        field={dataTag?.name}
+                                        style="w-4 h-4"
+                                      />
                                       <p>{dataTag?.name}</p>
                                     </button>
                                   )
                                 )}
-                              </div>
-                              <div className="col-span-2">
-                                <div className="flex gap-2 justify-between">
-                                  <div>
+                                <span className="w-0.5 h-5 bg-gray-300 rounded-full"></span>
+                                {data?.vehicle_id?.map(
+                                  (
+                                    dataVehicle: { name: string },
+                                    index: string
+                                  ) => (
                                     <button
-                                      type="button"
-                                      className={`text-sm px-1 rounded-sm ${
-                                        data?.status === "PUBLISHED"
-                                          ? "bg-green-300 text-green-900"
-                                          : "bg-red-300 text-red-900"
-                                      }`}
+                                      key={index}
+                                      className=" border px-1 rounded-md shadow-custom-card-mui text-navy-blue hover:text-black  flex items-center gap-1"
                                     >
-                                      {data?.status}
+                                      <VehicleTag
+                                        field={dataVehicle?.name}
+                                        style="w-4 h-4"
+                                      />
+                                      <p>{dataVehicle?.name}</p>
                                     </button>
-                                  </div>
+                                  )
+                                )}
+                              </div>
+                            </div>
+                            <div className="col-span-2">
+                              <div className="flex gap-2 justify-between">
+                                <div>
+                                  <button
+                                    type="button"
+                                    className={`text-sm px-1 rounded-sm ${
+                                      data?.status === "PUBLISHED"
+                                        ? "bg-green-300 text-green-900"
+                                        : "bg-red-300 text-red-900"
+                                    }`}
+                                  >
+                                    {data?.status}
+                                  </button>
+                                </div>
 
-                                  <div className="flex flex-col gap-3 ">
-                                    <button>
-                                      <LuMoreHorizontal />
-                                    </button>
-                                    <button>
+                                <div className="flex flex-col gap-3 ">
+                                  <button>
+                                    <LuMoreHorizontal />
+                                  </button>
+                                  <button>
+                                    <Link to={`/${data?.id}`} key={data?.id}>
                                       <AiFillEdit />
-                                    </button>
-                                    <button>
-                                      <FaMobile />
-                                    </button>
-                                  </div>
+                                    </Link>
+                                  </button>
+                                  <button>
+                                    <FaMobile />
+                                  </button>
                                 </div>
                               </div>
                             </div>
-                          </Link>
+                          </div>
                         ))
                     ) : (
                       <></>

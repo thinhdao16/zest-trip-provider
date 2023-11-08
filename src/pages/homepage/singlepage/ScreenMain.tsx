@@ -603,8 +603,8 @@ function ScreenMain() {
               </TabContext>
             </ConstructionDes>
           </Construction>
+          <ScreenSP />
         </div>
-        <ScreenSP />
       </div>
     </>
   );

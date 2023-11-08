@@ -29,6 +29,8 @@ export default {
         "green-tag-opa": "#f1f5e5",
         // Thêm nhiều màu sắc khác nếu cần
       },
+      width: { "w-1": "1px", "w-2": "2px" },
+
       scrollbarWidth: {
         thin: '6px',
         custom: '25px',

@@ -225,7 +225,7 @@ function Review() {
           <h1 className="text-2xl font-semibold mb-4">List of Items</h1>
 
           <div className="flex flex-col gap-4">
-            <div className="grid grid-cols-12 bg-gray-300 rounded-lg p-2 font-medium">
+            <div className="grid grid-cols-12 bg-white rounded-lg p-2 font-medium shadow-custom-card-mui">
               <div className="col-span-4 text-center">Infomation product</div>
               <div className="col-span-6 text-center">Rate person</div>
               <div className="col-span-2 text-center">action</div>
@@ -234,9 +234,9 @@ function Review() {
               {renderedContentStar?.map((item: any, index: number) => (
                 <div
                   key={index}
-                  className=" bg-white rounded-lg shadow-custom-card-mui border border-solid border-gray-200 "
+                  className=" bg-white rounded-lg shadow-custom-card-mui border border-solid border-white "
                 >
-                  <div className="flex justify-between px-4 py-2 bg-gray-200">
+                  {/* <div className="flex justify-between px-4 py-2 bg-gray-200">
                     <div className="font-medium flex gap-1">
                       Buyer:{" "}
                       <img
@@ -254,7 +254,7 @@ function Review() {
                         {item?.tour?.id}
                       </span>
                     </div>
-                  </div>
+                  </div> */}
                   <div className="grid grid-cols-12 ">
                     <div className="col-span-4 p-4 ">
                       <div className="flex gap-2">

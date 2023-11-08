@@ -30,22 +30,20 @@ export const fetchTours = createAsyncThunk("tour/fetchTours", async () => {
       },
     });
     if (response.status === 200) {
-      // toast.success("This is tour!"); // Thông báo lấy danh sách tour thành công
       return response.data.data;
     } else {
-      // toast.error("Failed to fetch tours!"); // Thông báo lỗi khi lấy danh sách tour
       throw new Error("Failed to fetch tours");
     }
   } catch (error) {
     console.log(error);
-    toast.error("Failed to fetch tours!"); // Thông báo lỗi khi lấy danh sách tour
+    toast.error("Failed to fetch tours!");
     throw new Error("Failed to fetch tours");
   }
 });
 
 export const fetchTourDetail = createAsyncThunk(
   "tour/getDetailTour",
-  async (index: DetailTour) => {
+  async (index: string) => {
     try {
       const response = await axiosInstance.get(
         `${BASE_URL}/tour/detail/${index}`

@@ -444,7 +444,7 @@ function AddAvailability({
 
   return (
     <div>
-      <HiOutlineDocumentAdd onClick={handleOpen} />
+      <HiOutlineDocumentAdd className="w-5 h-5" onClick={handleOpen} />
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
