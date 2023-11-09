@@ -3,6 +3,7 @@ import { DataManyBook } from "./dataManyBook";
 import { useState } from "react";
 import Header from "./Header";
 import NavBar from "./Navbar";
+import BookDetailScreenMain from "./BookDetailScreenMain";
 
 function DetailBook() {
   const { index } = useParams<{ index: string }>();
@@ -82,7 +83,7 @@ function DetailBook() {
           className={`p-4 sm:ml-64
          sm:mr-0 h-screen ${isSidebarOpen ? "pt-28" : "top-0"}`}
         >
-          {/* <ScreenMain /> */}
+          <BookDetailScreenMain />
         </div>
         {/* <aside
         id="default-sidebar"

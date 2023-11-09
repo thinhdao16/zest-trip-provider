@@ -8,6 +8,7 @@ import dayjs from "dayjs";
 import { FaRegPenToSquare } from "react-icons/fa6";
 import AddAvailability from "./Modal/AddAvailability";
 import EditAvailability from "./Modal/EditAvailability";
+import { AiOutlineDown } from "react-icons/ai";
 
 function Availability() {
   const dispatch: AppDispatch = useDispatch();
@@ -75,10 +76,11 @@ function Availability() {
                       },
                       index: number
                     ) => (
-                      <div className=" px-4  mb-2  relative " key={index}>
-                        <div className="grid grid-cols-12 gap-3">
-                          <div className="col-span-1 flex items-center">
-                            <div className="flex flex-col">
+                      <div className=" px-8  mb-2  relative " key={index}>
+                        <div className="grid grid-cols-12 gap-3 ">
+                          <div className="col-span-1 flex items-center ">
+                            <div className="flex flex-col relative gap-3">
+                              <AiOutlineDown className="absolute top-6 left-9 w-3 h-3" />
                               <span className="font-medium">
                                 {dayjs(
                                   _availability?.validity_date_range_from

@@ -14,6 +14,26 @@ function NavBar() {
           <div className="h-[60vh] overflow-auto scrollbar-none gap-10 flex flex-col pt-6">
             <div
               className={`flex items-center font-medium pl-1 gap-7`}
+              onClick={() => scrollToElement("booking")}
+            >
+              <div className="w-1.5 h-7 rounded-full bg-navy-blue"></div>
+              <p className=" font-medium text-navy-blue">
+                <FcFactoryBreakdown />
+              </p>
+              <span className="text-navy-blue">Booking</span>
+            </div>
+            <div
+              className={`flex items-center font-medium pl-1 gap-7`}
+              onClick={() => scrollToElement("revenue")}
+            >
+              <div className="w-1.5 h-7 rounded-full bg-navy-blue"></div>
+              <p className=" font-medium text-navy-blue">
+                <FcFactoryBreakdown />
+              </p>
+              <span className="text-navy-blue">Total revenue</span>
+            </div>
+            <div
+              className={`flex items-center font-medium pl-1 gap-7`}
               onClick={() => scrollToElement("information_basic")}
             >
               <div className="w-1.5 h-7 rounded-full bg-navy-blue"></div>
@@ -21,26 +41,6 @@ function NavBar() {
                 <FcFactoryBreakdown />
               </p>
               <span className="text-navy-blue">Information basic</span>
-            </div>
-            <div
-              className={`flex items-center font-medium pl-1 gap-7`}
-              onClick={() => scrollToElement("ticket")}
-            >
-              <div className="w-1.5 h-7 rounded-full bg-navy-blue"></div>
-              <p className=" font-medium text-navy-blue">
-                <FcFactoryBreakdown />
-              </p>
-              <span className="text-navy-blue">Ticket</span>
-            </div>
-            <div
-              className={`flex items-center font-medium pl-1 gap-7`}
-              onClick={() => scrollToElement("availability")}
-            >
-              <div className="w-1.5 h-7 rounded-full bg-navy-blue"></div>
-              <p className=" font-medium text-navy-blue">
-                <FcFactoryBreakdown />
-              </p>
-              <span className="text-navy-blue">Availability</span>
             </div>
           </div>
           <div className="flex w-64 items-center  justify-center">
