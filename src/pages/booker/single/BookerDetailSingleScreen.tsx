@@ -3,6 +3,7 @@ import { DataBook } from "../dataBook";
 import { useState } from "react";
 import Header from "./Header";
 import ScreenMain from "./ScreenMain";
+import NavBar from "./Navbar";
 
 function BookerDetailSingleScreen() {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
@@ -72,9 +73,9 @@ function BookerDetailSingleScreen() {
           }`}
           aria-label="Sidebar"
         >
-          {/* <div className="h-full  overflow-y-auto border-solid bg-white border-r-2 border-gray-100  dark:bg-gray-800 global-scrollbar">
+          <div className="h-full  overflow-y-auto border-solid bg-white border-r-2 border-gray-100  dark:bg-gray-800 global-scrollbar">
             <NavBar />
-          </div> */}
+          </div>
         </aside>
         <div
           className={`p-4 sm:ml-64 sm:mr-64 

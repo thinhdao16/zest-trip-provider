@@ -20,10 +20,10 @@ function BookDetailScreenMain() {
     <div className="bg-main rounded-xl p-8 h-full overflow-y-auto global-scrollbar">
       <div className="mb-6" id="booking">
         <div className="font-medium text-xl pb-4">List booking</div>
-        <div className="bg-white p-4 flex flex-col gap-3">
+        <div className=" p-4 flex flex-col gap-3">
           {filteredData[0]?.Booking?.map((booking, index: number) => (
             <div
-              className="grid grid-cols-12 gap-2 items-center shadow-custom-card-mui p-4 border border-solid border-gray-300 rounded-lg"
+              className="bg-white grid grid-cols-12 gap-2 items-center shadow-custom-card-mui p-4 border border-solid border-gray-300 rounded-lg"
               key={index}
             >
               {/* <div className="col-span-1 flex items-center justify-end font-medium">
@@ -124,8 +124,8 @@ function BookDetailScreenMain() {
       <div className="mb-6 " id="revenue">
         <div className="font-medium text-xl pb-4">Total revenue</div>
 
-        <div className="bg-white p-4 rounded-lg shadow-custom-card-mui">
-          <div className="shadow-custom-card-mui p-4 border border-solid border-gray-300 rounded-lg">
+        <div className=" p-4">
+          <div className="bg-white shadow-custom-card-mui p-4 border border-solid border-gray-300 rounded-lg">
             <div className="grid grid-cols-12 gap-3">
               <div className="col-span-4 border-r border-solid border-gray-300 pr-3">
                 <div className="flex flex-col gap-3 py-2">

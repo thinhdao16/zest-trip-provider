@@ -1,4 +1,4 @@
-import { Box, Card, Grid, Rating, Skeleton } from "@mui/material";
+import { Box, Rating } from "@mui/material";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";

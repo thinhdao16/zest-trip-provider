@@ -91,7 +91,7 @@ export default function SpringModal(data: any) {
   };
   return (
     <div>
-      <div className="flex flex-col gap-3 flex-wrap">
+      <div className=" flex justify-center">
         {data?.data?.ReviewReplies === null && (
           <button
             onClick={() =>

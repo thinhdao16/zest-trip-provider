@@ -53,7 +53,6 @@ const EditAvailability = (dataAvailability: any) => {
   );
   const [open, setOpen] = useState(false);
   const [dataWeekChoose, setDataWeekChoose] = useState<any>([]);
-  console.log(availability);
   const handleOpen = () => {
     setOpen(true);
   };

@@ -225,38 +225,19 @@ function Review() {
           <h1 className="text-2xl font-semibold mb-4">List of Items</h1>
 
           <div className="flex flex-col gap-4">
-            <div className="grid grid-cols-12 bg-white rounded-lg p-2 font-medium shadow-custom-card-mui">
-              <div className="col-span-4 text-center">Infomation product</div>
-              <div className="col-span-6 text-center">Rate person</div>
+            <div className="grid grid-cols-12 bg-white rounded-lg p-3 font-medium shadow-custom-card-mui">
+              <div className="col-span-4 ">Infomation product</div>
+              <div className="col-span-6 ">Rate person</div>
               <div className="col-span-2 text-center">action</div>
             </div>
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-2">
               {renderedContentStar?.map((item: any, index: number) => (
                 <div
                   key={index}
                   className=" bg-white rounded-lg shadow-custom-card-mui border border-solid border-white "
                 >
-                  {/* <div className="flex justify-between px-4 py-2 bg-gray-200">
-                    <div className="font-medium flex gap-1">
-                      Buyer:{" "}
-                      <img
-                        className="w-6 h-6 rounded-full object-cover"
-                        alt="wait"
-                        src="https://png.pngtree.com/png-vector/20190413/ourmid/pngtree-img-file-document-icon-png-image_935399.png"
-                      />
-                      <span className="font-normal text-gray-500">
-                        {item?.user?.full_name || "person"}
-                      </span>
-                    </div>
-                    <div className="font-medium flex gap-1">
-                      ID product:
-                      <span className="font-normal text-gray-500">
-                        {item?.tour?.id}
-                      </span>
-                    </div>
-                  </div> */}
-                  <div className="grid grid-cols-12 ">
-                    <div className="col-span-4 p-4 ">
+                  <div className="grid grid-cols-12 gap-4 p-3 ">
+                    <div className="col-span-4 ">
                       <div className="flex gap-2">
                         <img
                           className="w-12 h-12 object-cover rounded-lg"
@@ -268,25 +249,6 @@ function Review() {
                             {item?.tour?.name}
                           </span>
                           <div className="flex flex-wrap gap-1">
-                            {/* {item?.TicketPricing?.map(
-                              (ticket: any, index: number) => (
-                                <React.Fragment key={index}>
-                                  {ticket?.price_range?.map(
-                                    (price: any, index: number) => (
-                                      <div
-                                        key={index}
-                                        className="border border-solid border-gray-300 px-1 rounded-md text-sm text-gray-500 flex gap-1"
-                                      >
-                                        <span>from: {price?.from_amount}</span>
-                                        <span>to: {price?.to_amount}</span>
-                                        <p>-</p>
-                                        <p>{price?.price}</p>
-                                      </div>
-                                    )
-                                  )}
-                                </React.Fragment>
-                              )
-                            )} */}
                             <span className="text-gray-500">
                               {item?.tour?.description}
                             </span>
@@ -294,7 +256,7 @@ function Review() {
                         </div>
                       </div>
                     </div>
-                    <div className="col-span-6 border-l p-4 border-solid border-gray-200 rounded-bl-lg">
+                    <div className="col-span-6 ">
                       <div className="flex flex-col gap-2">
                         <Rating
                           name="half-rating-read"
@@ -310,7 +272,7 @@ function Review() {
                         <span>{item?.ReviewReplies?.content}</span>
                       </div>
                     </div>
-                    <div className="col-span-2 border-l p-4 border-solid border-gray-200 rounded-bl-lg text-center">
+                    <div className="col-span-2">
                       <SpringModal
                         data={item}
                         setRefeshReview={setRefeshReview}
