@@ -1,13 +1,11 @@
 import { useParams } from "react-router-dom";
-import { DataManyBook } from "./dataManyBook";
 import { useState } from "react";
 import Header from "./Header";
 import NavBar from "./Navbar";
 import BookDetailScreenMain from "./BookDetailScreenMain";
 
 function DetailBook() {
-  const { index } = useParams<{ index: string }>();
-  const filteredData = DataManyBook.filter((item) => item.id === index);
+  useParams<{ index: string }>();
   const [isSidebarOpen, setSidebarOpen] = useState(true);
 
   const toggleSidebar = () => {

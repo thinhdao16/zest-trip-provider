@@ -3,7 +3,6 @@ import Navbar from "../../components/Navbar/Index";
 import { DataManyBook } from "./dataManyBook";
 import { AiFillEye } from "react-icons/ai";
 import { Link } from "react-router-dom";
-import data from "../../data/nominativeLoan";
 
 function Booker() {
   return (
@@ -21,11 +20,17 @@ function Booker() {
                 className="bg-white  relative shadow-custom-card-mui rounded-lg flex flex-col"
                 key={index}
               >
-                <Link to={`/booker/${dataManyBook?.id}`} key={dataManyBook?.id}>
-                  <AiFillEye className="absolute top-2 right-2 w-5 h-5" />
+                <Link
+                  to={`/booker/many/${dataManyBook?.id}`}
+                  key={dataManyBook?.id}
+                >
+                  <AiFillEye className="absolute bottom-2 right-2 w-5 h-5" />
                 </Link>
                 {dataManyBook?.Booking?.map((dataBook, index: number) => (
-                  <div className="p-4" key={index}>
+                  <div className="p-4 relative" key={index}>
+                    <Link to={`/booker/${dataBook?.id}`} key={dataBook?.id}>
+                      <AiFillEye className="absolute top-2 right-2 w-5 h-5" />
+                    </Link>
                     <div className="grid grid-cols-12 gap-2">
                       <div className="col-span-1 flex items-center ">
                         <span className="font-medium">

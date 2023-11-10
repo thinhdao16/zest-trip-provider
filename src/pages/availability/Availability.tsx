@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { fetchTours } from "../../store/redux/silce/tourSlice";
 import { useSelector } from "react-redux";
 import dayjs from "dayjs";
-import { FaRegPenToSquare } from "react-icons/fa6";
 import AddAvailability from "./Modal/AddAvailability";
 import EditAvailability from "./Modal/EditAvailability";
 import { AiOutlineDown } from "react-icons/ai";

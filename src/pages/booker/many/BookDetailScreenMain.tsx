@@ -1,15 +1,17 @@
 import { useParams } from "react-router-dom";
-import { DataManyBook } from "./dataManyBook";
+import { DataManyBook } from "../dataManyBook";
 import { Carousel } from "react-responsive-carousel";
-import { FaLocationDot } from "react-icons/fa6";
+import { FaLocationDot, FaRegNoteSticky } from "react-icons/fa6";
 import { FcPaid } from "react-icons/fc";
 import { GiPriceTag } from "react-icons/gi";
 import { MdCreateNewFolder, MdUpdate } from "react-icons/md";
 import dayjs from "dayjs";
 import { GoDotFill } from "react-icons/go";
 import { HiOutlineDotsVertical } from "react-icons/hi";
-import { AiFillCaretRight, AiOutlineCaretRight } from "react-icons/ai";
-import { GrCaretRightFill } from "react-icons/gr";
+import { AiOutlineCaretRight } from "react-icons/ai";
+import { GrCapacity } from "react-icons/gr";
+import { BsBookmarkCheck } from "react-icons/bs";
+import { RiRefundFill } from "react-icons/ri";
 function BookDetailScreenMain() {
   const { index } = useParams<{ index: string }>();
   const filteredData = DataManyBook.filter((item) => item.id === index);
@@ -221,23 +223,63 @@ function BookDetailScreenMain() {
               </Carousel>
             </div>
             <div className="col-span-7">
-              <div className="flex flex-col gap-2">
-                <span className="font-medium text-xl">
-                  {filteredData[0]?.name}
-                </span>
-                <span className="text-lg">{filteredData[0]?.description}</span>
-                <span className="text-gray-500">
-                  {filteredData[0]?.footnote}
-                </span>
+              <div className="flex flex-col gap-2 pt-5">
+                <div className="grid grid-cols-12"></div>
+                <div className="flex justify-between">
+                  <span className="font-medium text-xl">
+                    {filteredData[0]?.name}
+                  </span>
+                  <div>
+                    <button className="bg-navy-blue px-1 rounded-sm text-sm text-white">
+                      {filteredData[0]?.status}
+                    </button>
+                  </div>
+                </div>
+
+                <span className="mb-2">{filteredData[0]?.description}</span>
+                <div className="flex items-center gap-1">
+                  <FaRegNoteSticky />
+                  <div>
+                    <p className="font-medium">Foot note</p>
+                    <span className="">{filteredData[0]?.footnote}</span>
+                  </div>
+                </div>
+
                 <div className="flex gap-1 items-center">
                   <FaLocationDot />
-                  <span>
-                    {filteredData[0]?.address_name},{" "}
-                    {filteredData[0]?.address_ward},{" "}
-                    {filteredData[0]?.address_district},{" "}
-                    {filteredData[0]?.address_province},{" "}
-                    {filteredData[0]?.address_country}
-                  </span>
+                  <div>
+                    <p className="font-medium">Location</p>
+                    <span>
+                      {filteredData[0]?.address_name},{" "}
+                      {filteredData[0]?.address_ward},{" "}
+                      {filteredData[0]?.address_district},{" "}
+                      {filteredData[0]?.address_province},{" "}
+                      {filteredData[0]?.address_country}
+                    </span>
+                  </div>
+                </div>
+                <div className="grid grid-cols-3">
+                  <div className="flex items-center gap-1">
+                    <GrCapacity />
+                    <div>
+                      <p className="font-medium">Duration</p>
+                      <span>{filteredData[0]?.duration}</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <BsBookmarkCheck />
+                    <div>
+                      <p className="font-medium">Book before</p>
+                      <span>{filteredData[0]?.book_before}</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <RiRefundFill />
+                    <div>
+                      <p className="font-medium">Refund before</p>
+                      <span>{filteredData[0]?.refund_before}</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
