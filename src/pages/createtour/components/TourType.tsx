@@ -45,7 +45,7 @@ const TourType: React.FC = () => {
 
   return (
     <BannerContainer>
-      <div className="items-center flex justify-center h-full ">
+      <div className="items-center flex justify-center h-full  ">
         <BannerContent>
           <CreateTitle>
             Choose the type of tour that best describes the type of tour you
@@ -53,13 +53,14 @@ const TourType: React.FC = () => {
           </CreateTitle>
           <div className="h-[50vh] overflow-auto">
             {dataClickType.map((data) => (
-              <Card
+              <div
                 key={data.id}
                 style={CardOptionStyles({
                   index: data.id,
                   selectedCard: selectedCard,
                 })}
                 onClick={() => handleCardClick(data, data.id)}
+                className="shadow-custom-card-mui"
               >
                 <CreateChooseContent sx={{ margin: 3 }}>
                   <div>
@@ -70,7 +71,7 @@ const TourType: React.FC = () => {
                   </div>
                   <p className="text-xl">{data.icon}</p>
                 </CreateChooseContent>
-              </Card>
+              </div>
             ))}
           </div>
         </BannerContent>

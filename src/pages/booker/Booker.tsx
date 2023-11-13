@@ -1,8 +1,9 @@
 import dayjs from "dayjs";
 import Navbar from "../../components/Navbar/Index";
 import { DataManyBook } from "./dataManyBook";
-import { AiFillEye } from "react-icons/ai";
+import { AiFillEye, AiFillFilter } from "react-icons/ai";
 import { Link } from "react-router-dom";
+import { RiSearchLine } from "react-icons/ri";
 
 function Booker() {
   console.log(DataManyBook);
@@ -12,9 +13,36 @@ function Booker() {
 
       <main className="h-full bg-main overflow-auto global-scrollbar rounded-lg">
         {/* Main Content */}
-        <div className="mainCard"></div>
-        <div className="container mx-auto p-4">
-          <h1 className="text-2xl font-semibold mb-4">List of Booking</h1>
+        <div className="container mx-auto px-8 py-4">
+          <div className="mb-6 flex items-center justify-between">
+            <div className="flex flex-col">
+              <h1 className="text-2xl font-semibold ">List of Booking</h1>
+              <span className="text-gray-500">
+                When provider have booking new, they open here
+              </span>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="relative">
+                <RiSearchLine className="absolute top-2 left-2" />
+                <input
+                  type="text"
+                  name=""
+                  id=""
+                  placeholder="Search"
+                  className="border border-gray-300 pl-8 py-1 w-24 rounded-md"
+                />
+              </div>
+              <div>
+                <button
+                  type="button"
+                  className="relative border border-gray-300 pl-0 py-1 w-24 rounded-md"
+                >
+                  <AiFillFilter className="absolute top-2 left-2" />
+                  Filter
+                </button>
+              </div>
+            </div>
+          </div>
           <div className="flex flex-col gap-4">
             <div className="bg-white p-3 rounded-lg shadow-custom-card-mui">
               <div className="grid grid-cols-12 gap-3">
@@ -61,7 +89,7 @@ function Booker() {
                   </div>
                   <hr />
                   <Link
-                    to={`/booker/many/${dataManyBook?.id}`}
+                    to={`/booking/many/${dataManyBook?.id}`}
                     key={dataManyBook?.id}
                   >
                     <AiFillEye className="absolute top-2 right-2 w-5 h-5" />
@@ -69,7 +97,10 @@ function Booker() {
                   {dataManyBook?.Booking?.map((dataBook, index: number) => (
                     <div>
                       <div className="p-4 relative" key={index}>
-                        <Link to={`/booker/${dataBook?.id}`} key={dataBook?.id}>
+                        <Link
+                          to={`/booking/${dataBook?.id}`}
+                          key={dataBook?.id}
+                        >
                           <AiFillEye className="absolute top-2 right-2 w-5 h-5" />
                         </Link>
                         <div className="grid grid-cols-12 gap-2">

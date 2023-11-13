@@ -5,7 +5,12 @@ import Construction, {
   ConstructionTitle,
   ConstructionTitletext,
 } from "./singlePageConst/Construction";
-import { FaCircle, FaHardDrive } from "react-icons/fa6";
+import {
+  FaAddressCard,
+  FaCircle,
+  FaCirclePlus,
+  FaHardDrive,
+} from "react-icons/fa6";
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import AutoResizableTextarea from "./singlePageConst/AutoResizableTextarea";
 import { TourTag, VehicleTag } from "../../../components/icon/tour/tag";
@@ -23,6 +28,7 @@ import ModalTourScheDetail from "./Modal/ModalTourScheDetail";
 import { useEditContext } from "./Context/useEditContext";
 import { DataContext } from "../../../store/dataContext/DataContext";
 import ScreenSP from "./ScreenSP";
+import { MdOutlineDescription, MdTitle } from "react-icons/md";
 interface tourSche {
   id: number;
   description: string;
@@ -44,7 +50,6 @@ function ScreenMain() {
   const tourDetail: any = useSelector(
     (state: StateTour) => state.tour.tourGetDetail
   );
-  console.log(tourDetail);
   const {
     name,
     setName,
@@ -72,8 +77,10 @@ function ScreenMain() {
     setTourImages,
     imageSrc,
     setImageSrc,
-    scrollNav,
+    statusTour,
+    setStatusTour,
   } = useEditContext();
+
   const { refreshTourDetail } = useContext(DataContext);
 
   const [valueTab, setValueTab] = useState("1");
@@ -119,41 +126,6 @@ function ScreenMain() {
 
   const handleDataChange = () => {
     setHasChanges(true);
-  };
-
-  const handleCountryChange = (e: any, field: string) => {
-    const selectedValue = e.target.value; // Lấy giá trị của option đã chọn
-    if (field === "pro") {
-      setAddressPro(selectedValue);
-      const findPro: any = addressProvince?.find(
-        (pro: any) => pro.full_name === selectedValue
-      );
-      axios
-        .get(`${BASE_URL}/resource/district/provinceCode/${findPro?.code}`)
-        .then((response) => {
-          setAddressDistrict(response.data.data);
-        })
-        .catch((error) => {
-          console.error("Lỗi khi gọi API:", error);
-        });
-    }
-    if (field === "dis") {
-      setAddressDis(selectedValue);
-      const findPro: any = addressDistrict?.find(
-        (pro: any) => pro.full_name === selectedValue
-      );
-      axios
-        .get(`${BASE_URL}/resource/ward/districtCode/${findPro?.code}`)
-        .then((response) => {
-          setAddressWards(response.data.data);
-        })
-        .catch((error) => {
-          console.error("Lỗi khi gọi API:", error);
-        });
-    }
-    if (field === "ward") {
-      setAddressWard(selectedValue);
-    }
   };
 
   const handleAddImage = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -205,6 +177,7 @@ function ScreenMain() {
       setTourImages(tourDetail?.tour_images);
       setAddressCountry(tourDetail?.address_country);
       setAllImage(updatedTourImages);
+      setStatusTour(tourDetail?.status);
     }
   }, [tourDetail, refreshTourDetail]);
 
@@ -254,9 +227,17 @@ function ScreenMain() {
               <div className="col-span-3 flex justify-end">
                 <ConstructionTitletext>Status</ConstructionTitletext>
               </div>
-              <div className="col-span-8 ">
-                <div className=" p-2 rounded-lg bg-gray-200 cursor-not-allowed border-solid ">
-                  {tourDetail?.status}
+              <div className="col-span-8">
+                <div className=" ">
+                  <select
+                    value={statusTour}
+                    onChange={(e) => setStatusTour(e.target.value)}
+                    className="rounded-lg p-2 bg-white border border-gray-300  border-solid w-full shadow-custom-card-mui"
+                  >
+                    <option value="DRAFT">DRAFT</option>
+                    <option value="PUBLISHED">PUBLISHED</option>
+                    <option value="HIDDEN">HIDDEN</option>
+                  </select>
                 </div>
               </div>
             </div>
@@ -266,13 +247,12 @@ function ScreenMain() {
               <ConstructionTitletext>Image product</ConstructionTitletext>
             </ConstructionTitle>
             <ConstructionDes>
-              <span className="font-medium">*Image ratio 1:1</span>
+              {/* <span className="font-medium">*Image ratio 1:1</span> */}
               <div className="grid grid-cols-7 gap-4 border">
                 {allImage?.map((img: string, index: number) => (
                   <div
                     key={index}
-                    className="border border-solid bg-white border-gray-300 rounded-lg p-1 relative"
-                    style={{ display: "flex" }}
+                    className="border border-solid bg-white border-gray-300 rounded-lg p-1 relative flex items-center justify-center"
                   >
                     <img
                       className="object-cover rounded-lg"
@@ -296,8 +276,12 @@ function ScreenMain() {
                     multiple
                     onChange={(e) => handleImageInputChange(e)}
                   />
-                  <button className="" onClick={(e) => handleAddImage(e)}>
-                    Add image
+                  <button
+                    className="flex items-center gap-1"
+                    onClick={(e) => handleAddImage(e)}
+                  >
+                    <FaCirclePlus />
+                    Images
                   </button>
                 </div>
               </div>
@@ -309,7 +293,7 @@ function ScreenMain() {
             </ConstructionTitle>
             <ConstructionDes>
               <div className="relative">
-                <FaHardDrive className="absolute top-3 left-3 " />
+                <MdTitle className="absolute top-3 left-3 " />
                 <input
                   className="border border-gray-300 rounded-lg py-2 px-8 w-full"
                   defaultValue={name || tourDetail?.name}
@@ -325,7 +309,7 @@ function ScreenMain() {
             </ConstructionTitle>
             <ConstructionDes>
               <div className="relative">
-                <FaHardDrive className="absolute top-3 left-3 " />
+                <MdOutlineDescription className="absolute top-3 left-3 " />
                 <AutoResizableTextarea
                   defaultValue={description}
                   onChange={(e) => setDescription(e)}
@@ -397,7 +381,7 @@ function ScreenMain() {
             </ConstructionTitle>
             <ConstructionDes>
               <div className="relative">
-                <FaHardDrive className="absolute top-3 left-3 " />
+                <FaAddressCard className="absolute top-3 left-3 " />
                 {/* <input
                   // disabled
                   className="bg-white shadow-custom-card-mui rounded-lg py-2 px-8 w-full"
@@ -417,7 +401,7 @@ function ScreenMain() {
                 <ConstructionTitletext>Address country</ConstructionTitletext>
               </div>
               <div className="col-span-8 relative">
-                <FaHardDrive className="absolute top-3 left-3 " />
+                <FaAddressCard className="absolute top-3 left-3 " />
                 <input
                   disabled
                   className="bg-white shadow-custom-card-mui rounded-lg py-2 px-8 w-full"
@@ -432,7 +416,7 @@ function ScreenMain() {
                 <ConstructionTitletext>Address province</ConstructionTitletext>
               </div>
               <div className="col-span-8 relative">
-                <FaHardDrive className="absolute top-3 left-3 " />
+                <FaAddressCard className="absolute top-3 left-3 " />
 
                 {/* <div>
                   <select
@@ -463,7 +447,7 @@ function ScreenMain() {
                 <ConstructionTitletext>Address district</ConstructionTitletext>
               </div>
               <div className="col-span-8 relative">
-                <FaHardDrive className="absolute top-3 left-3 " />
+                <FaAddressCard className="absolute top-3 left-3 " />
 
                 {/* <div>
                   <select
@@ -494,7 +478,7 @@ function ScreenMain() {
                 <ConstructionTitletext>Address ward</ConstructionTitletext>
               </div>
               <div className="col-span-8 relative">
-                <FaHardDrive className="absolute top-3 left-3 " />
+                <FaAddressCard className="absolute top-3 left-3 " />
                 {/* <div>
                   <select
                     disabled

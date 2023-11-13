@@ -18,8 +18,9 @@ import Review from "../../pages/review/Review";
 import Booker from "../../pages/booker/Booker";
 import Availability from "../../pages/availability/Availability";
 import DetailBook from "../../pages/booker/many/DetailBook";
-import BookDetailScreenMain from "../../pages/booker/many/BookDetailScreenMain";
 import BookerDetailSingleScreen from "../../pages/booker/single/BookerDetailSingleScreen";
+import Voucher from "../../pages/voucher/Voucher";
+import VoucherNew from "../../pages/voucher/management/voucher-create/VoucherNew";
 
 function MainRouter() {
   const { refeshLogin } = React.useContext(DataContext);
@@ -56,7 +57,10 @@ function MainRouter() {
                       <Route path="/profile" element={<Blank />}></Route>
                       <Route path="/review" element={<Review />}></Route>
                       <Route path="/listtour" element={<HomePage />} />
-                      <Route path="/booker" element={<Booker />}></Route>
+                      <Route path="/booking" element={<Booker />}></Route>
+                      <Route path="/voucher">
+                        <Route path="" element={<Voucher />} />
+                      </Route>
                       <Route
                         path="/availability"
                         element={<Availability />}
@@ -76,13 +80,14 @@ function MainRouter() {
                     <Route path="/signup" element={<SignUp />} />
                     <Route path="/:index" element={<SinglePage />} />
                     <Route
-                      path="/booker/:index"
+                      path="/booking/:index"
                       element={<BookerDetailSingleScreen />}
                     />
                     <Route
-                      path="/booker/many/:index"
+                      path="/booking/many/:index"
                       element={<DetailBook />}
                     />
+                    <Route path="/voucher-create" element={<VoucherNew />} />
                     <Route path="/listwork" element={<ListWork />} />
                     <Route path="/setupprovider" element={<SetUpProvider />} />
                   </React.Fragment>

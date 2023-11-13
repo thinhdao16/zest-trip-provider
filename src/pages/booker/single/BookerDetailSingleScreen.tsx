@@ -78,7 +78,7 @@ function BookerDetailSingleScreen() {
           </div>
         </aside>
         <div
-          className={`p-4 sm:ml-64 sm:mr-64 
+          className={`p-4 sm:ml-64 sm:mr-0 
         h-screen ${isSidebarOpen ? "pt-28" : "top-0"}`}
         >
           <ScreenMain />

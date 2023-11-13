@@ -6,6 +6,7 @@ import ModalTicketAdult from "./Modal/ModalTicketAdult";
 import ModalAvailability from "./Modal/ModalAvailability";
 import dayjs from "dayjs";
 import { useEditContext } from "./Context/useEditContext";
+import { GoDotFill } from "react-icons/go";
 function ScreenSP() {
   const tourDetail: any = useSelector(
     (state: StateTour) => state.tour.tourGetDetail
@@ -191,8 +192,8 @@ function ScreenSP() {
                       <div
                         className={`w-w-1 h-auto rounded-full ${
                           data?.status === "ACTIVE"
-                            ? "bg-green-tag"
-                            : "bg-red-900"
+                            ? "bg-gray-300"
+                            : "bg-gray-300"
                         }`}
                       ></div>
 
@@ -201,12 +202,13 @@ function ScreenSP() {
                         <div>
                           <button
                             type="button"
-                            className={`text-sm px-1 rounded-sm ${
+                            className={`text-sm p-1 rounded-md flex items-center gap-1 ${
                               data?.status === "ACTIVE"
-                                ? "bg-green-tag-opa text-green-tag"
+                                ? "bg-navy-blue-opacity-5 text-navy-blue"
                                 : "bg-red-300 text-red-900"
                             }`}
                           >
+                            <GoDotFill />
                             {data?.status}
                           </button>
                         </div>

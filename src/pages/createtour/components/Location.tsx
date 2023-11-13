@@ -245,9 +245,13 @@ const Location: React.FC = () => {
               </div>
               <div>
                 <p className="font-medium mb-1">Address province</p>
-                <FormControl fullWidth className="relative">
-                  <FaStaylinked className="absolute top-4 left-3" />
+                <FormControl
+                  fullWidth
+                  className="relative bg-white shadow-custom-card-mui"
+                >
+                  <FaStaylinked className="absolute top-4 left-3 " />
                   <Select
+                    // className="bg-white"
                     style={{
                       borderRadius: "8px",
                       height: "50px",
@@ -284,7 +288,10 @@ const Location: React.FC = () => {
               </div>
               <div>
                 <p className="font-medium mb-1">Address district</p>
-                <FormControl fullWidth className="relative">
+                <FormControl
+                  fullWidth
+                  className="relative bg-white shadow-custom-card-mui"
+                >
                   <FaStaylinked className="absolute top-4 left-3" />
                   <Select
                     style={{
@@ -325,7 +332,10 @@ const Location: React.FC = () => {
               </div>
               <div>
                 <p className="font-medium mb-1">Address ward</p>
-                <FormControl fullWidth className="relative">
+                <FormControl
+                  fullWidth
+                  className="relative bg-white shadow-custom-card-mui"
+                >
                   <FaStaylinked className="absolute top-4 left-3" />
                   <Select
                     style={{
@@ -377,24 +387,6 @@ const Location: React.FC = () => {
           <BannerMapContainer>
             <div className="text-black gap-y-3 grid ">
               <div>
-                <p className="font-medium mb-1 ">Country/region</p>
-                <div className="relative">
-                  <GoLocation className="absolute top-4 left-2" />
-                  <select
-                    className="w-full shadow-custom-card-mui rounded-lg py-3 pl-8 focus:outline-1 focus:outline-navy-blue hover:border-navy-blue border border-gray-400  "
-                    value={selectedCountry}
-                    onChange={handleCountryChange}
-                  >
-                    <option value="">Choose a country</option>
-                    {countries.map((country, index) => (
-                      <option key={index} value={country}>
-                        {country}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-              <div>
                 <p className="font-medium mb-1">Address Name</p>
                 <div className="relative">
                   <GoLocation className="absolute top-4 left-2" />
@@ -414,6 +406,7 @@ const Location: React.FC = () => {
                 <FormControl fullWidth className="relative">
                   <FaStaylinked className="absolute top-4 left-3" />
                   <Select
+                    className="bg-white"
                     style={{
                       borderRadius: "8px",
                       height: "50px",

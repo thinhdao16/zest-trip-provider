@@ -9,6 +9,7 @@ import { Rating } from "@mui/material";
 import SpringModal from "./SpringModal";
 import { getReview } from "../../store/redux/silce/reviewSlice";
 import dayjs from "dayjs";
+import { RiSearchLine } from "react-icons/ri";
 
 function Review() {
   const [activeButton, setActiveButton] = useState(1);
@@ -87,12 +88,32 @@ function Review() {
     <>
       <Navbar />
 
-      <main className="h-full bg-main overflow-auto global-scrollbar rounded-lg">
+      <main className="h-full bg-main overflow-auto global-scrollbar rounded-lg py-4 px-8">
         {/* Main Content */}
-        <div className="mainCard">
+        <div className="mb-4 flex items-center justify-between">
+          <div className="flex flex-col">
+            <h1 className="text-2xl font-semibold ">List of Reviews</h1>
+            <span className="text-gray-500">
+              When provider have review new, they open here
+            </span>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="relative">
+              <RiSearchLine className="absolute top-2 left-2" />
+              <input
+                type="text"
+                name=""
+                id=""
+                placeholder="Search"
+                className="border border-gray-300 pl-8 py-1 w-24 rounded-md"
+              />
+            </div>
+          </div>
+        </div>
+        <div className="mb-6">
           <div className="flex flex-wrap mb-4">
             <button
-              className={`button  px-4 py-3 ${
+              className={`button bg-white  px-4 py-3 ${
                 activeButton === 1
                   ? "active  border-b border-navy-blue text-navy-blue font-medium hover:text-black"
                   : " border-b border-gray-300 text-gray-500 font-medium hover:text-black"
@@ -103,7 +124,7 @@ function Review() {
               {/* ({review?.length}) */}
             </button>
             <button
-              className={`button px-4 py-3 ${
+              className={`button bg-white px-4 py-3 ${
                 activeButton === 2
                   ? "active  border-b border-navy-blue text-navy-blue font-medium hover:text-black"
                   : " border-b border-gray-300 text-gray-500 font-medium hover:text-black"
@@ -118,7 +139,7 @@ function Review() {
               )
             </button>
             <button
-              className={`button px-4 py-3 ${
+              className={`button bg-white px-4 py-3 ${
                 activeButton === 3
                   ? "active  border-b border-navy-blue text-navy-blue font-medium hover:text-black"
                   : " border-b border-gray-300 text-gray-500 font-medium hover:text-black"
@@ -221,9 +242,7 @@ function Review() {
             </button>
           </div>
         </div>
-        <div className="container mx-auto p-4">
-          <h1 className="text-2xl font-semibold mb-4">List of Items</h1>
-
+        <div className="container mx-auto ">
           <div className="flex flex-col gap-4">
             <div className="grid grid-cols-12 bg-white rounded-lg p-3 font-medium shadow-custom-card-mui">
               <div className="col-span-4 ">Infomation product</div>

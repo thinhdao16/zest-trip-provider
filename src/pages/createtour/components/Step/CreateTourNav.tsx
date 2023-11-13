@@ -180,13 +180,13 @@ function CreateTourNav() {
 
             return pricingData;
           });
-          console.log(pricing_data);
           localStorage.setItem("dataResTicket", pricing_data);
           const data = {
             tour_id: tourResponse.payload.data.id,
             pricing_data,
           };
           dispatch(postCreateTicketTour(data));
+          goToNextStep();
         } else {
           console.log("postCreateTour failed");
         }
@@ -194,7 +194,6 @@ function CreateTourNav() {
       .catch((tourError) => {
         console.error("Error:", tourError);
       });
-    // goToNextStep();
   };
   const chooseCurrentStep = (data: number) => {
     if (data < currentStep) {

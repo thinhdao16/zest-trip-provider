@@ -1,9 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { BASE_URL, axiosInstance } from "../../apiInterceptors";
 import { toast } from "react-toastify";
-interface DetailTour {
-  index: string;
-}
 
 const initialState = {
   tours: [],
@@ -22,24 +19,30 @@ const initialState = {
   availabilityAll: [],
 };
 
-export const fetchTours = createAsyncThunk("tour/fetchTours", async () => {
-  try {
-    const response = await axiosInstance.get(`${BASE_URL}/tour/provider`, {
-      params: {
-        limit: 100,
-      },
-    });
-    if (response.status === 200) {
-      return response.data.data;
-    } else {
+export const fetchTours = createAsyncThunk(
+  "tour/fetchTours",
+  async (pagination: any) => {
+    console.log(pagination);
+    try {
+      const response = await axiosInstance.get(`${BASE_URL}/tour/provider`, {
+        params: {
+          search: pagination?.valueSeacrch,
+          limit: pagination?.pageSize,
+          page: pagination?.currentPage,
+        },
+      });
+      if (response.status === 200) {
+        return response.data.data;
+      } else {
+        throw new Error("Failed to fetch tours");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to fetch tours!");
       throw new Error("Failed to fetch tours");
     }
-  } catch (error) {
-    console.log(error);
-    toast.error("Failed to fetch tours!");
-    throw new Error("Failed to fetch tours");
   }
-});
+);
 
 export const fetchTourDetail = createAsyncThunk(
   "tour/getDetailTour",
@@ -261,6 +264,31 @@ export const editTicketAvailability = createAsyncThunk(
       console.log(error);
       // toast.error("Failed to create Availability!");
       throw new Error("Failed to create Availability");
+    }
+  }
+);
+export const editStatusTour = createAsyncThunk(
+  "tour/editStatusTour", // Slice name: "tour"
+  async (requestDataTicket: any) => {
+    try {
+      const response = await axiosInstance.patch(
+        `${BASE_URL}/tour/status`,
+        requestDataTicket,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response.status === 200) {
+        return response.data;
+      } else {
+        throw new Error("Failed to create ticket");
+      }
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error?.response?.data?.message);
+      throw new Error("Failed to create ticket");
     }
   }
 );

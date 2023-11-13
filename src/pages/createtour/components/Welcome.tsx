@@ -13,7 +13,7 @@ export default function Welcome() {
   }
 
   return (
-    <BannerContainer>
+    <BannerContainer className="bg-main">
       <div className="items-center flex justify-center h-full">
         <BannerContent>
           <div className="text-lg">Let's get started</div>

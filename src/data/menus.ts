@@ -34,7 +34,7 @@ const initMenu: MenuItem[] = [
   //   name: "Blank",
   // },
   {
-    label: "Listtour",
+    label: "List of tour",
     path: "/listtour",
     icon: faList,
     name: "Listtour", // Thêm 'name' cho mục này
@@ -52,10 +52,10 @@ const initMenu: MenuItem[] = [
     name: "Create Tour", // Thêm 'name' cho mục này
   },
   {
-    label: "Booker",
-    path: "/booker",
+    label: "Booking",
+    path: "/booking",
     icon: faBookmark,
-    name: "Booker", // Thêm 'name' cho mục này
+    name: "Booking", // Thêm 'name' cho mục này
   },
   {
     label: "Availability",

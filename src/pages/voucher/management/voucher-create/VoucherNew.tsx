@@ -1,37 +1,17 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import {
-  fetchTourDetail,
-  getTagTour,
-  getVehicleTour,
-} from "../../../store/redux/silce/tourSlice";
-import { AppDispatch } from "../../../store/redux/store";
 import Header from "./Header";
 import ScreenMain from "./ScreenMain";
-import { DataContext } from "../../../store/dataContext/DataContext";
-import { EditContextProvider } from "./Context/EditContext";
 import { useSelector } from "react-redux";
 import { Backdrop, CircularProgress } from "@mui/material";
 import NavBar from "./NavBar";
+import { VoucherContextProvider } from "../Context/VoucherContext";
 
-function SinglePage() {
-  const dispatch: AppDispatch = useDispatch();
-  const { refreshTourDetail } = useContext(DataContext);
-
-  const { index } = useParams<{ index: string }>();
-
-  const loadingDetail = useSelector(
-    (detail: any) => detail?.tour?.loadingDetail
-  );
-  useEffect(() => {
-    if (index) {
-      dispatch(fetchTourDetail(index));
-    }
-    dispatch(getTagTour());
-    dispatch(getVehicleTour());
-  }, [dispatch, index, refreshTourDetail]);
+function VoucherNew() {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
+
+  const { loading } = useSelector((state: any) => state.tour);
 
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
@@ -40,10 +20,10 @@ function SinglePage() {
     setSidebarOpen(false);
   };
   return (
-    <EditContextProvider>
+    <VoucherContextProvider>
       <Backdrop
         sx={{ color: "#ffffff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={loadingDetail}
+        open={loading}
       >
         <CircularProgress color="inherit" />
       </Backdrop>
@@ -132,10 +112,8 @@ function SinglePage() {
           </aside> */}
         </div>
       </div>
-    </EditContextProvider>
+    </VoucherContextProvider>
   );
 }
 
-SinglePage.propTypes = {};
-
-export default SinglePage;
+export default VoucherNew;

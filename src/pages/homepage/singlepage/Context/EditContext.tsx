@@ -35,6 +35,8 @@ export type EditContextType = {
   setImageSrc: any;
   scrollNav: any;
   setScrollNav: any;
+  statusTour: any;
+  setStatusTour: any;
 };
 
 export const EditContext = createContext<EditContextType | undefined>(
@@ -64,6 +66,7 @@ export const EditContextProvider: React.FC<EditContextProps> = ({
   const [ticketPricing, setTicketPricing] = useState([]); //up
   const [availability, setAvailability] = useState([]); //up
   const [imageSrc, setImageSrc] = useState<any>([]); //up
+  const [statusTour, setStatusTour] = useState<any>(""); //up
   const [scrollNav, setScrollNav] = useState<any>("information_basic");
   return (
     <EditContext.Provider
@@ -102,6 +105,8 @@ export const EditContextProvider: React.FC<EditContextProps> = ({
         setImageSrc,
         scrollNav,
         setScrollNav,
+        statusTour,
+        setStatusTour,
       }}
     >
       {children}

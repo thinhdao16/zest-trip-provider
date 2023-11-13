@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import {
   addTourImage,
   editContentTour,
+  editStatusTour,
   editTicketAvailability,
   editTicketTour,
 } from "../../../store/redux/silce/tourSlice";
@@ -31,8 +32,8 @@ function NavBar() {
     tourImages,
     imageSrc,
     availability,
-    scrollNav,
     setScrollNav,
+    statusTour,
   } = useEditContext();
   const tourDetail: any = useSelector(
     (state: StateTour) => state.tour.tourGetDetail
@@ -71,8 +72,10 @@ function NavBar() {
         ticket_type: item?.Ticket?.name,
         pricing_type: item?.PricingType?.name,
         maximum_ticket_count: parseInt(item?.maximum_booking_quantity),
-        minimum_ticket_count: parseInt(item?.minimum_booking_quantity),
-        minimum_booking_quantity: parseInt(item?.minimum_booking_quantity),
+        // minimum_ticket_count: parseInt(item?.minimum_booking_quantity),
+        minimum_ticket_count: 1,
+        // minimum_booking_quantity: parseInt(item?.minimum_booking_quantity),
+        minimum_booking_quantity: 1,
         from_age: item?.from_age?.toString(),
         to_age: item?.to_age?.toString(),
       };
@@ -90,6 +93,10 @@ function NavBar() {
     const dataUpdateTicket = {
       tour_id: tourDetail?.id,
       pricing_data,
+    };
+    const dataUpdateStatus = {
+      tour_id: tourDetail?.id,
+      status: statusTour,
     };
     const formDataImg = new FormData();
     for (const image of imageSrc) {
@@ -129,6 +136,7 @@ function NavBar() {
       }
     });
     dispatch(editTicketTour(dataUpdateTicket));
+    dispatch(editStatusTour(dataUpdateStatus));
     if (imageSrc?.length > 0) {
       dispatch(addTourImage(allFormImg));
     }

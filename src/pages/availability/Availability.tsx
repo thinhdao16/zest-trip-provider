@@ -1,13 +1,13 @@
 import { useDispatch } from "react-redux";
 import Navbar from "../../components/Navbar/Index";
 import { AppDispatch } from "../../store/redux/store";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { fetchTours } from "../../store/redux/silce/tourSlice";
 import { useSelector } from "react-redux";
 import dayjs from "dayjs";
 import AddAvailability from "./Modal/AddAvailability";
 import EditAvailability from "./Modal/EditAvailability";
-import { AiOutlineDown } from "react-icons/ai";
+import { AiFillFilter, AiOutlineDown } from "react-icons/ai";
 import PersonAdd from "@mui/icons-material/PersonAdd";
 import Settings from "@mui/icons-material/Settings";
 import {
@@ -17,14 +17,23 @@ import {
   Divider,
   ListItemIcon,
   Box,
+  Backdrop,
+  CircularProgress,
 } from "@mui/material";
 import React from "react";
+import { GoDotFill } from "react-icons/go";
+import { RiSearchLine } from "react-icons/ri";
+import { Pagination } from "antd";
 
 function Availability() {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
   const dispatch: AppDispatch = useDispatch();
-  const { tours } = useSelector((state: any) => state.tour);
-  console.log(tours);
-  const [loading, setLoading] = useState(null);
+  const { tours, loading } = useSelector((state: any) => state.tour);
+
+  const dataTours = tours?.tours;
+  const countTours = tours?.total_count;
+  const [loadings, setLoadings] = useState(null);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -36,8 +45,9 @@ function Availability() {
   };
 
   useEffect(() => {
-    dispatch(fetchTours());
-  }, [dispatch, loading]);
+    const pagination = { pageSize, currentPage };
+    dispatch(fetchTours(pagination));
+  }, [currentPage, dispatch, pageSize, loadings]);
   function getDayName(day: number) {
     switch (day) {
       case 1:
@@ -59,14 +69,57 @@ function Availability() {
     }
   }
 
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const handlePageSizeChange = (current: number, size: number) => {
+    console.log(current);
+    setPageSize(size);
+    setCurrentPage(current);
+  };
   return (
     <>
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loading}
+        // onClick={() => setOpenLoading(false)}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <Navbar />
 
       <main className="h-full bg-main overflow-auto global-scrollbar rounded-lg">
-        {/* Main Content */}
-        <div className="container mx-auto p-4">
-          <h1 className="text-2xl font-semibold mb-4">List of Items</h1>
+        <div className="container mx-auto py-4 px-8">
+          <div className="mb-6 flex items-center justify-between">
+            <div className="flex flex-col">
+              <h1 className="text-2xl font-semibold ">List of Availability</h1>
+              <span className="text-gray-500">
+                When provider have availability new, they open here
+              </span>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="relative">
+                <RiSearchLine className="absolute top-2 left-2" />
+                <input
+                  type="text"
+                  name=""
+                  id=""
+                  placeholder="Search"
+                  className="border border-gray-300 pl-8 py-1 w-24 rounded-md"
+                />
+              </div>
+              <div>
+                <button
+                  type="button"
+                  className="relative border border-gray-300 pl-0 py-1 w-24 rounded-md"
+                >
+                  <AiFillFilter className="absolute top-2 left-2" />
+                  Filter
+                </button>
+              </div>
+            </div>
+          </div>
           <div className="container flex flex-col gap-4">
             <Box sx={{ flexGrow: 1, textAlign: "right", color: "black" }}>
               <Menu
@@ -144,8 +197,9 @@ function Availability() {
             </div>
 
             <div className="flex flex-col gap-2">
-              {tours?.map((dataTour: any, index: number) => {
-                return (
+              {dataTours?.length > 0 ? (
+                Array.isArray(dataTours) &&
+                dataTours?.map((dataTour: any, index: number) => (
                   <>
                     <div
                       key={index}
@@ -173,7 +227,7 @@ function Availability() {
                         />
                         <AddAvailability
                           dataDetailTour={dataTour}
-                          setLoading={setLoading}
+                          setLoading={setLoadings}
                         />
                         <AiOutlineDown
                           style={{ fontWeight: "800" }}
@@ -262,12 +316,13 @@ function Availability() {
                                   <div>
                                     <button
                                       type="button"
-                                      className={`text-sm px-1 rounded-sm ${
+                                      className={`text-sm flex gap-1 items-center p-1 rounded-sm ${
                                         _availability?.status === "ACTIVE"
-                                          ? "bg-green-tag-opa text-green-tag"
+                                          ? "bg-navy-blue-opacity-5 text-navy-blue"
                                           : "bg-red-300 text-red-900"
                                       }`}
                                     >
+                                      <GoDotFill />
                                       {_availability?.status}
                                     </button>
                                   </div>
@@ -293,8 +348,31 @@ function Availability() {
                       )}
                     </div>
                   </>
-                );
-              })}
+                ))
+              ) : (
+                <button
+                  type="button"
+                  className="bg-main rounded-md py-1 px-2 shadow-custom-card-mui font-medium"
+                >
+                  {loading ? "Loading..." : "No tours available"}
+                </button>
+              )}
+
+              <div className="flex justify-center">
+                {dataTours?.length > 0 && (
+                  <Pagination
+                    current={currentPage}
+                    total={countTours}
+                    pageSize={pageSize}
+                    pageSizeOptions={[5, 10, 20, 30, 40]}
+                    showSizeChanger
+                    onChange={handlePageChange}
+                    onShowSizeChange={(current, size) =>
+                      handlePageSizeChange(current, size)
+                    }
+                  />
+                )}
+              </div>
             </div>
           </div>
         </div>
