@@ -87,7 +87,6 @@ export const PersonalInfo = ({
     updatedUserInfo[key] = event.currentTarget.value;
     updateUserInfo(updatedUserInfo);
   };
-
   const handleFileChange = (event: any, key: keyof UserInfo) => {
     const newSelectedFiles = Array.from(event.target.files);
     setSelectedFiles(newSelectedFiles);
@@ -229,7 +228,6 @@ export const PersonalInfo = ({
           margin: "50px 0 30px 0",
         }}
       >
-        <p className="font-medium text-gray-400">Step 1/3</p>
         <p className="font-bold text-2xl">Secure Info</p>
       </div>
       <Input
@@ -287,7 +285,7 @@ export const PersonalInfo = ({
             style={{ borderRadius: "8px", height: "40px", paddingLeft: "20px" }}
             displayEmpty
             inputProps={{ "aria-label": "Without label" }}
-            value={userInfo?.address_province}
+            value={userInfo?.address_province || ""}
             onChange={(e) => handleSelectLocation(e, "address_province")}
           >
             <MenuItem value="">
@@ -339,7 +337,7 @@ export const PersonalInfo = ({
           >
             {addressWard && addressWard.length > 0 ? (
               addressWard.map((data: any) => (
-                <MenuItem key={data.code} value={data.full_name}>
+                <MenuItem key={data.code} value={data}>
                   {data.full_name}
                 </MenuItem>
               ))

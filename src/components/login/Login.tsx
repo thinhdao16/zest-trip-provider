@@ -7,6 +7,7 @@ import {
   Backdrop,
   CircularProgress,
   FormControl,
+  FormLabel,
   Grid,
   InputAdornment,
   TextField,
@@ -32,6 +33,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { DataContext } from "../../store/dataContext/DataContext";
 import axios from "axios";
 import { BASE_URL } from "../../store/apiInterceptors";
+import { IoPersonOutline } from "react-icons/io5";
 
 function Login() {
   const navigate = useNavigate();
@@ -40,6 +42,9 @@ function Login() {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   const [openLoading, setOpenLoading] = useState(false);
+
+  const [isEmailMatch, setIsEmailMatch] = useState(true);
+
   useEffect(() => {
     checkAccessToken();
   }, [refeshLogin]);
@@ -101,7 +106,15 @@ function Login() {
       }
     }
   };
+  const handleEmailChange = (e: { target: { value: any } }) => {
+    const inputValue = e.target.value;
 
+    // Kiểm tra xem địa chỉ email có kết thúc bằng "@gmail.com" không
+    const isEmailMatch = inputValue.toLowerCase().endsWith("@gmail.com");
+
+    setPhoneNumber(inputValue);
+    setIsEmailMatch(isEmailMatch);
+  };
   return (
     <>
       <Backdrop
@@ -178,19 +191,23 @@ function Login() {
                   }}
                 >
                   <FormControl required>
-                    <span className=" font-medium mb-1">Email</span>
+                    <p className="font-medium mb-1">Email</p>
                     <TextField
-                      onChange={(e) => setPhoneNumber(e.target.value)}
                       required
                       value={phoneNumber}
+                      onChange={handleEmailChange}
                       InputProps={{
                         startAdornment: (
                           <InputAdornment position="start">
-                            <AiOutlinePhone />
+                            <IoPersonOutline />
                           </InputAdornment>
                         ),
                       }}
                       className="input-form-text-ready"
+                      error={!isEmailMatch}
+                      helperText={
+                        isEmailMatch ? "" : "Email must end with @gmail.com"
+                      }
                     />
                   </FormControl>
                   <FormControl required>

@@ -11,6 +11,8 @@ import InputArea from "../../../components/setUpProvider/components/inputArea";
 import "../styles/createtour.css";
 import { Tooltip } from "@mui/material";
 import { FaRegCircleQuestion } from "react-icons/fa6";
+import AutoResizableTextarea from "./Title/AutoResizableTextarea";
+import { MdOutlineDescription } from "react-icons/md";
 const Title: React.FC = () => {
   const { currentStep, updateFormValues } = useStepContext();
   const [title, setTitle] = useState("");
@@ -70,14 +72,18 @@ Write a short descriptive title to help customers understand your product. It sh
                 />
               </div>
             </div>
-            <InputArea
-              value={description}
-              label="Description"
-              onChange={handleDescription}
-              icon={<AiOutlineLock />}
-              placeholder="Description"
-              maxLength={500}
-            />
+            <div>
+              <p className="font-medium">Description</p>
+              <div className="relative">
+                <MdOutlineDescription className="absolute top-3 left-3 " />
+                <AutoResizableTextarea
+                  defaultValue={description}
+                  onChange={(e) => setDescription(e)}
+                  placeholder="Description"
+                  maxLength={3000}
+                />
+              </div>
+            </div>
           </div>
         </BannerContent>
       </div>

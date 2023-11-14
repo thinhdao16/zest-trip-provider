@@ -5,7 +5,7 @@ import { PersonalInfo } from "./components/personalInfo";
 import { Addons } from "./components/Addons";
 import { ServiceSummary } from "./components/serviceSummary";
 import { ThankYou } from "./components/thankYou";
-import { Box } from "@mui/material";
+import { Backdrop, Box, CircularProgress } from "@mui/material";
 import { formLabelClasses } from "@mui/joy/FormLabel";
 import Typography from "@mui/joy/Typography";
 import { ContainerPageFullHalf } from "../../styles/global/StyleGlobal";
@@ -31,7 +31,7 @@ function SetUpProvider() {
   const dispatch: AppDispatch = useDispatch();
 
   const { setRefeshLogin } = useContext(DataContext);
-  useSelector((state: any) => state.provider);
+  const { loadingBecomeProvider } = useSelector((state: any) => state.provider);
   const [userServiceConfiguration, setUserServiceConfiguration] =
     useState<UserServiceConfiguration>({
       userInfo: {
@@ -86,6 +86,17 @@ function SetUpProvider() {
   };
 
   const Confirm = () => {
+    const information: string | null =
+      localStorage.getItem("information_setup");
+    let parseInfo: any; // hoặc chọn một kiểu phù hợp với dữ liệu của bạn
+    if (information !== null) {
+      parseInfo = JSON.parse(information);
+      // Sử dụng parseInfo như một đối tượng
+    } else {
+      // Xử lý trường hợp khi giá trị là null
+    }
+
+    console.log(parseInfo);
     const token: any = localStorage.getItem("access_token");
     const decode: any = jwt_decode(token);
     if (decode.id) {
@@ -103,8 +114,8 @@ function SetUpProvider() {
         "description",
         userServiceConfiguration?.userInfo?.mediaSocial
       );
-      formData.append("phone", "0975647951");
-      formData.append("email", "daothinh1105@gmai.com");
+      formData.append("phone", parseInfo?.phoneNumber);
+      formData.append("email", parseInfo?.email);
       formData.append("address", userServiceConfiguration?.userInfo?.address);
       formData.append("status", "what is status");
       formData.append(
@@ -174,6 +185,13 @@ function SetUpProvider() {
   };
   return (
     <>
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loadingBecomeProvider}
+        // onClick={() => setOpenLoading(false)}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <ContainerPageFullHalf>
         <Grid container>
           <Grid item xs={12} sm={5} className="setup-main">

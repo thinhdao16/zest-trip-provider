@@ -12,7 +12,6 @@ declare module "AppTypes" {
     address: string;
     webCompnany: string;
     mediaSocial: string;
-
     taxCode: string;
     address_name: string;
     address_district: { full_name: string; code: string };

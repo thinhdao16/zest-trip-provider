@@ -51,6 +51,8 @@ export default function SignUp() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isPasswordValid, setIsPasswordValid] = useState(true);
   const [isPasswordMatch, setIsPasswordMatch] = useState(true);
+  const [isPhoneMatch, setIsPhoneMatch] = useState(true);
+  const [isEmailMatch, setIsEmailMatch] = useState(true);
 
   const handleClose = () => setOpen(false);
   const handlePasswordChange = (e: any) => {
@@ -115,60 +117,71 @@ export default function SignUp() {
     };
   }, [seconds]);
   const handleGetOtp = async () => {
-    setOpenLoading(true);
-    try {
-      const response = await axios.post(
-        `${BASE_URL}/otp/generate/provider`,
-        {
-          email: email,
-          type: "REGISTER_USER",
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
+    if (
+      !phoneNumber.trim() ||
+      !email.trim() ||
+      !fullName.trim() ||
+      !password.trim() ||
+      !confirmPassword.trim()
+    ) {
+      // Nếu rỗng, hiển thị thông báo hoặc thực hiện các hành động khác
+      toast.warn("please input do not leave empty");
+      return;
+    } else {
+      setOpenLoading(true);
+      try {
+        const response = await axios.post(
+          `${BASE_URL}/otp/generate/provider`,
+          {
+            email: email,
+            type: "REGISTER_USER",
           },
-        }
-      );
-      console.log(response);
-      if (response.status === 201) {
-        setOpen(true);
-        setMinutes(3);
-        setSeconds(1);
-        toast.warn("OTP sent to mail successfully!");
-      } else {
-        alert("email unknow");
-        toast.error("Failed to send OTP!");
-      }
-      setOpenLoading(false);
-    } catch (error: any) {
-      setOpenLoading(false);
-      if (
-        error.response &&
-        error.response.data &&
-        error.response.data.message
-      ) {
-        const errorMessages = error.response.data.message;
-
-        if (Array.isArray(errorMessages)) {
-          errorMessages.forEach((errorMessage: string) => {
-            console.log(errorMessage);
-            toast.error(errorMessage);
-          });
-        } else if (typeof errorMessages === "string") {
-          console.log(error);
-          toast.error(errorMessages);
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log(response);
+        if (response.status === 201) {
+          setOpen(true);
+          setMinutes(3);
+          setSeconds(1);
+          toast.warn("OTP sent to mail successfully!");
         } else {
-          toast.error("SignIn fail!");
+          alert("email unknow");
+          toast.error("Failed to send OTP!");
         }
-      } else {
-        toast.error("SignUp fail!");
+        setOpenLoading(false);
+      } catch (error: any) {
+        setOpenLoading(false);
+        if (
+          error.response &&
+          error.response.data &&
+          error.response.data.message
+        ) {
+          const errorMessages = error.response.data.message;
+
+          if (Array.isArray(errorMessages)) {
+            errorMessages.forEach((errorMessage: string) => {
+              console.log(errorMessage);
+              toast.error(errorMessage);
+            });
+          } else if (typeof errorMessages === "string") {
+            console.log(error);
+            toast.error(errorMessages);
+          } else {
+            toast.error("SignIn fail!");
+          }
+        } else {
+          toast.error("SignUp fail!");
+        }
       }
     }
   };
 
   const handleSignUp = async () => {
     setOpenLoading(true);
-    console.log(otp);
     try {
       const response = await axios.post(
         `${BASE_URL}/auth/signup`,
@@ -191,6 +204,9 @@ export default function SignUp() {
         setMinutes(3);
         setSeconds(1);
         navigate("/setupprovider");
+        const informationSetUp = { phoneNumber, email };
+        const informationSetUpString = JSON.stringify(informationSetUp);
+        localStorage.setItem("information_setup", informationSetUpString);
         localStorage.setItem("access_token", response.data.data.access_token);
         localStorage.setItem("refresh_token", response.data.data.refresh_token);
         toast.success("SignUp success!"); // Thông báo đăng ký thành công
@@ -199,8 +215,28 @@ export default function SignUp() {
         toast.error("SignUp fail!"); // Thông báo đăng ký thất bại
       }
       setOpenLoading(false);
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        const errorMessages = error.response.data.message;
+
+        if (Array.isArray(errorMessages)) {
+          errorMessages.forEach((errorMessage: string) => {
+            console.log(errorMessage);
+            toast.error(errorMessage);
+          });
+        } else if (typeof errorMessages === "string") {
+          console.log(error);
+          toast.error(errorMessages);
+        } else {
+          toast.error("SignIn fail!");
+        }
+      } else {
+        toast.error("SignUp fail!");
+      }
       setOpenLoading(false);
       toast.error("SignUp fail!"); // Thông báo đăng ký thất bại
     }
@@ -208,6 +244,31 @@ export default function SignUp() {
 
   const resendOTP = () => {
     handleGetOtp();
+  };
+
+  const handlePhoneNumberChange = (e: { target: { value: string } }) => {
+    const inputValue = e.target.value;
+    setPhoneNumber(inputValue);
+
+    // Biểu thức chính quy kiểm tra số điện thoại theo mẫu số Việt Nam
+    const phoneRegex = /(84|0[3|5|7|8|9])+([0-9]{8})\b/;
+    const isValidPhone = phoneRegex.test(inputValue);
+
+    // Kiểm tra chiều dài số điện thoại và xem nó có hợp lệ không
+    if (isValidPhone) {
+      setIsPhoneMatch(true);
+    } else {
+      setIsPhoneMatch(false);
+    }
+  };
+
+  const handleEmailChange = (e: { target: { value: any } }) => {
+    const inputValue = e.target.value;
+
+    const isEmailMatch = inputValue.toLowerCase().endsWith("@gmail.com");
+
+    setEmail(inputValue);
+    setIsEmailMatch(isEmailMatch);
   };
   const style = {
     position: "absolute" as const,
@@ -301,7 +362,7 @@ export default function SignUp() {
                     <TextField
                       required
                       value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                      onChange={handleEmailChange}
                       InputProps={{
                         startAdornment: (
                           <InputAdornment position="start">
@@ -310,6 +371,10 @@ export default function SignUp() {
                         ),
                       }}
                       className="input-form-text-ready"
+                      error={!isEmailMatch}
+                      helperText={
+                        isEmailMatch ? "" : "Email must end with @gmail.com"
+                      }
                     />
                   </FormControl>
                   <FormControl required>
@@ -326,12 +391,19 @@ export default function SignUp() {
                         ),
                       }}
                       className="input-form-text-ready"
+                      error={fullName.length === 0}
+                      helperText={
+                        fullName.length != 0
+                          ? ""
+                          : "Full name do not leave empty"
+                      }
                     />
                   </FormControl>
                   <FormControl required>
                     <FormLabel>Phone Number</FormLabel>
                     <TextField
-                      onChange={(e) => setPhoneNumber(e.target.value)}
+                      type="number"
+                      onChange={handlePhoneNumberChange}
                       required
                       value={phoneNumber}
                       InputProps={{
@@ -342,6 +414,12 @@ export default function SignUp() {
                         ),
                       }}
                       className="input-form-text-ready"
+                      error={!isPhoneMatch}
+                      helperText={
+                        isPhoneMatch
+                          ? ""
+                          : "Phone number must be at 10 characters and start 0"
+                      }
                     />
                   </FormControl>
 
@@ -360,12 +438,13 @@ export default function SignUp() {
                         ),
                       }}
                       className="input-form-text-ready"
+                      error={!isPasswordValid}
+                      helperText={
+                        isPasswordValid
+                          ? ""
+                          : " Password must be at least 8 characters long."
+                      }
                     />
-                    {!isPasswordValid && (
-                      <p style={{ color: "red" }}>
-                        Password must be at least 8 characters long.
-                      </p>
-                    )}
                   </FormControl>
 
                   <FormControl required>
@@ -383,10 +462,11 @@ export default function SignUp() {
                         ),
                       }}
                       className="input-form-text-ready"
+                      error={!isPasswordMatch}
+                      helperText={
+                        isPasswordMatch ? "" : " Passwords do not match."
+                      }
                     />
-                    {!isPasswordMatch && (
-                      <p style={{ color: "red" }}>Passwords do not match.</p>
-                    )}
                   </FormControl>
 
                   <ButtonGlobal

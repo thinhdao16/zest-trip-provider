@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axiosInstance, { BASE_URL } from "../../apiInterceptors";
+import { toast } from "react-toastify";
 
 const initialState = {
   profile: [],
@@ -32,8 +33,29 @@ export const becomeProvider = createAsyncThunk(
       onSuccessCallback();
       console.log(response);
       return response.data;
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        const errorMessages = error.response.data.message;
+
+        if (Array.isArray(errorMessages)) {
+          errorMessages.forEach((errorMessage: string) => {
+            console.log(errorMessage);
+            toast.error(errorMessage);
+          });
+        } else if (typeof errorMessages === "string") {
+          console.log(errorMessages);
+          toast.error(errorMessages);
+        } else {
+          toast.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
+        }
+      } else {
+        toast.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
+      }
       throw new Error("Failed to fetch other data");
     }
   }
@@ -117,7 +139,7 @@ const providerSice = createSlice({
         state.errorBecomeProvider = null;
       })
       .addCase(becomeProvider.rejected, (state: any, action) => {
-        state.loading = false;
+        state.loadingBecomeProvider = false;
         state.error = action.error.message;
       });
   },

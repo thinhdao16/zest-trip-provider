@@ -171,9 +171,9 @@ function CreateTourNav() {
             if (item.price_range) {
               pricingData.price_range = item.price_range.map(
                 (formItem: any) => ({
-                  from_amount: parseInt(formItem.numberOfPeople),
-                  to_amount: parseInt(formItem.numberOfPeopleAfter),
-                  price: parseInt(formItem.payoutPerPerson),
+                  from_amount: parseInt(formItem?.numberOfPeople),
+                  to_amount: parseInt(formItem?.numberOfPeopleAfter),
+                  price: parseInt(formItem?.retailPrice),
                 })
               );
             }
