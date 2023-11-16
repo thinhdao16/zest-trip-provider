@@ -4,7 +4,7 @@ import { StepProvider } from "./context/ui/StepContext";
 import Tourtype from "./components/TourType";
 import { useStepContext } from "./context/ui/useStepContext";
 import Welcome from "./components/Welcome";
-import { Grid } from "@mui/material";
+import { Backdrop, CircularProgress, Grid } from "@mui/material";
 import TransportType from "./components/TransportType";
 import AccomType from "./components/AccomType";
 import Location from "./components/Location";
@@ -19,15 +19,22 @@ import { AppDispatch } from "../../store/redux/store";
 import { useDispatch } from "react-redux";
 import { getTagTour, getVehicleTour } from "../../store/redux/silce/tourSlice";
 import CreateTourNav from "./components/Step/CreateTourNav";
+import LocationStart from "./components/LocationStart";
+import { useSelector } from "react-redux";
 
 const steps = [
+  // Capacity,
+
   Welcome,
   Tourtype,
   Title,
   TransportType,
   AccomType,
   Location,
+  LocationStart,
   DurationCheckIn,
+  // Welcome,
+
   Capacity,
   Price,
   Media,
@@ -52,6 +59,7 @@ const StepRenderer: React.FC = () => {
   const { currentStep, totalSteps, isNextClicked } = useStepContext();
   const dispatch: AppDispatch = useDispatch();
   const isLastStep = currentStep === totalSteps;
+  const { loadingCreateTour } = useSelector((state: any) => state.tour);
   useEffect(() => {
     dispatch(getTagTour());
     dispatch(getVehicleTour());
@@ -67,6 +75,13 @@ const StepRenderer: React.FC = () => {
 
   return (
     <>
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loadingCreateTour}
+        // onClick={() => setOpenLoading(false)}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <div className="create-tour h-[100vh]">
         {!isLastStep && <Headers />}
 

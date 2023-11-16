@@ -4,12 +4,13 @@ import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
 import dayjs from "dayjs";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FcEmptyTrash } from "react-icons/fc";
 import { FaRegPenToSquare } from "react-icons/fa6";
 import { AppDispatch } from "../../../store/redux/store";
 import { useDispatch } from "react-redux";
 import { editTicketAvailability } from "../../../store/redux/silce/tourSlice";
+import { DataContext } from "../../../store/dataContext/DataContext";
 const style = {
   position: "absolute" as const,
   top: "50%",
@@ -47,7 +48,7 @@ const avaWeekdays = [
 ];
 const EditAvailability = (dataAvailability: any) => {
   const dispatch: AppDispatch = useDispatch();
-
+  const { setRefeshTour } = useContext(DataContext);
   const [availability, setAvailability] = useState<any>(
     dataAvailability?.dataAvailability
   );
@@ -242,7 +243,6 @@ const EditAvailability = (dataAvailability: any) => {
     );
     setAvailability(updatedAvailabilitySpecialDate);
   };
-
   const handleEditAvailability = () => {
     const avaibility_data = availability?.map((availabilityItem: any) => {
       return {
@@ -267,8 +267,14 @@ const EditAvailability = (dataAvailability: any) => {
         })),
       };
     });
+    console.log(avaibility_data);
+
     avaibility_data.forEach((availabilityItem: any) => {
-      dispatch(editTicketAvailability(availabilityItem));
+      dispatch(editTicketAvailability(availabilityItem)).then((response) => {
+        if (editTicketAvailability.fulfilled.match(response)) {
+          setRefeshTour((prev) => !prev);
+        }
+      });
     });
   };
   useEffect(() => {
@@ -481,7 +487,7 @@ const EditAvailability = (dataAvailability: any) => {
                               )
                             )}
                             <div className=" modal-ava-add-single-time flex justify-end ">
-                              <div className="flex items-center  w-40 rounded-lg px-2 bg-gray-300">
+                              <div className="flex items-center  w-44 rounded-lg pl-2 bg-gray-300">
                                 <span className="text-gray-500">
                                   Add single date
                                 </span>

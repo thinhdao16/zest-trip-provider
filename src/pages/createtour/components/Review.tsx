@@ -27,7 +27,7 @@ import "../styles/createtour.css";
 
 const Review: React.FC = () => {
   const { currentStep, formValues } = useStepContext();
-  if (currentStep !== 11) {
+  if (currentStep !== 12) {
     return null;
   }
   return (
@@ -247,24 +247,25 @@ const Review: React.FC = () => {
                     <div className="block ext-2xl border-l border-gray-300 border-solid bg-white shadow-custom-card-mui p-2 rounded-lg  ">
                       <p>{formValues?.[8]?.Title?.[1]}</p>
                     </div>
-                    <div className="flex items-center justify-between ">
-                      <div className="flex items-center border-l border-solid border-gray-300 bg-white rounded-lg p-2 shadow-custom-card-mui">
-                        <AiOutlineFieldTime className="mr-2 " />
-                        <div>
-                          <p className="font-medium mb-1 text-lg">Duration</p>
-                          <p>
-                            {formValues?.[4]?.DurationCheckIn?.[0]?.[0]?.no}
-                          </p>
-                        </div>
+                    <div className="flex items-center border-l border-solid border-gray-300 bg-white rounded-lg p-2 shadow-custom-card-mui">
+                      <AiOutlineFieldTime className="mr-2 " />
+                      <div>
+                        <p className="font-medium mb-1 text-lg">Duration</p>
+                        <p>{formValues?.[4]?.DurationCheckIn?.[0]?.[0]?.no}</p>
                       </div>
-                      <div className="flex items-center  border-l border-solid border-gray-300 bg-white rounded-lg p-2 shadow-custom-card-mui">
-                        <FaLocationDot className="mr-2" />
-                        <div className="block">
-                          <p className="font-medium mb-1 text-lg"> location</p>
-                          {/* <div>{formValues?.[3]?.Location}</div> */}
-                        </div>
+                    </div>
+                    <div className="flex items-center  border-l border-solid border-gray-300 bg-white rounded-lg p-2 shadow-custom-card-mui">
+                      <FaLocationDot className="mr-2" />
+                      <div className="block">
+                        <p className="font-medium mb-1 text-lg"> location</p>
+                        <span className="flex flex-wrap">
+                          {formValues[3].Location.address_name},{" "}
+                          {formValues[3].Location.address_ward?.full_name},{" "}
+                          {formValues[3].Location.address_district?.full_name},{" "}
+                          {formValues[3].Location.address_province?.full_name},{" "}
+                          {formValues[3].Location.address_country}
+                        </span>
                       </div>
-                      <div></div>
                     </div>
                   </div>
 

@@ -103,11 +103,18 @@ const Media: React.FC = () => {
     const updatedImages = selectedImages.filter((image) => image.id !== id);
     setSelectedImages(updatedImages);
   };
+  const handleConfirm = () => {
+    if (selectedImages.length > 1) {
+      const updatedImages = [...selectedImages.slice(1), selectedImages[0]];
+      setSelectedImages(updatedImages);
+    }
+    // Thêm logic xác nhận khác nếu cần
+  };
   useEffect(() => {
     updateFormValues(7, { Media: selectedImages });
   }, [selectedImages]);
 
-  if (currentStep !== 10) {
+  if (currentStep !== 11) {
     return null;
   }
 
@@ -128,8 +135,9 @@ const Media: React.FC = () => {
 
             {selectedImages.length < 1 ? (
               <Box
+                className="shadow-custom-card-mui rounded-lg"
                 style={{
-                  padding: "100px",
+                  padding: "120px",
                   // width: "42vw",
                   border: "1px dashed rgb(113, 113, 113)",
                   display: "flex",
@@ -137,6 +145,7 @@ const Media: React.FC = () => {
                   justifyContent: "center",
                   alignItems: "center",
                   gap: "16px", // Gap between the two elements
+                  background: "white",
                 }}
               >
                 <Box
@@ -199,11 +208,20 @@ const Media: React.FC = () => {
               </Box>
             ) : (
               <div className="flex flex-col gap-4">
-                <img
-                  src={selectedImages[0]?.url}
-                  alt="error"
-                  className="object-cover w-full h-[60vh] sm:h-full"
-                />
+                <div className="relative w-[44vw] h-[55vh]">
+                  <img
+                    src={selectedImages[0]?.url}
+                    alt="error"
+                    className="object-cover w-[50vw] h-[55vh] shadow-custom-card-mui rounded-lg "
+                  />
+                  <button
+                    onClick={() => handleDeleteImage(selectedImages[0]?.id)}
+                    className=" absolute top-3 right-3 bg-white shadow-custom-card-mui font-medium text-gray-600 w-8 h-8 p-0 rounded-full flex items-center justify-center"
+                  >
+                    <FaRegTrashCan />
+                  </button>
+                </div>
+
                 <Droppable droppableId="selectedImages" direction="horizontal">
                   {(provided) => (
                     <Grid
@@ -212,7 +230,7 @@ const Media: React.FC = () => {
                       ref={provided.innerRef}
                       {...provided.droppableProps}
                     >
-                      {selectedImages?.map((image, index) => (
+                      {selectedImages?.slice(1)?.map((image, index) => (
                         <Draggable
                           key={image.id}
                           draggableId={image.id}
@@ -237,6 +255,7 @@ const Media: React.FC = () => {
                                     height: "28vh",
                                     width: "100%",
                                   }}
+                                  className="shadow-custom-card-mui rounded-lg"
                                 />
                                 <button
                                   onClick={() => handleDeleteImage(image.id)}
@@ -252,9 +271,10 @@ const Media: React.FC = () => {
                       <Grid item xs={6}>
                         <label htmlFor="image-upload">
                           <div
+                            className="shadow-custom-card-mui rounded-lg"
                             style={{
                               backgroundColor: "#f7f7f7",
-                              height: "14.5vw",
+                              height: "28vh",
                               width: "100%",
                               border: "1px dashed rgb(113, 113, 113)",
                               display: "grid",

@@ -108,13 +108,12 @@ function Login() {
   };
   const handleEmailChange = (e: { target: { value: any } }) => {
     const inputValue = e.target.value;
-
-    // Kiểm tra xem địa chỉ email có kết thúc bằng "@gmail.com" không
-    const isEmailMatch = inputValue.toLowerCase().endsWith("@gmail.com");
+    const isEmailMatch = inputValue.toLowerCase().includes("@");
 
     setPhoneNumber(inputValue);
     setIsEmailMatch(isEmailMatch);
   };
+
   return (
     <>
       <Backdrop
@@ -205,9 +204,7 @@ function Login() {
                       }}
                       className="input-form-text-ready"
                       error={!isEmailMatch}
-                      helperText={
-                        isEmailMatch ? "" : "Email must end with @gmail.com"
-                      }
+                      helperText={isEmailMatch ? "" : "Email malformed"}
                     />
                   </FormControl>
                   <FormControl required>

@@ -11,7 +11,7 @@ import {
   AiOutlineSearch,
   AiOutlineUp,
 } from "react-icons/ai";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Fade } from "@mui/material";
 import { LuSubtitles } from "react-icons/lu";
 import { GrLocation } from "react-icons/gr";
@@ -21,11 +21,50 @@ import {
   FaSliders,
   FaTicket,
 } from "react-icons/fa6";
-function DashBoardBooker() {
-  const dataFake = DataBook;
+import { useDispatch, useSelector } from "react-redux";
+import { getBooking } from "../../store/redux/silce/booking";
+import { AppDispatch } from "../../store/redux/store";
+import { GoDotFill } from "react-icons/go";
 
+interface Ticket {
+  ticket_type_id: number;
+  original_price: number;
+  paid_price: number;
+  quantity: number;
+  // Các trường khác nếu có
+}
+
+interface Booking {
+  status: string;
+  booker_name: string;
+  booker_email: string;
+  booker_phone: string;
+  time_slot: string;
+  updated_at: string; // hoặc bạn có thể sử dụng kiểu dữ liệu ngày tháng nếu cần
+  paid_price: number;
+  BookingOnTour: {
+    tour_images: string[];
+    address_province: string;
+    address_country: string;
+    duration: number;
+    name: string;
+    address_name: string;
+    address_ward: string;
+    // Các trường khác nếu có
+  };
+  TicketOnBooking: Ticket[];
+  // Các trường khác nếu có
+}
+function DashBoardBooker() {
+  const dispatch: AppDispatch = useDispatch();
+
+  const { booking } = useSelector((state: any) => state.booking);
+  useEffect(() => {
+    dispatch(getBooking());
+  }, [dispatch]);
+  console.log(booking);
   const [expandedItems, setExpandedItems] = useState<any>({});
-  const toggleContentVisibility = (index: any) => {
+  const toggleContentVisibility = (index: number) => {
     const newExpandedItems = { ...expandedItems };
     newExpandedItems[index] = !newExpandedItems[index];
     setExpandedItems(newExpandedItems);
@@ -42,10 +81,11 @@ function DashBoardBooker() {
           </div>
         </div>
         <div className="flex flex-col gap-2">
-          {DataBook?.map((item, index: number) => {
+          {booking?.map((item: Booking, index: number) => {
             return (
               <div key={index} className="py-2 relative">
-                <div className="text-xs bg-navy-blue-opacity-5 border border-solid border-navy-blue rounded-md p-1 absolute top-0 right-2 text-navy-blue">
+                <div className="text-sm bg-navy-blue-opacity-5 border flex gap-1 items-center rounded-md p-1 absolute top-0 right-2 text-navy-blue">
+                  <GoDotFill />
                   {item?.status}
                 </div>
                 <div className="shadow-custom-0 rounded-lg">

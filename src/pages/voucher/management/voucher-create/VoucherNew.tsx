@@ -12,7 +12,8 @@ function VoucherNew() {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
 
   const { loading } = useSelector((state: any) => state.tour);
-
+  const { loadingProvider } = useSelector((state: any) => state.provider);
+  console.log(loadingProvider);
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
@@ -24,6 +25,12 @@ function VoucherNew() {
       <Backdrop
         sx={{ color: "#ffffff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={loading}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loadingProvider}
       >
         <CircularProgress color="inherit" />
       </Backdrop>

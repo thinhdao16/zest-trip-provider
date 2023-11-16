@@ -18,15 +18,16 @@ function CreateTourNav() {
     { id: 1, name: "Welcome" },
     { id: 2, name: "Tour Type" },
     { id: 3, name: "Title" },
-    { id: 4, name: "Transportations " },
+    { id: 4, name: "Transports " },
     { id: 5, name: "Categories" },
     { id: 6, name: "Location" },
-    { id: 7, name: "Schedule" },
-    { id: 8, name: "Availability" },
-    { id: 9, name: "Pricing" },
-    { id: 10, name: "Media" },
-    { id: 11, name: "Review" },
-    { id: 12, name: "Succesfull" },
+    { id: 7, name: "Departural" },
+    { id: 8, name: "Schedule" },
+    { id: 9, name: "Availability" },
+    { id: 10, name: "Pricing" },
+    { id: 11, name: "Media" },
+    { id: 12, name: "Review" },
+    { id: 13, name: "Succesfull" },
   ];
 
   const {
@@ -37,6 +38,7 @@ function CreateTourNav() {
     formValues,
     chooseStep,
   } = useStepContext();
+
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
   const { setRefeshTour } = useContext(DataContext);
@@ -47,6 +49,35 @@ function CreateTourNav() {
     setRefeshTour((prev) => !prev);
     navigate("/listtour");
   };
+  function checkMaxForPriceRanges(data: any) {
+    if (!Array.isArray(data)) {
+      return false;
+    }
+
+    for (const item of data) {
+      if (
+        !item ||
+        item.price_range.length < 2 ||
+        isNaN(item.max) ||
+        isNaN(item.min) ||
+        !item.price_range ||
+        !Array.isArray(item.price_range) ||
+        typeof item.max !== "number"
+      ) {
+        console.error("Invalid item or price_range structure.");
+        return false;
+      }
+      for (const priceRange of item.price_range) {
+        if (priceRange.numberOfPeopleAfter > item.max) {
+          return false;
+        }
+      }
+    }
+
+    return true;
+  }
+
+  const isMaxValid = checkMaxForPriceRanges(formValues[6]?.ticket);
   console.log(formValues);
   const handleCreateTourAndAvailability = () => {
     const formData = new FormData();
@@ -149,7 +180,7 @@ function CreateTourNav() {
               if (
                 postCreateAvailabilityTour.fulfilled.match(availabilityResponse)
               ) {
-                console.log("Both actions succeeded");
+                console.log("create availability success");
               } else {
                 console.log("postCreateAvailabilityTour failed");
               }
@@ -177,7 +208,6 @@ function CreateTourNav() {
                 })
               );
             }
-
             return pricingData;
           });
           localStorage.setItem("dataResTicket", pricing_data);
@@ -185,8 +215,14 @@ function CreateTourNav() {
             tour_id: tourResponse.payload.data.id,
             pricing_data,
           };
-          dispatch(postCreateTicketTour(data));
-          goToNextStep();
+          dispatch(postCreateTicketTour(data)).then((data) => {
+            if (postCreateTicketTour.fulfilled.match(data)) {
+              console.log("create ticket success");
+              goToNextStep();
+            } else {
+              console.log("ticket create failed");
+            }
+          });
         } else {
           console.log("postCreateTour failed");
         }
@@ -201,7 +237,7 @@ function CreateTourNav() {
     }
   };
   const constraintLength = () => {
-    let classSkip = "no"; // Mặc định là "no"
+    let classSkip = "no";
 
     if (currentStep === 3) {
       if (
@@ -231,7 +267,7 @@ function CreateTourNav() {
         classSkip = "yes"; // Nếu điều kiện thỏa mãn, thì set thành "yes"
       }
     }
-    if (currentStep === 7) {
+    if (currentStep === 8) {
       if (
         formValues[4].DurationCheckIn[1].length >=
           formValues[4].DurationCheckIn[0][0].no &&
@@ -240,7 +276,7 @@ function CreateTourNav() {
         classSkip = "yes"; // Nếu điều kiện thỏa mãn, thì set thành "yes"
       }
     }
-    if (currentStep === 8) {
+    if (currentStep === 9) {
       const capacities = formValues[5].Capacity;
       let hasNonEmptyArray = false; // Biến kiểm tra mặc định là false
       if (
@@ -264,10 +300,15 @@ function CreateTourNav() {
       }
     }
     if (currentStep === 10) {
+      if (formValues[6]?.ticket?.length > 0 && isMaxValid) {
+        classSkip = "yes";
+      }
+    }
+    if (currentStep === 11) {
       if (formValues[7].Media.length > 0) {
         classSkip = "yes"; // Nếu điều kiện thỏa mãn, thì set thành "yes"
       }
-    } else if (currentStep === 2 || currentStep === 9) {
+    } else if (currentStep === 2 || currentStep === 7) {
       classSkip = "yes"; // Nếu currentStep là 2, thì set thành "yes"
     }
 
@@ -345,8 +386,8 @@ function CreateTourNav() {
                       Start
                     </Button>
                   </Box>
-                ) : currentStep === 11 ? (
-                  <div className="flex items-center justify-between">
+                ) : currentStep === 12 ? (
+                  <div className="flex items-center justify-between pl-6">
                     <button
                       className="font-medium border-b-2 border-navy-blue text-navy-blue hover:border-baby-blue hover:border-b-2"
                       onClick={goToPreviousStep}
@@ -375,7 +416,7 @@ function CreateTourNav() {
                   </div>
                 ) : (
                   <>
-                    <div className=" flex items-center justify-between">
+                    <div className=" flex items-center justify-between pl-6">
                       <button
                         className="font-medium border-b-2 border-navy-blue text-navy-blue hover:border-baby-blue hover:border-b-2"
                         onClick={goToPreviousStep}

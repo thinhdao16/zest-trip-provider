@@ -8,7 +8,7 @@ const Congratulation: React.FC = () => {
   const { currentStep } = useStepContext();
   const { setRefeshTour } = React.useContext(DataContext);
   const navigate = useNavigate();
-  if (currentStep !== 12) {
+  if (currentStep !== 13) {
     return null;
   }
   const handleFormSubmit = () => {

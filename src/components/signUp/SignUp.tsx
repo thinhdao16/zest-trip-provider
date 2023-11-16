@@ -53,6 +53,7 @@ export default function SignUp() {
   const [isPasswordMatch, setIsPasswordMatch] = useState(true);
   const [isPhoneMatch, setIsPhoneMatch] = useState(true);
   const [isEmailMatch, setIsEmailMatch] = useState(true);
+  const [isNameMatch, setIsNameMatch] = useState(true);
 
   const handleClose = () => setOpen(false);
   const handlePasswordChange = (e: any) => {
@@ -265,10 +266,19 @@ export default function SignUp() {
   const handleEmailChange = (e: { target: { value: any } }) => {
     const inputValue = e.target.value;
 
-    const isEmailMatch = inputValue.toLowerCase().endsWith("@gmail.com");
+    const isEmailMatch = inputValue.toLowerCase().includes("@");
 
     setEmail(inputValue);
     setIsEmailMatch(isEmailMatch);
+  };
+
+  const handleNameChange = (e: { target: { value: any } }) => {
+    const inputValue = e.target.value;
+
+    const isNameMatch = inputValue?.length > 0;
+
+    setFullName(inputValue);
+    setIsNameMatch(isNameMatch);
   };
   const style = {
     position: "absolute" as const,
@@ -372,16 +382,14 @@ export default function SignUp() {
                       }}
                       className="input-form-text-ready"
                       error={!isEmailMatch}
-                      helperText={
-                        isEmailMatch ? "" : "Email must end with @gmail.com"
-                      }
+                      helperText={isEmailMatch ? "" : "Email malformed"}
                     />
                   </FormControl>
                   <FormControl required>
                     <FormLabel>Full Name</FormLabel>
                     <TextField
                       value={fullName}
-                      onChange={(e) => setFullName(e.target.value)}
+                      onChange={handleNameChange}
                       required
                       InputProps={{
                         startAdornment: (
@@ -391,11 +399,9 @@ export default function SignUp() {
                         ),
                       }}
                       className="input-form-text-ready"
-                      error={fullName.length === 0}
+                      error={!isNameMatch}
                       helperText={
-                        fullName.length != 0
-                          ? ""
-                          : "Full name do not leave empty"
+                        isNameMatch ? "" : "Full name cannot be empty"
                       }
                     />
                   </FormControl>

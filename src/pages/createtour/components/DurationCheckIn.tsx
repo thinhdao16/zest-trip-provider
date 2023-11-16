@@ -89,7 +89,7 @@ const DurationCheckIn: React.FC = () => {
     }
   }, [dataDuration, nestedDataArray]);
 
-  if (currentStep !== 7) {
+  if (currentStep !== 8) {
     return null;
   }
   return (

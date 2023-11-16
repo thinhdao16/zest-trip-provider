@@ -18,8 +18,8 @@ function Review() {
   React.useContext(DataContext);
   const dispatch: AppDispatch = useDispatch();
   const { review } = useSelector((state: any) => state.review);
-  // const apiCalledRef = React.useRef(false);
 
+  console.log(review);
   React.useEffect(() => {
     // if (!apiCalledRef.current) {
     dispatch(getReview());

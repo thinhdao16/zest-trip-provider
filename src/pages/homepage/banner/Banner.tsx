@@ -30,7 +30,7 @@ export default function Banner() {
   const { refeshTour } = React.useContext(DataContext);
   const dispatch: AppDispatch = useDispatch();
   const { tours, loading } = useSelector((state: any) => state.tour);
-
+  console.log(tours);
   const dataTours = tours?.tours;
   const countTours = tours?.total_count;
   React.useEffect(() => {
@@ -142,7 +142,7 @@ export default function Banner() {
                         </div>
                         <Rating
                           name="half-rating-read"
-                          defaultValue={2.5}
+                          value={data?.rate}
                           precision={0.5}
                           readOnly
                         />

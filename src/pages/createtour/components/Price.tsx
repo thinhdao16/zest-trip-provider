@@ -12,7 +12,6 @@ const radioItems = [
   "Standard",
   "Free - ticket required",
   "Free - no ticket required",
-  "Not permitted",
 ];
 const typeDefault = {
   role: "ADULT",
@@ -30,7 +29,7 @@ const Price: React.FC = () => {
     {
       id: 0,
       numberOfPeople: 1,
-      numberOfPeopleAfter: 3,
+      numberOfPeopleAfter: 2,
       retailPrice: 0,
       payoutPerPerson: 0,
     },
@@ -39,7 +38,7 @@ const Price: React.FC = () => {
     {
       id: 0,
       numberOfPeople: 0,
-      numberOfPeopleAfter: 3,
+      numberOfPeopleAfter: 2,
       retailPrice: 0,
       payoutPerPerson: 0,
     },
@@ -48,7 +47,7 @@ const Price: React.FC = () => {
     {
       id: 0,
       numberOfPeople: 1,
-      numberOfPeopleAfter: 3,
+      numberOfPeopleAfter: 2,
       retailPrice: 0,
       payoutPerPerson: 0,
     },
@@ -63,7 +62,39 @@ const Price: React.FC = () => {
       ageEnd: 99,
     },
   });
-
+  const free_no_ticket_price_range_children = [
+    {
+      id: 0,
+      numberOfPeople: 0,
+      numberOfPeopleAfter: 2,
+      retailPrice: 0,
+      payoutPerPerson: 0,
+    },
+    {
+      id: 1,
+      numberOfPeople: 3,
+      numberOfPeopleAfter: 4,
+      retailPrice: 0,
+      payoutPerPerson: 0,
+    },
+  ];
+  const free_no_ticket_price_range_adult = [
+    {
+      id: 0,
+      numberOfPeople: 1,
+      numberOfPeopleAfter: 2,
+      retailPrice: 0,
+      payoutPerPerson: 0,
+    },
+    {
+      id: 1,
+      numberOfPeople: 3,
+      numberOfPeopleAfter: 4,
+      retailPrice: 0,
+      payoutPerPerson: 0,
+    },
+  ];
+  const ageDefault = { ageStart: "0", ageEnd: "99+" };
   const handleRadioChange = (groupName: string, selectedValue: string) => {
     setSelectedRadio((prevRadio) => ({
       ...prevRadio,
@@ -123,11 +154,13 @@ const Price: React.FC = () => {
         dataChildren = object;
       }
       if (selectedRadio.children === "Free - no ticket required") {
+        const price_range = [...free_no_ticket_price_range_children];
         const updatedFormListCheck = {
           role: "CHILDREN",
           type: "FREE_NO_TICKET",
         };
         const object = {
+          price_range,
           ...updatedFormListCheck,
           ...quantityChildren,
           ...updatedAgeForChildren,
@@ -164,7 +197,7 @@ const Price: React.FC = () => {
           id: item.id,
           numberOfPeople: item.numberOfPeople,
           numberOfPeopleAfter: item.numberOfPeopleAfter,
-          retailPriceChildren: 0,
+          retailPrice: 0,
           payoutPerPerson: 0,
         }));
         const roleType = { role: "ADULT", type: "FREE_WITH_TICKET" };
@@ -177,11 +210,13 @@ const Price: React.FC = () => {
         dataAdult = object;
       }
       if (selectedRadio.adults === "Free - no ticket required") {
+        const price_range = [...free_no_ticket_price_range_adult];
         const updatedFormListCheck = {
           role: "ADULT",
           type: "FREE_NO_TICKET",
         };
         const object = {
+          price_range,
           ...updatedFormListCheck,
           ...quantityAdult,
           ...updatedAgeForAdult,
@@ -302,7 +337,6 @@ const Price: React.FC = () => {
   };
   const handleNumberOfPeopleChange = (e: any, id: number, field: string) => {
     const newNumberOfPeople = parseInt(e.target.value);
-    console.log(newNumberOfPeople);
     if (field === "default") {
       const updatedFormList = formList.map((form, index) => {
         if (form.id === id) {
@@ -477,7 +511,7 @@ const Price: React.FC = () => {
     }
   };
   React.useEffect(() => {
-    if (currentStep === 9) {
+    if (currentStep === 10) {
       updateFormValues(6, { ticket: dataTicket });
     }
   }, [currentStep, dataTicket]);
@@ -488,6 +522,7 @@ const Price: React.FC = () => {
         price_range: formList,
         ...quantityDefault,
         ...typeDefault,
+        ...ageDefault,
       };
       setDataTicket([convertArray]);
     }
@@ -506,7 +541,7 @@ const Price: React.FC = () => {
     typeDefault,
   ]);
 
-  if (currentStep !== 9) {
+  if (currentStep !== 10) {
     return null;
   }
 

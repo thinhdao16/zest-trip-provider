@@ -4,10 +4,12 @@ import { useState } from "react";
 import Header from "./Header";
 import ScreenMain from "./ScreenMain";
 import NavBar from "./Navbar";
+import { Backdrop, CircularProgress } from "@mui/material";
+import { useSelector } from "react-redux";
 
 function BookerDetailSingleScreen() {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
-
+  const { loadingBooking } = useSelector((state: any) => state.booking);
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
@@ -16,6 +18,12 @@ function BookerDetailSingleScreen() {
   };
   return (
     <div className="h-[100vh]">
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loadingBooking}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <div>
         <div
           className={`fixed h-20  w-64 z-10 ${

@@ -45,7 +45,6 @@ function ScreenMain() {
     createTourId,
     setCreateTourId,
   } = useVoucherContext();
-
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
 
@@ -73,7 +72,6 @@ function ScreenMain() {
   };
   const handleTourClick = (tourId: string) => {
     setCreateTourId((prevIds: string[]) => {
-      console.log(prevIds);
       const isTourSelected = prevIds.includes(tourId);
       return isTourSelected
         ? prevIds.filter((id) => id !== tourId)

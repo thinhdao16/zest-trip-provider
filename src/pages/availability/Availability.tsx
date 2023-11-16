@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import Navbar from "../../components/Navbar/Index";
 import { AppDispatch } from "../../store/redux/store";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { fetchTours } from "../../store/redux/silce/tourSlice";
 import { useSelector } from "react-redux";
 import dayjs from "dayjs";
@@ -24,13 +24,14 @@ import React from "react";
 import { GoDotFill } from "react-icons/go";
 import { RiSearchLine } from "react-icons/ri";
 import { Pagination } from "antd";
+import { DataContext } from "../../store/dataContext/DataContext";
 
 function Availability() {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const dispatch: AppDispatch = useDispatch();
   const { tours, loading } = useSelector((state: any) => state.tour);
-
+  const { refeshTour } = useContext(DataContext);
   const dataTours = tours?.tours;
   const countTours = tours?.total_count;
   const [loadings, setLoadings] = useState(null);
@@ -47,7 +48,7 @@ function Availability() {
   useEffect(() => {
     const pagination = { pageSize, currentPage };
     dispatch(fetchTours(pagination));
-  }, [currentPage, dispatch, pageSize, loadings]);
+  }, [currentPage, dispatch, pageSize, loadings, refeshTour]);
   function getDayName(day: number) {
     switch (day) {
       case 1:
@@ -81,7 +82,7 @@ function Availability() {
   return (
     <>
       <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 9999 }}
         open={loading}
         // onClick={() => setOpenLoading(false)}
       >
@@ -316,7 +317,7 @@ function Availability() {
                                   <div>
                                     <button
                                       type="button"
-                                      className={`text-sm flex gap-1 items-center p-1 rounded-sm ${
+                                      className={`text-sm flex gap-1 items-center p-1 rounded-md ${
                                         _availability?.status === "ACTIVE"
                                           ? "bg-navy-blue-opacity-5 text-navy-blue"
                                           : "bg-red-300 text-red-900"

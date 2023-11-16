@@ -3,11 +3,12 @@ import axiosInstance, { BASE_URL } from "../../apiInterceptors";
 import { toast } from "react-toastify";
 
 const initialState = {
+  voucher: [],
   profile: [],
   becomeProvider: [],
   loadingBecomeProvider: false,
   errorBecomeProvider: null as string | null,
-  loading: false,
+  loadingProvider: false,
   error: null as string | null,
 };
 export const becomeProvider = createAsyncThunk(
@@ -75,8 +76,8 @@ export const createProviderAvt = createAsyncThunk(
         }
       );
       console.log(response);
-      if (response.status === 200) {
-        // toast.success("Availability created successfully!"); // Thông báo tạo Availability thành công
+      if (response.status === 201) {
+        // toast.success("Voucher created successfully!");
         return response.data;
       } else {
         // toast.error("Failed to create Availability!"); // Thông báo lỗi khi tạo Availability
@@ -112,13 +113,116 @@ export const createProviderBanner = createAsyncThunk(
         // toast.error("Failed to create Availability!"); // Thông báo lỗi khi tạo Availability
         throw new Error("Failed to create Availability");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
-      // toast.error("Failed to create Availability!");
-      throw new Error("Failed to create Availability");
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        const errorMessages = error.response.data.message;
+
+        if (Array.isArray(errorMessages)) {
+          errorMessages.forEach((errorMessage: string) => {
+            console.log(errorMessage);
+            toast.error(errorMessage);
+          });
+        } else if (typeof errorMessages === "string") {
+          console.log(errorMessages);
+          toast.error(errorMessages);
+        } else {
+          toast.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
+        }
+      } else {
+        toast.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
+      }
+      throw new Error("Failed to fetch other data");
     }
   }
 );
+
+export const createVoucher = createAsyncThunk(
+  "provider/createVoucher",
+  async (formData: any) => {
+    console.log(formData);
+    try {
+      const response = await axiosInstance.post(
+        `${BASE_URL}/voucher/create`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            // "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      // alert("Please wait for admin approval.");
+      if (response.status === 201) {
+        toast.success("Voucher created successfully!");
+      }
+      console.log(response);
+      return response.data;
+    } catch (error: any) {
+      console.log(error);
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        const errorMessages = error.response.data.message;
+
+        if (Array.isArray(errorMessages)) {
+          errorMessages.forEach((errorMessage: string) => {
+            console.log(errorMessage);
+            toast.error(errorMessage);
+          });
+        } else if (typeof errorMessages === "string") {
+          console.log(errorMessages);
+          toast.error(errorMessages);
+        } else {
+          toast.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
+        }
+      } else {
+        toast.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
+      }
+      throw new Error("Failed to fetch other data");
+    }
+  }
+);
+
+export const getVoucher = createAsyncThunk("provider/getVoucher", async () => {
+  try {
+    const pid = localStorage.getItem("id_provider");
+    const response = await axiosInstance.get(`${BASE_URL}/voucher`, {
+      params: {
+        provider: pid,
+      },
+    });
+    if (response.status === 200) {
+      return response.data.data;
+    }
+  } catch (error: any) {
+    if (error.response && error.response.data && error.response.data.message) {
+      const errorMessages = error.response.data.message;
+
+      if (Array.isArray(errorMessages)) {
+        errorMessages.forEach((errorMessage: string) => {
+          console.log(errorMessage);
+          toast.error(errorMessage);
+        });
+      } else if (typeof errorMessages === "string") {
+        console.log(errorMessages);
+        toast.error(errorMessages);
+      } else {
+        toast.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
+      }
+    } else {
+      toast.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
+    }
+    throw new Error("Failed to fetch other data");
+  }
+});
+
 const providerSice = createSlice({
   name: "provider",
   initialState,
@@ -140,6 +244,31 @@ const providerSice = createSlice({
       })
       .addCase(becomeProvider.rejected, (state: any, action) => {
         state.loadingBecomeProvider = false;
+        state.error = action.error.message;
+      })
+      .addCase(createVoucher.pending, (state) => {
+        state.loadingProvider = true;
+        state.errorBecomeProvider = null;
+      })
+      .addCase(createVoucher.fulfilled, (state, action) => {
+        state.loadingProvider = false;
+        state.errorBecomeProvider = null;
+      })
+      .addCase(createVoucher.rejected, (state: any, action) => {
+        state.loadingProvider = false;
+        state.error = action.error.message;
+      })
+      .addCase(getVoucher.pending, (state) => {
+        state.loadingProvider = true;
+        state.errorBecomeProvider = null;
+      })
+      .addCase(getVoucher.fulfilled, (state, action) => {
+        state.loadingProvider = false;
+        state.voucher = action.payload;
+        state.errorBecomeProvider = null;
+      })
+      .addCase(getVoucher.rejected, (state: any, action) => {
+        state.loadingProvider = false;
         state.error = action.error.message;
       });
   },

@@ -2,11 +2,26 @@ import { useParams } from "react-router-dom";
 import { DataBook } from "../dataBook";
 import dayjs from "dayjs";
 import { GoDotFill } from "react-icons/go";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { acceptRefund, getBooking } from "../../../store/redux/silce/booking";
+import { AppDispatch } from "../../../store/redux/store";
 
 function ScreenMain() {
-  const { index } = useParams<{ index: string }>();
-  const filteredData = DataBook.filter((item) => item.id === index);
+  const dispatch: AppDispatch = useDispatch();
+
+  const { booking } = useSelector((state: any) => state.booking);
+  useEffect(() => {
+    dispatch(getBooking());
+  }, [dispatch]);
+  const { index } = useParams<{ index: string | undefined }>();
+  const filteredData = booking.filter(
+    (item: { id: string }) => item.id === index
+  );
   console.log(filteredData);
+  const handleAcceptRefund = () => {
+    dispatch(acceptRefund(index));
+  };
   return (
     <div className="  bg-main rounded-xl p-8 h-full overflow-y-auto global-scrollbar ">
       <div className="">
@@ -78,14 +93,16 @@ function ScreenMain() {
 
               <div className="flex flex-col gap-3">
                 {filteredData[0]?.TicketOnBooking?.map(
-                  (ticketQuantity, index: number) => (
+                  (ticketQuantity: any, index: number) => (
                     <div key={index} className=" grid grid-cols-4 ">
                       <span className="">
                         {ticketQuantity?.ticket_type_id === 1
                           ? "Adult"
                           : "Children"}
                       </span>
-                      <span className=" ">{ticketQuantity?.quantity}</span>
+                      <span className=" text-center ">
+                        {ticketQuantity?.quantity}
+                      </span>
                       <span className="  text-center">
                         {ticketQuantity?.original_price}
                       </span>{" "}
@@ -112,6 +129,7 @@ function ScreenMain() {
                 <button
                   type="button"
                   className="bg-navy-blue px-3 py-2 rounded-lg text-white "
+                  onClick={handleAcceptRefund}
                 >
                   Accept refund
                 </button>

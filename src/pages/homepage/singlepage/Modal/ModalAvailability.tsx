@@ -424,7 +424,7 @@ const ModalAvailability = ({
                               )
                             )}
                             <div className=" modal-ava-add-single-time flex justify-end ">
-                              <div className="flex items-center  w-40 rounded-lg px-2 bg-gray-300">
+                              <div className="flex items-center  w-44 rounded-lg px-2 bg-gray-300">
                                 <span className="text-gray-500">
                                   Add single date
                                 </span>

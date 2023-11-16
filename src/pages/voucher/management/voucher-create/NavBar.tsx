@@ -10,6 +10,9 @@ import {
 import { GoDiscussionOutdated } from "react-icons/go";
 import { IoIosConstruct } from "react-icons/io";
 import { LuConstruction } from "react-icons/lu";
+import { AppDispatch } from "../../../../store/redux/store";
+import { useDispatch } from "react-redux";
+import { createVoucher } from "../../../../store/redux/silce/providerSlice";
 function NavBar() {
   const {
     createName,
@@ -21,6 +24,42 @@ function NavBar() {
     createExpiredDate,
     createTourId,
   } = useVoucherContext();
+  const dispatch: AppDispatch = useDispatch();
+  // const dataValueCreate = {
+  //   name: createName,
+  //   description: createDescription,
+  //   discount: parseInt(createDiscount),
+  //   discount_type: createDiscountType,
+  //   quantity: parseInt(createquantity),
+  //   apply_condition: {
+  //     type: createApplyCondition?.type,
+  //     value: createApplyCondition?.value,
+  //   },
+  //   expired_date: createExpiredDate,
+  // };
+  const handleCreateVoucher = () => {
+    let tourIdPayload = {};
+
+    if (createTourId && createTourId.length > 0) {
+      tourIdPayload = { tour_id: createTourId };
+    }
+    const dataValueCreate = {
+      name: createName,
+      description: createDescription,
+      discount: parseInt(createDiscount),
+      discount_type: createDiscountType,
+      quantity: parseInt(createquantity),
+      apply_condition: {
+        type: createApplyCondition?.type,
+        value: createApplyCondition?.value,
+      },
+      expired_date: createExpiredDate,
+
+      ...tourIdPayload,
+    };
+    dispatch(createVoucher(dataValueCreate));
+  };
+
   return (
     <div className="">
       <div className=" border-r-2 border-gray-100 h-full flex-col flex flex-shrink-0">
@@ -220,6 +259,7 @@ function NavBar() {
             <button
               type="button"
               className="bg-navy-blue text-white p-2 rounded-lg"
+              onClick={handleCreateVoucher}
             >
               Save change
             </button>
