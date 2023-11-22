@@ -3,7 +3,7 @@ function Promotion() {
     <>
       <main className="h-full">
         {/* Main Content */}
-        <div className="mainCard">Blank Page hi everyone</div>
+        <div className="mainCard">Blank Page</div>
       </main>
     </>
   );
