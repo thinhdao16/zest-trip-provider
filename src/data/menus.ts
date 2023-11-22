@@ -70,6 +70,12 @@ const initMenu: MenuItem[] = [
     name: "Voucher",
   },
   {
+    label: "Payment",
+    path: "/payment",
+    icon: faTicket,
+    name: "Payment",
+  },
+  {
     label: "Otentikasi",
   },
   // {

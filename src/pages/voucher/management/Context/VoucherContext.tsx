@@ -17,6 +17,23 @@ export type VoucherContextType = {
   setCreateExpiredDate: any;
   createTourId: any;
   setCreateTourId: any;
+  //edit
+  createNameEdit: any;
+  setCreateNameEdit: any;
+  createDescriptionEdit: any;
+  setCreateDescriptionEdit: any;
+  createDiscountEdit: any;
+  setCreateDiscountEdit: any;
+  createDiscountTypeEdit: any;
+  setCreateDiscountTypeEdit: any;
+  createquantityEdit: any;
+  setCreatequantityEdit: any;
+  createApplyConditionEdit: any;
+  setCreateApplyConditionEdit: any;
+  createExpiredDateEdit: any;
+  setCreateExpiredDateEdit: any;
+  createTourIdEdit: any;
+  setCreateTourIdEdit: any;
 };
 
 export const VoucherContext = createContext<VoucherContextType | undefined>(
@@ -41,6 +58,20 @@ export const VoucherContextProvider: React.FC<VoucherContextProps> = ({
   });
   const [createExpiredDate, setCreateExpiredDate] = useState<any>("");
   const [createTourId, setCreateTourId] = useState<string[]>([]);
+  //edit
+  const [createNameEdit, setCreateNameEdit] = useState<any>("");
+  const [createDescriptionEdit, setCreateDescriptionEdit] = useState<any>("");
+  const [createDiscountEdit, setCreateDiscountEdit] = useState<any>("");
+  const [createDiscountTypeEdit, setCreateDiscountTypeEdit] = useState<any>();
+  const [createquantityEdit, setCreatequantityEdit] = useState<any>("");
+  const [createApplyConditionEdit, setCreateApplyConditionEdit] = useState<any>(
+    {
+      type: "",
+      value: "",
+    }
+  );
+  const [createExpiredDateEdit, setCreateExpiredDateEdit] = useState<any>("");
+  const [createTourIdEdit, setCreateTourIdEdit] = useState<string[]>([]);
 
   return (
     <VoucherContext.Provider
@@ -61,6 +92,23 @@ export const VoucherContextProvider: React.FC<VoucherContextProps> = ({
         setCreateExpiredDate,
         createTourId,
         setCreateTourId,
+        //edit
+        createNameEdit,
+        setCreateNameEdit,
+        createDescriptionEdit,
+        setCreateDescriptionEdit,
+        createDiscountEdit,
+        setCreateDiscountEdit,
+        createDiscountTypeEdit,
+        setCreateDiscountTypeEdit,
+        createquantityEdit,
+        setCreatequantityEdit,
+        createApplyConditionEdit,
+        setCreateApplyConditionEdit,
+        createExpiredDateEdit,
+        setCreateExpiredDateEdit,
+        createTourIdEdit,
+        setCreateTourIdEdit,
       }}
     >
       {children}

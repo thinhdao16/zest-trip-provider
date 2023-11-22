@@ -12,9 +12,8 @@ export const getBooking = createAsyncThunk("booking/getBooking", async () => {
   try {
     const pid = localStorage.getItem("id_provider");
     const response = await axiosInstance.post(`${BASE_URL}/booking/owned`, {
-      body: {
-        provider: pid,
-      },
+      provider: pid,
+      select: "300",
     });
     if (response.status === 200) {
       return response.data.data;

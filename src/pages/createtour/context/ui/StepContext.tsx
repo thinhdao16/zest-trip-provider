@@ -11,6 +11,8 @@ export type StepContextType = {
   selectedCard: number;
   chooseStep: (step: number) => void;
   setSelectedCard: React.Dispatch<React.SetStateAction<number>>; // Add the setSelectedCard type
+  openSnackbar: any;
+  setOpenSnackbar: any;
 };
 
 export const StepContext = createContext<StepContextType | undefined>(
@@ -30,6 +32,7 @@ export const StepProvider: React.FC<StepProviderProps> = ({
   const [formValues, setFormValues] = useState<any[]>([]);
   const [isNextClicked, setIsNextClicked] = useState(false);
   const [selectedCard, setSelectedCard] = useState(-1);
+  const [openSnackbar, setOpenSnackbar] = React.useState(false);
 
   const goToNextStep = () => {
     setIsNextClicked(true);
@@ -63,6 +66,8 @@ export const StepProvider: React.FC<StepProviderProps> = ({
         selectedCard,
         setSelectedCard,
         chooseStep,
+        openSnackbar,
+        setOpenSnackbar,
       }}
     >
       {children}

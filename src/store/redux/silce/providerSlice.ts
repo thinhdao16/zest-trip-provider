@@ -222,7 +222,106 @@ export const getVoucher = createAsyncThunk("provider/getVoucher", async () => {
     throw new Error("Failed to fetch other data");
   }
 });
+export const updateVoucher = createAsyncThunk(
+  "provider/updateVoucher", // Slice name: "tour"
+  async (requestData: any) => {
+    try {
+      console.log(requestData);
+      const response = await axiosInstance.patch(
+        `${BASE_URL}/voucher/update`,
+        requestData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            // "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log(response);
+      if (response.status === 200) {
+        // toast.success("Availability created successfully!"); // Thông báo tạo Availability thành công
+        return response.data;
+      } else {
+        // toast.error("Failed to create Availability!"); // Thông báo lỗi khi tạo Availability
+        throw new Error("Failed to update Voucher");
+      }
+    } catch (error: any) {
+      console.log(error);
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        const errorMessages = error.response.data.message;
 
+        if (Array.isArray(errorMessages)) {
+          errorMessages.forEach((errorMessage: string) => {
+            console.log(errorMessage);
+            toast.error(errorMessage);
+          });
+        } else if (typeof errorMessages === "string") {
+          console.log(errorMessages);
+          toast.error(errorMessages);
+        } else {
+          toast.error("Update fail"); // Thông báo đăng nhập thất bại mặc định
+        }
+      } else {
+        toast.error("Update fail!"); // Thông báo đăng nhập thất bại mặc định
+      }
+      throw new Error("Failed to update other data");
+    }
+  }
+);
+export const updateVoucherMapTour = createAsyncThunk(
+  "provider/updateVoucherMapTour", // Slice name: "tour"
+  async (requestData: any) => {
+    try {
+      console.log(requestData);
+      const response = await axiosInstance.patch(
+        `${BASE_URL}/voucher/mapTour`,
+        requestData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            // "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log(response);
+      if (response.status === 200) {
+        // toast.success("Availability created successfully!"); // Thông báo tạo Availability thành công
+        return response.data;
+      } else {
+        // toast.error("Failed to create Availability!"); // Thông báo lỗi khi tạo Availability
+        throw new Error("Failed to update Voucher");
+      }
+    } catch (error: any) {
+      console.log(error);
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        const errorMessages = error.response.data.message;
+
+        if (Array.isArray(errorMessages)) {
+          errorMessages.forEach((errorMessage: string) => {
+            console.log(errorMessage);
+            toast.error(errorMessage);
+          });
+        } else if (typeof errorMessages === "string") {
+          console.log(errorMessages);
+          toast.error(errorMessages);
+        } else {
+          toast.error("Update fail"); // Thông báo đăng nhập thất bại mặc định
+        }
+      } else {
+        toast.error("Update fail!"); // Thông báo đăng nhập thất bại mặc định
+      }
+      throw new Error("Failed to update other data");
+    }
+  }
+);
 const providerSice = createSlice({
   name: "provider",
   initialState,

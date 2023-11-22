@@ -5,28 +5,39 @@ import {
   AiOutlinePlusCircle,
   AiOutlineUp,
 } from "react-icons/ai";
-import { Backdrop, CircularProgress, Fade } from "@mui/material";
+import { Fade } from "@mui/material";
 import { RiSearchLine } from "react-icons/ri";
-import { Link } from "react-router-dom";
-import { Data } from "./data";
-import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { AppDispatch } from "../../store/redux/store";
 import { useDispatch } from "react-redux";
 import { getVoucher } from "../../store/redux/silce/providerSlice";
 import { toast } from "react-toastify";
 import dayjs from "dayjs";
+import { formatNumber } from "../../utils/formatNumber";
+import { DataContext } from "../../store/dataContext/DataContext";
 
 function Voucher() {
   const dispatch: AppDispatch = useDispatch();
+  const navigate = useNavigate();
   const [expandedItems, setExpandedItems] = useState<any>({});
+  const { setVoucherView } = useContext(DataContext);
 
+  const [scrollPosition, setScrollPosition] = useState<number>(0);
   const { voucher } = useSelector((state: any) => state.provider);
-  console.log(voucher);
+
   const toggleContentVisibility = (index: any) => {
     const newExpandedItems = { ...expandedItems };
     newExpandedItems[index] = !newExpandedItems[index];
     setExpandedItems(newExpandedItems);
+  };
+  const handleApplyVoucher = (data: any) => {
+    if (data) {
+      setVoucherView(data);
+      localStorage.setItem("voucher_view", JSON.stringify(data));
+      navigate(`/voucher-view`);
+    }
   };
   useEffect(() => {
     dispatch(getVoucher()).then((response) => {
@@ -35,6 +46,24 @@ function Voucher() {
       }
     });
   }, [dispatch]);
+
+  useEffect(() => {
+    const handleWheel = () => {
+      setScrollPosition(window.scrollY);
+      scrollTo();
+    };
+
+    window.addEventListener("wheel", handleWheel);
+
+    return () => {
+      window.removeEventListener("wheel", handleWheel);
+    };
+  }, [setScrollPosition]);
+
+  const scrollTo = () => {
+    console.log("s");
+  };
+
   return (
     <>
       {/* <Backdrop
@@ -93,17 +122,24 @@ function Voucher() {
                 <div className="col-span-3">
                   <span className="font-medium">Title</span>
                 </div>
-                <div className="col-span-2">
-                  <span className="font-medium">Discount</span>
-                </div>
-                <div className="col-span-2">
-                  <span className="font-medium">Quantity</span>
-                </div>
-                <div className="col-span-3">
-                  <span className="font-medium">Apply condition</span>
-                </div>
-                <div className="col-span-2">
-                  <span className="font-medium"> Expired</span>
+                <div className="col-span-9">
+                  <div className="grid grid-cols-5">
+                    <div className="text-center">
+                      <span className="font-medium">Discount</span>
+                    </div>
+                    <div className="text-center">
+                      <span className="font-medium">Quantity</span>
+                    </div>
+                    <div className="text-center">
+                      <span className="font-medium">Apply condition</span>
+                    </div>
+                    <div className="text-center">
+                      <span className="font-medium">Quanity tour</span>
+                    </div>
+                    <div className="text-center">
+                      <span className="font-medium"> Expired</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -116,7 +152,6 @@ function Voucher() {
                     <div
                       key={index}
                       className="shadow-custom-card-mui bg-white rounded-lg relative"
-                      onClick={() => toggleContentVisibility(index)}
                     >
                       <div className=" px-4 py-6  mb-2  relative ">
                         {!expandedItems[index] ? (
@@ -145,35 +180,51 @@ function Voucher() {
                               </span>
                             </div>
                           </div>
-                          <div className="col-span-2 flex items-center ">
-                            <div className="flex gap-1">
-                              <span>{dataVoucher?.discount}</span>
-                              <span>
-                                {dataVoucher?.discount_type === "PERCENT"
-                                  ? "%"
-                                  : dataVoucher?.discount_type === "AMOUNT"
-                                  ? "VNĐ"
-                                  : ""}
-                              </span>
-                            </div>
-                          </div>
-                          <div className="col-span-2 flex items-center ">
-                            <div className="flex flex-wrap gap-3">
-                              <span>{dataVoucher?.quantity}</span>
-                            </div>
-                          </div>
-                          <div className="col-span-3 flex items-center">
-                            <div className="flex flex-wrap gap-3">
-                              <span>
-                                {dataVoucher?.apply_condition?.minimum_price}
-                              </span>
-                            </div>
-                          </div>
-                          <div className="col-span-2 flex items-center">
-                            <div>
-                              {dayjs(dataVoucher?.expired_date).format(
-                                "YYYY-MM-DD"
-                              )}
+                          <div className="col-span-9">
+                            <div className="grid grid-cols-5">
+                              <div className=" flex items-center justify-center  ">
+                                <div className="flex gap-1">
+                                  <span>
+                                    {formatNumber(
+                                      parseInt(dataVoucher?.discount)
+                                    )}
+                                  </span>
+                                  <span>
+                                    {dataVoucher?.discount_type === "PERCENT"
+                                      ? "%"
+                                      : dataVoucher?.discount_type === "AMOUNT"
+                                      ? "VNĐ"
+                                      : ""}
+                                  </span>
+                                </div>
+                              </div>
+                              <div className=" flex items-center justify-center">
+                                <div className="flex flex-wrap gap-3">
+                                  <span>{dataVoucher?.quantity}</span>
+                                </div>
+                              </div>
+                              <div className=" flex items-center justify-center">
+                                <div className="flex flex-wrap gap-3">
+                                  <span>
+                                    {formatNumber(
+                                      dataVoucher?.apply_condition
+                                        ?.minimum_price
+                                    )}
+                                  </span>
+                                </div>
+                              </div>
+                              <div className=" flex items-center justify-center">
+                                <div className="flex flex-wrap gap-3">
+                                  <span>{dataVoucher?.tours?.length}</span>
+                                </div>
+                              </div>
+                              <div className=" flex items-center justify-center">
+                                <div>
+                                  {dayjs(dataVoucher?.expired_date).format(
+                                    "YYYY-MM-DD"
+                                  )}
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -181,8 +232,11 @@ function Voucher() {
                       {expandedItems[index] && (
                         <Fade in={expandedItems[index]} timeout={700}>
                           <div>
-                            <hr className="mb-4" />
-                            {dataVoucher?.tours?.length > 0 ? (
+                            {dataVoucher?.tours?.length > 0 && (
+                              <hr className="mb-4" />
+                            )}
+                            {
+                              // dataVoucher?.tours?.length > 0 ? (
                               dataVoucher?.tours?.map(
                                 (voucherTour: any, index: number) => (
                                   <div
@@ -205,20 +259,26 @@ function Voucher() {
                                       </div>
                                     </div>
 
-                                    {index <
-                                      dataVoucher?.TourVoucher?.length - 1 && (
+                                    {index < dataVoucher?.tours?.length - 1 && (
                                       <hr className="mt-4" />
                                     )}
                                   </div>
                                 )
                               )
-                            ) : (
-                              <div className="flex items-center justify-center pb-6 pt-2">
-                                <p className="bg-main p-1 rounded-lg shadow-custom-card-mui border border-gray-300 border-solid font-medium">
-                                  Add tour for voucher
-                                </p>
-                              </div>
-                            )}
+                              // ) : (
+
+                              // )
+                            }
+                            <hr className="mb-4" />
+                            <div className="flex items-center justify-center pb-6 pt-2 ">
+                              <button
+                                type="button"
+                                onClick={() => handleApplyVoucher(dataVoucher)}
+                                className="bg-main p-1 rounded-lg shadow-custom-card-mui border border-gray-300 border-solid font-medium"
+                              >
+                                Apply voucher for more tour
+                              </button>
+                            </div>
                           </div>
                         </Fade>
                       )}

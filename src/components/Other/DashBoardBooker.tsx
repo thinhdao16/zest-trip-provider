@@ -25,6 +25,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getBooking } from "../../store/redux/silce/booking";
 import { AppDispatch } from "../../store/redux/store";
 import { GoDotFill } from "react-icons/go";
+import { StatusBooking } from "../../styles/status/booking";
 
 interface Ticket {
   ticket_type_id: number;
@@ -42,6 +43,7 @@ interface Booking {
   time_slot: string;
   updated_at: string; // hoặc bạn có thể sử dụng kiểu dữ liệu ngày tháng nếu cần
   paid_price: number;
+  booked_date: string;
   BookingOnTour: {
     tour_images: string[];
     address_province: string;
@@ -84,10 +86,10 @@ function DashBoardBooker() {
           {booking?.map((item: Booking, index: number) => {
             return (
               <div key={index} className="py-2 relative">
-                <div className="text-sm bg-navy-blue-opacity-5 border flex gap-1 items-center rounded-md p-1 absolute top-0 right-2 text-navy-blue">
-                  <GoDotFill />
-                  {item?.status}
+                <div className="absolute top-0 right-2 ">
+                  <StatusBooking>{item?.status}</StatusBooking>
                 </div>
+
                 <div className="shadow-custom-0 rounded-lg">
                   <div
                     className={`grid grid-cols-12 p-4  items-center gap-2 relative`}
@@ -133,7 +135,7 @@ function DashBoardBooker() {
                       <div className="flex items-center gap-1">
                         <IoAirplaneOutline className="text-navy-blue" />
                         <span>
-                          {dayjs(item?.updated_at).format("YYYY-MM-DD")}
+                          {dayjs(item?.booked_date).format("YYYY-MM-DD")}
                         </span>
                       </div>
                     </div>
@@ -241,6 +243,9 @@ function DashBoardBooker() {
                             {item?.BookingOnTour?.address_province}
                             {item?.BookingOnTour?.address_country}
                           </span>
+                        </div>
+                        <div>
+                          <span>{item?.updated_at}</span>
                         </div>
                       </div>
                     </Fade>

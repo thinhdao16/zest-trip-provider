@@ -1,10 +1,4 @@
-import { createContext, useEffect, useState } from "react";
-import {
-  GoogleAuthProvider,
-  signInWithPopup,
-  onAuthStateChanged,
-} from "firebase/auth";
-import { auth } from "../firebase/firebase";
+import { createContext, useState } from "react";
 
 interface User {
   email: string | null; // Update the type of 'email' property to include 'null'
@@ -15,7 +9,6 @@ type RefeshTour = boolean;
 type RefeshTourDetail = boolean;
 
 interface AuthContextValue {
-  googleSignIn: () => Promise<void>;
   accessToken: string;
   abc: string;
   refeshLogin: RefeshLogin | null;
@@ -28,6 +21,8 @@ interface AuthContextValue {
   >;
   dataManyBookFake: any;
   setDataManyBookFake: any;
+  voucherView: any;
+  setVoucherView: any;
 }
 
 export const DataContext = createContext<AuthContextValue>(
@@ -46,36 +41,12 @@ export function DataContextProvider({
   const [refreshTourDetail, setRefreshTourDetail] =
     useState<RefeshTourDetail | null>(null);
   const [dataManyBookFake, setDataManyBookFake] = useState<any>();
-
+  const [voucherView, setVoucherView] = useState<any>();
   const abc = "abe";
-  const googleSignIn = async () => {
-    const provider = new GoogleAuthProvider();
-    const result = await signInWithPopup(auth, provider);
-    const users = result.user;
-    const token = await users.getIdToken();
-    setAccessToken(token);
-    setUser(users);
-  };
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-      if (currentUser && currentUser.email) {
-        currentUser.getIdToken().then((token) => {
-          setAccessToken(token);
-        });
-      }
-    });
-
-    return () => {
-      unsubscribe();
-    };
-  }, []);
 
   return (
     <DataContext.Provider
       value={{
-        googleSignIn,
         accessToken,
         abc,
         refeshLogin,
@@ -86,6 +57,8 @@ export function DataContextProvider({
         setRefreshTourDetail,
         dataManyBookFake,
         setDataManyBookFake,
+        voucherView,
+        setVoucherView,
       }}
     >
       {children}

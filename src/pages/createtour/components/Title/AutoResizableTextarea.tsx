@@ -1,4 +1,3 @@
-import { FormLabel } from "@mui/material";
 import { useState, ChangeEvent, useRef, useEffect } from "react";
 
 interface AutoResizableTextareaProps {
@@ -52,16 +51,17 @@ function AutoResizableTextarea({
   return (
     <>
       <textarea
-        className="border border-gray-300 rounded-lg py-2 pl-8 w-full global-scrollbar "
+        className="w-full shadow-custom-card-mui rounded-lg py-3 pl-8 focus:ring-navy-blue focus:ring-1 focus:outline-none   hover:ring-1 hover:ring-navy-blue  border border-gray-400"
         value={text}
         onChange={handleChange}
         onInput={handleInput}
         ref={textareaRef}
+        style={{ minHeight: "200px" }}
         {...rest}
       />
-      <FormLabel style={{ fontWeight: 400, fontSize: "15px" }}>
+      <span className="text-sm text-gray-500">
         {text.length}/{maxLength}
-      </FormLabel>
+      </span>
     </>
   );
 }

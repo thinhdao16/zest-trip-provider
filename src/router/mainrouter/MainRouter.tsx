@@ -21,6 +21,8 @@ import DetailBook from "../../pages/booker/many/DetailBook";
 import BookerDetailSingleScreen from "../../pages/booker/single/BookerDetailSingleScreen";
 import Voucher from "../../pages/voucher/Voucher";
 import VoucherNew from "../../pages/voucher/management/voucher-create/VoucherNew";
+import Payment from "../../pages/payment/Payment";
+import VoucherView from "../../pages/voucher/management/voucher-view/VoucherView";
 
 function MainRouter() {
   const { refeshLogin } = React.useContext(DataContext);
@@ -61,6 +63,9 @@ function MainRouter() {
                       <Route path="/voucher">
                         <Route path="" element={<Voucher />} />
                       </Route>
+                      <Route path="/payment">
+                        <Route path="" element={<Payment />} />
+                      </Route>
                       <Route
                         path="/availability"
                         element={<Availability />}
@@ -88,6 +93,7 @@ function MainRouter() {
                       element={<DetailBook />}
                     />
                     <Route path="/voucher-create" element={<VoucherNew />} />
+                    <Route path="/voucher-view" element={<VoucherView />} />
                     <Route path="/listwork" element={<ListWork />} />
                     <Route path="/setupprovider" element={<SetUpProvider />} />
                   </React.Fragment>

@@ -12,54 +12,58 @@ import { IoIosConstruct } from "react-icons/io";
 import { LuConstruction } from "react-icons/lu";
 import { AppDispatch } from "../../../../store/redux/store";
 import { useDispatch } from "react-redux";
-import { createVoucher } from "../../../../store/redux/silce/providerSlice";
+import {
+  createVoucher,
+  updateVoucher,
+  updateVoucherMapTour,
+} from "../../../../store/redux/silce/providerSlice";
+import { useContext, useMemo } from "react";
+import { DataContext } from "../../../../store/dataContext/DataContext";
 function NavBar() {
   const {
-    createName,
-    createDescription,
-    createDiscount,
-    createDiscountType,
-    createquantity,
-    createApplyCondition,
-    createExpiredDate,
-    createTourId,
+    createNameEdit,
+    createDescriptionEdit,
+    createDiscountEdit,
+    createDiscountTypeEdit,
+    createquantityEdit,
+    createApplyConditionEdit,
+    createExpiredDateEdit,
+    createTourIdEdit,
   } = useVoucherContext();
   const dispatch: AppDispatch = useDispatch();
-  const dataValueCreate = {
-    name: createName,
-    description: createDescription,
-    discount: parseInt(createDiscount),
-    discount_type: createDiscountType,
-    quantity: parseInt(createquantity),
-    apply_condition: {
-      // type: createApplyCondition?.type,
-      // value: createApplyCondition?.value,
-      minimum_price: createApplyCondition?.value,
-    },
-    expired_date: createExpiredDate,
-    tour_id: createTourId,
-  };
-  console.log(dataValueCreate);
+  const voucherView: any = useMemo(() => {
+    const getVoucherDetail = localStorage.getItem("voucher_view");
+    const parse = JSON.parse(getVoucherDetail || "{}"); // Provide a default empty object if null
+    return parse;
+  }, []);
+  console.log(voucherView);
+
   const handleCreateVoucher = () => {
     let tourIdPayload = {};
 
-    if (createTourId && createTourId.length > 0) {
-      tourIdPayload = { tour_id: createTourId };
+    if (createTourIdEdit && createTourIdEdit.length > 0) {
+      tourIdPayload = { tour_id: createTourIdEdit };
     }
     const dataValueCreate = {
-      name: createName,
-      description: createDescription,
-      discount: parseInt(createDiscount),
-      discount_type: createDiscountType,
-      quantity: parseInt(createquantity),
+      id: voucherView?.id,
+      name: createNameEdit,
+      description: createDescriptionEdit,
+      discount: parseInt(createDiscountEdit),
+      discount_type: createDiscountTypeEdit,
+      quantity: parseInt(createquantityEdit),
       apply_condition: {
-        minimum_price: parseInt(createApplyCondition?.value),
+        minimum_price: parseInt(createApplyConditionEdit?.value),
       },
-      expired_date: createExpiredDate,
+      expired_date: createExpiredDateEdit,
 
       ...tourIdPayload,
     };
-    dispatch(createVoucher(dataValueCreate));
+    const dataUpdateMapTour = {
+      voucher_id: voucherView?.id,
+      ...tourIdPayload,
+    };
+    dispatch(updateVoucher(dataValueCreate));
+    dispatch(updateVoucherMapTour(dataUpdateMapTour));
   };
 
   return (
@@ -69,18 +73,20 @@ function NavBar() {
           <div className="h-[75vh] overflow-auto scrollbar-none gap-10 flex flex-col pt-2">
             <div
               className={`flex items-center font-medium pl-1 gap-7 relative  ${
-                createName.length === 0 ? "text-gray-500" : "text-navy-blue"
+                createNameEdit.length === 0 ? "text-gray-500" : "text-navy-blue"
               }`}
               // onClick={() => scrollToElement("information_basic")}
             >
               <div
                 className={`w-1.5 h-7 rounded-full ${
-                  createName.length === 0 ? "bg-gray-500" : "bg-navy-blue"
+                  createNameEdit.length === 0 ? "bg-gray-500" : "bg-navy-blue"
                 }`}
               ></div>
               <MdTitle
                 className={` ${
-                  createName.length === 0 ? "text-gray-500" : "text-navy-blue"
+                  createNameEdit.length === 0
+                    ? "text-gray-500"
+                    : "text-navy-blue"
                 }`}
               />
               <span className="">Name</span>
@@ -88,7 +94,7 @@ function NavBar() {
             </div>
             <div
               className={`flex items-center font-medium pl-1 gap-7 relative  ${
-                createDescription?.length === 0
+                createDescriptionEdit?.length === 0
                   ? "text-gray-500"
                   : "text-navy-blue"
               }`}
@@ -96,14 +102,14 @@ function NavBar() {
             >
               <div
                 className={`w-1.5 h-7 rounded-full ${
-                  createDescription.length === 0
+                  createDescriptionEdit?.length === 0
                     ? "bg-gray-500"
                     : "bg-navy-blue"
                 }`}
               ></div>
               <MdOutlineDescription
                 className={` ${
-                  createDescription.length === 0
+                  createDescriptionEdit?.length === 0
                     ? "text-gray-500"
                     : "text-navy-blue"
                 }`}
@@ -113,18 +119,22 @@ function NavBar() {
             </div>{" "}
             <div
               className={`flex items-center font-medium pl-1 gap-7 relative  ${
-                createDiscount.length === 0 ? "text-gray-500" : "text-navy-blue"
+                createDiscountEdit.length === 0
+                  ? "text-gray-500"
+                  : "text-navy-blue"
               }`}
               // onClick={() => scrollToElement("information_basic")}
             >
               <div
                 className={`w-1.5 h-7 rounded-full ${
-                  createDiscount.length === 0 ? "bg-gray-500" : "bg-navy-blue"
+                  createDiscountEdit.length === 0
+                    ? "bg-gray-500"
+                    : "bg-navy-blue"
                 }`}
               ></div>
               <MdDiscount
                 className={` ${
-                  createDiscount.length === 0
+                  createDiscountEdit.length === 0
                     ? "text-gray-500"
                     : "text-navy-blue"
                 }`}
@@ -134,7 +144,7 @@ function NavBar() {
             </div>{" "}
             <div
               className={`flex items-center font-medium pl-1 gap-7 relative  ${
-                createDiscountType === undefined
+                createDiscountTypeEdit === undefined
                   ? //  ||
                     // createDiscountType?.length === 0
                     "text-gray-500"
@@ -144,7 +154,7 @@ function NavBar() {
             >
               <div
                 className={`w-1.5 h-7 rounded-full ${
-                  createDiscountType === undefined
+                  createDiscountTypeEdit === undefined
                     ? //  ||
                       // createDiscountType?.length === 0
                       "bg-gray-500"
@@ -153,7 +163,7 @@ function NavBar() {
               ></div>
               <MdOutlineDiscount
                 className={` ${
-                  createDiscountType === undefined
+                  createDiscountTypeEdit === undefined
                     ? // ||
                       // createDiscountType?.length === 0
                       "text-gray-500"
@@ -165,18 +175,22 @@ function NavBar() {
             </div>{" "}
             <div
               className={`flex items-center font-medium pl-1 gap-7 relative  ${
-                createquantity.length === 0 ? "text-gray-500" : "text-navy-blue"
+                createquantityEdit.length === 0
+                  ? "text-gray-500"
+                  : "text-navy-blue"
               }`}
               // onClick={() => scrollToElement("information_basic")}
             >
               <div
                 className={`w-1.5 h-7 rounded-full ${
-                  createquantity.length === 0 ? "bg-gray-500" : "bg-navy-blue"
+                  createquantityEdit.length === 0
+                    ? "bg-gray-500"
+                    : "bg-navy-blue"
                 }`}
               ></div>
               <MdProductionQuantityLimits
                 className={` ${
-                  createquantity.length === 0
+                  createquantityEdit.length === 0
                     ? "text-gray-500"
                     : "text-navy-blue"
                 }`}
@@ -186,7 +200,7 @@ function NavBar() {
             </div>{" "}
             <div
               className={`flex items-center font-medium pl-1 gap-7 relative  ${
-                createExpiredDate.length === 0
+                createExpiredDateEdit?.length === 0
                   ? "text-gray-500"
                   : "text-navy-blue"
               }`}
@@ -194,14 +208,14 @@ function NavBar() {
             >
               <div
                 className={`w-1.5 h-7 rounded-full ${
-                  createExpiredDate.length === 0
+                  createExpiredDateEdit?.length === 0
                     ? "bg-gray-500"
                     : "bg-navy-blue"
                 }`}
               ></div>
               <GoDiscussionOutdated
                 className={` ${
-                  createExpiredDate.length === 0
+                  createExpiredDateEdit?.length === 0
                     ? "text-gray-500"
                     : "text-navy-blue"
                 }`}
@@ -211,8 +225,8 @@ function NavBar() {
             </div>{" "}
             <div
               className={`flex items-center font-medium pl-1 gap-7 relative  ${
-                createApplyCondition?.type?.length === 0 ||
-                createApplyCondition?.value?.length === 0
+                createApplyConditionEdit?.type?.length === 0 ||
+                createApplyConditionEdit?.value?.length === 0
                   ? "text-gray-500"
                   : "text-navy-blue"
               }`}
@@ -220,16 +234,16 @@ function NavBar() {
             >
               <div
                 className={`w-1.5 h-7 rounded-full ${
-                  createApplyCondition?.type?.length === 0 ||
-                  createApplyCondition?.value?.length === 0
+                  createApplyConditionEdit?.type?.length === 0 ||
+                  createApplyConditionEdit?.value?.length === 0
                     ? "bg-gray-500"
                     : "bg-navy-blue"
                 }`}
               ></div>
               <IoIosConstruct
                 className={` ${
-                  createApplyCondition?.type?.length === 0 ||
-                  createApplyCondition?.value?.length === 0
+                  createApplyConditionEdit?.type?.length === 0 ||
+                  createApplyConditionEdit?.value?.length === 0
                     ? "text-gray-500"
                     : "text-navy-blue"
                 }`}
@@ -239,18 +253,22 @@ function NavBar() {
             </div>
             <div
               className={`flex items-center font-medium pl-1 gap-7 relative  ${
-                createTourId.length === 0 ? "text-gray-500" : "text-navy-blue"
+                createTourIdEdit.length === 0
+                  ? "text-gray-500"
+                  : "text-navy-blue"
               }`}
               // onClick={() => scrollToElement("information_basic")}
             >
               <div
                 className={`w-1.5 h-7 rounded-full ${
-                  createTourId.length === 0 ? "bg-gray-500" : "bg-navy-blue"
+                  createTourIdEdit.length === 0 ? "bg-gray-500" : "bg-navy-blue"
                 }`}
               ></div>
               <LuConstruction
                 className={` ${
-                  createTourId.length === 0 ? "text-gray-500" : "text-navy-blue"
+                  createTourIdEdit.length === 0
+                    ? "text-gray-500"
+                    : "text-navy-blue"
                 }`}
               />
               <span className="">Tour for voucher</span>

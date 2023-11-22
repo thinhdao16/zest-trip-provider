@@ -1,14 +1,12 @@
-import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useState } from "react";
 import Header from "./Header";
 import ScreenMain from "./ScreenMain";
 import { useSelector } from "react-redux";
 import { Backdrop, CircularProgress } from "@mui/material";
-import NavBar from "./NavBar";
 import { VoucherContextProvider } from "../Context/VoucherContext";
+import NavBar from "./Navbar";
 
-function VoucherNew() {
+function VoucherView() {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
 
   const { loading } = useSelector((state: any) => state.tour);
@@ -122,4 +120,4 @@ function VoucherNew() {
   );
 }
 
-export default VoucherNew;
+export default VoucherView;

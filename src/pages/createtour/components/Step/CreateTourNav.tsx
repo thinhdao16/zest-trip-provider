@@ -79,6 +79,7 @@ function CreateTourNav() {
 
   const isMaxValid = checkMaxForPriceRanges(formValues[6]?.ticket);
   console.log(formValues);
+  const locationStart = `${formValues[9]?.LocationStart?.address_name}, ${formValues[9]?.LocationStart?.address_ward?.full_name},${formValues[9]?.LocationStart?.address_district?.full_name},${formValues[9]?.LocationStart?.address_province?.full_name},${formValues[9]?.LocationStart?.address_country}`;
   const handleCreateTourAndAvailability = () => {
     const formData = new FormData();
     const dataValueCreate = {
@@ -111,6 +112,12 @@ function CreateTourNav() {
           })),
         })
       ),
+      departure_location: {
+        lat: formValues[9]?.LocationStart?.lat_start,
+        long: formValues[9]?.LocationStart?.lng_start,
+        zoom: "18z",
+        location: locationStart,
+      },
       book_before: formValues[5]?.Capacity?.BookBefore,
       refund_before: formValues[5]?.Capacity?.RefundBefore,
       address_ward: formValues[3]?.Location.address_ward?.full_name,

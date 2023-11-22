@@ -52,7 +52,6 @@ const Capacity: React.FC = () => {
     Sun: [],
     Single: [],
   });
-  console.log(startingTimeCheckBox);
   const [startingTimeSingle, setStartingTimeSingle] = useState<any>([]);
 
   function formatTimeToHourAndMinute(date: any) {

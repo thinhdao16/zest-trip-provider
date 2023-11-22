@@ -10,6 +10,7 @@ import { DataContext } from "../../store/dataContext/DataContext";
 import { fetchTours } from "../../store/redux/silce/tourSlice";
 import { AppDispatch } from "../../store/redux/store";
 import { GoDotFill } from "react-icons/go";
+import { StatusBooking } from "../../styles/status/booking";
 
 function Booker() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -202,15 +203,9 @@ function Booker() {
                                 </div>
                               </div>
                               <div className="col-span-2 flex items-center ">
-                                <div>
-                                  <button
-                                    type="button"
-                                    className="p-1 text-sm bg-navy-blue-opacity-5 text-navy-blue rounded-md flex gap-1 items-center"
-                                  >
-                                    <GoDotFill />
-                                    {dataBook?.status}
-                                  </button>
-                                </div>
+                                <StatusBooking>
+                                  {dataBook?.status}
+                                </StatusBooking>
                               </div>
                             </div>
                           </div>
