@@ -67,6 +67,11 @@ export const dataTypeDuration: DataItemDuration[] = [
     title: "Day",
     no: 1,
   },
+  {
+    id: 1,
+    title: "Night",
+    no: 1,
+  },
 ];
 
 export const dataTypePrice: DataPrice[] = [
