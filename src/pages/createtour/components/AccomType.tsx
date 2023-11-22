@@ -23,7 +23,7 @@ const AccomType: React.FC = () => {
   const handleCardClick = (data: DataSelectCard) => {
     setSelectedCards((prevSelectedCards) => {
       if (
-        prevSelectedCards.length === 5 &&
+        prevSelectedCards.length === 4 &&
         !prevSelectedCards.includes(data.id)
       ) {
         setOpenSnackbar(true);
@@ -65,7 +65,7 @@ const AccomType: React.FC = () => {
       <SnackbarNoti
         open={openSnackbar}
         onClose={handleCloseSnackbar}
-        message="Please only select a maximum of 5 category"
+        message="Please only select a maximum of 4 category"
         actionButtonLabel="UNDO"
         onActionButtonClick={handleUndoButtonClick}
       />

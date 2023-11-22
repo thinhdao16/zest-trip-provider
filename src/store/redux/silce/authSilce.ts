@@ -4,7 +4,7 @@ import axiosInstance, { BASE_URL } from "../../apiInterceptors";
 const initialState = {
   isLoggedIn: false,
   user: null,
-  personalInfo: [],
+  personalInfo: {},
   check: "abc ",
   loading: false,
   error: null as string | null,
@@ -16,7 +16,7 @@ export const getPersonalInfo = createAsyncThunk(
     try {
       const response = await axiosInstance.get(`${BASE_URL}/provider/profile`);
       localStorage.setItem("id_provider", response.data.data.id);
-      return response.data;
+      return response.data.data;
     } catch (error) {
       console.log(error);
       throw new Error("Failed to fetch other data");

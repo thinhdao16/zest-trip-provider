@@ -40,7 +40,6 @@ const DurationCheckIn: React.FC = () => {
   };
 
   const handleFormSubmit = (boxes: BoxData[], title: string, day: number) => {
-    console.log(title);
     const newNestedData: NestedData = {
       boxes: boxes,
       title: title,

@@ -6,7 +6,7 @@ import {
   TitleIconCardOptions,
 } from "../../../styles/createtour/createtour";
 import { useStepContext } from "../context/ui/useStepContext";
-import { Box, Card, Grid, Snackbar } from "@mui/material";
+import { Box, Card, Grid } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { DataSelectCard, StateTour } from "../types/index.t";
@@ -21,7 +21,7 @@ const TransportType: React.FC = () => {
   const handleCardClick = (data: DataSelectCard) => {
     setSelectedCards((prevSelectedCards) => {
       if (
-        prevSelectedCards.length === 5 &&
+        prevSelectedCards.length === 4 &&
         !prevSelectedCards.includes(data.id)
       ) {
         setOpenSnackbar(true);
@@ -64,7 +64,7 @@ const TransportType: React.FC = () => {
       <SnackbarNoti
         open={openSnackbar}
         onClose={handleCloseSnackbar}
-        message="Please only select a maximum of 5 transports"
+        message="Please only select a maximum of 4 transports"
         actionButtonLabel="UNDO"
         onActionButtonClick={handleUndoButtonClick}
       />

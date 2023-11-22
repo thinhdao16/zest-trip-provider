@@ -63,7 +63,6 @@ function BillingDetail() {
         const diffInDays = today.diff(bookedDates, "day");
         return diffInDays >= 0 && diffInDays < 7;
       });
-
       recentBookings?.forEach((booking) => {
         const dayOfWeek = dayjs(booking.updated_at).format("ddd");
         const propertyValue = parseInt(booking[propertyName] || "0");
@@ -72,6 +71,7 @@ function BillingDetail() {
           totalByDay[targetDay] = (totalByDay[targetDay] || 0) + propertyValue;
         }
       });
+
       return totalByDay[targetDay] || 0;
     }
 
@@ -100,23 +100,24 @@ function BillingDetail() {
         const bookedDate = dayjs(booking.updated_at);
         const startDateObj = dayjs(startDate).subtract(1, "day");
         const endDateObj = dayjs(endDate).add(1, "day");
-        console.log(endDateObj.format("YYYY-MM-DD"));
-
         return (
           bookedDate.isAfter(startDateObj, "day") &&
           bookedDate.isBefore(endDateObj, "day")
         );
       });
-
       recentBookings?.forEach((booking) => {
         const dayOfMonth = dayjs(booking.updated_at).format("D");
         const propertyValue = parseInt(booking[propertyName] || "0");
-
         totalByWeek[dayOfMonth] =
           (totalByWeek[dayOfMonth] || 0) + propertyValue;
       });
-      // console.log(recentBookings);
-      return totalByWeek;
+
+      const total = Object.values(totalByWeek).reduce(
+        (acc, value) => acc + value,
+        0
+      );
+
+      return total;
     }
 
     return 0;
@@ -147,8 +148,13 @@ function BillingDetail() {
   const formattedLabels = lableWeeks.map((week) => {
     const formattedStart = dayjs(week.start).format("YYYY-MM-DD");
     const formattedEnd = dayjs(week.end).format("YYYY-MM-DD");
-
     return { start: formattedStart, end: formattedEnd };
+  });
+
+  const formattedLabelDayMonth = formattedLabels.map((week) => {
+    const startFormatted = dayjs(week.start).format("MM/DD");
+    const endFormatted = dayjs(week.end).format("MM/DD");
+    return `${startFormatted} - ${endFormatted}`;
   });
 
   const data = {
@@ -199,7 +205,7 @@ function BillingDetail() {
       },
       title: {
         display: true,
-        text: "Chart.js Bar Chart",
+        text: "Weeekly Activity",
       },
     },
   };
@@ -263,7 +269,7 @@ function BillingDetail() {
     },
   };
   const dataWeek = {
-    labels: formattedLabels,
+    labels: formattedLabelDayMonth,
     datasets: [
       {
         label: "Paid Price",
@@ -273,7 +279,7 @@ function BillingDetail() {
             booking,
             "",
             "paid_price",
-            "chart_weeks",
+            "chart_week",
             day?.start,
             day?.end
           );
@@ -287,7 +293,7 @@ function BillingDetail() {
             booking,
             "",
             "original_price",
-            "chart_weeka",
+            "chart_week",
             day?.start,
             day?.end
           )
@@ -301,7 +307,7 @@ function BillingDetail() {
             booking,
             "",
             "refund_amount",
-            "chart_weeka",
+            "chart_week",
             day?.start,
             day?.end
           )
@@ -322,26 +328,19 @@ function BillingDetail() {
       },
     },
   };
-  console.log(
-    calculateTotalByDay(
-      booking,
-      "",
-      "paid_price",
-      "chart_week",
-      "2023-11-16",
-      "2023-11-16"
-    )
-  );
+  console.log(formattedLabelDayMonth);
+  // console.log(
+  //   calculateTotalByDay(
+  //     booking,
+  //     "",
+  //     "paid_price",
+  //     "chart_week",
+  //     "2023-11-19",
+  //     "2023-11-19"
+  //   )
+  // );
   return (
     <div className="my-8">
-      <Bar options={optionWeeks} data={dataWeek} />
-      <div>
-        {lableWeeks.map((week, index) => (
-          <div key={index}>
-            {week.start.format("YYYY-MM-DD")} to {week.end.format("YYYY-MM-DD")}
-          </div>
-        ))}
-      </div>
       <div className="grid grid-cols-12 gap-8">
         <div className=" col-span-6">
           <p className=" text-lg font-medium pb-2">Billing Details</p>
@@ -349,20 +348,22 @@ function BillingDetail() {
           <div className="p-4 bg-white rounded-lg shadow-custom-card-mui">
             <div className="grid grid-cols-3 gap-4">
               <div>
-                <span className="font-medium block">Paid Price</span>
+                <span className="font-medium block">Paid price</span>
                 <span>{formatNumber(resultPaidPrice)}</span>
               </div>
               <div>
-                <span className="font-medium block">Original Price</span>
+                <span className="font-medium block">Original price</span>
                 <span>{formatNumber(resultOriginalPrice)}</span>
               </div>{" "}
               <div>
-                <span className="font-medium block">Refund Amount</span>
+                <span className="font-medium block">Refund amount</span>
                 <span className="">{formatNumber(resultRefundAmount)}</span>
               </div>
               <div>
-                <span className="font-medium block">Amount</span>
-                <span className="">{formatNumber(300000)}</span>
+                <span className="font-medium block">Recive amount paid</span>
+                <span className="">
+                  {formatNumber((resultPaidPrice * 70) / 100)}
+                </span>
               </div>
             </div>
             <div className="mt-4">
@@ -386,6 +387,24 @@ function BillingDetail() {
               <span>{formatNumber(9000000)}</span>
             </div>
             <Bar options={options} data={data} />
+          </div>
+        </div>
+        <div className=" col-span-6">
+          <p className=" text-lg font-medium pb-2">Overview</p>
+          <div className="p-4 bg-white rounded-lg shadow-custom-card-mui flex flex-col gap-3">
+            <div className="flex justify-between">
+              <span className="font-medium">Current Balance</span>
+              <span>{formatNumber(9000000)}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="font-medium">Today Paid</span>
+              <span>{formatNumber(9000000)}</span>
+            </div>{" "}
+            <div className="flex justify-between">
+              <span className="font-medium">Today Deposit</span>
+              <span>{formatNumber(9000000)}</span>
+            </div>
+            <Bar options={optionWeeks} data={dataWeek} />
           </div>
         </div>
       </div>

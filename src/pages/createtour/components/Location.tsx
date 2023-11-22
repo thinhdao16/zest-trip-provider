@@ -7,30 +7,17 @@ import {
   CreateTitleNullDes,
 } from "../../../styles/createtour/createtour";
 import { useStepContext } from "../context/ui/useStepContext";
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { GoLocation } from "react-icons/go";
 import { BASE_URL } from "../../../store/apiInterceptors";
-import {
-  Button,
-  FormControl,
-  IconButton,
-  MenuItem,
-  Select,
-  Snackbar,
-} from "@mui/material";
+import { FormControl, MenuItem, Select } from "@mui/material";
 import { FaStaylinked } from "react-icons/fa6";
-
-import GoogleMapReact from "google-map-react";
-import { IoMdClose } from "react-icons/io";
 
 const Location: React.FC = () => {
   const { currentStep, updateFormValues, formValues } = useStepContext();
 
   const [addressName, setAddressName] = useState("");
 
-  const [countries, setCountries] = useState([]);
-
-  const [selectedCountry, setSelectedCountry] = useState("");
   const [addressProvince, setAddressProvince] = useState<any>();
 
   const [addressDistrict, setAddressDistrict] = useState<any>();
@@ -42,52 +29,20 @@ const Location: React.FC = () => {
   const [addDis, setAddDis] = useState<any>();
 
   const [addWard, setAddWard] = useState<any>();
-  //location start
-  const [addressNameStart, setAddressNameStart] = useState("");
-  const [addressProvinceStart, setAddressProvinceStart] = useState<any>();
-
-  const [addressDistrictStart, setAddressDistrictStart] = useState<any>();
-
-  const [addressWardStart, setAddressWardStart] = useState<any>();
-
-  const [addProStart, setAddProStart] = useState<any>();
-
-  const [addDisStart, setAddDisStart] = useState<any>();
-
-  const [addWardStart, setAddWardStart] = useState<any>();
-
-  const [coordinates, setCoordinates] = React.useState<
-    | {
-        latitude: number;
-        longitude: number;
-      }
-    | any
-  >(null);
 
   const [selectedData, setSelectedData] = useState<any>();
 
   useEffect(() => {
-    fetch("https://restcountries.com/v3.1/all")
-      .then((response) => response.json())
-      .then((data) => {
-        const countryNames = data.map((country: any) => country.name.common);
-        setCountries(countryNames);
-      })
-      .catch((error) => console.error("Lỗi khi lấy danh sách nước: ", error));
-
     axios
       .get(`${BASE_URL}/resource/province/all`)
       .then((response: any) => {
         setAddressProvince(response.data.data);
-        setAddressProvinceStart(response.data.data);
       })
       .catch((error) => {
         console.log(error);
       });
   }, []);
-  const handleCountryChange = (event: any) => {
-    setSelectedCountry(event.target.value);
-  };
+
   useEffect(() => {
     updateFormValues(3, {
       Location: {
@@ -95,10 +50,10 @@ const Location: React.FC = () => {
         address_province: addPro,
         address_district: addDis,
         address_ward: addWard,
-        address_country: selectedCountry,
+        address_country: "Việt Nam",
       },
     });
-  }, [addressName, addPro, addWard, selectedCountry, addDis, selectedData]);
+  }, [addressName, addPro, addWard, addDis, selectedData]);
 
   const handleFormChange = (value: string) => {
     setAddressName(value);
@@ -132,33 +87,6 @@ const Location: React.FC = () => {
         setAddWard(data);
       }
     }
-    if (field === "locationStart") {
-      if (key === "address_province") {
-        axios
-          .get(`${BASE_URL}/resource/district/provinceCode/${data?.code}`)
-          .then((response) => {
-            setAddressDistrictStart(response.data.data);
-          })
-          .catch((error) => {
-            console.error("Lỗi khi gọi API:", error);
-          });
-        setAddProStart(data);
-      }
-      if (key === "address_district") {
-        axios
-          .get(`${BASE_URL}/resource/ward/districtCode/${data?.code}`)
-          .then((response) => {
-            setAddressWardStart(response.data.data);
-          })
-          .catch((error) => {
-            console.error("Lỗi khi gọi API:", error);
-          });
-        setAddDisStart(data);
-      }
-      if (key === "address_ward") {
-        setAddWardStart(data);
-      }
-    }
   };
   if (currentStep !== 6) {
     return null;
@@ -178,21 +106,13 @@ const Location: React.FC = () => {
           <BannerMapContainer>
             <div className="text-black gap-y-3 grid ">
               <div>
-                <p className="font-medium mb-1 ">Country/region</p>
+                <p className="font-medium mb-1">Country Name</p>
                 <div className="relative">
                   <GoLocation className="absolute top-4 left-2" />
-                  <select
-                    className="w-full shadow-custom-card-mui rounded-lg py-3 pl-8 focus:outline-1 focus:outline-navy-blue hover:border-navy-blue border border-gray-400  "
-                    value={selectedCountry || ""}
-                    onChange={handleCountryChange}
-                  >
-                    <option value="">Choose a country</option>
-                    {countries.map((country, index) => (
-                      <option key={index} value={country}>
-                        {country}
-                      </option>
-                    ))}
-                  </select>
+
+                  <div className="bg-white w-full shadow-custom-card-mui rounded-lg py-3 pl-8 focus:outline-1 focus:outline-navy-blue hover:border-navy-blue  border border-gray-400 ">
+                    Việt Nam
+                  </div>
                 </div>
               </div>
               <div>

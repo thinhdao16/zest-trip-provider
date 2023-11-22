@@ -1,3 +1,4 @@
 export const formatNumber = (number: number): string => {
-  return number?.toLocaleString("en-US");
+  const formattedNumber = number?.toLocaleString("en-US");
+  return formattedNumber ? `${formattedNumber}${" "}đ` : ""; // Thêm 'đ' nếu giá trị được định dạng, ngược lại trả về chuỗi trống.
 };
