@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BannerPageList } from "../../../styles/global/StyleGlobal";
 import { Box, Breadcrumbs, Grid } from "@mui/material";
 import { Link } from "react-router-dom";
@@ -6,8 +6,12 @@ import { AiFillHome } from "react-icons/ai";
 import { FaUserLarge, FaWallet } from "react-icons/fa6";
 import { DetailAccountSettings } from "../../../components/accountSettings/DetailAccountSettings";
 import { useSelector } from "react-redux";
+import { AppDispatch } from "../../../store/redux/store";
+import { useDispatch } from "react-redux";
+import { getPersonalInfo } from "../../../store/redux/silce/authSilce";
 
 function PersonalInfo() {
+  const dispatch: AppDispatch = useDispatch();
   function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     event.preventDefault();
     console.info("You clicked a breadcrumb.");
@@ -29,9 +33,20 @@ function PersonalInfo() {
   const handleCancel = () => {
     setIsEditing(false);
   };
-  const handleEditLegalName = (e: any) => {
+  const handleEditLegalName = (e: string) => {
     setEditedValue(e);
   };
+  useEffect(() => {
+    dispatch(getPersonalInfo());
+  }, [dispatch]);
+  const fieldPerson = [
+    "Full name",
+    "Phone",
+    "Email",
+    "Company name",
+    "Description",
+    "Tax code",
+  ];
   return (
     <React.Fragment>
       <div>

@@ -43,7 +43,6 @@ const FormModal: React.FC<FormModalProps> = ({
   const [title, setTitle] = useState("");
   const dayModal = useMemo(() => (day !== undefined ? day : 0), [day]);
   const [formEntries, setFormEntries] = useState<BoxData[]>([]);
-  console.log(formEntries);
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFormData(event.target.value);
   };
