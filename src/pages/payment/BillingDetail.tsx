@@ -98,16 +98,16 @@ function BillingDetail() {
     if (field === "chart_week") {
       const recentBookings = bookings?.filter((booking) => {
         const bookedDate = dayjs(booking.updated_at);
-        const startDateObj = dayjs(startDate);
-        const endDateObj = dayjs(endDate);
+        const startDateObj = dayjs(startDate).subtract(1, "day");
+        const endDateObj = dayjs(endDate).add(1, "day");
+        console.log(endDateObj.format("YYYY-MM-DD"));
 
         return (
-          (bookedDate.isAfter(startDateObj, "day") ||
-            bookedDate.isSame(startDateObj, "day")) &&
-          (bookedDate.isBefore(endDateObj, "day") ||
-            bookedDate.isSame(endDateObj, "day"))
+          bookedDate.isAfter(startDateObj, "day") &&
+          bookedDate.isBefore(endDateObj, "day")
         );
       });
+
       recentBookings?.forEach((booking) => {
         const dayOfMonth = dayjs(booking.updated_at).format("D");
         const propertyValue = parseInt(booking[propertyName] || "0");
@@ -115,7 +115,7 @@ function BillingDetail() {
         totalByWeek[dayOfMonth] =
           (totalByWeek[dayOfMonth] || 0) + propertyValue;
       });
-      console.log(totalByWeek);
+      // console.log(recentBookings);
       return totalByWeek;
     }
 
@@ -267,16 +267,17 @@ function BillingDetail() {
     datasets: [
       {
         label: "Paid Price",
-        data: formattedLabels.map((day) =>
-          calculateTotalByDay(
+        data: formattedLabels.map((day) => {
+          // console.log(day);
+          return calculateTotalByDay(
             booking,
             "",
             "paid_price",
-            "chart_week",
+            "chart_weeks",
             day?.start,
             day?.end
-          )
-        ),
+          );
+        }),
         backgroundColor: "rgba(255, 99, 132, 0.5)",
       },
       {
@@ -286,7 +287,7 @@ function BillingDetail() {
             booking,
             "",
             "original_price",
-            "chart_month",
+            "chart_weeka",
             day?.start,
             day?.end
           )
@@ -300,7 +301,7 @@ function BillingDetail() {
             booking,
             "",
             "refund_amount",
-            "chart_month",
+            "chart_weeka",
             day?.start,
             day?.end
           )
@@ -321,18 +322,19 @@ function BillingDetail() {
       },
     },
   };
-  // console.log(
-  //   calculateTotalByDay(
-  //     booking,
-  //     "",
-  //     "paid_price",
-  //     "chart_week",
-  //     "2023-11-18",
-  //     "2023-11-20"
-  //   )
-  // );
+  console.log(
+    calculateTotalByDay(
+      booking,
+      "",
+      "paid_price",
+      "chart_week",
+      "2023-11-16",
+      "2023-11-16"
+    )
+  );
   return (
     <div className="my-8">
+      <Bar options={optionWeeks} data={dataWeek} />
       <div>
         {lableWeeks.map((week, index) => (
           <div key={index}>
