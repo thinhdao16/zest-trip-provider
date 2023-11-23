@@ -10,6 +10,7 @@ import { DataContext } from "../../store/dataContext/DataContext.tsx";
 import { AppDispatch } from "../../store/redux/store.ts";
 import { useDispatch } from "react-redux";
 import { getPersonalInfo } from "../../store/redux/silce/authSilce.ts";
+import { MdOutlineWorkspacePremium } from "react-icons/md";
 
 function Sidebar({ ...props }) {
   const navigation = useNavigate();
@@ -18,12 +19,12 @@ function Sidebar({ ...props }) {
 
   const [, setAnchorEl] = useState<null | HTMLElement>(null);
   const [menus] = useState(initMenus);
-
   const handleLogout = () => {
-    setAnchorEl(null);
-    localStorage.clear();
-    setRefeshLogin((prev) => !prev);
-    navigation("/login");
+    // setAnchorEl(null);
+    // localStorage.clear();
+    // setRefeshLogin((prev) => !prev);
+    // navigation("/promotion");
+    window.open("/promotion", "_blank");
   };
   useEffect(() => {
     dispatch(getPersonalInfo());
@@ -40,10 +41,11 @@ function Sidebar({ ...props }) {
           <div className="pt-2 border-t border-gray-300">
             <div className="px-8 py-4">
               <button
-                className=" py-3.5 px-5 font-medium text-navy-blue w-full rounded-xl flex items-center  border border-navy-blue gap-3 hover:bg-navy-blue hover:text-white"
+                className=" py-2 px-2 font-medium text-white bg-navy-blue w-full rounded-xl flex items-center  border border-navy-blue gap-3 hover:bg-white hover:text-navy-blue"
                 onClick={() => handleLogout()}
               >
-                <FontAwesomeIcon icon={faSignOut}></FontAwesomeIcon> Logout
+                <MdOutlineWorkspacePremium className="w-4 h-4" /> Explore
+                Promotions
               </button>
             </div>
           </div>

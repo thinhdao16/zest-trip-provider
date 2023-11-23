@@ -1,4 +1,3 @@
-import { faPage4 } from "@fortawesome/free-brands-svg-icons";
 import {
   faTachometer,
   faList,
@@ -7,6 +6,7 @@ import {
   faBookmark,
   faCalendar,
   faTicket,
+  faCreditCard,
 } from "@fortawesome/free-solid-svg-icons";
 import { IconDefinition } from "@fortawesome/fontawesome-common-types";
 
@@ -72,9 +72,10 @@ const initMenu: MenuItem[] = [
   {
     label: "Payment",
     path: "/payment",
-    icon: faTicket,
+    icon: faCreditCard,
     name: "Payment",
   },
+
   {
     label: "Otentikasi",
   },

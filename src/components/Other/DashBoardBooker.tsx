@@ -64,7 +64,6 @@ function DashBoardBooker() {
   useEffect(() => {
     dispatch(getBooking());
   }, [dispatch]);
-  console.log(booking);
   const [expandedItems, setExpandedItems] = useState<any>({});
   const toggleContentVisibility = (index: number) => {
     const newExpandedItems = { ...expandedItems };
