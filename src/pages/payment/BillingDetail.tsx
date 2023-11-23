@@ -187,7 +187,7 @@ function BillingDetail() {
           calculateTotalByDay(
             booking,
             day,
-            "refund_amount",
+            "refund_ammount",
             "chart_day",
             "0",
             "0"
@@ -246,7 +246,7 @@ function BillingDetail() {
           calculateTotalByDay(
             booking,
             day,
-            "refund_amount",
+            "refund_ammount",
             "chart_month",
             "0",
             "0"
@@ -306,7 +306,7 @@ function BillingDetail() {
           calculateTotalByDay(
             booking,
             "",
-            "refund_amount",
+            "refund_ammount",
             "chart_week",
             day?.start,
             day?.end
@@ -328,7 +328,6 @@ function BillingDetail() {
       },
     },
   };
-  console.log(formattedLabelDayMonth);
   // console.log(
   //   calculateTotalByDay(
   //     booking,

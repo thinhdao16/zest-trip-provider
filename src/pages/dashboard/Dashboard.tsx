@@ -6,6 +6,7 @@ import DashBoardOverView from "../../components/Other/DashBoardOverview";
 import DashBoardTrip from "../../components/Other/DashBoardTrip";
 import DashboardInfo from "./DashboardInfo";
 import DashBoardBooker from "../../components/Other/DashBoardBooker";
+import DashboardChart from "../../components/Other/Chart/DashBoardChart";
 
 function Dashboard() {
   const avatar =
@@ -26,14 +27,16 @@ function Dashboard() {
                   user={{ name: "Hoki Teguh Oktian" }}
                 />
                 {/* <ActionDashBoard /> */}
-                <Grid container spacing={2}>
+                {/* <Grid container spacing={2}>
                   <Grid item xs={12} sm={6}>
                     <DashBoardOverView />
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <DashBoardTrip />
                   </Grid>
-                </Grid>
+                </Grid> */}
+                <DashboardChart />
+
                 {/* <div className="flex">
                   {dataOS?.map((data: any, index) => (
                     <ScrolledCard key={index} data={data} />
