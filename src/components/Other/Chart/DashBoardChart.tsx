@@ -1,6 +1,8 @@
 import dayjs from "dayjs";
 import AppWebsiteVisits from "./app-website-visits";
 import { useSelector } from "react-redux";
+import { RiMoneyDollarCircleLine } from "react-icons/ri";
+import { IoMdPerson } from "react-icons/io";
 
 interface Booking {
   updated_at: string;
@@ -101,7 +103,7 @@ function DashboardChart() {
         {/* Main Content */}
         <div className="text-xl font-medium check mb-4">Revenue analytics</div>
         <div className="grid grid-cols-12 gap-4">
-          <div className="col-span-9">
+          <div className="col-span-10">
             <AppWebsiteVisits
               title="Weekly Activity"
               chart={{
@@ -156,7 +158,33 @@ function DashboardChart() {
               }}
             />
           </div>
-          <div className="col-span-3">abc</div>
+          <div className="col-span-2">
+            <div className="">
+              <div className="bg-white shadow-custom-card-mui rounded-t-xl p-4 pb-12 pt-6">
+                <div className="flex gap-3 items-end">
+                  <div className="flex flex-col gap-1">
+                    <span className="font-medium text-2xl">40</span>
+                    <p className="font-medium text-sm">Payment</p>
+                  </div>
+                  <div>
+                    <RiMoneyDollarCircleLine className="w-12 h-12 text-navy-blue" />
+                  </div>
+                </div>
+              </div>
+              <hr className=" h-h-2" />
+              <div className="bg-white shadow-custom-card-mui rounded-b-xl p-4 pb-14 pt-6">
+                <div className="flex gap-3 items-end">
+                  <div className="flex flex-col gap-1">
+                    <span className="font-medium text-2xl">40</span>
+                    <p className="font-medium text-sm">Person</p>
+                  </div>
+                  <div>
+                    <IoMdPerson className="w-12 h-12 text-navy-blue" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </main>
     </>
