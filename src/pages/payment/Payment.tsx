@@ -1,7 +1,6 @@
 import Navbar from "../../components/Navbar/Index";
-import { AiFillFilter, AiOutlinePlusCircle } from "react-icons/ai";
+import { AiFillFilter } from "react-icons/ai";
 import { RiSearchLine } from "react-icons/ri";
-import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { AppDispatch } from "../../store/redux/store";
@@ -19,7 +18,6 @@ function Payment() {
 
   const { booking } = useSelector((state: any) => state.booking);
 
-  console.log(booking);
   const toggleContentVisibility = (index: number) => {
     const newExpandedItems = { ...expandedItems };
     newExpandedItems[index] = !newExpandedItems[index];
@@ -70,17 +68,6 @@ function Payment() {
                   <AiFillFilter className="absolute top-2 left-2" />
                   Filter
                 </button>
-              </div>
-              <div>
-                <Link to="/voucher-create">
-                  <button
-                    type="button"
-                    className="relative bg-navy-blue text-white shadow-custom-card-mui py-1 pr-2 pl-8 rounded-md  border"
-                  >
-                    <AiOutlinePlusCircle className="absolute top-2 left-2" />
-                    New Voucher
-                  </button>
-                </Link>
               </div>
             </div>
           </div>

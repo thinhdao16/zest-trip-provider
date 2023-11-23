@@ -105,27 +105,22 @@ function BillingDetail() {
           bookedDate.isBefore(endDateObj, "day")
         );
       });
+
       recentBookings?.forEach((booking) => {
         const dayOfMonth = dayjs(booking.updated_at).format("D");
-        const propertyValue = parseInt(booking[propertyName] || "0");
+        const propertyValue = parseInt(booking[propertyName] || "0", 10);
         totalByWeek[dayOfMonth] =
           (totalByWeek[dayOfMonth] || 0) + propertyValue;
       });
-
       const total = Object.values(totalByWeek).reduce(
         (acc, value) => acc + value,
         0
       );
-
       return total;
     }
-
     return 0;
   }
 
-  const labelWeeks = Array.from({ length: 7 }, (_, i) =>
-    dayjs().subtract(i, "day").format("ddd")
-  ).reverse();
   const labelMonths = Array.from({ length: 3 }, (_, i) =>
     dayjs().subtract(i, "month").format("MMM")
   ).reverse();
@@ -136,9 +131,12 @@ function BillingDetail() {
     const thisSunday = currentDate.subtract(currentDayOfWeek, "day");
 
     const weeks = Array.from({ length: 7 }, (_, weekIndex) => {
-      const weekStart = thisSunday.subtract(weekIndex + 1, "week");
+      const weekStart = thisSunday.subtract(weekIndex, "week");
       const weekEnd = weekStart.add(6, "day");
-      return { start: weekStart, end: weekEnd };
+      const endOfThisWeek = currentDate.isBefore(weekEnd)
+        ? currentDate
+        : weekEnd;
+      return { start: weekStart, end: endOfThisWeek };
     });
 
     return weeks.reverse();
@@ -157,58 +155,6 @@ function BillingDetail() {
     return `${startFormatted} - ${endFormatted}`;
   });
 
-  const data = {
-    labels: labelWeeks,
-    datasets: [
-      {
-        label: "Paid Price",
-        data: labelWeeks.map((day) =>
-          calculateTotalByDay(booking, day, "paid_price", "chart_day", "0", "0")
-        ),
-        backgroundColor: "rgba(255, 99, 132, 0.5)",
-      },
-      {
-        label: "Original Price",
-        data: labelWeeks.map((day) =>
-          calculateTotalByDay(
-            booking,
-            day,
-            "original_price",
-            "chart_day",
-            "0",
-            "0"
-          )
-        ),
-        backgroundColor: "rgba(53, 162, 235, 0.5)",
-      },
-      {
-        label: "Refund Amount",
-        data: labelWeeks.map((day) =>
-          calculateTotalByDay(
-            booking,
-            day,
-            "refund_ammount",
-            "chart_day",
-            "0",
-            "0"
-          )
-        ),
-        backgroundColor: "black",
-      },
-    ],
-  };
-  const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: "top" as const,
-      },
-      title: {
-        display: true,
-        text: "Weeekly Activity",
-      },
-    },
-  };
   const dataMonth = {
     labels: labelMonths,
     datasets: [
@@ -274,7 +220,6 @@ function BillingDetail() {
       {
         label: "Paid Price",
         data: formattedLabels.map((day) => {
-          // console.log(day);
           return calculateTotalByDay(
             booking,
             "",
@@ -328,6 +273,19 @@ function BillingDetail() {
       },
     },
   };
+  const totalPaidWeeks = formattedLabels
+    .map((day) => {
+      return calculateTotalByDay(
+        booking,
+        "",
+        "paid_price",
+        "chart_week",
+        day?.start,
+        day?.end
+      );
+    })
+    .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+  console.log(totalPaidWeeks);
   // console.log(
   //   calculateTotalByDay(
   //     booking,
@@ -372,32 +330,14 @@ function BillingDetail() {
         </div>
         <div className=" col-span-6">
           <p className=" text-lg font-medium pb-2">Overview</p>
-          <div className="p-4 bg-white rounded-lg shadow-custom-card-mui flex flex-col gap-3">
+          <div className="p-4 bg-white rounded-lg shadow-custom-card-mui flex flex-col gap-3 pb-9">
             <div className="flex justify-between">
               <span className="font-medium">Current Balance</span>
               <span>{formatNumber(9000000)}</span>
             </div>
             <div className="flex justify-between">
-              <span className="font-medium">Today Paid</span>
-              <span>{formatNumber(9000000)}</span>
-            </div>{" "}
-            <div className="flex justify-between">
-              <span className="font-medium">Today Deposit</span>
-              <span>{formatNumber(9000000)}</span>
-            </div>
-            <Bar options={options} data={data} />
-          </div>
-        </div>
-        <div className=" col-span-6">
-          <p className=" text-lg font-medium pb-2">Overview</p>
-          <div className="p-4 bg-white rounded-lg shadow-custom-card-mui flex flex-col gap-3">
-            <div className="flex justify-between">
-              <span className="font-medium">Current Balance</span>
-              <span>{formatNumber(9000000)}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="font-medium">Today Paid</span>
-              <span>{formatNumber(9000000)}</span>
+              <span className="font-medium"> Paid within 7 weeks</span>
+              <span>{formatNumber(totalPaidWeeks)}</span>
             </div>{" "}
             <div className="flex justify-between">
               <span className="font-medium">Today Deposit</span>
