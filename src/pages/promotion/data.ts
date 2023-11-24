@@ -11,6 +11,7 @@ export interface DataPromotionChoose {
     title: string;
     description?: string;
   };
+  type: string;
 }
 
 export const dataPromotionChoose: DataPromotionChoose[] = [
@@ -31,6 +32,7 @@ export const dataPromotionChoose: DataPromotionChoose[] = [
     policy: {
       title: "Terms and conditions apply.",
     },
+    type: "only",
   },
   {
     id: 1,
@@ -52,6 +54,7 @@ export const dataPromotionChoose: DataPromotionChoose[] = [
       description:
         "A free month is not available to those who have tried the Premium plan.",
     },
+    type: "many",
   },
   {
     id: 2,
@@ -74,5 +77,6 @@ export const dataPromotionChoose: DataPromotionChoose[] = [
       description:
         "The package is only for students at colleges and universities who have not tried the Premium package. After the trial period, the fee will be 29,500 VND/month.",
     },
+    type: "many",
   },
 ];
