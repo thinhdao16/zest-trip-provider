@@ -2,8 +2,6 @@ import DashboardHeader from "../../components/Other/DashboardHeader";
 import { useOutletContext } from "react-router-dom";
 import "../../App.css";
 import { Grid } from "@mui/material";
-import DashBoardOverView from "../../components/Other/DashBoardOverview";
-import DashBoardTrip from "../../components/Other/DashBoardTrip";
 import DashboardInfo from "./DashboardInfo";
 import DashBoardBooker from "../../components/Other/DashBoardBooker";
 import DashboardChart from "../../components/Other/Chart/DashBoardChart";

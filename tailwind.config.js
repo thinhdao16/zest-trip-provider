@@ -18,7 +18,9 @@ export default {
       },
       colors: {
         // Thêm màu tùy chỉnh ở đây
-        "navy-blue": "#043730",
+        // "navy-blue": "#043730",
+        "navy-blue": "#05445E",
+
         "blue-grotto": "#189AB4",
         "blue-green": "#75E6DA",
         "baby-blue": "#D4F1F4",

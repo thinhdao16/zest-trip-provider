@@ -16,7 +16,7 @@ export const getReview = createAsyncThunk("review/getReview", async () => {
       `${BASE_URL}/review/provider/${idUser}`,
       {}
     );
-    toast.success("This is review!");
+    // toast.success("This is review!");
     return response.data.data;
   } catch (error) {
     toast.error("Failed to get review!");
@@ -58,6 +58,18 @@ const reviewSlice = createSlice({
         state.review = action.payload;
       })
       .addCase(getReview.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || null;
+      })
+      .addCase(replyReview.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(replyReview.fulfilled, (state) => {
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(replyReview.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || null;
       });

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   BannerContainer,
   CreateDescription,
@@ -7,6 +7,22 @@ import {
 import { useStepContext } from "../context/ui/useStepContext";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { GoLocation } from "react-icons/go";
+
+interface Ticket {
+  ageEnd: number;
+  ageStart: number;
+  max: number;
+  min: number;
+  price_range: {
+    id: number;
+    numberOfPeople: number;
+    numberOfPeopleAfter: number;
+    payoutPerPerson: number;
+    retailPrice: number;
+  }[];
+  role: string;
+  type: string;
+}
 
 const radioItems = [
   "Standard",
@@ -21,6 +37,18 @@ const Price: React.FC = () => {
   const { currentStep, updateFormValues } = useStepContext();
   const [selectedCountries, setSelectedCountries]: any = useState([]);
   const [dataTicket, setDataTicket]: any = useState([]);
+  const allDefaultTicketsHavePositivePrice = useMemo(() => {
+    return dataTicket?.every((ticket: Ticket) => {
+      if (ticket?.type === "DEFAULT") {
+        return ticket?.price_range?.every(
+          (price) => price?.retailPrice > 50000
+        );
+      } else {
+        return true;
+      }
+    });
+  }, [dataTicket]);
+
   const [selectedRadio, setSelectedRadio] = useState({
     children: radioItems[0],
     adults: radioItems[0],
@@ -94,6 +122,7 @@ const Price: React.FC = () => {
       payoutPerPerson: 0,
     },
   ];
+
   const ageDefault = { ageStart: "0", ageEnd: "99+" };
   const handleRadioChange = (groupName: string, selectedValue: string) => {
     setSelectedRadio((prevRadio) => ({
@@ -652,6 +681,11 @@ const Price: React.FC = () => {
                                 handleRetailPriceChange(e, form.id, "")
                               }
                             />
+                            {form.retailPrice <= 50000 && (
+                              <span className="text-red-700 text-xs block">
+                                Greater than 50000
+                              </span>
+                            )}
                           </div>
                           <div>
                             <p className="font-medium h-4 mb-2">Commission</p>
@@ -896,6 +930,7 @@ const Price: React.FC = () => {
 
                             <div>
                               <p className="font-medium">Retail price</p>
+
                               <input
                                 type="number"
                                 id="retailPriceChildren"
@@ -905,6 +940,11 @@ const Price: React.FC = () => {
                                   handleRetailPriceChange(e, form.id, "adult")
                                 }
                               />
+                              {form.retailPrice <= 50000 && (
+                                <span className="text-red-700 text-xs block">
+                                  Greater than 50000
+                                </span>
+                              )}
                             </div>
                             <div>
                               <p className="font-medium">Commission</p>
@@ -1106,6 +1146,11 @@ const Price: React.FC = () => {
                                   )
                                 }
                               />
+                              {form.retailPrice <= 50000 && (
+                                <span className="text-red-700 text-xs block">
+                                  Greater than 50000
+                                </span>
+                              )}
                             </div>
                             <div>
                               <p className="font-medium">Commission</p>

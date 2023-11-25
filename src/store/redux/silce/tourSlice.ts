@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 
 const initialState = {
   tours: [],
+  allTours: [],
   otherData: [],
   loading: false,
   error: null as string | null,
@@ -43,6 +44,24 @@ export const fetchTours = createAsyncThunk(
   }
 );
 
+export const getAllTours = createAsyncThunk("tour/getAllTours", async () => {
+  try {
+    const response = await axiosInstance.get(`${BASE_URL}/tour/provider`, {
+      params: {
+        limit: "5000",
+      },
+    });
+    if (response.status === 200) {
+      return response.data.data;
+    } else {
+      throw new Error("Failed to fetch tours");
+    }
+  } catch (error) {
+    console.log(error);
+    toast.error("Failed to fetch tours!");
+    throw new Error("Failed to fetch tours");
+  }
+});
 export const fetchTourDetail = createAsyncThunk(
   "tour/getDetailTour",
   async (index: string) => {
@@ -476,6 +495,19 @@ const tourSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchTours.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || null;
+      })
+      .addCase(getAllTours.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getAllTours.fulfilled, (state, action) => {
+        state.loading = false;
+        state.allTours = action.payload;
+        state.error = null;
+      })
+      .addCase(getAllTours.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || null;
       })

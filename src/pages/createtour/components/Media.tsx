@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   BannerContainer,
   BannerContentHaveImage,
@@ -24,7 +24,24 @@ type GalleryImage = {
 const Media: React.FC = () => {
   const { currentStep, updateFormValues } = useStepContext();
   const [selectedImages, setSelectedImages] = useState<GalleryImage[]>([]);
+  console.log(selectedImages);
+  const MAX_TOTAL_SIZE_MB = 8;
+  const MAX_TOTAL_SIZE_BYTES = MAX_TOTAL_SIZE_MB * 1024 * 1024; // Convert MB to bytes
+  const isTotalSizeValid = useMemo(() => {
+    const totalSizeBytes = selectedImages?.reduce((total, image: any) => {
+      const fileList = image?.file;
+      console.log(fileList);
+      let imageSize = 0;
+      for (let i = 0; i < fileList?.length; i++) {
+        imageSize += fileList[i].size || 0;
+      }
+      return total + imageSize;
+    }, 0);
 
+    return totalSizeBytes <= MAX_TOTAL_SIZE_BYTES;
+  }, [MAX_TOTAL_SIZE_BYTES, selectedImages]);
+
+  // console.log(isTotalSizeValid());
   const handleDragEnd = (result: DropResult) => {
     if (!result.destination) return;
 
@@ -103,13 +120,12 @@ const Media: React.FC = () => {
     const updatedImages = selectedImages.filter((image) => image.id !== id);
     setSelectedImages(updatedImages);
   };
-  const handleConfirm = () => {
-    if (selectedImages.length > 1) {
-      const updatedImages = [...selectedImages.slice(1), selectedImages[0]];
-      setSelectedImages(updatedImages);
-    }
-    // Thêm logic xác nhận khác nếu cần
-  };
+  // const handleConfirm = () => {
+  //   if (selectedImages.length > 1) {
+  //     const updatedImages = [...selectedImages.slice(1), selectedImages[0]];
+  //     setSelectedImages(updatedImages);
+  //   }
+  // };
   useEffect(() => {
     updateFormValues(7, { Media: selectedImages });
   }, [selectedImages]);
@@ -132,7 +148,11 @@ const Media: React.FC = () => {
             <CreateDescription>
               Choose your photo for the tour
             </CreateDescription>
-
+            {!isTotalSizeValid && (
+              <span>
+                The total number of photos has exceeded the allowed size{" "}
+              </span>
+            )}
             {selectedImages.length < 1 ? (
               <Box
                 className="shadow-custom-card-mui rounded-lg"

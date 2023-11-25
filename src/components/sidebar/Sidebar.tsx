@@ -23,8 +23,8 @@ function Sidebar({ ...props }) {
     // setAnchorEl(null);
     // localStorage.clear();
     // setRefeshLogin((prev) => !prev);
-    // navigation("/promotion");
-    window.open("/promotion", "_blank");
+    navigation("/promotion");
+    // window.open("/promotion", "_blank");
   };
   useEffect(() => {
     dispatch(getPersonalInfo());

@@ -27,7 +27,7 @@ function Payment() {
   useEffect(() => {
     dispatch(getBooking()).then((response) => {
       if (getBooking.fulfilled.match(response)) {
-        toast.success("This is payment!");
+        // toast.success("This is payment!");
       }
     });
   }, [dispatch]);

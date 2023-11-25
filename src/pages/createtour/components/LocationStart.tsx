@@ -57,7 +57,8 @@ const LocationStart: React.FC = () => {
   const [selectedDataWardStart, setSelectedDataWardStart] = useState<any>();
 
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
-
+  // console.log(openSnackbar);
+  const [checkLocation, setCheckLocation] = useState(false);
   const [openLoading, setOpenLoading] = useState(false);
 
   const [lat, setLat] = useState(
@@ -78,6 +79,7 @@ const LocationStart: React.FC = () => {
         address_country: "Việt Nam",
         lat_start: lat,
         lng_start: lng,
+        find_tour: checkLocation,
       },
     });
   }, [
@@ -154,6 +156,7 @@ const LocationStart: React.FC = () => {
         const longitude = parseFloat(response.data[0].lon);
         setCoordinates({ latitude, longitude });
         setOpenLoading(false);
+        setCheckLocation(true);
       } else {
         console.error("Address not found.");
         setOpenSnackbar(true);

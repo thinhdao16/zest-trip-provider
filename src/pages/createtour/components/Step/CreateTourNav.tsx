@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { useStepContext } from "../../context/ui/useStepContext";
 import { Box } from "@mui/system";
 import { Button } from "@mui/material";
@@ -64,7 +64,7 @@ function CreateTourNav() {
         !Array.isArray(item.price_range) ||
         typeof item.max !== "number"
       ) {
-        console.error("Invalid item or price_range structure.");
+        // console.error("Invalid item or price_range structure.");
         return false;
       }
       for (const priceRange of item.price_range) {
@@ -79,12 +79,23 @@ function CreateTourNav() {
 
   const isMaxValid = checkMaxForPriceRanges(formValues[6]?.ticket);
   console.log(formValues);
+  const allDefaultTicketsHavePositivePrice = useMemo(() => {
+    return formValues[6]?.ticket?.every((ticket: any) => {
+      if (ticket?.type === "DEFAULT") {
+        return ticket?.price_range?.every(
+          (price: { retailPrice: number }) => price?.retailPrice > 50000
+        );
+      } else {
+        return true;
+      }
+    });
+  }, [formValues]);
   const locationStart = `${formValues[9]?.LocationStart?.address_name}, ${formValues[9]?.LocationStart?.address_ward?.full_name},${formValues[9]?.LocationStart?.address_district?.full_name},${formValues[9]?.LocationStart?.address_province?.full_name},${formValues[9]?.LocationStart?.address_country}`;
   const handleCreateTourAndAvailability = () => {
     const formData = new FormData();
     const dataValueCreate = {
-      duration_day: 1,
-      duration_night: 1,
+      duration_day: formValues[4]?.DurationCheckIn[0][0]?.no,
+      duration_night: formValues[4]?.DurationCheckIn[0][1]?.no,
       name: formValues[8]?.Title[0],
       description: formValues[8]?.Title[1],
       footnote: "For any inquiries, feel free to contact us anytime!",
@@ -114,18 +125,18 @@ function CreateTourNav() {
           })),
         })
       ),
-      // departure_location: {
-      //   lat: formValues[9]?.LocationStart?.lat_start,
-      //   long: formValues[9]?.LocationStart?.lng_start,
-      //   zoom: "18z",
-      //   location: locationStart,
-      // },
       departure_location: {
-        lat: "10.8161456",
-        long: 106.6615997,
+        lat: formValues[9]?.LocationStart?.lat_start?.toString(),
+        long: formValues[9]?.LocationStart?.lng_start?.toString(),
         zoom: "18z",
-        location: "Tan Son Nhat AirPort, Ho Chi Minh city",
+        location: locationStart,
       },
+      // departure_location: {
+      //   lat: "10.8161456",
+      //   long: 106.6615997,
+      //   zoom: "18z",
+      //   location: "Tan Son Nhat AirPort, Ho Chi Minh city",
+      // },
       book_before: formValues[5]?.Capacity?.BookBefore,
       refund_before: formValues[5]?.Capacity?.RefundBefore,
       address_ward: formValues[3]?.Location.address_ward?.full_name,
@@ -253,7 +264,14 @@ function CreateTourNav() {
   };
   const constraintLength = () => {
     let classSkip = "no";
-
+    if (currentStep === 2) {
+      if (
+        formValues[0] !== undefined &&
+        formValues[0]?.TypeTour !== undefined
+      ) {
+        classSkip = "yes"; // Nếu điều kiện thỏa mãn, thì set thành "yes"
+      }
+    }
     if (currentStep === 3) {
       if (
         formValues[8].Title[0].length > 0 &&
@@ -279,6 +297,11 @@ function CreateTourNav() {
         formValues[3].Location.address_district?.full_name?.length > 0 &&
         formValues[3].Location.address_ward?.full_name?.length > 0
       ) {
+        classSkip = "yes"; // Nếu điều kiện thỏa mãn, thì set thành "yes"
+      }
+    }
+    if (currentStep === 7) {
+      if (formValues[9]?.LocationStart?.find_tour === true) {
         classSkip = "yes"; // Nếu điều kiện thỏa mãn, thì set thành "yes"
       }
     }
@@ -315,7 +338,11 @@ function CreateTourNav() {
       }
     }
     if (currentStep === 10) {
-      if (formValues[6]?.ticket?.length > 0 && isMaxValid) {
+      if (
+        formValues[6]?.ticket?.length > 0 &&
+        isMaxValid &&
+        allDefaultTicketsHavePositivePrice
+      ) {
         classSkip = "yes";
       }
     }
@@ -323,8 +350,6 @@ function CreateTourNav() {
       if (formValues[7].Media.length > 0) {
         classSkip = "yes"; // Nếu điều kiện thỏa mãn, thì set thành "yes"
       }
-    } else if (currentStep === 2 || currentStep === 7) {
-      classSkip = "yes"; // Nếu currentStep là 2, thì set thành "yes"
     }
 
     setLengthValue(classSkip);

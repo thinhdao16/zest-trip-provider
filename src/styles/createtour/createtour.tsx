@@ -205,7 +205,7 @@ export const CreateIconContent = styled(Box)(() => ({
 export const CreateDurationContent = styled(Box)(() => ({
   display: "block",
   // borderBottom: "1px solid #e0e0e0",
-  padding: "25px 0 25px 0",
+  padding: "10px 0 10px 0",
 }));
 
 export const CreateChooseContent = styled(Box)(() => ({

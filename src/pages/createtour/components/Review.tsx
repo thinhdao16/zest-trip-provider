@@ -247,13 +247,27 @@ const Review: React.FC = () => {
                     <div className="block ext-2xl border-l border-gray-300 border-solid bg-white shadow-custom-card-mui p-2 rounded-lg  ">
                       <p>{formValues?.[8]?.Title?.[1]}</p>
                     </div>
-                    <div className="flex items-center border-l border-solid border-gray-300 bg-white rounded-lg p-2 shadow-custom-card-mui">
-                      <AiOutlineFieldTime className="mr-2 " />
-                      <div>
-                        <p className="font-medium mb-1 text-lg">Duration</p>
-                        <p>{formValues?.[4]?.DurationCheckIn?.[0]?.[0]?.no}</p>
+                    <div className="grid grid-cols-2 gap-8">
+                      <div className="flex items-center border-l border-solid border-gray-300 bg-white rounded-lg p-2 shadow-custom-card-mui">
+                        <AiOutlineFieldTime className="mr-2 " />
+                        <div>
+                          <p className="font-medium mb-1 text-lg">Day</p>
+                          <p>
+                            {formValues?.[4]?.DurationCheckIn?.[0]?.[0]?.no}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-center border-l border-solid border-gray-300 bg-white rounded-lg p-2 shadow-custom-card-mui">
+                        <AiOutlineFieldTime className="mr-2 " />
+                        <div>
+                          <p className="font-medium mb-1 text-lg">Night</p>
+                          <p>
+                            {formValues?.[4]?.DurationCheckIn?.[0]?.[1]?.no}
+                          </p>
+                        </div>
                       </div>
                     </div>
+
                     <div className="flex items-center  border-l border-solid border-gray-300 bg-white rounded-lg p-2 shadow-custom-card-mui">
                       <FaLocationDot className="mr-2" />
                       <div className="block">
@@ -264,6 +278,31 @@ const Review: React.FC = () => {
                           {formValues[3].Location.address_district?.full_name},{" "}
                           {formValues[3].Location.address_province?.full_name},{" "}
                           {formValues[3].Location.address_country}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center  border-l border-solid border-gray-300 bg-white rounded-lg p-2 shadow-custom-card-mui">
+                      <FaLocationDot className="mr-2" />
+                      <div className="block">
+                        <p className="font-medium mb-1 text-lg"> Departual</p>
+                        <span className="flex flex-wrap">
+                          {formValues[3]?.LocationStart?.address_name},{" "}
+                          {
+                            formValues[3]?.LocationStart?.address_ward
+                              ?.full_name
+                          }
+                          ,{" "}
+                          {
+                            formValues[3]?.LocationStart?.address_district
+                              ?.full_name
+                          }
+                          ,{" "}
+                          {
+                            formValues[3]?.LocationStart?.address_province
+                              ?.full_name
+                          }
+                          , {formValues[3]?.LocationStart?.address_country}
                         </span>
                       </div>
                     </div>

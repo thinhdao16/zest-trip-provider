@@ -9,8 +9,6 @@ type RefeshTour = boolean;
 type RefeshTourDetail = boolean;
 
 interface AuthContextValue {
-  accessToken: string;
-  abc: string;
   refeshLogin: RefeshLogin | null;
   setRefeshLogin: React.Dispatch<React.SetStateAction<RefeshLogin | null>>;
   refeshTour: RefeshTour | null;
@@ -23,6 +21,8 @@ interface AuthContextValue {
   setDataManyBookFake: any;
   voucherView: any;
   setVoucherView: any;
+  loading: any;
+  setLoading: any;
 }
 
 export const DataContext = createContext<AuthContextValue>(
@@ -34,21 +34,18 @@ export function DataContextProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [, setUser] = useState<User | null>(null);
-  const [accessToken, setAccessToken] = useState("");
   const [refeshLogin, setRefeshLogin] = useState<RefeshLogin | null>(null);
   const [refeshTour, setRefeshTour] = useState<RefeshTour | null>(null);
   const [refreshTourDetail, setRefreshTourDetail] =
     useState<RefeshTourDetail | null>(null);
   const [dataManyBookFake, setDataManyBookFake] = useState<any>();
   const [voucherView, setVoucherView] = useState<any>();
-  const abc = "abe";
-
+  const [loading, setLoading] = useState<boolean>(false);
   return (
     <DataContext.Provider
       value={{
-        accessToken,
-        abc,
+        loading,
+        setLoading,
         refeshLogin,
         setRefeshLogin,
         refeshTour,

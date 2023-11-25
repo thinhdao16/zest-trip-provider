@@ -18,9 +18,13 @@ const TourType: React.FC = () => {
 
   const [selectedCard, setSelectedCard] = useState<number>(-1);
 
-  const handleCardClick = (index: object, indexId: number) => {
-    setSelectedCard(indexId === selectedCard ? -1 : indexId);
-    updateFormValues(0, { TypeTour: index });
+  const handleCardClick = (indexId: number) => {
+    setSelectedCard((prevSelectedCard) =>
+      prevSelectedCard === indexId ? -1 : indexId
+    );
+    updateFormValues(0, {
+      TypeTour: selectedCard === indexId ? undefined : indexId,
+    });
   };
 
   if (currentStep !== 2) {
@@ -59,7 +63,7 @@ const TourType: React.FC = () => {
                   index: data.id,
                   selectedCard: selectedCard,
                 })}
-                onClick={() => handleCardClick(data, data.id)}
+                onClick={() => handleCardClick(data.id)}
                 className="shadow-custom-card-mui"
               >
                 <CreateChooseContent sx={{ margin: 3 }}>

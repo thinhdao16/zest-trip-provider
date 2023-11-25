@@ -102,9 +102,10 @@ const DurationCheckIn: React.FC = () => {
             Your address is only shared with guests after they have
             successfully.
           </CreateDescription>
+          <p className="font-medium mb-1 text-lg">Duration</p>
+
           {dataDuration.map((data) => (
             <CreateDurationContent key={data?.id}>
-              <p className="font-medium mb-1 text-lg">Duration</p>
               <div className="flex flex-1 justify-between items-center border-b border-solid border-gray-400 p-3 rounded hover:border-navy-blue  ">
                 <Typography>{data?.title}</Typography>
                 <div>
@@ -127,7 +128,7 @@ const DurationCheckIn: React.FC = () => {
               </div>
             </CreateDurationContent>
           ))}
-          <div>
+          <div className="mt-4">
             <p className="font-medium mb-1 text-lg">Tour Schedule</p>
 
             {nestedDataArray?.length > 0 ? (
