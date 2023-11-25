@@ -75,7 +75,7 @@ function Header() {
                 style={{ textDecoration: "none", color: "black" }}
               >
                 <img
-                  src="src\assets\File-logo-Zest-Travel.svg"
+                  src="/src/assets/File-logo-Zest-Travel.svg"
                   className="w-16"
                 />
               </Link>
