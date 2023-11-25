@@ -19,23 +19,23 @@ export const getBooking = createAsyncThunk("booking/getBooking", async () => {
       return response.data.data;
     }
   } catch (error: any) {
-    if (error.response && error.response.data && error.response.data.message) {
-      const errorMessages = error.response.data.message;
+    // if (error.response && error.response.data && error.response.data.message) {
+    //   const errorMessages = error.response.data.message;
 
-      if (Array.isArray(errorMessages)) {
-        errorMessages.forEach((errorMessage: string) => {
-          console.log(errorMessage);
-          toast.error(errorMessage);
-        });
-      } else if (typeof errorMessages === "string") {
-        console.log(errorMessages);
-        toast.error(errorMessages);
-      } else {
-        toast.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
-      }
-    } else {
-      toast.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
-    }
+    //   if (Array.isArray(errorMessages)) {
+    //     errorMessages.forEach((errorMessage: string) => {
+    //       console.log(errorMessage);
+    //       toast.error(errorMessage);
+    //     });
+    //   } else if (typeof errorMessages === "string") {
+    //     console.log(errorMessages);
+    //     toast.error(errorMessages);
+    //   } else {
+    //     toast.error("Setup fail!");
+    //   }
+    // } else {
+    //   toast.error("Setup fail!");
+    // }
     throw new Error("Failed to fetch other data");
   }
 });

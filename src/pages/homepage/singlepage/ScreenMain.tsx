@@ -22,8 +22,6 @@ import "./detail.css";
 import ModalTag from "./Modal/ModalTag";
 import ModalVehicle from "./Modal/ModalVehicle";
 import { FcEmptyTrash } from "react-icons/fc";
-import axios from "axios";
-import { BASE_URL } from "../../../store/apiInterceptors";
 import ModalTourScheDetail from "./Modal/ModalTourScheDetail";
 import { useEditContext } from "./Context/useEditContext";
 import { DataContext } from "../../../store/dataContext/DataContext";

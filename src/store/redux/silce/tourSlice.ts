@@ -38,7 +38,7 @@ export const fetchTours = createAsyncThunk(
       }
     } catch (error) {
       console.log(error);
-      toast.error("Failed to fetch tours!");
+      // toast.error("Failed to fetch tours!");
       throw new Error("Failed to fetch tours");
     }
   }
@@ -58,7 +58,7 @@ export const getAllTours = createAsyncThunk("tour/getAllTours", async () => {
     }
   } catch (error) {
     console.log(error);
-    toast.error("Failed to fetch tours!");
+    // toast.error("Failed to fetch tours!");
     throw new Error("Failed to fetch tours");
   }
 });

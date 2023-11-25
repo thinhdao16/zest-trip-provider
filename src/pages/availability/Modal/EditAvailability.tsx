@@ -54,7 +54,7 @@ const EditAvailability = (dataAvailability: any) => {
   );
   const [open, setOpen] = useState(false);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [dataWeekChoose, setDataWeekChoose] = useState<any>([]);
+  const [, setDataWeekChoose] = useState<any>([]);
   const handleOpen = () => {
     setOpen(true);
   };

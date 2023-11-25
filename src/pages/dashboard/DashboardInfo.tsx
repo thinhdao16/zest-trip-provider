@@ -12,7 +12,6 @@ import { getAllTours } from "../../store/redux/silce/tourSlice";
 import { getProviderTourBoost } from "../../store/redux/silce/promotion";
 import "dayjs/locale/en";
 import dayjs from "dayjs";
-import { PacmanLoader } from "react-spinners";
 import LoadingFullScreen from "../../styles/loading/LoadingFullScreen";
 function DashboardInfo() {
   const dispatch: AppDispatch = useDispatch();

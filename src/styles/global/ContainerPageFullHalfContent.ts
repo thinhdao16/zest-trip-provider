@@ -28,7 +28,7 @@ export const ContainerPageFullHalfContent = styled(Box)(() => ({
     right: 0,
     bottom: 0,
     zIndex: -1, // Đặt z-index thấp hơn để hiển thị phía sau nội dung
-    backgroundImage: "url('path/to/your-image.jpg')",
+    // backgroundImage: "url('path/to/your-image.jpg')",
     backgroundSize: "cover",
     backgroundPosition: "center",
     opacity: 0.5, // Điều chỉnh độ mờ của background nếu cần
