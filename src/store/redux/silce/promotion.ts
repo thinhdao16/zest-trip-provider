@@ -16,7 +16,7 @@ export const boostTour = createAsyncThunk(
     try {
       const response = await axiosInstance.post(`${BASE_URL}/provider/boost`, {
         tour_ids: data?.tour_ids,
-        redirectUrl: "http://localhost:5173/",
+        redirectUrl: "https://zest-trip-provider.vercel.app",
       });
       if (response.status === 201) {
         console.log(response);
