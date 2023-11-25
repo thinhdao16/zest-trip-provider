@@ -83,6 +83,8 @@ function CreateTourNav() {
   const handleCreateTourAndAvailability = () => {
     const formData = new FormData();
     const dataValueCreate = {
+      duration_day: 1,
+      duration_night: 1,
       name: formValues[8]?.Title[0],
       description: formValues[8]?.Title[1],
       footnote: "For any inquiries, feel free to contact us anytime!",
@@ -112,11 +114,17 @@ function CreateTourNav() {
           })),
         })
       ),
+      // departure_location: {
+      //   lat: formValues[9]?.LocationStart?.lat_start,
+      //   long: formValues[9]?.LocationStart?.lng_start,
+      //   zoom: "18z",
+      //   location: locationStart,
+      // },
       departure_location: {
-        lat: formValues[9]?.LocationStart?.lat_start,
-        long: formValues[9]?.LocationStart?.lng_start,
+        lat: "10.8161456",
+        long: 106.6615997,
         zoom: "18z",
-        location: locationStart,
+        location: "Tan Son Nhat AirPort, Ho Chi Minh city",
       },
       book_before: formValues[5]?.Capacity?.BookBefore,
       refund_before: formValues[5]?.Capacity?.RefundBefore,

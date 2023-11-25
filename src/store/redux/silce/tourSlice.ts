@@ -98,6 +98,7 @@ export const postCreateTour = createAsyncThunk(
         throw new Error("Failed to create tour");
       }
     } catch (error: any) {
+      console.log(error);
       if (
         error.response &&
         error.response.data &&

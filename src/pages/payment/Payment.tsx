@@ -1,5 +1,5 @@
 import Navbar from "../../components/Navbar/Index";
-import { AiFillFilter } from "react-icons/ai";
+import { AiFillFilter, AiOutlineDown, AiOutlineUp } from "react-icons/ai";
 import { RiSearchLine } from "react-icons/ri";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -11,6 +11,7 @@ import BillingDetail from "./BillingDetail";
 import { getBooking } from "../../store/redux/silce/booking";
 import { formatNumber } from "../../utils/formatNumber";
 import { StatusBooking } from "../../styles/status/booking";
+import { Fade } from "@mui/material";
 
 function Payment() {
   const dispatch: AppDispatch = useDispatch();
@@ -30,6 +31,113 @@ function Payment() {
       }
     });
   }, [dispatch]);
+
+  function calculateTotalByDay(
+    bookings: any,
+    propertyName: string,
+    startDate: string,
+    endDate: string
+  ) {
+    const totalByDay: any = {};
+
+    const recentBookings = bookings?.filter(
+      (booking: { updated_at: string }) => {
+        const bookedDate = dayjs(booking.updated_at);
+        return (
+          bookedDate.isAfter(dayjs(startDate).subtract(1, "day"), "day") &&
+          bookedDate.isBefore(dayjs(endDate).add(1, "day"), "day")
+        );
+      }
+    );
+
+    recentBookings?.forEach((booking: any) => {
+      const dayOfMonth: any = dayjs(booking.updated_at).format("YYYY-MM-DD");
+      const propertyValue: any = parseInt(booking[propertyName] || "0", 10);
+      totalByDay[dayOfMonth] = (totalByDay[dayOfMonth] || 0) + propertyValue;
+    });
+
+    return totalByDay;
+  }
+
+  function calculateWeeks() {
+    const currentDate = dayjs();
+    const currentDayOfWeek = currentDate.day();
+
+    const thisSunday = currentDate.subtract(currentDayOfWeek, "day");
+
+    const weeks = Array.from({ length: 7 }, (_, weekIndex) => {
+      const weekStart = thisSunday.subtract(weekIndex, "week");
+      const weekEnd = weekStart.add(6, "day");
+      return {
+        start: weekStart.format("YYYY-MM-DD"),
+        end: weekEnd.format("YYYY-MM-DD"),
+      };
+    });
+
+    return weeks.reverse();
+  }
+
+  const lableWeeks = calculateWeeks();
+
+  const calculateChartData = (
+    chart: any,
+    paidField: string,
+    originalField: string,
+    refundField: string
+  ) =>
+    lableWeeks.map((week) => {
+      const paid = calculateTotalByDay(chart, paidField, week.start, week.end);
+      const original = calculateTotalByDay(
+        chart,
+        originalField,
+        week.start,
+        week.end
+      );
+      const refund = calculateTotalByDay(
+        chart,
+        refundField,
+        week.start,
+        week.end
+      );
+
+      const formatLableTime = {
+        start: week.start,
+        end: week.end,
+      };
+      return {
+        label: formatLableTime,
+        paid,
+        original,
+        refund,
+      };
+    });
+  const dataBooking = calculateChartData(
+    booking,
+    "paid_price",
+    "original_price",
+    "refund_ammount"
+  );
+  const sumAllValues = (data: any) => {
+    if (typeof data === "object" && data !== null) {
+      const values = Object.values(data || {});
+      return values.reduce((sum: any, value: any) => sum + value, 0);
+    }
+    return 0;
+  };
+  const sumBookingInWeek = (
+    dataBookingWeek: any,
+    startWeek: any,
+    endWeek: any
+  ) => {
+    const recentBookings = dataBookingWeek?.filter((booking: any) => {
+      const bookedDate = dayjs(booking.updated_at);
+      return (
+        bookedDate.isAfter(dayjs(startWeek).subtract(1, "day"), "day") &&
+        bookedDate.isBefore(dayjs(endWeek).add(1, "day"), "day")
+      );
+    });
+    return recentBookings;
+  };
   return (
     <>
       {/* <Backdrop
@@ -91,126 +199,187 @@ function Payment() {
                   <span className="font-medium">Refund amount</span>
                 </div>
                 <div className="">
-                  <span className="font-medium"> Status</span>
+                  <span className="font-medium"> Total </span>
                 </div>
               </div>
             </div>
 
             <div className="flex flex-col gap-2">
-              {booking?.length > 0 ? (
-                Array.isArray(booking) &&
-                booking?.map((dataVoucher: any, index: number) => (
-                  <>
-                    <div
-                      key={index}
-                      className="shadow-custom-card-mui bg-white rounded-lg relative"
-                      onClick={() => toggleContentVisibility(index)}
-                    >
-                      <div className=" px-4 py-6 relative ">
-                        {/* {!expandedItems[index] ? (
-                          <div
-                            className="absolute bottom-2 right-2 text-xs flex items-center gap-1"
-                            onClick={() => toggleContentVisibility(index)}
-                          >
-                            <span>See tour</span>
-                            <AiOutlineDown />
-                          </div>
-                        ) : (
-                          <div className="absolute bottom-2 right-2 text-xs flex items-center gap-1">
-                            <span
-                              onClick={() => toggleContentVisibility(index)}
-                            >
-                              See less
+              {dataBooking?.length > 0 ? (
+                Array.isArray(dataBooking) &&
+                dataBooking?.map((dataVoucher, index) => (
+                  <div
+                    key={index}
+                    className="shadow-custom-card-mui bg-white rounded-lg relative"
+                    onClick={() => toggleContentVisibility(index)}
+                  >
+                    <div className=" px-4 py-6 relative ">
+                      {!expandedItems[index] ? (
+                        <div
+                          className="absolute bottom-2 right-2 text-xs flex items-center gap-1"
+                          onClick={() => toggleContentVisibility(index)}
+                        >
+                          <span>See more</span>
+                          <AiOutlineDown />
+                        </div>
+                      ) : (
+                        <div className="absolute bottom-2 right-2 text-xs flex items-center gap-1">
+                          <span onClick={() => toggleContentVisibility(index)}>
+                            See less
+                          </span>
+                          <AiOutlineUp />
+                        </div>
+                      )}
+                      <div className="grid grid-cols-5 gap-3 ">
+                        <div className=" flex items-center ">
+                          <div className="">
+                            <span className="">
+                              {dayjs(dataVoucher?.label?.start).format("DD/MM")}{" "}
+                              -{" "}
+                              {dayjs(dataVoucher?.label?.end).format(
+                                "DD/MM/YYYY"
+                              )}{" "}
                             </span>
-                            <AiOutlineUp />
                           </div>
-                        )} */}
-                        <div className="grid grid-cols-5 gap-3 ">
-                          <div className=" flex items-center ">
-                            <div className="">
-                              <span className="">
-                                {dayjs(dataVoucher?.updated_at).format(
-                                  "YYYY-MM-DD"
-                                )}
-                              </span>
-                            </div>
-                          </div>
-                          <div className=" flex items-center ">
+                        </div>
+                        <div className=" flex items-center ">
+                          <span className="">
+                            {formatNumber(
+                              parseInt(
+                                sumAllValues(
+                                  dataVoucher?.original || {}
+                                ) as string,
+                                10
+                              )
+                            )}
+                          </span>
+                        </div>
+                        <div className=" flex items-center ">
+                          <div className="flex flex-wrap gap-3">
                             <span className="">
                               {formatNumber(
-                                parseInt(dataVoucher?.original_price)
+                                parseInt(
+                                  sumAllValues(
+                                    dataVoucher?.paid || {}
+                                  ) as string,
+                                  10
+                                )
                               )}
                             </span>
                           </div>
-                          <div className=" flex items-center ">
-                            <div className="flex flex-wrap gap-3">
-                              <span className="">
-                                {formatNumber(
-                                  parseInt(dataVoucher?.paid_price)
-                                )}
-                              </span>
-                            </div>
-                          </div>
-                          <div className=" flex items-center">
-                            <div className="flex flex-wrap gap-3">
-                              <span className="">
-                                {formatNumber(
-                                  parseInt(dataVoucher?.refund_ammount)
-                                )}
-                              </span>
-                            </div>
-                          </div>
-                          <div className=" flex items-center">
-                            <StatusBooking>{dataVoucher?.status}</StatusBooking>
+                        </div>
+                        <div className=" flex items-center">
+                          <div className="flex flex-wrap gap-3">
+                            <span className="">
+                              {formatNumber(
+                                parseInt(
+                                  sumAllValues(
+                                    dataVoucher?.refund || {}
+                                  ) as string,
+                                  10
+                                )
+                              )}
+                            </span>
                           </div>
                         </div>
+                        <div className=" flex items-center">
+                          {/* <StatusBooking>{dataVoucher?.status}</StatusBooking>
+                           */}
+                          <span>
+                            {
+                              sumBookingInWeek(
+                                booking,
+                                dataVoucher?.label?.start,
+                                dataVoucher?.label?.end
+                              )?.length
+                            }
+                          </span>
+                        </div>
                       </div>
-                      {/* {expandedItems[index] && (
-                        <Fade in={expandedItems[index]} timeout={700}>
-                          <div>
-                            <hr className="mb-4" />
-                            {dataVoucher?.tours?.length > 0 ? (
-                              dataVoucher?.tours?.map(
-                                (voucherTour: any, index: number) => (
-                                  <div
-                                    className=" px-4  mb-4  relative "
-                                    key={index}
-                                  >
-                                    <div className="flex items-center gap-2">
-                                      <img
-                                        src={voucherTour?.tour_images[0]}
-                                        className="w-12 h-12 rounded-lg"
-                                        alt=""
-                                      />
-                                      <div>
-                                        <p className="">{voucherTour?.name}</p>
-                                        <p className="text-gray-500">
-                                          {voucherTour?.address_district},{" "}
-                                          {voucherTour?.address_province},{" "}
-                                          {voucherTour?.address_country}
-                                        </p>
-                                      </div>
-                                    </div>
-
-                                    {index <
-                                      dataVoucher?.TourVoucher?.length - 1 && (
-                                      <hr className="mt-4" />
-                                    )}
-                                  </div>
-                                )
-                              )
-                            ) : (
-                              <div className="flex items-center justify-center pb-6 pt-2">
-                                <p className="bg-main p-1 rounded-lg shadow-custom-card-mui border border-gray-300 border-solid font-medium">
-                                  Add tour for voucher
-                                </p>
-                              </div>
-                            )}
-                          </div>
-                        </Fade>
-                      )} */}
                     </div>
-                  </>
+                    {expandedItems[index] && (
+                      <Fade in={expandedItems[index]} timeout={700}>
+                        <div>
+                          <hr className="mb-4" />
+                          {sumBookingInWeek(
+                            booking,
+                            dataVoucher?.label?.start,
+                            dataVoucher?.label?.end
+                          )?.length > 0 ? (
+                            sumBookingInWeek(
+                              booking,
+                              dataVoucher?.label?.start,
+                              dataVoucher?.label?.end
+                            )?.map((dataBookingInWeek: any, index: number) => {
+                              console.log(dataBookingInWeek);
+                              return (
+                                <div
+                                  className=" px-4  mb-4  relative "
+                                  key={index}
+                                >
+                                  <div className="grid grid-cols-5">
+                                    <div>
+                                      <p className="">
+                                        {dataBookingInWeek?.booker_name}
+                                      </p>
+                                      <span>
+                                        {dayjs(
+                                          dataBookingInWeek?.updated_at
+                                        ).format("MM/DD/YYYY")}
+                                      </span>
+                                    </div>
+                                    <div>
+                                      <span>
+                                        {formatNumber(
+                                          dataBookingInWeek?.original_price
+                                        )}
+                                      </span>
+                                    </div>
+                                    <div>
+                                      <span>
+                                        {formatNumber(
+                                          dataBookingInWeek?.paid_price
+                                        )}
+                                      </span>
+                                    </div>
+                                    <div>
+                                      <span>
+                                        {formatNumber(
+                                          dataBookingInWeek?.refund_ammount
+                                        )}
+                                      </span>
+                                    </div>
+                                    <div>
+                                      <button type="button">
+                                        {/* <StatusBooking>
+                                          {dataBookingInWeek?.status}
+                                        </StatusBooking> */}
+                                      </button>
+                                    </div>
+                                  </div>
+
+                                  {index <
+                                    // eslint-disable-next-line no-unsafe-optional-chaining
+                                    sumBookingInWeek(
+                                      booking,
+                                      dataVoucher?.label?.start,
+                                      dataVoucher?.label?.end
+                                    )?.length -
+                                      1 && <hr className="mt-4" />}
+                                </div>
+                              );
+                            })
+                          ) : (
+                            <div className="flex items-center justify-center pb-6 pt-2">
+                              <p className="bg-main p-1 rounded-lg shadow-custom-card-mui border border-gray-300 border-solid font-medium">
+                                No have payment
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                      </Fade>
+                    )}
+                  </div>
                 ))
               ) : (
                 <button

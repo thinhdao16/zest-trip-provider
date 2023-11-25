@@ -10,6 +10,7 @@ import SpringModal from "./SpringModal";
 import { getReview } from "../../store/redux/silce/reviewSlice";
 import dayjs from "dayjs";
 import { RiSearchLine } from "react-icons/ri";
+import { FaStar } from "react-icons/fa6";
 
 function Review() {
   const [activeButton, setActiveButton] = useState(1);
@@ -166,14 +167,14 @@ function Review() {
               All
             </button>
             <button
-              className={`button rounded-sm px-4 py-1.5 bg-white border ${
+              className={` flex items-center gap-1  button rounded-sm px-4 py-1.5 bg-white border ${
                 filterImg === 2
                   ? "active   border-navy-blue text-navy-blue font-medium hover:bg-navy-blue hover:text-white"
                   : "  border-gray-300 text-gray-500 font-medium hover:bg-gray-300 hover:text-black"
               }`}
               onClick={() => setFilterImg(2)}
             >
-              5 Star({" "}
+              5 <FaStar className="text-yellow-500" />({" "}
               {
                 renderedContent?.filter((review: any) => review?.rating === 5)
                   .length
@@ -181,14 +182,14 @@ function Review() {
               )
             </button>
             <button
-              className={`button rounded-sm px-4 py-1.5 bg-white border ${
+              className={` flex items-center gap-1 button rounded-sm px-4 py-1.5 bg-white border ${
                 filterImg === 3
                   ? "active  border-navy-blue text-navy-blue font-medium hover:bg-navy-blue hover:text-white"
                   : " border-gray-300 text-gray-500 font-medium hover:bg-gray-300 hover:text-black"
               }`}
               onClick={() => setFilterImg(3)}
             >
-              4 Star({" "}
+              4 <FaStar className="text-yellow-500" /> ({" "}
               {
                 renderedContent?.filter((review: any) => review?.rating === 4)
                   .length
@@ -196,14 +197,14 @@ function Review() {
               )
             </button>
             <button
-              className={`button rounded-sm px-4 py-1.5 bg-white border ${
+              className={` flex items-center gap-1 button rounded-sm px-4 py-1.5 bg-white border ${
                 filterImg === 4
                   ? "active  border-navy-blue text-navy-blue font-medium hover:bg-navy-blue hover:text-white"
                   : " border-gray-300 text-gray-500 font-medium hover:bg-gray-300 hover:text-black"
               }`}
               onClick={() => setFilterImg(4)}
             >
-              3 Star({" "}
+              3 <FaStar className="text-yellow-500" /> ({" "}
               {
                 renderedContent?.filter((review: any) => review?.rating === 3)
                   .length
@@ -211,14 +212,14 @@ function Review() {
               )
             </button>{" "}
             <button
-              className={`button rounded-sm px-4 py-1.5 bg-white border ${
+              className={`flex items-center gap-1 button rounded-sm px-4 py-1.5 bg-white border ${
                 filterImg === 5
                   ? "active  border-navy-blue text-navy-blue font-medium hover:bg-navy-blue hover:text-white"
                   : " border-gray-300 text-gray-500 font-medium hover:bg-gray-300 hover:text-black"
               }`}
               onClick={() => setFilterImg(5)}
             >
-              2 Star({" "}
+              2 <FaStar className="text-yellow-500" /> ({" "}
               {
                 renderedContent?.filter((review: any) => review?.rating === 2)
                   .length
@@ -226,14 +227,14 @@ function Review() {
               )
             </button>{" "}
             <button
-              className={`button rounded-sm px-4 py-1.5 bg-white border ${
+              className={`flex items-center gap-1 button rounded-sm px-4 py-1.5 bg-white border ${
                 filterImg === 6
                   ? "active  border-navy-blue text-navy-blue font-medium hover:bg-navy-blue hover:text-white"
                   : " border-gray-300 text-gray-500 font-medium hover:bg-gray-300 hover:text-black"
               }`}
               onClick={() => setFilterImg(6)}
             >
-              1 Star({" "}
+              1 <FaStar className="text-yellow-500" /> ({" "}
               {
                 renderedContent?.filter((review: any) => review?.rating === 1)
                   .length
