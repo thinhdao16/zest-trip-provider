@@ -4,6 +4,7 @@ import { tourReducer } from "./silce/tourSlice";
 import { providerReducer } from "./silce/providerSlice";
 import reviewSlice from "./silce/reviewSlice";
 import { bookingReducer } from "./silce/booking";
+import { promotionReducer } from "./silce/promotion";
 
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
@@ -21,6 +22,7 @@ const store = configureStore({
     provider: providerReducer,
     review: reviewSlice,
     booking: bookingReducer,
+    promotion: promotionReducer,
   },
   // middleware: [thunk],
 });
