@@ -6,7 +6,6 @@ import {
   CreateTitleNullDes,
 } from "../../../styles/createtour/createtour";
 import { useStepContext } from "../context/ui/useStepContext";
-import { GoLocation } from "react-icons/go";
 import {
   FaCheck,
   FaRegCalendarCheck,
@@ -226,14 +225,6 @@ const Capacity: React.FC = () => {
     const updatedStartingTimes = { ...startingTimes };
     updatedStartingTimes[field][index].setMinutes(value);
 
-    setStartingTimes(updatedStartingTimes);
-  };
-
-  const removeForm = (index: number, field: string) => {
-    const updatedStartingTimes = { ...startingTimes };
-    updatedStartingTimes[field] = updatedStartingTimes[field].filter(
-      (_: any, i: number) => i !== index
-    );
     setStartingTimes(updatedStartingTimes);
   };
 

@@ -1,6 +1,5 @@
 import dayjs from "dayjs";
 import Navbar from "../../components/Navbar/Index";
-import { DataManyBook } from "./dataManyBook";
 import { AiFillEye, AiFillFilter } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import { RiSearchLine } from "react-icons/ri";
@@ -9,7 +8,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { DataContext } from "../../store/dataContext/DataContext";
 import { fetchTours } from "../../store/redux/silce/tourSlice";
 import { AppDispatch } from "../../store/redux/store";
-import { GoDotFill } from "react-icons/go";
 import { StatusBooking } from "../../styles/status/booking";
 import LoadingFullScreen from "../../styles/loading/LoadingFullScreen";
 import { Pagination } from "antd";
@@ -17,7 +15,6 @@ import { Pagination } from "antd";
 function Booker() {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
-  const [searchValue, setSearchValue] = useState("");
   const { refeshTour } = React.useContext(DataContext);
   const dispatch: AppDispatch = useDispatch();
   const { tours, loading } = useSelector((state: any) => state.tour);

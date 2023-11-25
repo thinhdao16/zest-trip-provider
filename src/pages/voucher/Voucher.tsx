@@ -25,6 +25,7 @@ function Voucher() {
   const { setVoucherView } = useContext(DataContext);
 
   const [scrollPosition, setScrollPosition] = useState<number>(0);
+  console.log(scrollPosition);
   const { voucher, loadingProvider } = useSelector(
     (state: any) => state.provider
   );

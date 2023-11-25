@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Card } from "@mui/material";
 import { useStepContext } from "../context/ui/useStepContext";
 import {
   BannerContainer,

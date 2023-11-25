@@ -49,7 +49,7 @@ function ScreenMain() {
   const [pageSize, setPageSize] = useState(10);
 
   const { refeshTour } = React.useContext(DataContext);
-  const { tours, loading } = useSelector((state: any) => state.tour);
+  const { tours } = useSelector((state: any) => state.tour);
   const handleChange = (field: string, value: string) => {
     setCreateApplyCondition((prevState: any) => ({
       ...prevState,

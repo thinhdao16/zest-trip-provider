@@ -39,14 +39,7 @@ function PersonalInfo() {
   useEffect(() => {
     dispatch(getPersonalInfo());
   }, [dispatch]);
-  const fieldPerson = [
-    "Full name",
-    "Phone",
-    "Email",
-    "Company name",
-    "Description",
-    "Tax code",
-  ];
+
   return (
     <React.Fragment>
       <div>

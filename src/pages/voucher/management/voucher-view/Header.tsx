@@ -1,9 +1,7 @@
 import Box from "@mui/material/Box";
 import { FaAngleLeft } from "react-icons/fa6";
-import { useSelector } from "react-redux";
 
 export default function Header() {
-  const tourDetail: any = useSelector((state: any) => state.tour.tourGetDetail);
   const goBack = () => {
     window.history.back();
   };

@@ -11,7 +11,7 @@ import {
   FaCirclePlus,
   FaHardDrive,
 } from "react-icons/fa6";
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import AutoResizableTextarea from "./singlePageConst/AutoResizableTextarea";
 import { TourTag, VehicleTag } from "../../../components/icon/tour/tag";
 import TabContext from "@mui/lab/TabContext";
@@ -84,9 +84,6 @@ function ScreenMain() {
   const { refreshTourDetail } = useContext(DataContext);
 
   const [valueTab, setValueTab] = useState("1");
-  const [addressProvince, setAddressProvince] = useState<[]>();
-  const [addressDistrict, setAddressDistrict] = useState<[]>();
-  const [addressWards, setAddressWards] = useState<[]>();
 
   const [, setHasChanges] = useState(false);
 
@@ -180,17 +177,6 @@ function ScreenMain() {
       setStatusTour(tourDetail?.status);
     }
   }, [tourDetail, refreshTourDetail]);
-
-  useEffect(() => {
-    axios
-      .get(`${BASE_URL}/resource/province/all`)
-      .then((response: any) => {
-        setAddressProvince(response.data.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
 
   return (
     <>

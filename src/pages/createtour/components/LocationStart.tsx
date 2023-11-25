@@ -26,7 +26,7 @@ import GoogleMapReact from "google-map-react";
 import { IoMdClose } from "react-icons/io";
 
 const LocationStart: React.FC = () => {
-  const { currentStep, updateFormValues, formValues } = useStepContext();
+  const { currentStep, updateFormValues } = useStepContext();
 
   //location start
   const [addressNameStart, setAddressNameStart] = useState("");

@@ -5,12 +5,10 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { AppDispatch } from "../../store/redux/store";
 import { useDispatch } from "react-redux";
-import { toast } from "react-toastify";
 import dayjs from "dayjs";
 import BillingDetail from "./BillingDetail";
 import { getBooking } from "../../store/redux/silce/booking";
 import { formatNumber } from "../../utils/formatNumber";
-import { StatusBooking } from "../../styles/status/booking";
 import { Fade } from "@mui/material";
 
 function Payment() {

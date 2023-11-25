@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import {
   BannerContainer,
   CreateDescription,
@@ -7,22 +7,6 @@ import {
 import { useStepContext } from "../context/ui/useStepContext";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { GoLocation } from "react-icons/go";
-
-interface Ticket {
-  ageEnd: number;
-  ageStart: number;
-  max: number;
-  min: number;
-  price_range: {
-    id: number;
-    numberOfPeople: number;
-    numberOfPeopleAfter: number;
-    payoutPerPerson: number;
-    retailPrice: number;
-  }[];
-  role: string;
-  type: string;
-}
 
 const radioItems = [
   "Standard",
@@ -37,17 +21,6 @@ const Price: React.FC = () => {
   const { currentStep, updateFormValues } = useStepContext();
   const [selectedCountries, setSelectedCountries]: any = useState([]);
   const [dataTicket, setDataTicket]: any = useState([]);
-  const allDefaultTicketsHavePositivePrice = useMemo(() => {
-    return dataTicket?.every((ticket: Ticket) => {
-      if (ticket?.type === "DEFAULT") {
-        return ticket?.price_range?.every(
-          (price) => price?.retailPrice > 50000
-        );
-      } else {
-        return true;
-      }
-    });
-  }, [dataTicket]);
 
   const [selectedRadio, setSelectedRadio] = useState({
     children: radioItems[0],

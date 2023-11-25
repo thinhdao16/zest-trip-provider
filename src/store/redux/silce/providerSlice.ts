@@ -349,7 +349,7 @@ const providerSice = createSlice({
         state.loadingProvider = true;
         state.errorBecomeProvider = null;
       })
-      .addCase(createVoucher.fulfilled, (state, action) => {
+      .addCase(createVoucher.fulfilled, (state) => {
         state.loadingProvider = false;
         state.errorBecomeProvider = null;
       })

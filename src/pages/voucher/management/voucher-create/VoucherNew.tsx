@@ -1,6 +1,4 @@
-import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useState } from "react";
 import Header from "./Header";
 import ScreenMain from "./ScreenMain";
 import { useSelector } from "react-redux";

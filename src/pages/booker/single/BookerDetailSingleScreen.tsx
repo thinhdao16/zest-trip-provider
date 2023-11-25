@@ -1,5 +1,3 @@
-import { useParams } from "react-router-dom";
-import { DataBook } from "../dataBook";
 import { useState } from "react";
 import Header from "./Header";
 import ScreenMain from "./ScreenMain";

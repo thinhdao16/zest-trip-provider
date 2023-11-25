@@ -1,5 +1,4 @@
 import { useParams } from "react-router-dom";
-import { DataBook } from "../dataBook";
 import dayjs from "dayjs";
 import { GoDotFill } from "react-icons/go";
 import { useEffect } from "react";

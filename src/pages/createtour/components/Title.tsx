@@ -7,7 +7,6 @@ import {
 } from "../../../styles/createtour/createtour";
 import { useStepContext } from "../context/ui/useStepContext";
 import { AiOutlineLock } from "react-icons/ai";
-import InputArea from "../../../components/setUpProvider/components/inputArea";
 import "../styles/createtour.css";
 import { Tooltip } from "@mui/material";
 import { FaRegCircleQuestion } from "react-icons/fa6";

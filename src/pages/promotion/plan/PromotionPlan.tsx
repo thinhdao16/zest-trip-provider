@@ -15,7 +15,6 @@ import {
   boostTour,
   getProviderTourBoost,
 } from "../../../store/redux/silce/promotion";
-import { PacmanLoader } from "react-spinners";
 import LoadingFullScreen from "../../../styles/loading/LoadingFullScreen";
 import { IoIosArrowBack } from "react-icons/io";
 
@@ -33,7 +32,7 @@ function PromotionPlan() {
   const [pageSize, setPageSize] = useState(10);
 
   const { refeshTour } = React.useContext(DataContext);
-  const { tours, loading } = useSelector((state: any) => state.tour);
+  const { tours } = useSelector((state: any) => state.tour);
   const { providerTourBoost, loadingPromotion } = useSelector(
     (state: any) => state.promotion
   );

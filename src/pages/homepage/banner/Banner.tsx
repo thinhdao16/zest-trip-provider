@@ -1,10 +1,4 @@
-import {
-  Backdrop,
-  Box,
-  CircularProgress,
-  Rating,
-  Skeleton,
-} from "@mui/material";
+import { Rating, Skeleton } from "@mui/material";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import React, { useState } from "react";

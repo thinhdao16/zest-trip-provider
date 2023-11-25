@@ -17,8 +17,6 @@ import {
   Divider,
   ListItemIcon,
   Box,
-  Backdrop,
-  CircularProgress,
 } from "@mui/material";
 import React from "react";
 import { GoDotFill } from "react-icons/go";

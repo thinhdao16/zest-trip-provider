@@ -1,12 +1,10 @@
-import { faLeaf, faSignOut } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useContext, useEffect, useState } from "react";
+import { faLeaf } from "@fortawesome/free-solid-svg-icons";
+import { useEffect, useState } from "react";
 import initMenus from "../../data/menus.ts";
 import "./sidebar.css";
 import SidebarLogo from "./SidebarLogo.js";
 import MenuList from "./MenuList";
 import { useNavigate } from "react-router-dom";
-import { DataContext } from "../../store/dataContext/DataContext.tsx";
 import { AppDispatch } from "../../store/redux/store.ts";
 import { useDispatch } from "react-redux";
 import { getPersonalInfo } from "../../store/redux/silce/authSilce.ts";
@@ -14,10 +12,8 @@ import { MdOutlineWorkspacePremium } from "react-icons/md";
 
 function Sidebar({ ...props }) {
   const navigation = useNavigate();
-  const { setRefeshLogin } = useContext(DataContext);
   const dispatch: AppDispatch = useDispatch();
 
-  const [, setAnchorEl] = useState<null | HTMLElement>(null);
   const [menus] = useState(initMenus);
   const handleLogout = () => {
     // setAnchorEl(null);

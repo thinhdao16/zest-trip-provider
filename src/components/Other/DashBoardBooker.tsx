@@ -1,5 +1,4 @@
 import { IoAirplaneOutline, IoLocationOutline } from "react-icons/io5";
-import { DataBook } from "../../pages/booker/dataBook";
 import dayjs from "dayjs";
 import {
   AiFillIdcard,
@@ -24,7 +23,6 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { getBooking } from "../../store/redux/silce/booking";
 import { AppDispatch } from "../../store/redux/store";
-import { GoDotFill } from "react-icons/go";
 import { StatusBooking } from "../../styles/status/booking";
 
 interface Ticket {

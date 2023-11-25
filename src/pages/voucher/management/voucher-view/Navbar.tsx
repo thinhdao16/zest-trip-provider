@@ -13,12 +13,10 @@ import { LuConstruction } from "react-icons/lu";
 import { AppDispatch } from "../../../../store/redux/store";
 import { useDispatch } from "react-redux";
 import {
-  createVoucher,
   updateVoucher,
   updateVoucherMapTour,
 } from "../../../../store/redux/silce/providerSlice";
-import { useContext, useMemo } from "react";
-import { DataContext } from "../../../../store/dataContext/DataContext";
+import { useMemo } from "react";
 function NavBar() {
   const {
     createNameEdit,

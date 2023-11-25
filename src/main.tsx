@@ -2,7 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
-import { GoogleOAuthProvider } from "@react-oauth/google";
 import { DataContextProvider } from "./store/dataContext/DataContext.tsx";
 import { Provider } from "react-redux";
 import store from "../src/store/redux/store";

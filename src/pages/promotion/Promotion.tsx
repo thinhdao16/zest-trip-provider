@@ -1,4 +1,4 @@
-import { IoIosArrowBack, IoMdCheckmark } from "react-icons/io";
+import { IoMdCheckmark } from "react-icons/io";
 import { DataPromotionChoose, dataPromotionChoose } from "./data";
 import { useNavigate } from "react-router-dom";
 import { FaHouseMedical } from "react-icons/fa6";

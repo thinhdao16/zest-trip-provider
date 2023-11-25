@@ -1,9 +1,5 @@
 import { createContext, useState } from "react";
 
-interface User {
-  email: string | null; // Update the type of 'email' property to include 'null'
-  // Add other properties as needed
-}
 type RefeshLogin = boolean;
 type RefeshTour = boolean;
 type RefeshTourDetail = boolean;
