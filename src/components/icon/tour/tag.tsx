@@ -2,7 +2,7 @@ export function VehicleTag(field: { field: string; style: string }) {
   let imagePath;
   switch (field.field) {
     case `${field.field}`:
-      imagePath = "../../../assets/component/logo-zest.tsx";
+      imagePath = "../../../assets/forgot.svg";
       break;
     default:
       imagePath = "../../../assets/tour/iconTag/Adventure.svg";
