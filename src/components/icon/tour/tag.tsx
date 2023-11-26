@@ -12,7 +12,7 @@ export function VehicleTag(field: { field: string; style: string }) {
     <div>
       {/* <img src={imagePath} alt="any" className={field.style} />
        */}
-      <img src="/src/assets/File-logo-Zest-Travel.svg" alt="Bicycle Icon" />
+      <img src="../../../assets/File-logo-Zest-Travel.svg" alt="Bicycle Icon" />
     </div>
   );
 }
