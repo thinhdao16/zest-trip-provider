@@ -72,7 +72,6 @@ function MainRouter() {
             </Route>
 
             <Route path="/createtour" element={<CreateTour />} />
-            <Route path="/" element={<Navigate to="/listtour" />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/:index" element={<SinglePage />} />
