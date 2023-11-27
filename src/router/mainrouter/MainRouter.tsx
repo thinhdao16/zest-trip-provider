@@ -1,19 +1,21 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import CreateTour from "../../pages/createtour/CreateTour";
-import SinglePage from "../../pages/homepage/singlepage/SinglePage";
-import ListWork from "../../pages/managementtour/listwork/ListWork";
+import HomePage from "../../pages/homepage/HomePage";
 import Login from "../../components/login/Login";
 import SignUp from "../../components/signUp/SignUp";
 import SetUpProvider from "../../components/setUpProvider/SetUpProvider";
+import AccountSettings from "../../pages/accountsettings/AccountSettings";
+import PersonalInfo from "../../pages/accountsettings/personalinfo/PersonalInfo";
 import { DataContext } from "../../store/dataContext/DataContext";
+import AuthLayout from "../../components/Layout/AuthLayout";
+import Dashboard from "../../pages/dashboard/Dashboard";
+import Blank from "../../pages/Blank";
 import ForgotPassWord from "../../components/forgotPassword/ForgotPassword";
-import DetailBook from "../../pages/booker/many/DetailBook";
-import BookerDetailSingleScreen from "../../pages/booker/single/BookerDetailSingleScreen";
-import VoucherNew from "../../pages/voucher/management/voucher-create/VoucherNew";
-import VoucherView from "../../pages/voucher/management/voucher-view/VoucherView";
-import Promotion from "../../pages/promotion/Promotion";
-import PromotionPlan from "../../pages/promotion/plan/PromotionPlan";
+import Review from "../../pages/review/Review";
+import Booker from "../../pages/booker/Booker";
+import Availability from "../../pages/availability/Availability";
+import Voucher from "../../pages/voucher/Voucher";
+import Payment from "../../pages/payment/Payment";
 
 function MainRouter() {
   const { refeshLogin } = React.useContext(DataContext);
@@ -35,7 +37,7 @@ function MainRouter() {
           </React.Fragment>
         ) : (
           <React.Fragment>
-            {/* <Route path="/" element={<AuthLayout />}>
+            <Route path="/" element={<AuthLayout />}>
               <Route path="/" element={<Dashboard />} />
               <Route path="/blank" element={<Blank />} />
               <Route path="/profile" element={<Blank />} />
@@ -53,8 +55,8 @@ function MainRouter() {
                 <Route path="" element={<AccountSettings />} />
                 <Route path="personal-info" element={<PersonalInfo />} />
               </Route>
-            </Route> */}
-
+            </Route>
+            {/* 
             <Route path="/promotion" element={<Promotion />}>
               <Route path="" element={<Promotion />} />
               <Route path="plan" element={<PromotionPlan />} />
@@ -72,7 +74,7 @@ function MainRouter() {
             <Route path="/voucher-create" element={<VoucherNew />} />
             <Route path="/voucher-view" element={<VoucherView />} />
             <Route path="/listwork" element={<ListWork />} />
-            <Route path="/setupprovider" element={<SetUpProvider />} />
+            <Route path="/setupprovider" element={<SetUpProvider />} /> */}
           </React.Fragment>
         )}
       </Routes>
