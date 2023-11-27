@@ -1,5 +1,3 @@
-import PersonAdd from "@mui/icons-material/PersonAdd";
-import Settings from "@mui/icons-material/Settings";
 import { Avatar, Divider, ListItemIcon, Menu, MenuItem } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
