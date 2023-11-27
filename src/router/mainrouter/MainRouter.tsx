@@ -1,9 +1,7 @@
-import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "../../pages/homepage/HomePage";
 import AccountSettings from "../../pages/accountsettings/AccountSettings";
 import PersonalInfo from "../../pages/accountsettings/personalinfo/PersonalInfo";
-import { DataContext } from "../../store/dataContext/DataContext";
 import AuthLayout from "../../components/Layout/AuthLayout";
 import Dashboard from "../../pages/dashboard/Dashboard";
 import Blank from "../../pages/Blank";
@@ -33,7 +31,7 @@ function MainRouter() {
           </React.Fragment>
         ) : (
           <React.Fragment> */}
-        <Route path="/" element={<AuthLayout />}>
+        <Route path="" element={<AuthLayout />}>
           <Route path="/" element={<Dashboard />} />
           <Route path="/blank" element={<Blank />} />
           <Route path="/profile" element={<Blank />} />
