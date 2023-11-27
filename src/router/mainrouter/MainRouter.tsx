@@ -27,7 +27,7 @@ function MainRouter() {
   return (
     <BrowserRouter>
       <Routes>
-        {checkAccessToken === null ? (
+        {/* {checkAccessToken === null ? (
           <React.Fragment>
             <Route path="*" element={<Navigate to="/login" />} />
             <Route path="/login" element={<Login />} />
@@ -36,27 +36,27 @@ function MainRouter() {
             <Route path="/setupprovider" element={<SetUpProvider />} />
           </React.Fragment>
         ) : (
-          <React.Fragment>
-            <Route path="/" element={<AuthLayout />}>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/blank" element={<Blank />} />
-              <Route path="/profile" element={<Blank />} />
-              <Route path="/review" element={<Review />} />
+          <React.Fragment> */}
+        <Route path="/" element={<AuthLayout />}>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/blank" element={<Blank />} />
+          <Route path="/profile" element={<Blank />} />
+          <Route path="/review" element={<Review />} />
 
-              <Route path="/listtour" element={<HomePage />} />
-              <Route path="/booking" element={<Booker />} />
-              <Route path="/voucher" element={<Voucher />}>
-                <Route path="" element={<Voucher />} />
-              </Route>
-              <Route path="/payment" element={<Payment />} />
-              <Route path="/availability" element={<Availability />} />
+          <Route path="/listtour" element={<HomePage />} />
+          <Route path="/booking" element={<Booker />} />
+          <Route path="/voucher" element={<Voucher />}>
+            <Route path="" element={<Voucher />} />
+          </Route>
+          <Route path="/payment" element={<Payment />} />
+          <Route path="/availability" element={<Availability />} />
 
-              <Route path="/account-settings" element={<AccountSettings />}>
-                <Route path="" element={<AccountSettings />} />
-                <Route path="personal-info" element={<PersonalInfo />} />
-              </Route>
-            </Route>
-            {/* 
+          <Route path="/account-settings" element={<AccountSettings />}>
+            <Route path="" element={<AccountSettings />} />
+            <Route path="personal-info" element={<PersonalInfo />} />
+          </Route>
+        </Route>
+        {/* 
             <Route path="/promotion" element={<Promotion />}>
               <Route path="" element={<Promotion />} />
               <Route path="plan" element={<PromotionPlan />} />
@@ -75,8 +75,8 @@ function MainRouter() {
             <Route path="/voucher-view" element={<VoucherView />} />
             <Route path="/listwork" element={<ListWork />} />
             <Route path="/setupprovider" element={<SetUpProvider />} /> */}
-          </React.Fragment>
-        )}
+        {/* </React.Fragment>
+        )} */}
       </Routes>
     </BrowserRouter>
   );

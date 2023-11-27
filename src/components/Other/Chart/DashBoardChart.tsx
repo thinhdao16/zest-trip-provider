@@ -206,7 +206,7 @@ function DashboardChart() {
                     <span className="font-medium text-2xl">
                       {totalPayments}
                     </span>
-                    <p className="font-medium text-sm">Payment</p>
+                    <p className="font-medium text-sm">Booking</p>
                   </div>
                   <div>
                     <RiMoneyDollarCircleLine className="w-10 h-10 text-navy-blue" />
@@ -220,7 +220,7 @@ function DashboardChart() {
                     <span className="font-medium text-2xl">
                       {totalPersonPayments}
                     </span>
-                    <p className="font-medium text-sm">Person</p>
+                    <p className="font-medium text-sm">Booker</p>
                   </div>
                   <div>
                     <IoMdPerson className="w-10 h-10 text-navy-blue" />
