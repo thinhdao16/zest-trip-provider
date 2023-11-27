@@ -1,16 +1,12 @@
 import React from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "../../pages/homepage/HomePage";
-import Login from "../../components/login/Login";
-import SignUp from "../../components/signUp/SignUp";
-import SetUpProvider from "../../components/setUpProvider/SetUpProvider";
 import AccountSettings from "../../pages/accountsettings/AccountSettings";
 import PersonalInfo from "../../pages/accountsettings/personalinfo/PersonalInfo";
 import { DataContext } from "../../store/dataContext/DataContext";
 import AuthLayout from "../../components/Layout/AuthLayout";
 import Dashboard from "../../pages/dashboard/Dashboard";
 import Blank from "../../pages/Blank";
-import ForgotPassWord from "../../components/forgotPassword/ForgotPassword";
 import Review from "../../pages/review/Review";
 import Booker from "../../pages/booker/Booker";
 import Availability from "../../pages/availability/Availability";
@@ -18,12 +14,12 @@ import Voucher from "../../pages/voucher/Voucher";
 import Payment from "../../pages/payment/Payment";
 
 function MainRouter() {
-  const { refeshLogin } = React.useContext(DataContext);
-  const [checkAccessToken, setCheckAccessToken] = React.useState("");
-  React.useEffect(() => {
-    const accessToken: any = localStorage.getItem("access_token");
-    setCheckAccessToken(accessToken);
-  }, [refeshLogin]);
+  // const { refeshLogin } = React.useContext(DataContext);
+  // const [checkAccessToken, setCheckAccessToken] = React.useState("");
+  // React.useEffect(() => {
+  //   const accessToken: any = localStorage.getItem("access_token");
+  //   setCheckAccessToken(accessToken);
+  // }, [refeshLogin]);
   return (
     <BrowserRouter>
       <Routes>
