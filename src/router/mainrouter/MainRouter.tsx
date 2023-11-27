@@ -55,6 +55,7 @@ function MainRouter() {
                   </React.Fragment>
                 ) : (
                   <React.Fragment>
+                    <Route path="/login" element={<Login />} />
                     <Route path="/" element={<AuthLayout />}>
                       <Route path="/" element={<Dashboard />}></Route>
                       <Route path="/blank" element={<Blank />}></Route>
