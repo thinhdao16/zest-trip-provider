@@ -1,12 +1,12 @@
 export function VehicleTag(field: { field: string; style: string }) {
-  let imagePath;
-  switch (field.field) {
-    case `${field.field}`:
-      imagePath = `/src/assets/tour/iconVehicle/${field.field}.svg`;
-      break;
-    default:
-      imagePath = "../../../assets/tour/iconTag/Adventure.svg";
-  }
+  // let imagePath;
+  // switch (field.field) {
+  //   case `${field.field}`:
+  //     imagePath = `/src/assets/tour/iconVehicle/${field.field}.svg`;
+  //     break;
+  //   default:
+  //     imagePath = "../../../assets/tour/iconTag/Adventure.svg";
+  // }
   return (
     <div>
       <img
