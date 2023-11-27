@@ -37,15 +37,15 @@ function MainRouter() {
     <BrowserRouter>
       <Routes>
         {checkAccessToken === null ? (
-          <React.Fragment>
+          <>
             <Route path="*" element={<Navigate to="/login" />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/forgotpassword" element={<ForgotPassWord />} />
             <Route path="/setupprovider" element={<SetUpProvider />} />
-          </React.Fragment>
+          </>
         ) : (
-          <React.Fragment>
+          <>
             <Route path="/" element={<AuthLayout />}>
               <Route path="/" element={<Dashboard />} />
               <Route path="/blank" element={<Blank />} />
@@ -84,7 +84,7 @@ function MainRouter() {
             <Route path="/voucher-view" element={<VoucherView />} />
             <Route path="/listwork" element={<ListWork />} />
             <Route path="/setupprovider" element={<SetUpProvider />} />
-          </React.Fragment>
+          </>
         )}
       </Routes>
     </BrowserRouter>
