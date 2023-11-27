@@ -1,5 +1,5 @@
-// import DashboardHeader from "../../components/Other/DashboardHeader";
-// import { useOutletContext } from "react-router-dom";
+import DashboardHeader from "../../components/Other/DashboardHeader";
+import { useOutletContext } from "react-router-dom";
 import "../../App.css";
 import { Grid } from "@mui/material";
 import DashboardInfo from "./DashboardInfo";
@@ -7,10 +7,10 @@ import DashBoardBooker from "../../components/Other/DashBoardBooker";
 import DashboardChart from "../../components/Other/Chart/DashBoardChart";
 
 function Dashboard() {
-  // const avatar =
-  //   "https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80";
+  const avatar =
+    "https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80";
 
-  // const [sidebarToggle]: any = useOutletContext();
+  const [sidebarToggle]: any = useOutletContext();
 
   return (
     <>
@@ -19,11 +19,11 @@ function Dashboard() {
           <main className="h-full">
             <div className="  p-6 mainCard bg-main container-dashboard rounded-3xl global-scrollbar">
               <div className="flex flex-col gap-4 ">
-                {/* <DashboardHeader
-                  // toggle={sidebarToggle}
+                <DashboardHeader
+                  toggle={sidebarToggle}
                   avatar={avatar}
                   user={{ name: "Hoki Teguh Oktian" }}
-                /> */}
+                />
                 {/* <ActionDashBoard /> */}
                 {/* <Grid container spacing={2}>
                   <Grid item xs={12} sm={6}>
