@@ -20,7 +20,7 @@ function SidebarLogo({ text, toggle }: SidebarLogoProps) {
     <div className="relative flex flex-row font-semibokld text-3xl md:items-center md:mx-auto text-navy-blue mb-5 p-4 justify-between">
       <Link to="/" className="flex items-center">
         <img
-          src="/src/assets/File-logo-Zest-Travel.svg"
+          src="../../assets/File-logo-Zest-Travel.svg"
           alt="error"
           className="w-14"
         />{" "}
