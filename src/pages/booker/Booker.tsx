@@ -77,23 +77,23 @@ function Booker() {
               </div>
               <div className="flex flex-col gap-4">
                 <div className="bg-white p-3 rounded-lg shadow-custom-card-mui">
-                  <div className="grid grid-cols-12 gap-3">
-                    <div className="col-span-2">
+                  <div className="grid grid-cols-5 gap-3">
+                    <div className="col-span-1">
                       <span className="font-medium">Booker</span>
                     </div>
-                    <div className="col-span-2">
-                      <span className="font-medium">Period time</span>
+                    {/* <div className="col-span-2">
+                      <span className="font-medium">Duration</span>
+                    </div> */}
+                    <div className="col-span-1">
+                      <span className="font-medium">Book time</span>
                     </div>
-                    <div className="col-span-2">
-                      <span className="font-medium">Time book</span>
-                    </div>
-                    <div className="col-span-2">
+                    <div className="col-span-1">
                       <span className="font-medium">Refund amount</span>
                     </div>
-                    <div className="col-span-2">
+                    <div className="col-span-1">
                       <span className="font-medium">Payment</span>
                     </div>
-                    <div className="col-span-2">
+                    <div className="col-span-1">
                       <span className="font-medium"> Status</span>
                     </div>
                   </div>
@@ -120,59 +120,69 @@ function Booker() {
                         </div>
                       </div>
                       <hr />
-                      <Link
-                        to={`/booking/many/${dataManyBook?.id}`}
-                        key={dataManyBook?.id}
-                      >
-                        <AiFillEye className="absolute top-2 right-2 w-5 h-5" />
-                      </Link>
                       {dataManyBook?.Booking?.length > 0 ? (
-                        dataManyBook?.Booking?.map(
-                          (dataBook: any, index: number) => (
-                            <div>
-                              <div className="p-4 relative" key={index}>
-                                <Link
-                                  to={`/booking/${dataBook?.id}`}
-                                  key={dataBook?.id}
-                                >
-                                  <AiFillEye className="absolute top-2 right-2 w-5 h-5" />
-                                </Link>
-                                <div className="grid grid-cols-12 gap-2">
-                                  <div className="col-span-2">
-                                    <div className="flex flex-col ">
-                                      <div className="flex flex-col">
-                                        <span className="font-medium">
-                                          {dataBook?.booker_name}
-                                        </span>
-                                        <span className="font-medium">
-                                          {dataBook?.booker_email}
-                                        </span>
+                        <Link
+                          to={`/booking/many/${dataManyBook?.id}`}
+                          key={dataManyBook?.id}
+                        >
+                          <AiFillEye className="absolute top-2 right-2 w-5 h-5" />
+                        </Link>
+                      ) : (
+                        <Link
+                          to={`/detail-tour/${dataManyBook?.id}`}
+                          key={dataManyBook?.id}
+                          target="_blank"
+                        >
+                          <AiFillEye className="absolute top-2 right-2 w-5 h-5" />
+                        </Link>
+                      )}
+
+                      <div className="max-h-48 overflow-auto global-scrollbar">
+                        {dataManyBook?.Booking?.length > 0 ? (
+                          dataManyBook?.Booking?.map(
+                            (dataBook: any, index: number) => (
+                              <div>
+                                <div className="p-4 relative" key={index}>
+                                  <Link
+                                    to={`/booking/${dataBook?.id}`}
+                                    key={dataBook?.id}
+                                  >
+                                    <AiFillEye className="absolute top-2 right-2 w-5 h-5" />
+                                  </Link>
+                                  <div className="grid grid-cols-5 gap-2">
+                                    <div className="col-span-1">
+                                      <div className="flex flex-col ">
+                                        <div className="flex flex-col">
+                                          <span className="font-medium">
+                                            {dataBook?.booker_name}
+                                          </span>
+                                          <span className="font-medium">
+                                            {dataBook?.booker_email}
+                                          </span>
+                                        </div>
                                       </div>
                                     </div>
-                                  </div>
-                                  <div className="col-span-2">
-                                    <span className=" block">
-                                      {dayjs(dataBook?.booked_date)?.format(
-                                        "YYYY-MM-DD"
-                                      )}
-                                    </span>
-                                    <span className="text-gray-500">
-                                      {dataManyBook?.duration} Night
-                                    </span>
-                                  </div>
-                                  <div className="col-span-2">
+                                    {/* <div className="col-span-2">
                                     <span className="block">
-                                      {dayjs(dataBook?.booked_date).format(
-                                        "YYYY-MM-DD"
-                                      )}
-                                    </span>{" "}
-                                    <span className="text-gray-500">
-                                      {" "}
-                                      {dataBook?.time_slot}
+                                      {dataManyBook?.duration_day} Day
                                     </span>
-                                  </div>
-                                  <div className="col-span-2 flex items-center">
-                                    {/* {dataBook?.TicketOnBooking?.map(
+                                    <span className="">
+                                      {dataManyBook?.duration_night} Night
+                                    </span>
+                                  </div> */}
+                                    <div className="col-span-1">
+                                      <span className="block">
+                                        {dayjs(dataBook?.booked_date).format(
+                                          "YYYY-MM-DD"
+                                        )}
+                                      </span>{" "}
+                                      <span className="text-gray-500">
+                                        {" "}
+                                        {dataBook?.time_slot}
+                                      </span>
+                                    </div>
+                                    <div className="col-span-1 flex items-center">
+                                      {/* {dataBook?.TicketOnBooking?.map(
                                   (ticketQuantity: any, index: number) => (
                                     <div key={index} className="">
                                       <span className="">
@@ -187,52 +197,53 @@ function Booker() {
                                     </div>
                                   )
                                 )} */}
-                                    <span>
-                                      {formatNumber(
-                                        parseInt(dataBook?.refund_ammount)
-                                      )}
-                                    </span>
-                                  </div>
-                                  <div className="col-span-2 flex">
-                                    <div className="flex flex-col">
-                                      <div className="flex gap-1">
-                                        <span>Original price:</span>
-                                        <span className="text-gray-500">
-                                          {formatNumber(
-                                            parseInt(dataBook?.original_price)
-                                          )}
-                                        </span>
-                                      </div>
-                                      <div className="flex gap-1">
-                                        <span>Paid price:</span>
-                                        <span className="text-gray-500">
-                                          {formatNumber(
-                                            parseInt(dataBook?.paid_price)
-                                          )}
-                                        </span>
+                                      <span>
+                                        {formatNumber(
+                                          parseInt(dataBook?.refund_ammount)
+                                        )}
+                                      </span>
+                                    </div>
+                                    <div className="col-span-1 flex">
+                                      <div className="flex flex-col">
+                                        <div className="flex gap-1">
+                                          <span>Original price:</span>
+                                          <span className="text-gray-500">
+                                            {formatNumber(
+                                              parseInt(dataBook?.original_price)
+                                            )}
+                                          </span>
+                                        </div>
+                                        <div className="flex gap-1">
+                                          <span>Paid price:</span>
+                                          <span className="text-gray-500">
+                                            {formatNumber(
+                                              parseInt(dataBook?.paid_price)
+                                            )}
+                                          </span>
+                                        </div>
                                       </div>
                                     </div>
-                                  </div>
-                                  <div className="col-span-2 flex items-center ">
-                                    <StatusBooking>
-                                      {dataBook?.status}
-                                    </StatusBooking>
+                                    <div className="col-span-1 flex items-center ">
+                                      <StatusBooking>
+                                        {dataBook?.status}
+                                      </StatusBooking>
+                                    </div>
                                   </div>
                                 </div>
+                                {index < dataManyBook?.Booking.length - 1 && (
+                                  <hr className="mt-2" />
+                                )}
                               </div>
-                              {index < dataManyBook?.Booking.length - 1 && (
-                                <hr className="mt-2" />
-                              )}
-                            </div>
+                            )
                           )
-                        )
-                      ) : (
-                        <div className=" flex items-center justify-center p-6">
-                          <span className="bg-main border border-solid border-gray-300 p-2 rounded-lg shadow-custom-card-mui">
-                            No one has booking this tour yet
-                          </span>
-                        </div>
-                      )}
+                        ) : (
+                          <div className=" flex items-center justify-center p-6">
+                            <span className="bg-main border border-solid border-gray-300 p-2 rounded-lg shadow-custom-card-mui">
+                              No one has booking this tour yet
+                            </span>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   ))}
                   <div className="flex justify-center">

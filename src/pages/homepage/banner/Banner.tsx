@@ -18,6 +18,7 @@ import Navbar from "../../../components/Navbar/Index";
 import { RiSearchLine } from "react-icons/ri";
 import { GoDotFill } from "react-icons/go";
 import LoadingFullScreen from "../../../styles/loading/LoadingFullScreen";
+import { StatusTour } from "../../../styles/status/tour";
 export default function Banner() {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -176,21 +177,7 @@ export default function Banner() {
                           <div className="col-span-2">
                             <div className="flex gap-2 justify-between">
                               <div>
-                                <button
-                                  type="button"
-                                  className={`text-sm flex gap-1 items-center p-1 rounded-md ${
-                                    data?.status === "PUBLISHED"
-                                      ? "bg-navy-blue-opacity-5 text-navy-blue" // Màu xanh cho Published
-                                      : data?.status === "HIDDEN"
-                                      ? "bg-red-300 text-red-900" // Màu đỏ cho Hidden
-                                      : data?.status === "DRAFT"
-                                      ? "bg-yellow-300 text-yellow-900" // Màu vàng cho Draft
-                                      : ""
-                                  }`}
-                                >
-                                  <GoDotFill />
-                                  {data?.status}
-                                </button>
+                                <StatusTour>{data?.status}</StatusTour>
                               </div>
 
                               <div className="flex flex-col gap-3 ">

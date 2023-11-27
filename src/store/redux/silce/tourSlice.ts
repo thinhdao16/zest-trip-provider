@@ -65,6 +65,7 @@ export const getAllTours = createAsyncThunk("tour/getAllTours", async () => {
 export const fetchTourDetail = createAsyncThunk(
   "tour/getDetailTour",
   async (index: string) => {
+    console.log(index);
     try {
       const response = await axiosInstance.get(
         `${BASE_URL}/tour/detail/${index}`

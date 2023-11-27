@@ -7,6 +7,9 @@ import {
 import { useStepContext } from "../context/ui/useStepContext";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { GoLocation } from "react-icons/go";
+import { AiFillDelete } from "react-icons/ai";
+import { IoMdClose } from "react-icons/io";
+import { formatNumberInput } from "../../../utils/formatNumberInput";
 
 const radioItems = [
   "Standard",
@@ -53,6 +56,8 @@ const Price: React.FC = () => {
       payoutPerPerson: 0,
     },
   ]);
+  console.log(selectedRadio);
+
   const [ageFor, setAgeFor] = useState({
     chidlren: {
       ageStart: 0,
@@ -546,7 +551,18 @@ const Price: React.FC = () => {
   if (currentStep !== 10) {
     return null;
   }
+  const formatNumberWithCommas = (value: any) => {
+    // Chuyển đổi giá trị thành chuỗi và loại bỏ tất cả các ký tự không phải số
+    const numericValue = value.toString().replace(/[^0-9]/g, "");
 
+    // Nếu có 3 chữ số trở lên, thêm dấu phẩy
+    if (numericValue.length >= 3) {
+      return new Intl.NumberFormat().format(Number(numericValue));
+    }
+
+    // Ngược lại, giữ nguyên giá trị
+    return numericValue;
+  };
   return (
     <BannerContainer className="global-scrollbar">
       <div className="flex items-center justify-center">
@@ -559,14 +575,13 @@ const Price: React.FC = () => {
               <div className="flex flex-col w-full">
                 {" "}
                 <div className="mb-2">
-                  <p className="font-medium mb-1">
-                    Minimum participants per booking
-                  </p>
+                  <p className="font-medium mb-1">Minimum ticket count</p>
                   <div className=" relative ">
                     <p className="absolute top-4 left-2">
                       <GoLocation />
                     </p>
                     <input
+                      disabled
                       className="w-28 border rounded-lg pr-1 pl-8 py-3 border-gray-400 shadow-custom-card-mui focus:outline-none hover:border-navy-blue focus:border-navy-blue"
                       type="number"
                       value={quantityDefault.min}
@@ -576,12 +591,10 @@ const Price: React.FC = () => {
                 </div>
                 <div className="">
                   <div className="mb-1 flex flex-col">
-                    <span className="font-medium">
-                      Maximum participants per booking
-                    </span>
+                    <span className="font-medium">Maximum ticket count</span>
                     {formList[formList.length - 1]?.numberOfPeopleAfter >
                       quantityDefault?.max && (
-                      <span className="text-red-700 text-sm">
+                      <span className="text-red-500 text-sm">
                         Max greater than or equal max number of people
                       </span>
                     )}
@@ -605,7 +618,14 @@ const Price: React.FC = () => {
                   className="absolute , top-0, right-3 text-white "
                   onClick={() => handleDeleteCountry("default")}
                 />
-                <p className="font-medium text-lg">Default Ticket</p>
+                <div className="flex items-center gap-1">
+                  <p className="font-medium text-lg">Default Ticket</p>
+                  {formList?.length < 2 && (
+                    <span className="text-xs text-red-500">
+                      * Please Number of People at least 2
+                    </span>
+                  )}
+                </div>
 
                 <div className="grid md:grid-cols-12">
                   <div className="col-span-3"></div>
@@ -646,17 +666,26 @@ const Price: React.FC = () => {
                           <div>
                             <p className="font-medium h-4 mb-2">Retail price</p>
                             <input
-                              type="number"
+                              type="text"
                               id="retailPriceChildren"
-                              className="w-20 bg-white border border-gray-300 text-gray-900 text-base font-medium rounded-md p-2"
-                              value={form.retailPrice}
-                              onChange={(e) =>
-                                handleRetailPriceChange(e, form.id, "")
-                              }
+                              className="w-20 bg-white border border-gray-300 text-gray-900 text-base font-medium rounded-md py-2 pl-2"
+                              value={formatNumberWithCommas(form?.retailPrice)}
+                              onChange={(e) => {
+                                // Loại bỏ dấu phẩy khi người dùng nhập giá trị
+                                const newValue = e.target.value.replace(
+                                  /,/g,
+                                  ""
+                                );
+                                handleRetailPriceChange(
+                                  { target: { value: newValue } },
+                                  form.id,
+                                  ""
+                                );
+                              }}
                             />
                             {form.retailPrice <= 50000 && (
-                              <span className="text-red-700 text-xs block">
-                                Greater than 50000
+                              <span className="text-red-500 text-xs block">
+                                Greater than 50,000
                               </span>
                             )}
                           </div>
@@ -715,13 +744,14 @@ const Price: React.FC = () => {
                 <div className="">
                   <div className="mb-3">
                     <p className="font-medium mb-1">
-                      Minimum adult participants per booking
+                      Minimum adult ticket count
                     </p>
                     <div className=" relative ">
                       <p className="absolute top-4 left-2">
                         <GoLocation />
                       </p>
                       <input
+                        disabled
                         className="w-28 border rounded-lg pr-1 pl-8 py-3 border-gray-400 shadow-custom-card-mui focus:outline-none hover:border-navy-blue focus:border-navy-blue"
                         type="number"
                         value={quantityAdult.min}
@@ -732,11 +762,11 @@ const Price: React.FC = () => {
                   <div className="mb-3">
                     <div className="mb-1 flex flex-col">
                       <span className="font-medium mb-1">
-                        Maximum adult participants per booking
+                        Maximum adult ticket count
                       </span>
                       {formListAdult[formListAdult.length - 1]
                         ?.numberOfPeopleAfter > quantityAdult?.max && (
-                        <span className="text-red-700 text-sm">
+                        <span className="text-red-500 text-sm">
                           Max greater than or equal max number of people
                         </span>
                       )}
@@ -758,13 +788,14 @@ const Price: React.FC = () => {
                 <div>
                   <div className="mb-3">
                     <p className="font-medium mb-1">
-                      Minimum children participants per booking
+                      Minimum children ticket count
                     </p>
                     <div className=" relative ">
                       <p className="absolute top-4 left-2">
                         <GoLocation />
                       </p>
                       <input
+                        disabled
                         className="w-28 border rounded-lg pl-8 py-3 border-gray-400 shadow-custom-card-mui focus:outline-none hover:border-navy-blue focus:border-navy-blue"
                         type="number"
                         value={quantityChildren.min}
@@ -777,11 +808,11 @@ const Price: React.FC = () => {
                   <div className="mb-3">
                     <div className="mb-1 flex flex-col">
                       <span className="font-medium mb-1">
-                        Maximum children participants per booking
+                        Maximum children ticket count
                       </span>
                       {formListChildren[formListChildren.length - 1]
                         ?.numberOfPeopleAfter > quantityChildren?.max && (
-                        <span className="text-red-700 text-sm">
+                        <span className="text-red-500 text-sm">
                           Max greater than or equal max number of people
                         </span>
                       )}
@@ -813,7 +844,15 @@ const Price: React.FC = () => {
                   className="absolute , top-0, right-3 text-red-600 hover:text-red-900"
                   onClick={() => handleDeleteCountry("Adults")}
                 />
-                <p className="font-semibold text-lg">Adults</p>
+                <div className="flex items-center gap-1">
+                  <p className="font-semibold text-lg">Adults</p>
+                  {formListAdult?.length < 2 &&
+                    selectedRadio?.adults !== "Free - no ticket required" && (
+                      <span className="text-xs text-red-500">
+                        * Please Number of People at least 2
+                      </span>
+                    )}
+                </div>
                 <div className="grid md:grid-cols-12">
                   <div className="col-span-5">
                     <div className="grid grid-cols-4 gap-2 md:grid-cols-2">
@@ -852,6 +891,7 @@ const Price: React.FC = () => {
                                 onChange={() =>
                                   handleRadioChange("adults", item)
                                 }
+                                disabled={selectedRadio.children !== "Standard"}
                               />
 
                               <label
@@ -905,17 +945,28 @@ const Price: React.FC = () => {
                               <p className="font-medium">Retail price</p>
 
                               <input
-                                type="number"
+                                type="text"
                                 id="retailPriceChildren"
-                                className="w-20 bg-white border border-gray-300 text-gray-900 text-base font-medium rounded-md p-2"
-                                value={form.retailPrice}
-                                onChange={(e) =>
-                                  handleRetailPriceChange(e, form.id, "adult")
-                                }
+                                className="w-20 bg-white border border-gray-300 text-gray-900 text-base font-medium rounded-md py-2 pl-2"
+                                value={formatNumberWithCommas(
+                                  form?.retailPrice
+                                )}
+                                onChange={(e) => {
+                                  // Loại bỏ dấu phẩy khi người dùng nhập giá trị
+                                  const newValue = e.target.value.replace(
+                                    /,/g,
+                                    ""
+                                  );
+                                  handleRetailPriceChange(
+                                    { target: { value: newValue } },
+                                    form.id,
+                                    "adult"
+                                  );
+                                }}
                               />
                               {form.retailPrice <= 50000 && (
-                                <span className="text-red-700 text-xs block">
-                                  Greater than 50000
+                                <span className="text-red-500 text-xs block">
+                                  Greater than 50,000
                                 </span>
                               )}
                             </div>
@@ -930,15 +981,18 @@ const Price: React.FC = () => {
                               <div className="flex items-center">
                                 <input
                                   className="p-2 w-20 bg-slate-200 rounded-md"
-                                  value={form.payoutPerPerson}
+                                  value={formatNumberInput(
+                                    form.payoutPerPerson
+                                  )}
                                   disabled
                                 />
                                 <p className="font-medium">VND</p>
                                 {form.id !== 0 ? (
                                   <button
+                                    className=""
                                     onClick={() => removeForm(form.id, "adult")}
                                   >
-                                    X
+                                    <IoMdClose />
                                   </button>
                                 ) : (
                                   <></>
@@ -947,6 +1001,12 @@ const Price: React.FC = () => {
                             </div>
                           </div>
                         ))}
+                        <button
+                          className=" text-base font-semibold bg-white p-0 mt-2 focus:outline-none hover:border-none hover:p-0 hover:m border-none text-navy-blue hover:text-black"
+                          onClick={() => addNewForm("adult")}
+                        >
+                          Set up price tiers
+                        </button>
                       </div>
                     )}
                     {selectedRadio.adults === "Free - ticket required" && (
@@ -990,18 +1050,28 @@ const Price: React.FC = () => {
                                 className="w-20 bg-slate-200 border border-gray-300 text-gray-900 text-base font-medium rounded-md p-2"
                                 defaultValue="0"
                               />
+                              {form.id !== 0 ? (
+                                <button
+                                  className="ml-2"
+                                  onClick={() => removeForm(form.id, "adult")}
+                                >
+                                  <IoMdClose />
+                                </button>
+                              ) : (
+                                <></>
+                              )}
                             </div>
                             <div></div>
                           </div>
                         ))}
+                        <button
+                          className=" text-base font-semibold bg-white p-0 mt-2 focus:outline-none hover:border-none hover:p-0 hover:m border-none text-navy-blue hover:text-black"
+                          onClick={() => addNewForm("adult")}
+                        >
+                          Set up price tiers
+                        </button>
                       </div>
                     )}
-                    <button
-                      className=" text-base font-semibold bg-white p-0 mt-2 focus:outline-none hover:border-none hover:p-0 hover:m border-none text-navy-blue hover:text-black"
-                      onClick={() => addNewForm("adult")}
-                    >
-                      Set up price tiers
-                    </button>
                   </div>
                 </div>
               </div>
@@ -1015,7 +1085,16 @@ const Price: React.FC = () => {
                   className="absolute , top-0, right-3 text-red-600 hover:text-red-900"
                   onClick={() => handleDeleteCountry("Children")}
                 />
-                <p className="font-semibold text-lg">Children</p>
+                <div className="flex items-center gap-1">
+                  <p className="font-semibold text-lg">Children</p>
+                  {formListChildren?.length < 2 &&
+                    selectedRadio?.children !== "Free - no ticket required" && (
+                      <span className="text-xs text-red-500">
+                        * Please Number of People at least 2
+                      </span>
+                    )}
+                </div>
+
                 <div className="grid md:grid-cols-12">
                   <div className="col-span-5">
                     <div className="grid grid-cols-4 gap-2 md:grid-cols-2">
@@ -1054,6 +1133,7 @@ const Price: React.FC = () => {
                                 onChange={() =>
                                   handleRadioChange("children", item)
                                 }
+                                disabled={selectedRadio.adults !== "Standard"}
                               />
 
                               <label
@@ -1105,23 +1185,29 @@ const Price: React.FC = () => {
 
                             <div>
                               <p className="font-medium">Retail price</p>
-
                               <input
-                                type="number"
+                                type="text"
                                 id="retailPriceChildren"
-                                className="w-20 bg-white border border-gray-300 text-gray-900 text-base font-medium rounded-md p-2"
-                                value={form.retailPrice}
-                                onChange={(e) =>
+                                className="w-20 bg-white border border-gray-300 text-gray-900 text-base font-medium rounded-md py-2 pl-2"
+                                value={formatNumberWithCommas(
+                                  form?.retailPrice
+                                )}
+                                onChange={(e) => {
+                                  // Loại bỏ dấu phẩy khi người dùng nhập giá trị
+                                  const newValue = e.target.value.replace(
+                                    /,/g,
+                                    ""
+                                  );
                                   handleRetailPriceChange(
-                                    e,
+                                    { target: { value: newValue } },
                                     form.id,
                                     "children"
-                                  )
-                                }
+                                  );
+                                }}
                               />
                               {form.retailPrice <= 50000 && (
-                                <span className="text-red-700 text-xs block">
-                                  Greater than 50000
+                                <span className="text-red-500 text-xs block">
+                                  Greater than 50,000
                                 </span>
                               )}
                             </div>
@@ -1136,7 +1222,9 @@ const Price: React.FC = () => {
                               <div className="flex items-center">
                                 <input
                                   className="p-2 w-20 bg-slate-200 rounded-md"
-                                  value={form.payoutPerPerson}
+                                  value={formatNumberInput(
+                                    form?.payoutPerPerson
+                                  )}
                                   disabled
                                 />
                                 <p className="font-medium">VND</p>
@@ -1146,7 +1234,7 @@ const Price: React.FC = () => {
                                       removeForm(form.id, "children")
                                     }
                                   >
-                                    X
+                                    <IoMdClose />
                                   </button>
                                 ) : (
                                   <></>
@@ -1155,6 +1243,12 @@ const Price: React.FC = () => {
                             </div>
                           </div>
                         ))}
+                        <button
+                          className=" text-base font-semibold bg-white p-0 mt-2 focus:outline-none hover:border-none hover:p-0 hover:m border-none text-navy-blue hover:text-black"
+                          onClick={() => addNewForm("children")}
+                        >
+                          Set up price tiers
+                        </button>
                       </div>
                     )}
                     {selectedRadio.children === "Free - ticket required" && (
@@ -1201,19 +1295,31 @@ const Price: React.FC = () => {
                                 defaultValue="0"
                                 disabled
                               />
+                              {form.id !== 0 ? (
+                                <button
+                                  className="ml-2"
+                                  onClick={() =>
+                                    removeForm(form.id, "children")
+                                  }
+                                >
+                                  <IoMdClose />
+                                </button>
+                              ) : (
+                                <></>
+                              )}
                             </div>
 
                             <div></div>
                           </div>
                         ))}
+                        <button
+                          className=" text-base font-semibold bg-white p-0 mt-2 focus:outline-none hover:border-none hover:p-0 hover:m border-none text-navy-blue hover:text-black"
+                          onClick={() => addNewForm("children")}
+                        >
+                          Set up price tiers
+                        </button>
                       </div>
                     )}
-                    <button
-                      className=" text-base font-semibold bg-white p-0 mt-2 focus:outline-none hover:border-none hover:p-0 hover:m border-none text-navy-blue hover:text-black"
-                      onClick={() => addNewForm("children")}
-                    >
-                      Set up price tiers
-                    </button>
                   </div>
                 </div>
               </div>

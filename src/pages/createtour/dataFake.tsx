@@ -78,14 +78,14 @@ export const dataTypePrice: DataPrice[] = [
   {
     id: 1,
     type: "number",
-    labelMain: "Minimum participants per booking",
+    labelMain: "Minimum ticket count",
     icon: <GoLocation />,
     main: "Mini",
   },
   {
     id: 2,
     type: "number",
-    labelMain: "Maximum participants per booking",
+    labelMain: "Maximum ticket count",
     icon: <GoLocation />,
     main: "Max",
   },

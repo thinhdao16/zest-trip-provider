@@ -14,12 +14,12 @@ export default function Header() {
           <div className="flex justify-between items-center ">
             <div
               onClick={goBack}
-              className=" flex items-center justify-center gap-x-4"
+              className=" flex items-center justify-center gap-x-4 h-12"
             >
               <FaAngleLeft />
               {/* <span className=" font-medium text-xl"> {tourDetail?.name}</span>  */}
             </div>
-            <div className="flex gap-x-8">
+            {/* <div className="flex gap-x-8">
               <button className="text-black font-medium border border-gray-300 px-3 py-2 rounded-3xl  hover:text-black hover:border-navy-blue ">
                 Any question ?
               </button>
@@ -27,7 +27,7 @@ export default function Header() {
               <button className="text-black font-medium border border-gray-300 px-3 py-2 rounded-3xl  hover:text-black hover:border-navy-blue">
                 Save
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="px-4">

@@ -10,20 +10,15 @@ import {
   TitleCardOptions,
 } from "../../../styles/createtour/createtour";
 import { AiFillBank } from "react-icons/ai";
-import { FaEarthAfrica } from "react-icons/fa6";
 
 const TourType: React.FC = () => {
   const { currentStep, updateFormValues } = useStepContext();
 
   const [selectedCard, setSelectedCard] = useState<number>(-1);
 
-  const handleCardClick = (indexId: number) => {
-    setSelectedCard((prevSelectedCard) =>
-      prevSelectedCard === indexId ? -1 : indexId
-    );
-    updateFormValues(0, {
-      TypeTour: selectedCard === indexId ? undefined : indexId,
-    });
+  const handleCardClick = (index: object, indexId: number) => {
+    setSelectedCard(indexId === selectedCard ? -1 : indexId);
+    updateFormValues(0, { TypeTour: index });
   };
 
   if (currentStep !== 2) {
@@ -37,13 +32,13 @@ const TourType: React.FC = () => {
         "All bookings are protected for free in the event of Landlord cancellations, incorrect listing information and other",
       icon: <AiFillBank />,
     },
-    {
-      id: 1,
-      title: "International ",
-      description:
-        "All bookings are protected for free in the event of Landlord cancellations, incorrect listing information and other",
-      icon: <FaEarthAfrica />,
-    },
+    // {
+    //   id: 1,
+    //   title: "International ",
+    //   description:
+    //     "All bookings are protected for free in the event of Landlord cancellations, incorrect listing information and other",
+    //   icon: <FaEarthAfrica />,
+    // },
   ];
 
   return (
@@ -54,7 +49,8 @@ const TourType: React.FC = () => {
             Choose the type of tour that best describes the type of tour you
             want to create
           </CreateTitle>
-          <div className="h-[50vh] overflow-auto">
+
+          <div className=" overflow-auto mt-4">
             {dataClickType.map((data) => (
               <div
                 key={data.id}
@@ -62,7 +58,7 @@ const TourType: React.FC = () => {
                   index: data.id,
                   selectedCard: selectedCard,
                 })}
-                onClick={() => handleCardClick(data.id)}
+                onClick={() => handleCardClick(data, data.id)}
                 className="shadow-custom-card-mui"
               >
                 <CreateChooseContent sx={{ margin: 3 }}>

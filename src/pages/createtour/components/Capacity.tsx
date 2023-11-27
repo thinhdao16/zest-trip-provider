@@ -40,7 +40,6 @@ const Capacity: React.FC = () => {
     DateFrom: "",
     DateTo: "",
   });
-
   const [startingTimeCheckBox, setStartingTimeCheckBox] = useState<any>({
     Mon: [],
     Tue: [],
@@ -422,7 +421,10 @@ const Capacity: React.FC = () => {
           <div className="flex flex-col gap-2">
             <div>
               <p className="font-medium mb-1">
-                Name (e.g. Summer Season, Autumn 2011... )
+                Name (e.g. Summer Season, Autumn 2011... ){" "}
+                {capacity?.length === 0 && (
+                  <span className="text-red-500">*</span>
+                )}
               </p>
               <div className="  relative ">
                 <MdOutlineSubtitles className="absolute top-4 left-2" />
@@ -430,6 +432,7 @@ const Capacity: React.FC = () => {
                   className="w-1/2 border rounded-lg px-8 py-3 border-gray-400 shadow-custom-card-mui focus:outline-none hover:border-navy-blue focus:border-navy-blue"
                   placeholder="New availability"
                   type="text"
+                  value={capacity}
                   onChange={handlePersonalInfo}
                 />
               </div>
@@ -455,7 +458,7 @@ const Capacity: React.FC = () => {
             </div>
             <div>
               <p className="font-medium mb-1">
-                Refund Before (calculated from the tour booking time)
+                Refund Before (calculated from the tour start time)
               </p>
               <div className="  relative ">
                 <RiRefund2Line className="absolute top-4 left-2" />
@@ -520,7 +523,20 @@ const Capacity: React.FC = () => {
               </div>
             </div>
             <div className="mt-3">
-              <p className="font-medium">Weekly starting times</p>
+              <div className="flex items-center gap-1">
+                <p className="font-medium">Weekly starting times</p>
+                {startingTimeCheckBox?.Mon?.length === 0 &&
+                  startingTimeCheckBox?.Tue?.length === 0 &&
+                  startingTimeCheckBox?.Wed?.length === 0 &&
+                  startingTimeCheckBox?.Thu?.length === 0 &&
+                  startingTimeCheckBox?.Fri?.length === 0 &&
+                  startingTimeCheckBox?.Sat?.length === 0 &&
+                  startingTimeCheckBox?.Sun?.length === 0 && (
+                    <span className="text-xs text-red-500">
+                      * Choose at least 1
+                    </span>
+                  )}
+              </div>
 
               <div className="">
                 <div className="mt-2">

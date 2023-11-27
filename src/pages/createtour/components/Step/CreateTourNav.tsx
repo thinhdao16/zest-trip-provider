@@ -262,6 +262,7 @@ function CreateTourNav() {
       chooseStep(data);
     }
   };
+
   const constraintLength = () => {
     let classSkip = "no";
     if (currentStep === 2) {
@@ -307,9 +308,18 @@ function CreateTourNav() {
     }
     if (currentStep === 8) {
       if (
-        formValues[4].DurationCheckIn[1].length >=
-          formValues[4].DurationCheckIn[0][0].no &&
-        formValues[4].DurationCheckIn[0].length > 0
+        formValues[4]?.DurationCheckIn[1]?.length >=
+          formValues[4]?.DurationCheckIn[0][0]?.no &&
+        formValues[4]?.DurationCheckIn[0]?.length > 0 &&
+        (formValues[4]?.DurationCheckIn[0][0]?.no -
+          formValues[4]?.DurationCheckIn[0][1]?.no) *
+          (formValues[4]?.DurationCheckIn[0][0]?.no -
+            formValues[4]?.DurationCheckIn[0][1]?.no) <=
+          1 &&
+        Math.max(
+          formValues[4]?.DurationCheckIn[0][0]?.no,
+          formValues[4]?.DurationCheckIn[0][1]?.no
+        ) === formValues[4]?.DurationCheckIn[1]?.length
       ) {
         classSkip = "yes"; // Nếu điều kiện thỏa mãn, thì set thành "yes"
       }
@@ -318,17 +328,16 @@ function CreateTourNav() {
       const capacities = formValues[5].Capacity;
       let hasNonEmptyArray = false; // Biến kiểm tra mặc định là false
       if (
-        (capacities.DateFrom.length > 0 &&
-          capacities.DateTo.length > 0 &&
-          capacities.Title.length > 0 &&
-          capacities.Mon.length > 0) ||
-        capacities.Tue.length > 0 ||
-        capacities.Wed.length > 0 ||
-        capacities.Thu.length > 0 ||
-        capacities.Fri.length > 0 ||
-        capacities.Sat.length > 0 ||
-        capacities.Sun.length > 0 ||
-        capacities.SingleTime.length > 0
+        (capacities.Mon.length > 0 ||
+          capacities.Tue.length > 0 ||
+          capacities.Wed.length > 0 ||
+          capacities.Thu.length > 0 ||
+          capacities.Fri.length > 0 ||
+          capacities.Sat.length > 0 ||
+          capacities.Sun.length > 0) &&
+        capacities.DateFrom.length > 0 &&
+        capacities.DateTo.length > 0 &&
+        capacities.Title.length > 0
       ) {
         hasNonEmptyArray = true; // Nếu có ít nhất một mảng có độ dài > 0, đặt biến kiểm tra thành true
       }

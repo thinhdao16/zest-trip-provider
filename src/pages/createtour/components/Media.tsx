@@ -24,7 +24,6 @@ type GalleryImage = {
 const Media: React.FC = () => {
   const { currentStep, updateFormValues } = useStepContext();
   const [selectedImages, setSelectedImages] = useState<GalleryImage[]>([]);
-  console.log(selectedImages);
   const MAX_TOTAL_SIZE_MB = 8;
   const MAX_TOTAL_SIZE_BYTES = MAX_TOTAL_SIZE_MB * 1024 * 1024; // Convert MB to bytes
   const isTotalSizeValid = useMemo(() => {

@@ -9,14 +9,11 @@ interface StatusColors {
   [key: string]: string; // Thêm index signature vào đây
 }
 
-export function StatusBooking({ children }: ConstructionProps) {
+export function StatusTour({ children }: ConstructionProps) {
   const statusColors: StatusColors = {
-    Pending: "bg-yellow-300 text-yellow-900",
-    Accepted: "bg-navy-blue-opacity-5 text-navy-blue",
-    Reject: "bg-red-300 text-red-900",
-    Refunded: "bg-blue-300 text-blue-900",
-    "User request refund": "bg-purple-300 text-purple-900",
-    "Provider refunded": "bg-indigo-300 text-indigo-900",
+    Draft: "bg-yellow-300 text-yellow-900",
+    Published: "bg-navy-blue-opacity-5 text-navy-blue",
+    Hidden: "bg-red-300 text-red-900",
   };
 
   const normalizedStatus =
@@ -38,23 +35,14 @@ export function StatusBooking({ children }: ConstructionProps) {
 
 // Hàm xử lý trường hợp cụ thể cho USER_REQUEST_REFUND
 function normalizeStatus(status: string): string {
-  if (status === "USER_REQUEST_REFUND") {
-    return "User request refund";
+  if (status === "PUBLISHED") {
+    return "Published";
   }
-  if (status === "REJECT") {
-    return "Reject";
+  if (status === "DRAFT") {
+    return "Draft";
   }
-  if (status === "PENDING") {
-    return "Pending";
-  }
-  if (status === "ACCEPTED") {
-    return "Accepted";
-  }
-  if (status === "PROVIDER_REFUNDED") {
-    return "Provider refunded";
-  }
-  if (status === "REFUNDED") {
-    return "Refunded";
+  if (status === "HIDDEN") {
+    return "Hidden";
   }
 
   // Trường hợp mặc định cho các giá trị khác

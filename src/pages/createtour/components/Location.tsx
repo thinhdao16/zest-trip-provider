@@ -116,7 +116,12 @@ const Location: React.FC = () => {
                 </div>
               </div>
               <div>
-                <p className="font-medium mb-1">Address Name</p>
+                <p className="font-medium mb-1 flex items-center gap-1">
+                  Address Name
+                  {addressName?.length < 1 && (
+                    <span className="text-red-500">*</span>
+                  )}
+                </p>
                 <div className="relative">
                   <GoLocation className="absolute top-4 left-2" />
                   <input
@@ -131,7 +136,13 @@ const Location: React.FC = () => {
                 </div>
               </div>
               <div>
-                <p className="font-medium mb-1">Address province</p>
+                <p className="font-medium mb-1 flex items-center gap-1">
+                  Address province
+                  {formValues[3]?.Location?.address_province === undefined && (
+                    <span className="text-red-500">*</span>
+                  )}
+                </p>
+
                 <FormControl
                   fullWidth
                   className="relative bg-white shadow-custom-card-mui"
@@ -174,7 +185,12 @@ const Location: React.FC = () => {
                 </FormControl>
               </div>
               <div>
-                <p className="font-medium mb-1">Address district</p>
+                <p className="font-medium mb-1 flex items-center gap-1">
+                  Address district
+                  {formValues[3]?.Location?.address_district === undefined && (
+                    <span className="text-red-500">*</span>
+                  )}
+                </p>
                 <FormControl
                   fullWidth
                   className="relative bg-white shadow-custom-card-mui"
@@ -218,7 +234,12 @@ const Location: React.FC = () => {
                 </FormControl>
               </div>
               <div>
-                <p className="font-medium mb-1">Address ward</p>
+                <p className="font-medium mb-1 flex items-center gap-1">
+                  Address ward
+                  {formValues[3]?.Location?.address_ward === undefined && (
+                    <span className="text-red-500">*</span>
+                  )}
+                </p>
                 <FormControl
                   fullWidth
                   className="relative bg-white shadow-custom-card-mui"

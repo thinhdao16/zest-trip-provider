@@ -51,13 +51,11 @@ const LocationStart: React.FC = () => {
   >(null);
 
   const [selectedDataProStart, setSelectedDataProStart] = useState<any>();
-
+  console.log(selectedDataProStart);
   const [selectedDataDisStart, setSelectedDataDisStart] = useState<any>();
-
   const [selectedDataWardStart, setSelectedDataWardStart] = useState<any>();
 
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
-  // console.log(openSnackbar);
   const [checkLocation, setCheckLocation] = useState(false);
   const [openLoading, setOpenLoading] = useState(false);
 
@@ -266,7 +264,12 @@ const LocationStart: React.FC = () => {
                   </div>
                 </div>
                 <div>
-                  <p className="font-medium mb-1">Address province</p>
+                  <p className="font-medium mb-1 flex gap-1">
+                    Address province
+                    {selectedDataProStart === undefined && (
+                      <span className="text-red-500">*</span>
+                    )}
+                  </p>
                   <FormControl
                     fullWidth
                     className="relative bg-white shadow-custom-card-mui"
@@ -307,7 +310,12 @@ const LocationStart: React.FC = () => {
                   </FormControl>
                 </div>
                 <div>
-                  <p className="font-medium mb-1">Address district</p>
+                  <p className="font-medium mb-1 flex gap-1">
+                    Address district
+                    {selectedDataDisStart === undefined && (
+                      <span className="text-red-500">*</span>
+                    )}
+                  </p>
                   <FormControl
                     fullWidth
                     className="relative bg-white shadow-custom-card-mui"
@@ -351,7 +359,12 @@ const LocationStart: React.FC = () => {
                   </FormControl>
                 </div>
                 <div>
-                  <p className="font-medium mb-1">Address ward</p>
+                  <p className="font-medium mb-1 flex gap-1">
+                    Address ward
+                    {selectedDataWardStart === undefined && (
+                      <span className="text-red-500">*</span>
+                    )}
+                  </p>
                   <FormControl
                     fullWidth
                     className="relative bg-white shadow-custom-card-mui"
@@ -392,6 +405,29 @@ const LocationStart: React.FC = () => {
                       )}
                     </Select>
                   </FormControl>
+                </div>
+                <div className="">
+                  <p className="font-medium mb-1 flex items-center gap-1">
+                    Location
+                    {!checkLocation && <span className="text-red-500">*</span>}
+                  </p>
+                  {!checkLocation ? (
+                    <div className="bg-white shadow-custom-card-mui p-3 rounded-lg text-red-500">
+                      Please handle search find location
+                    </div>
+                  ) : (
+                    <div className="bg-white shadow-custom-card-mui p-3 rounded-lg ">
+                      {addressNameStart && addressNameStart.length > 0 && (
+                        <>
+                          {addressNameStart}
+                          {", "}
+                        </>
+                      )}
+                      {selectedDataWardStart?.full_name} {", "}
+                      {selectedDataDisStart?.full_name} {", "}
+                      {selectedDataProStart?.full_name} {", "}Việt Nam
+                    </div>
+                  )}
                 </div>
                 <div className="text-center mt-4">
                   <button

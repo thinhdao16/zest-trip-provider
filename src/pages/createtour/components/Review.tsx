@@ -24,12 +24,14 @@ import {
 } from "react-icons/fa6";
 import { TourTag, VehicleTag } from "../../../assets/tour/iconVehicle/tag";
 import "../styles/createtour.css";
+import { formatNumber } from "../../../utils/formatNumber";
 
 const Review: React.FC = () => {
   const { currentStep, formValues } = useStepContext();
   if (currentStep !== 12) {
     return null;
   }
+  console.log(formValues);
   return (
     <BannerContainer className="global-scrollbar">
       <div className="flex items-center justify-center w-full">
@@ -152,9 +154,7 @@ const Review: React.FC = () => {
                   <div className="flex flex-col gap-2">
                     <div className="flex items-center gap-2 ">
                       <FaCalendarCheck />
-                      <span className="font-medium text-lg">
-                        Duration CheckIn
-                      </span>
+                      <span className="font-medium text-lg">Schedule</span>
                     </div>
                     <div className="relative overflow-x-auto rounded-lg  shadow-custom-card-mui border border-solid border-gray-300">
                       <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 ">
@@ -271,7 +271,7 @@ const Review: React.FC = () => {
                     <div className="flex items-center  border-l border-solid border-gray-300 bg-white rounded-lg p-2 shadow-custom-card-mui">
                       <FaLocationDot className="mr-2" />
                       <div className="block">
-                        <p className="font-medium mb-1 text-lg"> location</p>
+                        <p className="font-medium mb-1 text-lg"> Location</p>
                         <span className="flex flex-wrap">
                           {formValues[3].Location.address_name},{" "}
                           {formValues[3].Location.address_ward?.full_name},{" "}
@@ -285,24 +285,27 @@ const Review: React.FC = () => {
                     <div className="flex items-center  border-l border-solid border-gray-300 bg-white rounded-lg p-2 shadow-custom-card-mui">
                       <FaLocationDot className="mr-2" />
                       <div className="block">
-                        <p className="font-medium mb-1 text-lg"> Departual</p>
+                        <p className="font-medium mb-1 text-lg"> Departure</p>
                         <span className="flex flex-wrap">
-                          {formValues[3]?.LocationStart?.address_name},{" "}
+                          {formValues[9]?.LocationStart?.address_name?.length >
+                            0 && (
+                            <>{formValues[9]?.LocationStart?.address_name},</>
+                          )}
                           {
-                            formValues[3]?.LocationStart?.address_ward
+                            formValues[9]?.LocationStart?.address_ward
                               ?.full_name
                           }
                           ,{" "}
                           {
-                            formValues[3]?.LocationStart?.address_district
+                            formValues[9]?.LocationStart?.address_district
                               ?.full_name
                           }
                           ,{" "}
                           {
-                            formValues[3]?.LocationStart?.address_province
+                            formValues[9]?.LocationStart?.address_province
                               ?.full_name
                           }
-                          , {formValues[3]?.LocationStart?.address_country}
+                          , {formValues[9]?.LocationStart?.address_country}
                         </span>
                       </div>
                     </div>
@@ -312,16 +315,12 @@ const Review: React.FC = () => {
 
                   <div className="">
                     <div className="flex items-center mb-3 border-l border-solid border-gray-300 bg-white rounded-lg p-2 shadow-custom-card-mui">
-                      <AiOutlineSelect className="mr-2" />
+                      <AiOutlineSelect className="mr-2 w-7 h-7" />
                       <div className="block">
-                        <p className="font-medium mb-1 text-lg">Typetour</p>
-                        <p>{formValues?.[0]?.TypeTour?.title}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center border-l border-solid border-gray-300 bg-white rounded-lg p-2 shadow-custom-card-mui">
-                      <AiOutlineFileText className="mr-2 w-8" />
-                      <div className="block">
-                        <p className="font-medium mb-1 text-lg">AccomType</p>
+                        <p className="font-medium mb-1 text-lg">Tour type</p>
+                        <p className="font-medium">
+                          {formValues?.[0]?.TypeTour?.title}
+                        </p>
                         <p>{formValues?.[0]?.TypeTour?.description}</p>
                       </div>
                     </div>
@@ -332,11 +331,16 @@ const Review: React.FC = () => {
                     <div className="mb-3">
                       <div className="flex items-center">
                         <AiFillBulb className="mr-2" />
-                        <p className="font-medium mb-1 text-lg">Trans</p>
+                        <p className="font-medium mb-1 text-lg">
+                          Transportation
+                        </p>
                       </div>
                       <Grid container spacing={2}>
                         {formValues?.[1]?.TransportType?.map(
-                          (trans: { id: number; name: string }, index: any) => (
+                          (
+                            trans: { id: number; name: string },
+                            index: number
+                          ) => (
                             <Grid item xs={6} sm={6} md={4} lg={3} key={index}>
                               <div
                                 key={trans?.id}
@@ -356,7 +360,7 @@ const Review: React.FC = () => {
                     <div>
                       <div className="flex items-center ">
                         <AiFillBulb className="mr-2" />
-                        <p className="font-medium  mb-1 text-lg">Accom</p>
+                        <p className="font-medium  mb-1 text-lg">Category</p>
                       </div>
                       <Grid container spacing={2}>
                         {formValues?.[2]?.AccomType?.map(
@@ -441,7 +445,7 @@ const Review: React.FC = () => {
                                 <span>From: {price?.numberOfPeople}</span>•
                                 <span>to: {price?.numberOfPeopleAfter}</span>
                                 <AiOutlineSwapRight />
-                                <span>{price?.retailPrice}</span>
+                                <span>{formatNumber(price?.retailPrice)}</span>
                               </div>
                             ))}
                           </div>

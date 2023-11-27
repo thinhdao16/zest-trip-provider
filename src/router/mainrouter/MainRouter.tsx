@@ -25,6 +25,7 @@ import Payment from "../../pages/payment/Payment";
 import VoucherView from "../../pages/voucher/management/voucher-view/VoucherView";
 import Promotion from "../../pages/promotion/Promotion";
 import PromotionPlan from "../../pages/promotion/plan/PromotionPlan";
+import DetailTour from "../../pages/homepage/detail/DetailTour";
 
 function MainRouter() {
   const { refeshLogin } = React.useContext(DataContext);
@@ -66,7 +67,7 @@ function MainRouter() {
               </Route>
             </Route>
 
-            <Route path="/promotion" element={<Promotion />}>
+            <Route path="/promotion">
               <Route path="" element={<Promotion />} />
               <Route path="plan" element={<PromotionPlan />} />
             </Route>
@@ -79,6 +80,7 @@ function MainRouter() {
               path="/booking/:index"
               element={<BookerDetailSingleScreen />}
             />
+            <Route path="/detail-tour/:index" element={<DetailTour />} />
             <Route path="/booking/many/:index" element={<DetailBook />} />
             <Route path="/voucher-create" element={<VoucherNew />} />
             <Route path="/voucher-view" element={<VoucherView />} />
