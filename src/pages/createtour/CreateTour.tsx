@@ -21,6 +21,7 @@ import { getTagTour, getVehicleTour } from "../../store/redux/silce/tourSlice";
 import CreateTourNav from "./components/Step/CreateTourNav";
 import LocationStart from "./components/LocationStart";
 import { useSelector } from "react-redux";
+import { Outlet } from "react-router-dom";
 
 const steps = [
   // Capacity,
@@ -44,6 +45,7 @@ const steps = [
 const CreateTour: React.FC = () => {
   return (
     <>
+      <Outlet />
       <StepProvider totalSteps={steps.length}>
         <div>
           <StepRenderer />
