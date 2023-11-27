@@ -37,79 +37,56 @@ function MainRouter() {
     <BrowserRouter>
       <Routes>
         {/* Wrap routes in a layout */}
-        <Route
-          path="*"
-          element={
-            <React.Fragment>
-              <Routes>
-                {checkAccessToken === null ? (
-                  <React.Fragment>
-                    <Route path="*" element={<Navigate to="/login" />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/signup" element={<SignUp />} />
-                    <Route
-                      path="/forgotpassword"
-                      element={<ForgotPassWord />}
-                    />
-                    <Route path="/setupprovider" element={<SetUpProvider />} />
-                  </React.Fragment>
-                ) : (
-                  <React.Fragment>
-                    <Route path="/" element={<AuthLayout />}>
-                      <Route path="/" element={<Dashboard />}></Route>
-                      <Route path="/blank" element={<Blank />}></Route>
-                      <Route path="/profile" element={<Blank />}></Route>
-                      <Route path="/review" element={<Review />}></Route>
+        {checkAccessToken === null ? (
+          <React.Fragment>
+            <Route path="*" element={<Navigate to="/login" />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/forgotpassword" element={<ForgotPassWord />} />
+            <Route path="/setupprovider" element={<SetUpProvider />} />
+          </React.Fragment>
+        ) : (
+          <React.Fragment>
+            <Route path="/" element={<AuthLayout />}>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/blank" element={<Blank />} />
+              <Route path="/profile" element={<Blank />} />
+              <Route path="/review" element={<Review />} />
 
-                      <Route path="/listtour" element={<HomePage />} />
-                      <Route path="/booking" element={<Booker />}></Route>
-                      <Route path="/voucher">
-                        <Route path="" element={<Voucher />} />
-                      </Route>
-                      <Route path="/payment">
-                        <Route path="" element={<Payment />} />
-                      </Route>
-                      <Route
-                        path="/availability"
-                        element={<Availability />}
-                      ></Route>
+              <Route path="/listtour" element={<HomePage />} />
+              <Route path="/booking" element={<Booker />} />
+              <Route path="/voucher" element={<Voucher />}>
+                <Route path="" element={<Voucher />} />
+              </Route>
+              <Route path="/payment" element={<Payment />} />
+              <Route path="/availability" element={<Availability />} />
 
-                      <Route path="/account-settings">
-                        <Route path="" element={<AccountSettings />} />
-                        <Route
-                          path="personal-info"
-                          element={<PersonalInfo />}
-                        />
-                      </Route>
-                    </Route>
-                    <Route path="/promotion">
-                      <Route path="" element={<Promotion />} />
-                      <Route path="plan" element={<PromotionPlan />} />
-                    </Route>
+              <Route path="/account-settings" element={<AccountSettings />}>
+                <Route path="" element={<AccountSettings />} />
+                <Route path="personal-info" element={<PersonalInfo />} />
+              </Route>
+            </Route>
+            <Route path="/promotion" element={<Promotion />}>
+              <Route path="" element={<Promotion />} />
+              <Route path="plan" element={<PromotionPlan />} />
+            </Route>
 
-                    <Route path="/createtour" element={<CreateTour />} />
-                    <Route path="/" element={<Navigate to="/listtour" />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/signup" element={<SignUp />} />
-                    <Route path="/:index" element={<SinglePage />} />
-                    <Route
-                      path="/booking/:index"
-                      element={<BookerDetailSingleScreen />}
-                    />
-                    <Route
-                      path="/booking/many/:index"
-                      element={<DetailBook />}
-                    />
-                    <Route path="/voucher-create" element={<VoucherNew />} />
-                    <Route path="/voucher-view" element={<VoucherView />} />
-                    <Route path="/listwork" element={<ListWork />} />
-                    <Route path="/setupprovider" element={<SetUpProvider />} />
-                  </React.Fragment>
-                )}
-              </Routes>
-            </React.Fragment>
-          }
-        />
+            <Route path="/createtour" element={<CreateTour />} />
+            <Route path="/" element={<Navigate to="/listtour" />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/:index" element={<SinglePage />} />
+            <Route
+              path="/booking/:index"
+              element={<BookerDetailSingleScreen />}
+            />
+            <Route path="/booking/many/:index" element={<DetailBook />} />
+            <Route path="/voucher-create" element={<VoucherNew />} />
+            <Route path="/voucher-view" element={<VoucherView />} />
+            <Route path="/listwork" element={<ListWork />} />
+            <Route path="/setupprovider" element={<SetUpProvider />} />
+          </React.Fragment>
+        )}
       </Routes>
     </BrowserRouter>
   );
