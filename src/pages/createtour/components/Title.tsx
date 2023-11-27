@@ -52,6 +52,7 @@ const Title: React.FC = () => {
             <div>
               <div className="flex items-center gap-3">
                 <p className="font-medium">Title tour</p>
+
                 <Tooltip
                   title="What is the title of your activity?
 Write a short descriptive title to help customers understand your product. It should include:
@@ -65,10 +66,11 @@ Write a short descriptive title to help customers understand your product. It sh
                     <FaRegCircleQuestion />
                   </p>
                 </Tooltip>
+                {isTitleEmpty && (
+                  <p className="text-red-500 text-xs">*Title cannot be empty</p>
+                )}
               </div>
-              {isTitleEmpty && (
-                <p className="text-red-500 text-sm">Title cannot be empty</p>
-              )}
+
               <div className="relative mt-2">
                 <AiOutlineLock className="absolute top-4 left-2" />
                 <input
@@ -100,6 +102,11 @@ Write a short descriptive title to help customers understand your product. It sh
                     <FaRegCircleQuestion />
                   </p>
                 </Tooltip>
+                {description?.length === 0 && (
+                  <p className="text-red-500 text-xs">
+                    *Description cannot be empty
+                  </p>
+                )}
               </div>
               <div className="relative">
                 <MdOutlineDescription className="absolute top-3 left-3 " />

@@ -22,6 +22,7 @@ const ModalTicketAdult = ({
 }: {
   dataTicket: { ticketPricing: any; setTicketPricing: any; duration: number };
 }) => {
+  console.log(ticketPricing);
   const [open, setOpen] = useState(false);
   const [reloadNumber, setReloadNumber] = useState(0);
   const handleOpen = () => {
@@ -200,17 +201,27 @@ const ModalTicketAdult = ({
                       </div>
                       <div className="flex gap-3">
                         <div className="flex flex-col gap-1">
-                          <span className="font-medium">Max count</span>
+                          <div className="flex items-center gap-1">
+                            <span className="font-medium">Max count</span>
+                            {ticket?.price_range[
+                              ticket?.price_range?.length - 1
+                            ]?.to_amount >= ticket?.maximum_ticket_count && (
+                              <span className="text-red-500 text-xs">
+                                *Max greater than to
+                              </span>
+                            )}
+                          </div>
+
                           <input
                             type="text"
                             placeholder="max"
                             className="px-2 py-1 border border-gray-300 rounded-lg"
-                            value={ticket?.maximum_booking_quantity}
+                            value={ticket?.maximum_ticket_count}
                             onChange={(e) =>
                               updateScript(
                                 ticketIndex,
                                 e.target.value,
-                                "maximum_booking_quantity"
+                                "maximum_ticket_count"
                               )
                             }
                           />
@@ -218,6 +229,7 @@ const ModalTicketAdult = ({
                         <div className="flex flex-col gap-1">
                           <span className="font-medium">Min count</span>
                           <input
+                            disabled
                             type="text"
                             placeholder="min"
                             className="px-2 py-1 border border-gray-300 rounded-lg"
@@ -258,7 +270,15 @@ const ModalTicketAdult = ({
                               />
                             </div>
                             <div className="flex flex-col gap-1">
-                              <span className="font-medium">to</span>
+                              <div className="flex items-center gap-1">
+                                <span className="font-medium">to</span>
+                                {price?.to_amount < price?.from_amount && (
+                                  <span className="text-red-500 text-xs">
+                                    *Greater than or equal to
+                                  </span>
+                                )}
+                              </div>
+
                               <input
                                 type="text"
                                 placeholder="min"
@@ -278,7 +298,19 @@ const ModalTicketAdult = ({
                             </div>
 
                             <div className="flex flex-col gap-1">
-                              <span className="font-medium">Price</span>
+                              <div className="flex gap-1 items-center">
+                                <span className="font-medium">Price</span>{" "}
+                                {price?.price <= 50000 &&
+                                  ticket?.PricingType?.name === "DEFAULT" && (
+                                    <span
+                                      className="text-xs text-red-500
+                            "
+                                    >
+                                      *Greater than 50,000
+                                    </span>
+                                  )}
+                              </div>
+
                               <input
                                 type="text"
                                 placeholder="min"

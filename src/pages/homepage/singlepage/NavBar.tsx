@@ -71,7 +71,7 @@ function NavBar() {
       const pricingData: any = {
         ticket_type: item?.Ticket?.name,
         pricing_type: item?.PricingType?.name,
-        maximum_ticket_count: parseInt(item?.maximum_booking_quantity),
+        maximum_ticket_count: parseInt(item?.maximum_ticket_count),
         // minimum_ticket_count: parseInt(item?.minimum_booking_quantity),
         minimum_ticket_count: 1,
         // minimum_booking_quantity: parseInt(item?.minimum_booking_quantity),

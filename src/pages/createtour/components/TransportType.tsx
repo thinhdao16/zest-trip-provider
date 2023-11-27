@@ -74,6 +74,18 @@ const TransportType: React.FC = () => {
             <CreateTitle variant="h6">
               Choose the transportations included in the tour
             </CreateTitle>
+            <div className="mt-1 mb-10 relative">
+              <span className="text-gray-600 font-medium">
+                Explore Diverse Transportation Choices Included in Your Tour
+                Experience
+              </span>
+              {selectedCards?.length === 0 && (
+                <span className="text-xs text-red-500 absolute top-6 left-0">
+                  *Select at least 1 transportations
+                </span>
+              )}
+            </div>
+
             <Grid container spacing={2}>
               {vehicleTour.map((data: DataSelectCard) => (
                 <Grid

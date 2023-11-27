@@ -50,6 +50,7 @@ function Login() {
 
   const checkAccessToken = async () => {
     const accessToken = localStorage.getItem("access_token");
+    console.log(accessToken);
     if (accessToken) {
       navigate("/");
     }

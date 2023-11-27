@@ -42,16 +42,17 @@ export const getBooking = createAsyncThunk("booking/getBooking", async () => {
 
 export const acceptRefund = createAsyncThunk(
   "booking/acceptRefund", // Slice name: "tour"
-  async (requestData: string | undefined) => {
+  async (requestData: any) => {
     try {
-      console.log(requestData);
+      const formData = new FormData();
+      formData.append("file", requestData?.File);
       const response = await axiosInstance.patch(
-        `${BASE_URL}/booking/refund/accept/${requestData}`,
-        {},
+        `${BASE_URL}/booking/refund/accept/${requestData?.booking_id}`,
+        formData,
         {
           headers: {
-            "Content-Type": "application/json",
-            // "Content-Type": "multipart/form-data",
+            // "Content-Type": "application/json",
+            "Content-Type": "multipart/form-data",
           },
         }
       );
@@ -62,6 +63,61 @@ export const acceptRefund = createAsyncThunk(
       } else {
         // toast.error("Failed to create Availability!"); // Thông báo lỗi khi tạo Availability
         throw new Error("Failed to create Availability");
+      }
+    } catch (error: any) {
+      console.log(error);
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        const errorMessages = error.response.data.message;
+
+        if (Array.isArray(errorMessages)) {
+          errorMessages.forEach((errorMessage: string) => {
+            console.log(errorMessage);
+            toast.error(errorMessage);
+          });
+        } else if (typeof errorMessages === "string") {
+          console.log(errorMessages);
+          toast.error(errorMessages);
+        } else {
+          toast.error("Accept fail!"); // Thông báo đăng nhập thất bại mặc định
+        }
+      } else {
+        toast.error("Accept fail!"); // Thông báo đăng nhập thất bại mặc định
+      }
+      throw new Error("Failed to fetch other data");
+    }
+  }
+);
+export const createRefundForCus = createAsyncThunk(
+  "booking/createRefundForCus", // Slice name: "tour"
+  async (requestData: any) => {
+    try {
+      console.log(requestData);
+      const formData = new FormData();
+      formData.append("file", requestData?.File);
+      formData.append("booking_id", requestData?.booking_id);
+      formData.append("reason", requestData?.reason);
+
+      const response = await axiosInstance.patch(
+        `${BASE_URL}/booking/refund/issue`,
+        formData,
+        {
+          headers: {
+            // "Content-Type": "application/json",
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log(response);
+      if (response.status === 200) {
+        // toast.success("Availability created successfully!"); // Thông báo tạo Availability thành công
+        return response.data;
+      } else {
+        // toast.error("Failed to create Availability!"); // Thông báo lỗi khi tạo Availability
+        throw new Error("Failed to create refund");
       }
     } catch (error: any) {
       console.log(error);
@@ -119,10 +175,21 @@ const bookingSice = createSlice({
       })
       .addCase(acceptRefund.fulfilled, (state) => {
         state.loadingBooking = false;
-        // state.booking = action.payload;
         state.errorBooking = null;
       })
       .addCase(acceptRefund.rejected, (state: any, action) => {
+        state.loadingBooking = false;
+        state.error = action.error.message;
+      })
+      .addCase(createRefundForCus.pending, (state) => {
+        state.loadingBooking = true;
+        state.errorBooking = null;
+      })
+      .addCase(createRefundForCus.fulfilled, (state) => {
+        state.loadingBooking = false;
+        state.errorBooking = null;
+      })
+      .addCase(createRefundForCus.rejected, (state: any, action) => {
         state.loadingBooking = false;
         state.error = action.error.message;
       });

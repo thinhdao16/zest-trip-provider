@@ -13,6 +13,7 @@ import { getProviderTourBoost } from "../../store/redux/silce/promotion";
 import "dayjs/locale/en";
 import dayjs from "dayjs";
 import LoadingFullScreen from "../../styles/loading/LoadingFullScreen";
+import Logout from "@mui/icons-material/Logout";
 function DashboardInfo() {
   const dispatch: AppDispatch = useDispatch();
   const navigation = useNavigate();
@@ -27,6 +28,11 @@ function DashboardInfo() {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const handleLogOut = () => {
+    localStorage.clear();
+    navigation("/login");
     setAnchorEl(null);
   };
   const handleAccount = () => {
@@ -114,24 +120,22 @@ function DashboardInfo() {
                 transformOrigin={{ horizontal: "right", vertical: "top" }}
                 anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
               >
-                <MenuItem onClick={handleClose}>
+                <MenuItem onClick={handleAccount}>
                   <Avatar /> Profile
                 </MenuItem>
-                <MenuItem onClick={handleAccount}>
-                  <Avatar /> Account
-                </MenuItem>
+
                 <Divider />
-                <MenuItem onClick={handleClose}>
+                {/* <MenuItem onClick={handleClose}>
                   <ListItemIcon>
                     <PersonAdd fontSize="small" />
                   </ListItemIcon>
                   Add another account
-                </MenuItem>
-                <MenuItem onClick={handleClose}>
+                </MenuItem> */}
+                <MenuItem onClick={handleLogOut}>
                   <ListItemIcon>
-                    <Settings fontSize="small" />
+                    <Logout fontSize="small" />
                   </ListItemIcon>
-                  Settings
+                  Log Out
                 </MenuItem>
               </Menu>
             </Box>

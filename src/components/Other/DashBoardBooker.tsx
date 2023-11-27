@@ -73,7 +73,7 @@ function DashBoardBooker() {
       <p className="text-xl font-medium text-black">Booking history</p>
       <div className="flex flex-col gap-3 bg-white shadow-custom-card-mui rounded-lg p-4">
         <div className="flex justify-between">
-          <span className="text-gray-500">6 Destination</span>
+          <span className="text-gray-500">{booking?.length} Booking</span>
           <div className="flex gap-5">
             <AiOutlineSearch />
             <FaSliders />

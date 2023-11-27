@@ -122,7 +122,7 @@ export const CreateTitle = styled(Typography)(({ theme }) => ({
   lineHeight: "normal",
   fontSize: "30px",
   fontWeight: "600",
-  marginBottom: "30px",
+  // marginBottom: "30px",
   [theme.breakpoints.down("sm")]: {
     fontSize: "42px",
   },

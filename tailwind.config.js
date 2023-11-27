@@ -26,6 +26,8 @@ export default {
         "baby-blue": "#D4F1F4",
         main: "#fafafa",
         "navy-blue-opacity-5": "rgba(5, 68, 94, 0.4)",
+        "navy-blue-opacity-1": "rgba(5, 68, 94, 0.1)",
+
         "green-tag": "#96af51",
         "green-tag-opa": "#f1f5e5",
         // Thêm nhiều màu sắc khác nếu cần

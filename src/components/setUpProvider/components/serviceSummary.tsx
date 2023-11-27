@@ -15,7 +15,7 @@ export const ServiceSummary = ({
       <h2 className="mb-3 font-medium text-xl">This is information of you</h2>
       <div className="flex flex-col gap-2">
         <div className="flex flex-col">
-          <span className="font-medium">Name company</span>
+          <span className="font-medium">Company Name</span>
           <span>{userInfo?.nameCompany}</span>
         </div>
 

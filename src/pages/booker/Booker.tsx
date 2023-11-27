@@ -11,6 +11,7 @@ import { AppDispatch } from "../../store/redux/store";
 import { StatusBooking } from "../../styles/status/booking";
 import LoadingFullScreen from "../../styles/loading/LoadingFullScreen";
 import { Pagination } from "antd";
+import { formatNumber } from "../../utils/formatNumber";
 
 function Booker() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -186,20 +187,28 @@ function Booker() {
                                     </div>
                                   )
                                 )} */}
-                                    <span>{dataBook?.refund_ammount}</span>
+                                    <span>
+                                      {formatNumber(
+                                        parseInt(dataBook?.refund_ammount)
+                                      )}
+                                    </span>
                                   </div>
                                   <div className="col-span-2 flex">
                                     <div className="flex flex-col">
                                       <div className="flex gap-1">
                                         <span>Original price:</span>
                                         <span className="text-gray-500">
-                                          {dataBook?.original_price}
+                                          {formatNumber(
+                                            parseInt(dataBook?.original_price)
+                                          )}
                                         </span>
                                       </div>
                                       <div className="flex gap-1">
                                         <span>Paid price:</span>
                                         <span className="text-gray-500">
-                                          {dataBook?.paid_price}
+                                          {formatNumber(
+                                            parseInt(dataBook?.paid_price)
+                                          )}
                                         </span>
                                       </div>
                                     </div>

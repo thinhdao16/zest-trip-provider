@@ -75,6 +75,17 @@ const AccomType: React.FC = () => {
             <CreateTitle variant="h6">
               Choose the type of tour you are providing
             </CreateTitle>
+            <div className="mt-1 mb-10 relative">
+              <span className="text-gray-600 font-medium">
+                Select the tour type you provide and tailor your offerings to
+                suit tour.
+              </span>
+              {selectedCards?.length === 0 && (
+                <span className="text-xs text-red-500 absolute top-6 left-0">
+                  *Select at least 1 transportations
+                </span>
+              )}
+            </div>
             <Grid container spacing={2}>
               {" "}
               {/* Use Grid container to create a row with spacing between cards */}

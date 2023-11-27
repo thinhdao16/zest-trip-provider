@@ -23,14 +23,14 @@ function NavBar() {
               <span className="text-navy-blue">Booking</span>
             </div>
           </div>
-          <div className="flex w-64 items-center  justify-center">
+          {/* <div className="flex w-64 items-center  justify-center">
             <button
               type="button"
               className="bg-navy-blue text-white p-2 rounded-lg"
             >
               Save change
             </button>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

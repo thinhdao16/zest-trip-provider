@@ -231,7 +231,7 @@ export const PersonalInfo = ({
         <p className="font-bold text-2xl">Secure Info</p>
       </div>
       <Input
-        labels="Name Company"
+        labels="Company Name"
         placeholder="Novaland"
         icon={<FcBriefcase />}
         // showRequired={ userInfo.nameCompany}
