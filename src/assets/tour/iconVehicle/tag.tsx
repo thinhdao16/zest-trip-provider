@@ -9,7 +9,11 @@ export function VehicleTag(field: { field: string; style: string }) {
   }
   return (
     <div>
-      <img src={imagePath} alt="any" className={field.style} />
+      <img
+        src="src\assets\tour\iconVehicle\Subway.svg"
+        alt="any"
+        className={field.style}
+      />
 
       {/* <img src="../../../assets/File-logo-Zest-Travel.svg" alt="Bicycle Icon" /> */}
     </div>

@@ -14,7 +14,7 @@ import React from "react";
 import { DataContext } from "../../../../store/dataContext/DataContext";
 import { Skeleton } from "@mui/material";
 import { GoDotFill } from "react-icons/go";
-import { TourTag, VehicleTag } from "../../../../components/icon/tour/tag";
+import { TourTag, VehicleTag } from "../../../../assets/tour/iconVehicle/tag";
 import dayjs from "dayjs";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";

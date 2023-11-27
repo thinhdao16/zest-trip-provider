@@ -13,7 +13,7 @@ import {
 } from "react-icons/fa6";
 import React, { useContext, useEffect, useState } from "react";
 import AutoResizableTextarea from "./singlePageConst/AutoResizableTextarea";
-import { TourTag, VehicleTag } from "../../../components/icon/tour/tag";
+import { TourTag, VehicleTag } from "../../../assets/tour/iconVehicle/tag";
 import TabContext from "@mui/lab/TabContext";
 import { Tab } from "@mui/material";
 import TabList from "@mui/lab/TabList";

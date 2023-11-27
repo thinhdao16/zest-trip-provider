@@ -10,7 +10,7 @@ import { useDispatch } from "react-redux";
 import { Pagination } from "antd";
 import { Skeleton } from "@mui/material";
 import { GoDotFill } from "react-icons/go";
-import { TourTag, VehicleTag } from "../../../components/icon/tour/tag";
+import { TourTag, VehicleTag } from "../../../assets/tour/iconVehicle/tag";
 import {
   boostTour,
   getProviderTourBoost,

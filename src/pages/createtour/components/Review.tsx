@@ -22,7 +22,7 @@ import {
   FaMoneyBillWave,
   FaRegCalendar,
 } from "react-icons/fa6";
-import { TourTag, VehicleTag } from "../../../components/icon/tour/tag";
+import { TourTag, VehicleTag } from "../../../assets/tour/iconVehicle/tag";
 import "../styles/createtour.css";
 
 const Review: React.FC = () => {

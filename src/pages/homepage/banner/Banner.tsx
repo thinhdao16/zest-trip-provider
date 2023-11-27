@@ -12,7 +12,7 @@ import { DataContext } from "../../../store/dataContext/DataContext";
 import { AiFillEdit, AiFillFilter } from "react-icons/ai";
 import { FaMobile } from "react-icons/fa6";
 import { LuMoreHorizontal } from "react-icons/lu";
-import { TourTag, VehicleTag } from "../../../components/icon/tour/tag";
+import { TourTag, VehicleTag } from "../../../assets/tour/iconVehicle/tag";
 import { Pagination } from "antd";
 import Navbar from "../../../components/Navbar/Index";
 import { RiSearchLine } from "react-icons/ri";

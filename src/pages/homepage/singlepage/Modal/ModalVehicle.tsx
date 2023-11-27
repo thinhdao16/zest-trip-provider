@@ -4,7 +4,7 @@ import { Backdrop, Fade, Grid, Modal } from "@mui/material";
 import { Box } from "@mui/system";
 import { useSelector } from "react-redux";
 import { DataSelectCard, StateTour } from "../../../createtour/types/index.t";
-import { VehicleTag } from "../../../../components/icon/tour/tag";
+import { VehicleTag } from "../../../../assets/tour/iconVehicle/tag";
 import { TitleIconCardOptions } from "../../../../styles/createtour/createtour";
 import { FaRegPenToSquare } from "react-icons/fa6";
 
