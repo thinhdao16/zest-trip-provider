@@ -12,6 +12,7 @@ import "dayjs/locale/en";
 import dayjs from "dayjs";
 import LoadingFullScreen from "../../styles/loading/LoadingFullScreen";
 import Logout from "@mui/icons-material/Logout";
+import SliceEmailToName from "../../utils/SliceEmailToName";
 function DashboardInfo() {
   const dispatch: AppDispatch = useDispatch();
   const navigation = useNavigate();
@@ -21,6 +22,8 @@ function DashboardInfo() {
   const { providerTourBoost, loadingPromotion } = useSelector(
     (state: any) => state.promotion
   );
+
+  const email = personalInfo?.email;
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -47,7 +50,7 @@ function DashboardInfo() {
     dispatch(getAllTours());
     dispatch(getProviderTourBoost());
   }, [dispatch]);
-  const updateInfo = "Thinh dao";
+
   return (
     <>
       {loadingPromotion ? (
@@ -64,7 +67,9 @@ function DashboardInfo() {
                 />
                 <div className="flex flex-col">
                   <span className="font-medium text-lg">
-                    {personalInfo?.full_name || updateInfo}
+                    {personalInfo?.full_name || (
+                      <SliceEmailToName email={email} />
+                    )}
                   </span>
                   <div className="flex text-gray-500 gap-1 text-sm">
                     Provider <span className="text-navy-blue">Pro +</span>

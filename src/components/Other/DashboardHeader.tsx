@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { faBars, faBell } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSelector } from "react-redux";
+import SliceEmailToName from "../../utils/SliceEmailToName";
 
 interface DashboardHeaderProps {
   user: {
@@ -15,14 +16,16 @@ function DashboardHeader({ toggle }: DashboardHeaderProps): JSX.Element {
   const handleToggleClick = () => {
     toggle();
   };
+
   const personalInfo = useSelector((state: any) => state.auth.personalInfo);
-  const updateInfo = "Thinh dao";
+  const email = personalInfo?.email;
+
   return (
     <div className=" flex flex-wrap w-full justify-between items-center">
       <div className="flex flex-row ">
         <div id="nameSection">
           <h1 className="font-semibold  text-3xl text-black mb-1">
-            {personalInfo?.full_name || updateInfo}
+            {personalInfo?.full_name || <SliceEmailToName email={email} />}
           </h1>
           <span className="text-gray-400">Welcome back</span>
         </div>

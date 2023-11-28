@@ -1,5 +1,5 @@
 import { faLeaf } from "@fortawesome/free-solid-svg-icons";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import initMenus from "../../data/menus.ts";
 import "./sidebar.css";
 import SidebarLogo from "./SidebarLogo.js";
@@ -9,10 +9,12 @@ import { AppDispatch } from "../../store/redux/store.ts";
 import { useDispatch } from "react-redux";
 import { getPersonalInfo } from "../../store/redux/silce/authSilce.ts";
 import { MdOutlineWorkspacePremium } from "react-icons/md";
+import { DataContext } from "../../store/dataContext/DataContext.tsx";
 
 function Sidebar({ ...props }) {
   const navigation = useNavigate();
   const dispatch: AppDispatch = useDispatch();
+  const { setRefeshLogin } = React.useContext(DataContext);
 
   const [menus] = useState(initMenus);
   const handleLogout = () => {
@@ -29,11 +31,14 @@ function Sidebar({ ...props }) {
           console.log(action);
           if (action?.payload?.status === "PROCESSING") {
             localStorage.clear();
-            navigation("/lgogin");
+            setRefeshLogin((prev) => !prev);
+            navigation("/provider-processing");
           }
         }
         if (getPersonalInfo.rejected.match(action)) {
           localStorage.clear();
+          setRefeshLogin((prev) => !prev);
+
           navigation("/login");
         }
       })

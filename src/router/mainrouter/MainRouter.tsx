@@ -26,6 +26,7 @@ import VoucherView from "../../pages/voucher/management/voucher-view/VoucherView
 import Promotion from "../../pages/promotion/Promotion";
 import PromotionPlan from "../../pages/promotion/plan/PromotionPlan";
 import DetailTour from "../../pages/homepage/detail/DetailTour";
+import ProviderProcessing from "../../components/processing/ProviderProcessing";
 
 function MainRouter() {
   const { refeshLogin } = React.useContext(DataContext);
@@ -44,6 +45,10 @@ function MainRouter() {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/forgotpassword" element={<ForgotPassWord />} />
             <Route path="/setupprovider" element={<SetUpProvider />} />
+            <Route
+              path="provider-processing"
+              element={<ProviderProcessing />}
+            />
           </>
         ) : (
           <>
@@ -66,7 +71,10 @@ function MainRouter() {
                 <Route path="personal-info" element={<PersonalInfo />} />
               </Route>
             </Route>
-
+            <Route
+              path="provider-processing"
+              element={<ProviderProcessing />}
+            />
             <Route path="/promotion">
               <Route path="" element={<Promotion />} />
               <Route path="plan" element={<PromotionPlan />} />
