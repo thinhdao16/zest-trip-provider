@@ -78,7 +78,6 @@ function CreateTourNav() {
   }
 
   const isMaxValid = checkMaxForPriceRanges(formValues[6]?.ticket);
-  console.log(formValues);
   const allDefaultTicketsHavePositivePrice = useMemo(() => {
     return formValues[6]?.ticket?.every((ticket: any) => {
       if (ticket?.type === "DEFAULT") {

@@ -52,7 +52,6 @@ const LocationStart: React.FC = () => {
   >(null);
 
   const [selectedDataProStart, setSelectedDataProStart] = useState<any>();
-  console.log(selectedDataProStart);
   const [selectedDataDisStart, setSelectedDataDisStart] = useState<any>();
   const [selectedDataWardStart, setSelectedDataWardStart] = useState<any>();
 

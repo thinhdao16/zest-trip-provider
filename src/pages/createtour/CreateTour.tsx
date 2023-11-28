@@ -21,6 +21,7 @@ import { getTagTour, getVehicleTour } from "../../store/redux/silce/tourSlice";
 import CreateTourNav from "./components/Step/CreateTourNav";
 import LocationStart from "./components/LocationStart";
 import { useSelector } from "react-redux";
+import { useSpring, animated } from "@react-spring/web";
 
 const steps = [
   // Capacity,
@@ -72,6 +73,19 @@ const StepRenderer: React.FC = () => {
       )}
     </>
   );
+  const [springProps, setSpringProps] = useSpring(() => ({
+    opacity: 1,
+    transform: "translateY(0)",
+  }));
+
+  useEffect(() => {
+    // Update the springProps when currentStep changes
+    setSpringProps({
+      opacity: 1,
+      transform: "translateY(0)",
+      from: { opacity: 0, transform: "translateY(20px)" },
+    });
+  }, [currentStep, setSpringProps]);
 
   return (
     <>
@@ -93,7 +107,9 @@ const StepRenderer: React.FC = () => {
           )}
           {!isLastStep && (
             <Grid item xs={12} sm={10} className="h-full p-4">
-              {StepsToRender}
+              <animated.div style={springProps} className="animate-container">
+                {StepsToRender}
+              </animated.div>
             </Grid>
           )}
           {isLastStep && (
@@ -102,107 +118,6 @@ const StepRenderer: React.FC = () => {
             </Grid>
           )}
         </Grid>
-
-        {/* {!isLastStep && (
-          <div
-            style={{
-              position: "fixed",
-              bottom: "0",
-              left: "0",
-              right: "0",
-              background: "white",
-            }}
-          >
-            <LinearProgress
-              style={{ color: "#05445E" }}
-              determinate
-              value={((currentStep + 1) / totalSteps) * 100}
-            />
-            {currentStep === totalSteps ? (
-              <>
-                <Box
-                  p={3}
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}
-                >
-                  <Button
-                    onClick={goToPreviousStep}
-                    disabled={currentStep !== totalSteps}
-                  >
-                    Previous Step
-                  </Button>
-                  <Button
-                    onClick={handleFormSubmit}
-                    disabled={currentStep !== totalSteps}
-                  >
-                    Start
-                  </Button>
-                </Box>
-              </>
-            ) : currentStep === 11 ? (
-              <>
-                <Box
-                  p={3}
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}
-                >
-                  <button
-                    className="font-medium border-b-2 border-navy-blue text-navy-blue hover:border-baby-blue hover:border-b-2"
-                    onClick={goToPreviousStep}
-                    disabled={currentStep === totalSteps}
-                  >
-                    Previous Step
-                  </button>
-                  <button
-                    className="bg-navy-blue font-medium border border-navy-blue px-6 py-2.5 rounded-lg text-white hover:border hover:border-navy-blue hover:bg-white hover:text-navy-blue"
-                    onClick={handleCreateTourAndAvailability}
-                    disabled={currentStep === totalSteps}
-                  >
-                    Get Started
-                  </button>
-                </Box>
-              </>
-            ) : currentStep === 1 ? (
-              <div className="flex items-center justify-between px-10 py-4">
-                <button></button>
-                <button
-                  className="bg-navy-blue font-medium border border-navy-blue px-6 py-2.5 rounded-lg text-white hover:border hover:border-navy-blue hover:bg-white hover:text-navy-blue"
-                  onClick={goToNextStep}
-                  disabled={currentStep === totalSteps}
-                >
-                  Next Step
-                </button>
-              </div>
-            ) : (
-              <>
-                <div className="flex items-center justify-between px-10 py-4">
-                  <button
-                    className="font-medium border-b-2 border-navy-blue text-navy-blue hover:border-baby-blue hover:border-b-2"
-                    onClick={goToPreviousStep}
-                    disabled={currentStep === 1}
-                    style={{ marginRight: "10px" }}
-                  >
-                    Previous Step
-                  </button>
-                  <button
-                    className="bg-navy-blue font-medium border border-navy-blue px-6 py-2.5 rounded-lg text-white hover:border hover:border-navy-blue hover:bg-white hover:text-navy-blue"
-                    onClick={goToNextStep}
-                    disabled={currentStep === totalSteps}
-                    style={{ marginLeft: "10px" }}
-                  >
-                    Next Step
-                  </button>
-                </div>
-              </>
-            )}
-          </div>
-        )} */}
       </div>
     </>
   );

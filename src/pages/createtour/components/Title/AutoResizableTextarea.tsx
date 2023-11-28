@@ -39,8 +39,8 @@ function AutoResizableTextarea({
     }
   };
 
-  const handleInput = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    console.log(e);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const handleInput = (_e: ChangeEvent<HTMLTextAreaElement>) => {
     adjustTextarea();
   };
 

@@ -55,7 +55,6 @@ const Price: React.FC = () => {
       payoutPerPerson: 0,
     },
   ]);
-  console.log(selectedRadio);
 
   const [ageFor, setAgeFor] = useState({
     chidlren: {

@@ -20,7 +20,6 @@ const Title: React.FC = () => {
 
   const handleTitle = (e: ChangeEvent<HTMLInputElement>) => {
     const inputData = e.target.value;
-    console.log(inputData.length);
     setTitle(inputData);
     if (inputData.length > 0) {
       setIsTitleEmpty(false);
