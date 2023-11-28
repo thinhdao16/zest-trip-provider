@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 
 export default function Headers() {
   return (
-    <div className="h-[12.8vh]">
-      <Box sx={{ flexGrow: 1, width: "100vw" }}>
+    <div className="">
+      <Box>
         <div className=" py-6 px-4 ">
           <div className="flex justify-between items-center ">
             <Link to="/" className=" flex items-center justify-center gap-x-4">
