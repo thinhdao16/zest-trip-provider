@@ -201,6 +201,12 @@ function Login() {
                       className="input-form-text-ready"
                       error={!isEmailMatch}
                       helperText={isEmailMatch ? "" : "Email malformed"}
+                      onKeyPress={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault(); // Ngăn chặn sự kiện mặc định khi nhấn Enter
+                          handleSignIn(); // Gọi hàm xử lý đăng nhập
+                        }
+                      }}
                     />
                   </FormControl>
                   <FormControl required>
