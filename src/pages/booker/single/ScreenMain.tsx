@@ -121,7 +121,11 @@ function ScreenMain() {
       booking_id: index,
       File: selectedImages[0]?.file,
     };
-    dispatch(acceptRefund(data));
+    dispatch(acceptRefund(data)).then((response) => {
+      if (acceptRefund.fulfilled.match(response)) {
+        setLoadingRes((prev: any) => !prev);
+      }
+    });
   };
   const handleCreateRefundForCus = () => {
     const formDataImg = new FormData();
