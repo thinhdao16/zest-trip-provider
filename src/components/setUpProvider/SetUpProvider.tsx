@@ -162,7 +162,7 @@ function SetUpProvider() {
           onSuccessCallback: () => {
             localStorage.clear();
             setRefeshLogin((prev) => !prev);
-            navigate("/login");
+            navigate("/provider-processing");
           },
         })
       )

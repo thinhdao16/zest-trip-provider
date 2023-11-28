@@ -130,9 +130,9 @@ export const createProviderBanner = createAsyncThunk(
           });
         } else if (typeof errorMessages === "string") {
           console.log(errorMessages);
-          toast.error(errorMessages);
+          // toast.error(errorMessages);
         } else {
-          toast.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
+          // toast.error("Setup fail!");
         }
       } else {
         toast.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
