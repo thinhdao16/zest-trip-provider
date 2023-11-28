@@ -16,13 +16,14 @@ import React from "react";
 import { DataContext } from "../../../../store/dataContext/DataContext";
 import { Skeleton } from "@mui/material";
 import { GoDotFill } from "react-icons/go";
-import { TourTag, VehicleTag } from "../../../../assets/tour/iconVehicle/tag";
+import { TourTag } from "../../../../components/icon/tour/tag";
 import dayjs from "dayjs";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
 import { Pagination } from "antd";
 import { BsFiletypeAac } from "react-icons/bs";
+import { VehicleTag } from "../../../../components/icon/tour/vehicle";
 
 function ScreenMain() {
   const dispatch: AppDispatch = useDispatch();

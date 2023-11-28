@@ -10,7 +10,7 @@ import { Box, Card, Grid } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { DataSelectCard, StateTour } from "../types/index.t";
-import { TourTag } from "../../../assets/tour/iconVehicle/tag";
+import { TourTag } from "../../../components/icon/tour/tag";
 import { SnackbarNoti } from "./Title/Snackbar";
 
 const AccomType: React.FC = () => {

@@ -10,8 +10,8 @@ import { Box, Card, Grid } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { DataSelectCard, StateTour } from "../types/index.t";
-import { VehicleTag } from "../../../assets/tour/iconVehicle/tag";
 import { SnackbarNoti } from "./Title/Snackbar";
+import { VehicleTag } from "../../../components/icon/tour/vehicle";
 
 const TransportType: React.FC = () => {
   const { currentStep, updateFormValues } = useStepContext();

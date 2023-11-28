@@ -12,12 +12,13 @@ import { DataContext } from "../../../store/dataContext/DataContext";
 import { AiFillEdit, AiFillFilter } from "react-icons/ai";
 import { FaMobile } from "react-icons/fa6";
 import { LuMoreHorizontal } from "react-icons/lu";
-import { TourTag, VehicleTag } from "../../../assets/tour/iconVehicle/tag";
+import { TourTag } from "../../../components/icon/tour/tag";
 import { Pagination } from "antd";
 import Navbar from "../../../components/Navbar/Index";
 import { RiSearchLine } from "react-icons/ri";
 import LoadingFullScreen from "../../../styles/loading/LoadingFullScreen";
 import { StatusTour } from "../../../styles/status/tour";
+import { VehicleTag } from "../../../components/icon/tour/vehicle";
 export default function Banner() {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);

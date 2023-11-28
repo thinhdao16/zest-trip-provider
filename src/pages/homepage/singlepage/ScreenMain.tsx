@@ -13,7 +13,7 @@ import {
 } from "react-icons/fa6";
 import React, { useContext, useEffect, useState } from "react";
 import AutoResizableTextarea from "./singlePageConst/AutoResizableTextarea";
-import { TourTag, VehicleTag } from "../../../assets/tour/iconVehicle/tag";
+import { TourTag } from "../../../components/icon/tour/tag";
 import TabContext from "@mui/lab/TabContext";
 import { Tab } from "@mui/material";
 import TabList from "@mui/lab/TabList";
@@ -27,6 +27,7 @@ import { useEditContext } from "./Context/useEditContext";
 import { DataContext } from "../../../store/dataContext/DataContext";
 import ScreenSP from "./ScreenSP";
 import { MdOutlineDescription, MdTitle } from "react-icons/md";
+import { VehicleTag } from "../../../components/icon/tour/vehicle";
 interface tourSche {
   id: number;
   description: string;

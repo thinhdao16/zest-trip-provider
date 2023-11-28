@@ -10,13 +10,14 @@ import { useDispatch } from "react-redux";
 import { Pagination } from "antd";
 import { Skeleton } from "@mui/material";
 import { GoDotFill } from "react-icons/go";
-import { TourTag, VehicleTag } from "../../../assets/tour/iconVehicle/tag";
+import { TourTag } from "../../../components/icon/tour/tag";
 import {
   boostTour,
   getProviderTourBoost,
 } from "../../../store/redux/silce/promotion";
 import LoadingFullScreen from "../../../styles/loading/LoadingFullScreen";
 import { IoIosArrowBack } from "react-icons/io";
+import { VehicleTag } from "../../../components/icon/tour/vehicle";
 
 function PromotionPlan() {
   const navigate = useNavigate();

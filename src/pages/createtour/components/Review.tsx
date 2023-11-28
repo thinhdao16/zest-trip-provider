@@ -21,9 +21,10 @@ import {
   FaMoneyBillWave,
   FaRegCalendar,
 } from "react-icons/fa6";
-import { TourTag, VehicleTag } from "../../../assets/tour/iconVehicle/tag";
+import { TourTag } from "../../../components/icon/tour/tag";
 import "../styles/createtour.css";
 import { formatNumber } from "../../../utils/formatNumber";
+import { VehicleTag } from "../../../components/icon/tour/vehicle";
 
 const Review: React.FC = () => {
   const { currentStep, formValues } = useStepContext();
