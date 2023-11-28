@@ -157,8 +157,8 @@ const Review: React.FC = () => {
                       <span className="font-medium text-lg">Schedule</span>
                     </div>
                     <div className="relative overflow-x-auto rounded-lg  shadow-custom-card-mui border border-solid border-gray-300">
-                      <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 ">
-                        <thead className="text-xs text-gray-700 uppercase bg-white dark:bg-gray-700 dark:text-gray-400">
+                      <table className="w-full text-sm text-left text-gray-500 ">
+                        <thead className="text-xs text-gray-700 uppercase bg-white ">
                           <tr className="border-b border-solid border-gray-200 normal-case font-medium text-black text-base">
                             <th scope="col" className="px-6 py-3 ">
                               Date
@@ -192,17 +192,17 @@ const Review: React.FC = () => {
                               index: number
                             ) => (
                               <React.Fragment key={index}>
-                                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                <tr className="bg-white border-b ">
                                   <th
                                     scope="row"
-                                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "
                                     rowSpan={step.boxes.length}
                                   >
                                     Day {step?.day}
                                   </th>
                                   <th
                                     scope="row"
-                                    className="px-6 py-4 font-medium text-gray-900  dark:text-white"
+                                    className="px-6 py-4 font-medium text-gray-900  "
                                     rowSpan={step.boxes.length}
                                   >
                                     {step?.title}
@@ -219,7 +219,7 @@ const Review: React.FC = () => {
                                 </tr>
                                 {step.boxes.slice(1).map((box, boxIndex) => (
                                   <tr
-                                    className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                                    className="bg-white border-b "
                                     key={boxIndex}
                                   >
                                     <td className="px-6 py-2">

@@ -238,11 +238,11 @@ function Login() {
                         defaultChecked
                         id="checked-checkbox"
                         type="checkbox"
-                        className="w-4 h-4 rounded-full  text-navy-blue  border-gray-300  focus:ring-navy-blue dark:focus:ring-navy-blue dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                        className="w-4 h-4 rounded-full  text-navy-blue  border-gray-300  focus:ring-navy-blue  focus:ring-2 "
                       />
                       <label
                         htmlFor="checked-checkbox"
-                        className="ml-2 text-sm font-medium text-gray-600 dark:text-gray-300"
+                        className="ml-2 text-sm font-medium text-gray-600 "
                       >
                         Remember me
                       </label>

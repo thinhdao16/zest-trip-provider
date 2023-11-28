@@ -24,6 +24,7 @@ import { FaStaylinked } from "react-icons/fa6";
 
 import GoogleMapReact from "google-map-react";
 import { IoMdClose } from "react-icons/io";
+import { ElementCheckInput } from "../../../utils/ElementCheckInput";
 
 const LocationStart: React.FC = () => {
   const { currentStep, updateFormValues } = useStepContext();
@@ -267,7 +268,7 @@ const LocationStart: React.FC = () => {
                   <p className="font-medium mb-1 flex gap-1">
                     Address province
                     {selectedDataProStart === undefined && (
-                      <span className="text-red-500">*</span>
+                      <ElementCheckInput />
                     )}
                   </p>
                   <FormControl
@@ -313,7 +314,7 @@ const LocationStart: React.FC = () => {
                   <p className="font-medium mb-1 flex gap-1">
                     Address district
                     {selectedDataDisStart === undefined && (
-                      <span className="text-red-500">*</span>
+                      <ElementCheckInput />
                     )}
                   </p>
                   <FormControl
@@ -362,7 +363,7 @@ const LocationStart: React.FC = () => {
                   <p className="font-medium mb-1 flex gap-1">
                     Address ward
                     {selectedDataWardStart === undefined && (
-                      <span className="text-red-500">*</span>
+                      <ElementCheckInput />
                     )}
                   </p>
                   <FormControl
@@ -409,7 +410,7 @@ const LocationStart: React.FC = () => {
                 <div className="">
                   <p className="font-medium mb-1 flex items-center gap-1">
                     Location
-                    {!checkLocation && <span className="text-red-500">*</span>}
+                    {!checkLocation && <ElementCheckInput />}
                   </p>
                   {!checkLocation ? (
                     <div className="bg-white shadow-custom-card-mui p-3 rounded-lg text-red-500">

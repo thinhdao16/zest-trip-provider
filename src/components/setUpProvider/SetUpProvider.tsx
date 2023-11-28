@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { Plan, UserInfo, UserServiceConfiguration } from "AppTypes";
 import { Sidebar } from "./components/sidebar";
 import { PersonalInfo } from "./components/personalInfo";
@@ -23,6 +23,7 @@ import {
 import jwt_decode from "jwt-decode";
 import "./styles/setup.css";
 import { DataContext } from "../../store/dataContext/DataContext";
+import loginImage from "../../assets/login.svg";
 function SetUpProvider() {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
@@ -54,6 +55,7 @@ function SetUpProvider() {
       monthly: true,
       addons: [],
     });
+  console.log(userServiceConfiguration);
   const updateUserInfo = (userInfo: UserInfo) => {
     setUserServiceConfiguration({ ...userServiceConfiguration, userInfo });
   };
@@ -183,6 +185,26 @@ function SetUpProvider() {
 
     // navigate("/listwork");
   };
+  const checkNext =
+    userServiceConfiguration.userInfo?.nameCompany.length > 0 &&
+    userServiceConfiguration.userInfo?.mediaSocial.length > 0 &&
+    userServiceConfiguration.userInfo?.taxCode.length > 0 &&
+    userServiceConfiguration.userInfo?.address_country.length > 0 &&
+    userServiceConfiguration.userInfo?.address_name.length > 0 &&
+    userServiceConfiguration?.userInfo?.address_province?.full_name?.length >
+      0 &&
+    userServiceConfiguration?.userInfo?.address_district?.full_name?.length >
+      0 &&
+    userServiceConfiguration?.userInfo?.address_ward?.full_name?.length > 0 &&
+    (userServiceConfiguration?.selectedPlan?.serviceType?.length > 0 ||
+      userServiceConfiguration?.selectedPlan !== null);
+
+  const constraintValue = useMemo(() => {
+    const checkImage =
+      userServiceConfiguration?.userInfo?.banner?.length === 0 ||
+      userServiceConfiguration?.userInfo?.avt?.length === 0;
+    return !checkImage;
+  }, [userServiceConfiguration]);
   return (
     <>
       <Backdrop
@@ -205,11 +227,7 @@ function SetUpProvider() {
                   <li className="font-base">Exclusive discounts 🎉🎉🎉</li>
                 </ul>
               </div>
-              <img
-                src="src/assets/login.svg"
-                className="w-[50vh] h-[50vh]"
-                alt="error"
-              />
+              <img src={loginImage} className="w-[50vh] h-[50vh]" alt="error" />
             </div>
           </Grid>
           <Grid item xs={12} sm={7}>
@@ -279,15 +297,20 @@ function SetUpProvider() {
                         )}
                       </div>
                       <div className="gap-4">
-                        {step < 4 && (
-                          <button
-                            className="nextSetupProvider bg-navy-blue font-medium border border-navy-blue px-4 py-1.5 rounded-lg text-white hover:border hover:border-navy-blue hover:bg-white hover:text-navy-blue"
-                            onClick={() => nextStep()}
-                            // onClick={() => Confirm()}
-                          >
-                            Next step
-                          </button>
-                        )}
+                        {step < 4 &&
+                          (checkNext && constraintValue ? (
+                            <button
+                              className="nextSetupProvider bg-navy-blue font-medium border border-navy-blue px-4 py-1.5 rounded-lg text-white hover:border hover:border-navy-blue hover:bg-white hover:text-navy-blue"
+                              onClick={() => nextStep()}
+                            >
+                              Next step
+                            </button>
+                          ) : (
+                            <button className="nextSetupProvider bg-gray-500 font-medium px-4 py-1.5 rounded-lg text-white cursor-not-allowed">
+                              Input the full field
+                            </button>
+                          ))}
+
                         {step >= 4 && (
                           <button
                             className=" text-white bg-navy-blue font-medium border border-navy-blue px-4 py-1.5 rounded-lg  hover:border hover:border-navy-blue hover:bg-white hover:text-navy-blue"

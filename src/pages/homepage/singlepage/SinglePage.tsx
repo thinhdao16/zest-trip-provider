@@ -60,7 +60,7 @@ function SinglePage() {
             data-drawer-target="default-sidebar"
             data-drawer-toggle="default-sidebar"
             onClick={toggleSidebar}
-            className="inline-flex items-center p-2 mt-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+            className="inline-flex items-center p-2 mt-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 "
           >
             <span className="sr-only">Open sidebar</span>
             <svg
@@ -80,7 +80,7 @@ function SinglePage() {
           {isSidebarOpen && (
             <button
               onClick={closeSidebar}
-              className="fixed top-0 left-0 z-40 p-3 text-gray-500 md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+              className="fixed top-0 left-0 z-40 p-3 text-gray-500 md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200  "
             >
               <span className="sr-only">Close sidebar</span>
               <svg
@@ -107,7 +107,7 @@ function SinglePage() {
             }`}
             aria-label="Sidebar"
           >
-            <div className="h-full  overflow-y-auto border-solid bg-white border-r-2 border-gray-100  dark:bg-gray-800 global-scrollbar">
+            <div className="h-full  overflow-y-auto border-solid bg-white border-r-2 border-gray-100   global-scrollbar">
               <NavBar />
             </div>
           </aside>
@@ -126,7 +126,7 @@ function SinglePage() {
             }`}
             aria-label="Sidebar"
           >
-            <div className="h-[85vh] px-3 py-4 overflow-y-auto bg-main dark:bg-gray-800 global-scrollbar">
+            <div className="h-[85vh] px-3 py-4 overflow-y-auto bg-main  global-scrollbar">
               <ScreenSP />
             </div>
           </aside> */}

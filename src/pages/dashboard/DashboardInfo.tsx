@@ -214,7 +214,7 @@ function DashboardInfo() {
               ) : (
                 <div className="text-gray-700 flex items-center justify-center">
                   <span className=" bg-zinc-300 p-2 rounded-lg">
-                    No have promotion
+                    No promotion
                   </span>
                 </div>
               )}

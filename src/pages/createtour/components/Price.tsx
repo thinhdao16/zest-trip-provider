@@ -866,7 +866,7 @@ const Price: React.FC = () => {
                           <p className="mx-1">-</p>
                           <select
                             id="countries2"
-                            className="w-20 bg-white border border-gray-300 text-gray-900 font-medium rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            className="w-20 bg-white border border-gray-300 text-gray-900 font-medium rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5  "
                             defaultValue={ageFor?.adult?.ageEnd}
                             onChange={(e) =>
                               handleAgeChange(e, "adult", "adultStart")
@@ -895,7 +895,7 @@ const Price: React.FC = () => {
 
                               <label
                                 htmlFor={`default-radio-${index + 1}`}
-                                className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300"
+                                className="ml-3 text-sm font-medium text-gray-900 "
                               >
                                 {item}
                               </label>
@@ -1108,7 +1108,7 @@ const Price: React.FC = () => {
                           <p className="mx-1">-</p>
                           <select
                             id="countries2"
-                            className="w-20 bg-white border border-gray-300 text-gray-900 font-medium rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            className="w-20 bg-white border border-gray-300 text-gray-900 font-medium rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 "
                             defaultValue={ageFor.chidlren.ageEnd}
                             onChange={(e) =>
                               handleAgeChange(e, "children", "childrenEnd")
@@ -1137,7 +1137,7 @@ const Price: React.FC = () => {
 
                               <label
                                 htmlFor={`default-radio-${index + 1}`}
-                                className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300"
+                                className="ml-3 text-sm font-medium text-gray-900"
                               >
                                 {item}
                               </label>

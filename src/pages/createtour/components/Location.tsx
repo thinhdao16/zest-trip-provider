@@ -12,6 +12,7 @@ import { GoLocation } from "react-icons/go";
 import { BASE_URL } from "../../../store/apiInterceptors";
 import { FormControl, MenuItem, Select } from "@mui/material";
 import { FaStaylinked } from "react-icons/fa6";
+import { ElementCheckInput } from "../../../utils/ElementCheckInput";
 
 const Location: React.FC = () => {
   const { currentStep, updateFormValues, formValues } = useStepContext();
@@ -118,9 +119,7 @@ const Location: React.FC = () => {
               <div>
                 <p className="font-medium mb-1 flex items-center gap-1">
                   Address Name
-                  {addressName?.length < 1 && (
-                    <span className="text-red-500">*</span>
-                  )}
+                  {addressName?.length < 1 && <ElementCheckInput />}
                 </p>
                 <div className="relative">
                   <GoLocation className="absolute top-4 left-2" />
@@ -139,7 +138,7 @@ const Location: React.FC = () => {
                 <p className="font-medium mb-1 flex items-center gap-1">
                   Address province
                   {formValues[3]?.Location?.address_province === undefined && (
-                    <span className="text-red-500">*</span>
+                    <ElementCheckInput />
                   )}
                 </p>
 
@@ -188,7 +187,7 @@ const Location: React.FC = () => {
                 <p className="font-medium mb-1 flex items-center gap-1">
                   Address district
                   {formValues[3]?.Location?.address_district === undefined && (
-                    <span className="text-red-500">*</span>
+                    <ElementCheckInput />
                   )}
                 </p>
                 <FormControl
@@ -237,7 +236,7 @@ const Location: React.FC = () => {
                 <p className="font-medium mb-1 flex items-center gap-1">
                   Address ward
                   {formValues[3]?.Location?.address_ward === undefined && (
-                    <span className="text-red-500">*</span>
+                    <ElementCheckInput />
                   )}
                 </p>
                 <FormControl

@@ -409,7 +409,7 @@ function ScreenMain() {
                     value={addressPro}
                     onChange={(e) => handleCountryChange(e, "pro")}
                     id="countries"
-                    className="pl-8 bg-white text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="pl-8 bg-white text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   >
                     {addressProvince ? (
                       addressProvince?.map((pro: any) => (
@@ -422,7 +422,7 @@ function ScreenMain() {
                     )}
                   </select>
                 </div> */}
-                <div className="pl-8 bg-white text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <div className="pl-8 bg-white text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
                   {addressPro}
                 </div>
               </div>
@@ -440,7 +440,7 @@ function ScreenMain() {
                     value={addressDis}
                     onChange={(e) => handleCountryChange(e, "dis")}
                     id="countries"
-                     className=" pl-8 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                     className=" pl-8 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                   >
                     {addressDistrict ? (
                       addressDistrict?.map((pro: any) => (
@@ -453,7 +453,7 @@ function ScreenMain() {
                     )}
                   </select>
                 </div> */}
-                <div className=" pl-8 bg-white shadow-custom-card-mui text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <div className=" pl-8 bg-white shadow-custom-card-mui text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
                   {addressDis}
                 </div>
               </div>
@@ -470,7 +470,7 @@ function ScreenMain() {
                     value={addressWard}
                     onChange={(e) => handleCountryChange(e, "ward")}
                     id="countries"
-                    className="pl-8 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="pl-8 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                   >
                     {addressWards ? (
                       addressWards?.map((pro: any) => (
@@ -483,7 +483,7 @@ function ScreenMain() {
                     )}
                   </select>
                 </div> */}
-                <div className="pl-8 bg-white shadow-custom-card-mui text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <div className="pl-8 bg-white shadow-custom-card-mui text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
                   {addressWard}
                 </div>
               </div>

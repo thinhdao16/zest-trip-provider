@@ -18,6 +18,7 @@ import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
 import dayjs from "dayjs";
 import { RiRefund2Line } from "react-icons/ri";
 import { MdOutlineSubtitles } from "react-icons/md";
+import { ElementCheckInput } from "../../../utils/ElementCheckInput";
 
 const Capacity: React.FC = () => {
   const { currentStep, updateFormValues, formValues } = useStepContext();
@@ -422,9 +423,7 @@ const Capacity: React.FC = () => {
             <div>
               <p className="font-medium mb-1">
                 Name (e.g. Summer Season, Autumn 2011... ){" "}
-                {capacity?.length === 0 && (
-                  <span className="text-red-500">*</span>
-                )}
+                {capacity?.length === 0 && <ElementCheckInput />}
               </p>
               <div className="  relative ">
                 <MdOutlineSubtitles className="absolute top-4 left-2" />

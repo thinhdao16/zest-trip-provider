@@ -22,6 +22,7 @@ import { FaEarthAfrica, FaRegAddressCard, FaStaylinked } from "react-icons/fa6";
 import { FcBriefcase, FcSurvey } from "react-icons/fc";
 import axios from "axios";
 import { BASE_URL } from "../../../store/apiInterceptors";
+import { ElementCheckInput } from "../../../utils/ElementCheckInput";
 
 const plans: Plan[] = [
   {
@@ -112,16 +113,19 @@ export const PersonalInfo = ({
       const newSelectedFiles = [...selectedFiles];
       newSelectedFiles.splice(index, 1);
       setSelectedFiles(newSelectedFiles);
+      if (userInfo) {
+        userInfo!.file = [];
+      }
     }
     if (field === "banner") {
       setImageSrc(undefined);
       // Assuming userInfo.banner is an array
-      userInfo && (userInfo.banner = {});
+      userInfo && (userInfo.banner = []);
     }
     if (field === "avt") {
       setImageAvt(undefined);
       // Assuming userInfo.avt is an array
-      userInfo && (userInfo.avt = {});
+      userInfo && (userInfo.avt = []);
     }
   };
 
@@ -260,27 +264,34 @@ export const PersonalInfo = ({
         }
       />
       <Input
-        labels="Address name"
-        placeholder="VietNam"
-        icon={<FaEarthAfrica className="text-blue-700" />}
-        value={userInfo.address_name}
-        onChange={(e: FormEvent<HTMLInputElement>) =>
-          handlePersonalInfo(e, "address_name")
-        }
-      />
-      <Input
         labels="Address country"
-        placeholder="e.g. Stephen King"
-        icon={<FaRegAddressCard className="text-zinc-700" />}
+        placeholder="Việt Nam"
+        icon={<FaEarthAfrica className="text-zinc-700" />}
         value={userInfo.address_country}
         onChange={(e: FormEvent<HTMLInputElement>) =>
           handlePersonalInfo(e, "address_country")
         }
       />
+      <Input
+        labels="Address name"
+        placeholder="55, kho min street"
+        icon={<FaRegAddressCard className="text-blue-700" />}
+        value={userInfo.address_name}
+        onChange={(e: FormEvent<HTMLInputElement>) =>
+          handlePersonalInfo(e, "address_name")
+        }
+      />
+
       <div style={{ width: "450px" }}>
-        <p className="font-medium mb-1">Address province</p>
+        <p className="font-medium mb-1 flex gap-1">
+          Address province
+          {userInfo?.address_province?.full_name?.length === 0 && (
+            <ElementCheckInput />
+          )}
+        </p>
+
         <FormControl fullWidth className="relative">
-          <FaStaylinked className="absolute top-3 left-3" />
+          <FaRegAddressCard className="absolute top-3 left-3 text-zinc-500" />
           <Select
             style={{ borderRadius: "8px", height: "40px", paddingLeft: "20px" }}
             displayEmpty
@@ -300,9 +311,15 @@ export const PersonalInfo = ({
         </FormControl>
       </div>
       <div style={{ width: "450px" }}>
-        <p className="font-medium mb-1">Address district</p>
+        <p className="font-medium mb-1">
+          Address district{" "}
+          {userInfo?.address_district?.full_name?.length === 0 && (
+            <ElementCheckInput />
+          )}
+        </p>
+
         <FormControl fullWidth className="relative">
-          <FaStaylinked className="absolute top-3 left-3" />
+          <FaRegAddressCard className="absolute top-3 left-3 text-amber-700" />
           <Select
             style={{ borderRadius: "8px", height: "40px", paddingLeft: "20px" }}
             displayEmpty
@@ -325,9 +342,14 @@ export const PersonalInfo = ({
         </FormControl>
       </div>
       <div style={{ width: "450px" }}>
-        <p className="font-medium mb-1">Address ward</p>
+        <p className="font-medium mb-1">
+          Address ward{" "}
+          {userInfo?.address_ward?.full_name?.length === 0 && (
+            <ElementCheckInput />
+          )}
+        </p>
         <FormControl fullWidth className="relative">
-          <FaStaylinked className="absolute top-3 left-3" />
+          <FaRegAddressCard className="absolute top-3 left-3 text-neutral-700" />
           <Select
             style={{ borderRadius: "8px", height: "40px", paddingLeft: "20px" }}
             displayEmpty
@@ -350,7 +372,14 @@ export const PersonalInfo = ({
         </FormControl>
       </div>
       <div style={{ width: "450px" }}>
-        <p className="font-medium mb-1">Service type</p>
+        <p className="font-medium mb-1 flex gap-1">
+          Service type
+          {selectedPlan?.serviceType?.length === 0 || selectedPlan === null ? (
+            <ElementCheckInput />
+          ) : (
+            <></>
+          )}
+        </p>
         <FormControl fullWidth className="relative">
           <FaStaylinked className="absolute top-3 left-3" />
           <Select
@@ -373,7 +402,11 @@ export const PersonalInfo = ({
       </div>
 
       <div>
-        <p className="font-medium">Business license</p>
+        <p className="font-medium mb-1 flex gap-1">
+          Business license
+          {userInfo?.file?.length === 0 && <ElementCheckInput />}
+        </p>
+
         <Box
           style={{
             marginTop: "5px",
@@ -450,7 +483,13 @@ export const PersonalInfo = ({
         </Box>
       </div>
       <div>
-        <p className="font-medium mb-1 ">Upload banner and avatar</p>
+        <p className="font-medium mb-1 gap-1 flex ">
+          Upload banner and avatar
+          {(userInfo?.banner?.length === 0 || userInfo?.avt?.length === 0) && (
+            <ElementCheckInput />
+          )}
+        </p>
+
         {imageSrc && imageSrc?.url ? (
           <div style={{ position: "relative" }}>
             <AiOutlineDelete
@@ -587,34 +626,36 @@ export const PersonalInfo = ({
               />
             </div>
           )}
-          {userInfo?.banner?.length === undefined ? (
-            <button
-              className="bg-white border border-navy-blue text-navy-blue px-3 rounded-2xl hover:border hover:border-navy-blue hover:bg-navy-blue hover:text-white h-10 m-3"
-              onClick={(e) => handleImageChange("banner", e)}
-            >
-              Change banner
-            </button>
-          ) : (
+          {Object.keys(userInfo?.banner || {}).length === 0 ||
+          userInfo?.banner?.length === 0 ? (
             <button
               className="bg-navy-blue  text-white h-10 m-3 border border-navy-blue hover:bg-white hover:border hover:border-navy-blue hover:text-navy-blue rounded-2xl px-3"
               onClick={(e) => handleImageChange("banner", e)}
             >
               Add banner
             </button>
-          )}
-          {userInfo?.avt?.length === undefined ? (
-            <button
-              className="bg-white border border-blue-grotto text-blue-grotto rounded-2xl hover:border hover:border-solid hover:border-blue-grotto hover:bg-blue-grotto hover:text-white hover:rounded-2xl h-10 mt-3 px-3 "
-              onClick={(e) => handleImageChange("avt", e)}
-            >
-              Change avt
-            </button>
           ) : (
+            <button
+              className="bg-white border border-navy-blue text-navy-blue px-3 rounded-2xl hover:border hover:border-navy-blue hover:bg-navy-blue hover:text-white h-10 m-3"
+              onClick={(e) => handleImageChange("banner", e)}
+            >
+              Change banner
+            </button>
+          )}
+          {Object.keys(userInfo?.avt || {}).length === 0 ||
+          userInfo?.avt?.length === 0 ? (
             <button
               className="bg-blue-grotto  text-white border border-blue-grotto h-10 hover:bg-white hover:border hover:border-blue-grotto hover:text-blue-grotto  mt-3 px-3 rounded-2xl"
               onClick={(e) => handleImageChange("avt", e)}
             >
-              Add avt
+              Add avatar
+            </button>
+          ) : (
+            <button
+              className="bg-white border border-blue-grotto text-blue-grotto rounded-2xl hover:border hover:border-solid hover:border-blue-grotto hover:bg-blue-grotto hover:text-white hover:rounded-2xl h-10 mt-3 px-3 "
+              onClick={(e) => handleImageChange("avt", e)}
+            >
+              Change avatar
             </button>
           )}
         </div>

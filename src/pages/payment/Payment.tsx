@@ -370,7 +370,7 @@ function Payment() {
                           ) : (
                             <div className="flex items-center justify-center pb-6 pt-2">
                               <p className="bg-main p-1 rounded-lg shadow-custom-card-mui border border-gray-300 border-solid font-medium">
-                                No have payment
+                                No payment
                               </p>
                             </div>
                           )}
