@@ -19,7 +19,7 @@ import "./header.css";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../store/redux/store";
 import { getPersonalInfo } from "../../store/redux/silce/authSilce";
-
+import FileLogo from "../../assets/File-logo-Zest-Travel.svg";
 function Header() {
   const navigation = useNavigate();
   const dispatch: AppDispatch = useDispatch();
@@ -74,10 +74,7 @@ function Header() {
                 to="/listwork"
                 style={{ textDecoration: "none", color: "black" }}
               >
-                <img
-                  src="/src/assets/File-logo-Zest-Travel.svg"
-                  className="w-16"
-                />
+                <img src={FileLogo} className="w-16" />
               </Link>
             </Box>
 

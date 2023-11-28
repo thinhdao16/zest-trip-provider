@@ -4,7 +4,7 @@ import {
   BannerImage,
 } from "../../../styles/createtour/createtour";
 import { useStepContext } from "../context/ui/useStepContext";
-
+import ImageWellcomeTour from "../../../assets/tour/welcome/Tour-PNG-Download-Image.png";
 export default function Welcome() {
   const { currentStep } = useStepContext();
 
@@ -42,7 +42,7 @@ export default function Welcome() {
             </DemoContainer>
           </LocalizationProvider> */}
         </BannerContent>
-        <BannerImage src="src\assets\tour\welcome\Tour-PNG-Download-Image.png" />
+        <BannerImage src={ImageWellcomeTour} />
       </div>
     </BannerContainer>
   );

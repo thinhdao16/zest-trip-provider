@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; // Import CSS của react-toastify
-
+import login from "../../assets/login.svg";
 interface FormElements extends HTMLFormControlsCollection {
   email: HTMLInputElement;
   password: HTMLInputElement;
@@ -136,11 +136,7 @@ function Login() {
                   <li className="font-base">Exclusive discounts 🎉🎉🎉</li>
                 </ul>
               </div>
-              <img
-                src="src/assets/login.svg"
-                className="w-[50vh] h-[50vh]"
-                alt="error"
-              />
+              <img src={login} className="w-[50vh] h-[50vh]" alt="error" />
             </div>
           </Grid>
           <Grid item xs={7}>

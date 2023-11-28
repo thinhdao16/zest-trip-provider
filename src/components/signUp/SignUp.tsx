@@ -26,6 +26,7 @@ import { BASE_URL } from "../../store/apiInterceptors";
 import axios from "axios";
 import OtpInput from "react-otp-input";
 import { toast } from "react-toastify";
+import register from "../../assets/register.svg";
 
 interface FormElements extends HTMLFormControlsCollection {
   email: HTMLInputElement;
@@ -315,11 +316,7 @@ export default function SignUp() {
                   <li className="font-base">Exclusive discounts 🎉🎉🎉</li>
                 </ul>
               </div>
-              <img
-                src="src\assets\register.svg"
-                className="w-[50vh] h-[50vh]"
-                alt="error"
-              />
+              <img src={register} className="w-[50vh] h-[50vh]" alt="error" />
             </div>
           </Grid>
           <Grid item xs={7}>
