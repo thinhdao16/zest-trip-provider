@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; // Import CSS của react-toastify
-
+import forgot from "../../assets/forgot.svg";
 interface FormElements extends HTMLFormControlsCollection {
   email: HTMLInputElement;
   password: HTMLInputElement;
@@ -111,11 +111,7 @@ function ForgotPassWord() {
                   <li className="font-base">Exclusive discounts 🎉🎉🎉</li>
                 </ul>
               </div>
-              <img
-                src="src\assets\forgot.svg"
-                className="w-[50vh] h-[50vh]"
-                alt="error"
-              />
+              <img src={forgot} className="w-[50vh] h-[50vh]" alt="error" />
             </div>
           </Grid>
           <Grid item xs={7}>
