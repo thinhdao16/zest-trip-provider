@@ -696,7 +696,7 @@ const Price: React.FC = () => {
                             <div className="flex items-center gap-4">
                               <input
                                 className="p-2 w-20 bg-slate-200 rounded-md"
-                                value={form.payoutPerPerson}
+                                value={formatNumberInput(form.payoutPerPerson)}
                                 disabled
                               />
                               <p className="font-medium">VND</p>
