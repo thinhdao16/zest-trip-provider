@@ -160,8 +160,9 @@ function SetUpProvider() {
         becomeProvider({
           formData,
           onSuccessCallback: () => {
-            navigate("/");
+            localStorage.clear();
             setRefeshLogin((prev) => !prev);
+            navigate("/login");
           },
         })
       )
