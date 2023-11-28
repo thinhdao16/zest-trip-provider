@@ -127,7 +127,7 @@ function CreateTourNav() {
       departure_location: {
         lat: formValues[9]?.LocationStart?.lat_start?.toString(),
         long: formValues[9]?.LocationStart?.lng_start?.toString(),
-        zoom: "18z",
+        zoom: "18",
         location: locationStart,
       },
       // departure_location: {
