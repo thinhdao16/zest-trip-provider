@@ -78,10 +78,7 @@ function DashboardInfo() {
                 />
               </button>
             </div>
-            <div className="text-gray-500 flex gap-1 text-sm">
-              Please, Finish your profile !
-              <p className="text-navy-blue">Edit now</p>
-            </div>
+
             <Box sx={{ flexGrow: 1, textAlign: "right", color: "black" }}>
               <Menu
                 anchorEl={anchorEl}

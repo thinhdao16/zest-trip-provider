@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axiosInstance, { BASE_URL } from "../../apiInterceptors";
-import { useNavigate } from "react-router-dom";
 
 const initialState = {
   isLoggedIn: false,
