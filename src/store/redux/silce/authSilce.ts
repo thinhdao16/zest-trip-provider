@@ -18,7 +18,6 @@ export const getPersonalInfo = createAsyncThunk(
     try {
       const response = await axiosInstance.get(`${BASE_URL}/provider/profile`);
       localStorage.setItem("id_provider", response.data.data.id);
-      console.log(response);
       // if (response.status === 404) {
       //   localStorage.clear();
       //   navigate("/login");

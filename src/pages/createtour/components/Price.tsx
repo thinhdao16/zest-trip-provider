@@ -551,17 +551,16 @@ const Price: React.FC = () => {
     return null;
   }
   const formatNumberWithCommas = (value: any) => {
-    // Chuyển đổi giá trị thành chuỗi và loại bỏ tất cả các ký tự không phải số
     const numericValue = value.toString().replace(/[^0-9]/g, "");
 
-    // Nếu có 3 chữ số trở lên, thêm dấu phẩy
     if (numericValue.length >= 3) {
-      return new Intl.NumberFormat().format(Number(numericValue));
+      return new Intl.NumberFormat("en-US").format(Number(numericValue));
+      // Use 'en-US' or your preferred locale as an argument
     }
 
-    // Ngược lại, giữ nguyên giá trị
     return numericValue;
   };
+
   return (
     <BannerContainer className="global-scrollbar">
       <div className="flex items-center justify-center">
@@ -670,7 +669,6 @@ const Price: React.FC = () => {
                               className="w-20 bg-white border border-gray-300 text-gray-900 text-base font-medium rounded-md py-2 pl-2"
                               value={formatNumberWithCommas(form?.retailPrice)}
                               onChange={(e) => {
-                                // Loại bỏ dấu phẩy khi người dùng nhập giá trị
                                 const newValue = e.target.value.replace(
                                   /,/g,
                                   ""

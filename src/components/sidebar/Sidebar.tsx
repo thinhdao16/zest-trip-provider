@@ -25,10 +25,16 @@ function Sidebar({ ...props }) {
   useEffect(() => {
     dispatch(getPersonalInfo())
       .then((action) => {
+        if (getPersonalInfo.fulfilled.match(action)) {
+          console.log(action);
+          if (action?.payload?.status === "PROCESSING") {
+            localStorage.clear();
+            navigation("/lgogin");
+          }
+        }
         if (getPersonalInfo.rejected.match(action)) {
           localStorage.clear();
           navigation("/login");
-          // Handle the rejection (optional)
         }
       })
       .catch((error) => {
