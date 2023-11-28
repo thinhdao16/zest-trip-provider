@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import PropTypes from "prop-types";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { AppDispatch } from "../../../store/redux/store";
 import { useDispatch } from "react-redux";

@@ -16,7 +16,6 @@ import { TourTag, VehicleTag } from "../../../assets/tour/iconVehicle/tag";
 import { Pagination } from "antd";
 import Navbar from "../../../components/Navbar/Index";
 import { RiSearchLine } from "react-icons/ri";
-import { GoDotFill } from "react-icons/go";
 import LoadingFullScreen from "../../../styles/loading/LoadingFullScreen";
 import { StatusTour } from "../../../styles/status/tour";
 export default function Banner() {

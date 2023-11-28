@@ -13,7 +13,6 @@ import { formatNumber } from "../../../utils/formatNumber";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { DragDropContext } from "react-beautiful-dnd";
 import { IoIosCloseCircleOutline } from "react-icons/io";
-import LoadingFullScreen from "../../../styles/loading/LoadingFullScreen";
 import LoadingModal from "../../../styles/loading/LoadingModal";
 
 function ScreenMain() {

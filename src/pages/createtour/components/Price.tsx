@@ -7,7 +7,6 @@ import {
 import { useStepContext } from "../context/ui/useStepContext";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { GoLocation } from "react-icons/go";
-import { AiFillDelete } from "react-icons/ai";
 import { IoMdClose } from "react-icons/io";
 import { formatNumberInput } from "../../../utils/formatNumberInput";
 

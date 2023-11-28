@@ -4,14 +4,14 @@ import { GiPriceTag } from "react-icons/gi";
 import { MdCreateNewFolder, MdUpdate } from "react-icons/md";
 import dayjs from "dayjs";
 import { HiOutlineDotsVertical } from "react-icons/hi";
-import { AiFillFilter, AiOutlineCaretRight } from "react-icons/ai";
+import { AiFillFilter } from "react-icons/ai";
 import { AppDispatch } from "../../../store/redux/store";
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { getBookingDetail } from "../../../store/redux/silce/booking";
 import { StatusBooking } from "../../../styles/status/booking";
-import { IconButton, Menu, MenuItem } from "@mui/material";
+import { Menu, MenuItem } from "@mui/material";
 import { formatNumber } from "../../../utils/formatNumber";
 import Tooltip from "@mui/material/Tooltip";
 import { Carousel } from "react-responsive-carousel";
@@ -25,9 +25,7 @@ function BookDetailScreenMain() {
   const dispatch: AppDispatch = useDispatch();
   const { index } = useParams<{ index: string }>();
 
-  const { loadingBooking, bookingDetail } = useSelector(
-    (detail: any) => detail?.booking
-  );
+  const { bookingDetail } = useSelector((detail: any) => detail?.booking);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [filteredBookings, setFilteredBookings] = useState(bookingDetail);
   console.log(filteredBookings);
