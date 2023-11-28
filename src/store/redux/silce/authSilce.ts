@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axiosInstance, { BASE_URL } from "../../apiInterceptors";
+import { useNavigate } from "react-router-dom";
 
 const initialState = {
   isLoggedIn: false,
@@ -13,9 +14,15 @@ const initialState = {
 export const getPersonalInfo = createAsyncThunk(
   "auth/getInfo", // Slice name: "tour"
   async () => {
+    // const navigate = useNavigate();
     try {
       const response = await axiosInstance.get(`${BASE_URL}/provider/profile`);
       localStorage.setItem("id_provider", response.data.data.id);
+      console.log(response);
+      // if (response.status === 404) {
+      //   localStorage.clear();
+      //   navigate("/login");
+      // }
       return response.data.data;
     } catch (error) {
       console.log(error);

@@ -47,7 +47,17 @@ function Header() {
     return location.pathname === route ? "active-link" : "";
   };
   useEffect(() => {
-    dispatch(getPersonalInfo());
+    dispatch(getPersonalInfo())
+      .then((action) => {
+        if (getPersonalInfo.rejected.match(action)) {
+          console.log("Error fetching personal info:", action.error.message);
+          // Handle the rejection (optional)
+        }
+      })
+      .catch((error) => {
+        console.error("Unexpected error:", error);
+        // Handle unexpected errors (optional)
+      });
   }, [dispatch]);
   return (
     <>

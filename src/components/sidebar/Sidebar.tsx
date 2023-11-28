@@ -23,7 +23,18 @@ function Sidebar({ ...props }) {
     // window.open("/promotion", "_blank");
   };
   useEffect(() => {
-    dispatch(getPersonalInfo());
+    dispatch(getPersonalInfo())
+      .then((action) => {
+        if (getPersonalInfo.rejected.match(action)) {
+          localStorage.clear();
+          navigation("/login");
+          // Handle the rejection (optional)
+        }
+      })
+      .catch((error) => {
+        console.error("Unexpected error:", error);
+        // Handle unexpected errors (optional)
+      });
   }, [dispatch]);
   return (
     <>

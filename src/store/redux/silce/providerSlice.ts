@@ -10,6 +10,7 @@ const initialState = {
   errorBecomeProvider: null as string | null,
   loadingProvider: false,
   error: null as string | null,
+  dataErrorBecome: [],
 };
 export const becomeProvider = createAsyncThunk(
   "provider/becomeProvider",
@@ -344,6 +345,7 @@ const providerSice = createSlice({
       .addCase(becomeProvider.rejected, (state: any, action) => {
         state.loadingBecomeProvider = false;
         state.error = action.error.message;
+        state.dataErrorBecome = action.payload;
       })
       .addCase(createVoucher.pending, (state) => {
         state.loadingProvider = true;

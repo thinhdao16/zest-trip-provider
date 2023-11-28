@@ -14,6 +14,7 @@ import dayjs from "dayjs";
 import { useContext } from "react";
 import { DataContext } from "../../../store/dataContext/DataContext";
 import { FcFactoryBreakdown } from "react-icons/fc";
+import { Popconfirm } from "antd";
 
 function NavBar() {
   const {
@@ -130,7 +131,7 @@ function NavBar() {
     });
     const allFormImg = { formDataImg, id: tourDetail?.id };
     const allForm = { dataValue, id: tourDetail?.id };
-    dispatch(editContentTour(allForm)).then((response) => {
+    dispatch(editContentTour(allForm)).then((response: any) => {
       if (editContentTour.fulfilled.match(response)) {
         setRefreshTourDetail((prev) => !prev);
       }
@@ -186,13 +187,21 @@ function NavBar() {
             </div>
           </div>
           <div className="flex w-64 items-center  justify-center">
-            <button
-              type="button"
-              className="bg-navy-blue text-white p-2 rounded-lg"
-              onClick={handleEditContent}
+            <Popconfirm
+              className="custom-popconfirm"
+              title="Edit tour"
+              description="Are you sure to edit this task?"
+              okText="Yes"
+              cancelText="No"
+              onConfirm={() => handleEditContent()}
             >
-              Save change
-            </button>
+              <button
+                type="button"
+                className="bg-navy-blue text-white p-2 rounded-lg"
+              >
+                Save change
+              </button>
+            </Popconfirm>
           </div>
         </div>
       </div>

@@ -10,6 +10,7 @@ import { AppDispatch } from "../../store/redux/store";
 import { replyReview } from "../../store/redux/silce/reviewSlice";
 import { useSelector } from "react-redux";
 import LoadingModal from "../../styles/loading/LoadingModal";
+import { Popconfirm } from "antd";
 
 interface FadeProps {
   children: React.ReactElement;
@@ -131,7 +132,10 @@ export default function SpringModal(data: any) {
             <Fade in={open}>
               <Box sx={style}>
                 <div className="flex flex-col gap-5 p-8 relative">
-                  <div className="absolute top-0 right-0 bg-gray-200 rounded-full p-2">
+                  <div
+                    className="absolute top-0 right-0 bg-gray-200 rounded-full p-2"
+                    onClick={handleClose}
+                  >
                     <AiOutlineClose className="text-gray-700" />
                   </div>
                   <div className="flex flex-col ">
@@ -171,16 +175,26 @@ export default function SpringModal(data: any) {
                     />
                   </div>
                   <div className="flex gap-3 justify-center">
-                    <button
-                      type="button"
-                      className="bg-navy-blue rounded-lg py-2 px-6 text-white font-medium w-full"
-                      onClick={() => handelReply()}
+                    <Popconfirm
+                      className="custom-popconfirm"
+                      title="Edit tour"
+                      description="Are you sure to edit this task?"
+                      okText="Yes"
+                      cancelText="No"
+                      onConfirm={() => handelReply()}
                     >
-                      Send
-                    </button>
+                      <button
+                        type="button"
+                        className="bg-navy-blue rounded-lg py-2 px-6 text-white font-medium w-full"
+                        onClick={() => handelReply()}
+                      >
+                        Send
+                      </button>
+                    </Popconfirm>
                     <button
                       type="button"
                       className="bg-white border border-gray-400 text-gray-500 w-full rounded-lg font-medium "
+                      onClick={handleClose}
                     >
                       Cancel
                     </button>

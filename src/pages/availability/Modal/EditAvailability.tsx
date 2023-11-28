@@ -319,6 +319,7 @@ const EditAvailability = (dataAvailability: any) => {
         aria-describedby="transition-modal-description"
         open={open}
         closeAfterTransition
+        onClose={handleCloseCancel}
         slots={{ backdrop: Backdrop }}
         slotProps={{
           backdrop: {

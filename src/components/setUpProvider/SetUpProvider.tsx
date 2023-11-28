@@ -32,7 +32,10 @@ function SetUpProvider() {
   const dispatch: AppDispatch = useDispatch();
 
   const { setRefeshLogin } = useContext(DataContext);
-  const { loadingBecomeProvider } = useSelector((state: any) => state.provider);
+  const { loadingBecomeProvider, dataErrorBecome } = useSelector(
+    (state: any) => state.provider
+  );
+  console.log(dataErrorBecome);
   const [userServiceConfiguration, setUserServiceConfiguration] =
     useState<UserServiceConfiguration>({
       userInfo: {
@@ -55,7 +58,6 @@ function SetUpProvider() {
       monthly: true,
       addons: [],
     });
-  console.log(userServiceConfiguration);
   const updateUserInfo = (userInfo: UserInfo) => {
     setUserServiceConfiguration({ ...userServiceConfiguration, userInfo });
   };
@@ -98,7 +100,6 @@ function SetUpProvider() {
       // Xử lý trường hợp khi giá trị là null
     }
 
-    console.log(parseInfo);
     const token: any = localStorage.getItem("access_token");
     const decode: any = jwt_decode(token);
     if (decode.id) {
@@ -166,6 +167,7 @@ function SetUpProvider() {
       )
         .then((provider) => {
           if (becomeProvider.fulfilled.match(provider)) {
+            console.log(provider);
             dispatch(
               createProviderAvt(userServiceConfiguration?.userInfo?.avt?.file)
             );
@@ -174,6 +176,11 @@ function SetUpProvider() {
                 userServiceConfiguration?.userInfo?.banner?.file
               )
             );
+          }
+          if (becomeProvider.rejected.match(provider)) {
+            console.log(provider);
+            // localStorage.clear()
+            // navigate("/")
           }
         })
         .catch((error) => {

@@ -338,4 +338,15 @@ table {
   background: rgba(0, 0, 0, 0.9);
 }
 
+/* Add this to your CSS or SCSS file */
+.ant-popover-inner .ant-popconfirm-buttons .ant-btn-primary {
+  background:#05445E !important ; 
+  transition: background-color 0.3s ease; 
+  z-index: 99999;
+}
+.ant-popover-inner .ant-popconfirm-buttons .ant-btn-primary:hover {
+  background:rgba(5, 68, 94, 0.4) !important ;
+  color: #05445E; 
+}
+
 /*end*/
