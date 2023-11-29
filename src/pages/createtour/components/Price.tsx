@@ -693,25 +693,27 @@ const Price: React.FC = () => {
                             <div className="font-medium h-4 mb-2">
                               Payout per person
                             </div>
-                            <div className="flex items-center gap-4">
+                            <div className="flex items-center gap-2">
                               <input
                                 className="p-2 w-20 bg-slate-200 rounded-md"
                                 value={formatNumberInput(form.payoutPerPerson)}
                                 disabled
                               />
-                              <p className="font-medium">VND</p>
-                              {form.id !== 0 ? (
-                                <button
-                                  className="font-medium text-red-600 hover:text-red-800 text-xl"
-                                  onClick={() => removeForm(form.id, "")}
-                                >
-                                  x
-                                </button>
-                              ) : (
-                                <button className="font-medium text-white  text-xl ">
-                                  x
-                                </button>
-                              )}
+                              <div className="flex items-center gap-2">
+                                <p className="font-medium">VND</p>
+                                {form.id !== 0 ? (
+                                  <button
+                                    className="font-medium text-red-600 hover:text-red-800 text-xl mb-1"
+                                    onClick={() => removeForm(form.id, "")}
+                                  >
+                                    <IoMdClose />
+                                  </button>
+                                ) : (
+                                  <div className="font-medium text-white  text-xl ">
+                                    <IoMdClose />
+                                  </div>
+                                )}
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -974,7 +976,7 @@ const Price: React.FC = () => {
                               <div className="font-medium">
                                 Payout per person
                               </div>
-                              <div className="flex items-center">
+                              <div className="flex items-center gap-2">
                                 <input
                                   className="p-2 w-20 bg-slate-200 rounded-md"
                                   value={formatNumberInput(
@@ -985,13 +987,17 @@ const Price: React.FC = () => {
                                 <p className="font-medium">VND</p>
                                 {form.id !== 0 ? (
                                   <button
-                                    className=""
+                                    className="text-red-500"
                                     onClick={() => removeForm(form.id, "adult")}
                                   >
                                     <IoMdClose />
                                   </button>
                                 ) : (
-                                  <></>
+                                  <>
+                                    <div className="text-white">
+                                      <IoMdClose />
+                                    </div>
+                                  </>
                                 )}
                               </div>
                             </div>
@@ -1215,7 +1221,7 @@ const Price: React.FC = () => {
                               <div className="font-medium">
                                 Payout per person
                               </div>
-                              <div className="flex items-center">
+                              <div className="flex items-center gap-2">
                                 <input
                                   className="p-2 w-20 bg-slate-200 rounded-md"
                                   value={formatNumberInput(
@@ -1226,6 +1232,7 @@ const Price: React.FC = () => {
                                 <p className="font-medium">VND</p>
                                 {form.id !== 0 ? (
                                   <button
+                                    className="text-red-500"
                                     onClick={() =>
                                       removeForm(form.id, "children")
                                     }
@@ -1233,7 +1240,11 @@ const Price: React.FC = () => {
                                     <IoMdClose />
                                   </button>
                                 ) : (
-                                  <></>
+                                  <>
+                                    <div className="text-white">
+                                      <IoMdClose />
+                                    </div>
+                                  </>
                                 )}
                               </div>
                             </div>

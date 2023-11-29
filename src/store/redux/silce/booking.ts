@@ -155,6 +155,7 @@ export const getBookingDetail = createAsyncThunk(
     try {
       const response = await axiosInstance.post(`${BASE_URL}/booking/owned`, {
         tour_id: idBookDetail,
+        select: "2000",
       });
       if (response.status === 200) {
         return response.data.data;
