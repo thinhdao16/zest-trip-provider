@@ -126,7 +126,7 @@ export const createProviderBanner = createAsyncThunk(
         if (Array.isArray(errorMessages)) {
           errorMessages.forEach((errorMessage: string) => {
             console.log(errorMessage);
-            toast.error(errorMessage);
+            // toast.error(errorMessage);
           });
         } else if (typeof errorMessages === "string") {
           console.log(errorMessages);
