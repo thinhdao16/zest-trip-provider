@@ -159,11 +159,8 @@ function SetUpProvider() {
       dispatch(
         becomeProvider({
           formData,
-          onSuccessCallback: () => {
-            localStorage.clear();
-            setRefeshLogin((prev) => !prev);
-            navigate("/provider-processing");
-          },
+          // eslint-disable-next-line @typescript-eslint/no-empty-function
+          onSuccessCallback: () => {},
         })
       )
         .then((provider) => {
@@ -177,6 +174,9 @@ function SetUpProvider() {
                 userServiceConfiguration?.userInfo?.banner?.file
               )
             );
+            localStorage.clear();
+            setRefeshLogin((prev) => !prev);
+            navigate("/provider-processing");
           }
           if (becomeProvider.rejected.match(provider)) {
             console.log(provider);
