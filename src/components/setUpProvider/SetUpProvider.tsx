@@ -173,10 +173,18 @@ function SetUpProvider() {
               createProviderBanner(
                 userServiceConfiguration?.userInfo?.banner?.file
               )
-            );
-            localStorage.clear();
-            setRefeshLogin((prev) => !prev);
-            navigate("/provider-processing");
+            ).then((banner) => {
+              if (createProviderBanner.fulfilled.match(banner)) {
+                localStorage.clear();
+                setRefeshLogin((prev) => !prev);
+                navigate("/provider-processing");
+              }
+              if (createProviderBanner.rejected.match(banner)) {
+                localStorage.clear();
+                setRefeshLogin((prev) => !prev);
+                navigate("/provider-processing");
+              }
+            });
           }
           if (becomeProvider.rejected.match(provider)) {
             console.log(provider);
