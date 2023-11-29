@@ -50,7 +50,7 @@ function DashboardInfo() {
     dispatch(getAllTours());
     dispatch(getProviderTourBoost());
   }, [dispatch]);
-
+  console.log(personalInfo);
   return (
     <>
       {loadingPromotion ? (
@@ -61,7 +61,10 @@ function DashboardInfo() {
             <div className="flex items-center justify-between pr-4">
               <div className="flex items-center gap-4">
                 <img
-                  src="https://images.inc.com/uploaded_files/image/1920x1080/getty_481292845_77896.jpg"
+                  src={
+                    personalInfo?.avatar_image_url ||
+                    "https://images.inc.com/uploaded_files/image/1920x1080/getty_481292845_77896.jpg"
+                  }
                   alt="error"
                   className="object-cover w-14 h-14 rounded-full"
                 />
@@ -71,9 +74,9 @@ function DashboardInfo() {
                       <SliceEmailToName email={email} />
                     )}
                   </span>
-                  <div className="flex text-gray-500 gap-1 text-sm">
+                  {/* <div className="flex text-gray-500 gap-1 text-sm">
                     Provider <span className="text-navy-blue">Pro +</span>
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <button>

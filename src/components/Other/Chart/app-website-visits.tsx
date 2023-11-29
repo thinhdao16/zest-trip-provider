@@ -66,7 +66,7 @@ export default function AppWebsiteVisits({
           series={formattedSeries}
           options={chartOptions}
           width="100%"
-          height={200}
+          height={235}
         />
       </Box>
     </div>
