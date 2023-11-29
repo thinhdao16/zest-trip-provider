@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { FcPaid } from "react-icons/fc";
 import { GiPriceTag } from "react-icons/gi";
 import { MdCreateNewFolder, MdUpdate } from "react-icons/md";
@@ -244,7 +244,9 @@ function BookDetailScreenMain() {
               <div className="">
                 <div className="flex items-center gap-4 justify-end">
                   <StatusBooking>{booking?.status}</StatusBooking>
-                  <HiOutlineDotsVertical />
+                  <Link to={`/booking/${booking?.id}`} key={booking?.id}>
+                    <HiOutlineDotsVertical />
+                  </Link>
                 </div>
               </div>
             </div>
