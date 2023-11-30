@@ -64,6 +64,12 @@ const initMenu: MenuItem[] = [
     name: "Availability",
   },
   {
+    label: "Ticket",
+    path: "/ticket",
+    icon: faCalendar,
+    name: "Availability",
+  },
+  {
     label: "Voucher",
     path: "/voucher",
     icon: faTicket,

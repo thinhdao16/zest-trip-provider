@@ -116,7 +116,7 @@ const LocationStart: React.FC = () => {
         console.log(error);
       });
   }, []);
-
+  const apiKey = "AIzaSyC56vS8LJX2V0Kz19p3MZ1BWdQ122rjMdI";
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -126,9 +126,9 @@ const LocationStart: React.FC = () => {
         console.log(addressSearch);
 
         const response = await axios.get(
-          `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+          `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
             addressSearch
-          )}&limit=1` // Limit to 1 result since you are only using the first one
+          )}&key=${apiKey}`
         );
 
         console.log(response);

@@ -17,14 +17,14 @@ function DetailBook() {
   return (
     <div className="h-[100vh]">
       <div>
-        <div
+        {/* <div
           className={`fixed h-20  w-64 z-10 ${
             isSidebarOpen ? "bg-white top-0" : " bottom-0"
           }`}
         >
           <Header />
-        </div>
-        <button
+        </div> */}
+        {/* <button
           data-drawer-target="default-sidebar"
           data-drawer-toggle="default-sidebar"
           onClick={toggleSidebar}
@@ -72,14 +72,10 @@ function DetailBook() {
             isSidebarOpen ? "translate-x-0 top-28" : "-translate-x-full top-0 "
           }`}
           aria-label="Sidebar"
-        >
-          <div className="h-full  overflow-y-auto border-solid bg-white border-r-2 border-gray-100   global-scrollbar">
-            <NavBar />
-          </div>
-        </aside>
+        ></aside> */}
         <div
-          className={`p-4 sm:ml-64
-         sm:mr-0 h-screen ${isSidebarOpen ? "pt-28" : "top-0"}`}
+          className={`p-4 
+         sm:mr-0 h-screen ${isSidebarOpen ? "" : "top-0"}`}
         >
           <BookDetailScreenMain />
         </div>

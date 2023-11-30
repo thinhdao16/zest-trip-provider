@@ -118,24 +118,6 @@ const Location: React.FC = () => {
               </div>
               <div>
                 <p className="font-medium mb-1 flex items-center gap-1">
-                  Address Name
-                  {addressName?.length < 1 && <ElementCheckInput />}
-                </p>
-                <div className="relative">
-                  <GoLocation className="absolute top-4 left-2" />
-                  <input
-                    value={addressName || ""}
-                    onChange={(e) => handleFormChange(e.target.value)}
-                    className="w-full shadow-custom-card-mui rounded-lg py-3 pl-8 focus:outline-1 focus:outline-navy-blue hover:border-navy-blue  border border-gray-400 "
-                    name="address"
-                    placeholder="Address"
-                    type="text"
-                    autoComplete="address-line1"
-                  />
-                </div>
-              </div>
-              <div>
-                <p className="font-medium mb-1 flex items-center gap-1">
                   Address province
                   {formValues[3]?.Location?.address_province === undefined && (
                     <ElementCheckInput />
@@ -281,6 +263,24 @@ const Location: React.FC = () => {
                   </Select>
                 </FormControl>
               </div>{" "}
+              <div>
+                <p className="font-medium mb-1 flex items-center gap-1">
+                  Address Name
+                  {addressName?.length < 1 && <ElementCheckInput />}
+                </p>
+                <div className="relative">
+                  <GoLocation className="absolute top-4 left-2" />
+                  <input
+                    value={addressName || ""}
+                    onChange={(e) => handleFormChange(e.target.value)}
+                    className="w-full shadow-custom-card-mui rounded-lg py-3 pl-8 focus:outline-1 focus:outline-navy-blue hover:border-navy-blue  border border-gray-400 "
+                    name="address"
+                    placeholder="Address"
+                    type="text"
+                    autoComplete="address-line1"
+                  />
+                </div>
+              </div>
             </div>
           </BannerMapContainer>
         </BannerContent>

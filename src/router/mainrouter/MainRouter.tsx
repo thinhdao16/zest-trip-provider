@@ -59,7 +59,11 @@ function MainRouter() {
               <Route path="/review" element={<Review />} />
 
               <Route path="/listtour" element={<HomePage />} />
-              <Route path="/booking" element={<Booker />} />
+              <Route path="/booking">
+                <Route path="" element={<Booker />} />
+                <Route path="many/:index" element={<DetailBook />} />
+              </Route>
+
               <Route path="/voucher" element={<Voucher />}>
                 <Route path="" element={<Voucher />} />
               </Route>
@@ -91,7 +95,6 @@ function MainRouter() {
               element={<BookerDetailSingleScreen />}
             />
             <Route path="/detail-tour/:index" element={<DetailTour />} />
-            <Route path="/booking/many/:index" element={<DetailBook />} />
             <Route path="/voucher-create" element={<VoucherNew />} />
             <Route path="/voucher-view" element={<VoucherView />} />
             <Route path="/listwork" element={<ListWork />} />
