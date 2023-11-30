@@ -1,11 +1,11 @@
-import { Rating, Skeleton } from "@mui/material";
+import { Menu, MenuItem, Rating, Skeleton } from "@mui/material";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { fetchTours } from "../../../store/redux/silce/tourSlice";
+import { fetchTours, getTours } from "../../../store/redux/silce/tourSlice";
 import { AppDispatch } from "../../../store/redux/store";
 
 import { DataContext } from "../../../store/dataContext/DataContext";
@@ -13,26 +13,61 @@ import { AiFillEdit, AiFillFilter } from "react-icons/ai";
 import { FaMobile } from "react-icons/fa6";
 import { LuMoreHorizontal } from "react-icons/lu";
 import { TourTag } from "../../../components/icon/tour/tag";
-import { Pagination } from "antd";
 import Navbar from "../../../components/Navbar/Index";
 import { RiSearchLine } from "react-icons/ri";
 import LoadingFullScreen from "../../../styles/loading/LoadingFullScreen";
 import { StatusTour } from "../../../styles/status/tour";
 import { VehicleTag } from "../../../components/icon/tour/vehicle";
+import { Pagination, Slider } from "antd";
 export default function Banner() {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
-  const [searchValue, setSearchValue] = useState("");
   const { refeshTour } = React.useContext(DataContext);
   const dispatch: AppDispatch = useDispatch();
   const { tours, loading } = useSelector((state: any) => state.tour);
-  console.log(tours);
   const dataTours = tours?.tours;
   const countTours = tours?.total_count;
-  React.useEffect(() => {
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [searchValue, setSearchValue] = useState("");
+  const [minPrice, setMinPrice] = useState<any>(0);
+  const [maxPrice, setMaxPrice] = useState<any>(20000000000);
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [selectedStatus, setSelectedStatus] = useState("");
+
+  const [filterTour, setFilterTour] = useState(dataTours);
+
+  const open = Boolean(anchorEl);
+
+  useEffect(() => {
     const pagination = { pageSize, currentPage };
     dispatch(fetchTours(pagination));
   }, [dispatch, refeshTour, currentPage, pageSize]);
+  useEffect(() => {
+    const filtered = dataTours?.filter((booking: any) => {
+      const ticketPricings = booking?.TicketPricing;
+      const prices = ticketPricings?.flatMap((ticketPricing: any) =>
+        ticketPricing?.price_range?.map((range: any) => range?.price)
+      );
+      const isPriceMatch = prices?.some(
+        (price: any) =>
+          (minPrice === "" || price >= Number(minPrice)) &&
+          (maxPrice === "" || price <= Number(maxPrice))
+      );
+      const isStatusMatch =
+        selectedStatus === "" || booking.status === selectedStatus;
+      const isSearchMatch =
+        searchValue === "" ||
+        Object.values(booking).some(
+          (field: any) =>
+            typeof field === "string" && field.includes(searchValue)
+        );
+
+      return isStatusMatch && isSearchMatch && isPriceMatch;
+    });
+
+    setFilterTour(filtered);
+  }, [dataTours, selectedStatus, searchValue, minPrice, maxPrice]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -62,6 +97,30 @@ export default function Banner() {
       }
     });
   };
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const handleStatusClick = (status: any) => {
+    console.log(status);
+    setSelectedStatus(status);
+    setAnchorEl(null);
+    if (status === "") {
+      const pagination = { pageSize, currentPage };
+      dispatch(fetchTours(pagination));
+    } else {
+      dispatch(getTours());
+    }
+  };
+  const handleMinPriceChange = (value: any) => {
+    setMinPrice(value);
+  };
+
+  const handleMaxPriceChange = (value: any) => {
+    setMaxPrice(value);
+  };
   return (
     <>
       {loading ? (
@@ -79,34 +138,101 @@ export default function Banner() {
                     When provider have availability new, they open here
                   </span>
                 </div>
-                <div className="flex items-center gap-3">
-                  <div className="relative">
-                    <RiSearchLine className="absolute top-2 left-2" />
-                    <input
-                      type="text"
-                      placeholder="Search"
-                      className="border border-gray-300 pl-8 py-1 w-24 rounded-md"
-                      value={searchValue}
-                      onChange={handleChange}
-                      onKeyDown={handleKeyPress}
-                    />
+                <div className="flex flex-col justify-end gap-2">
+                  <div className="flex items-center gap-5 justify-end">
+                    <div className="relative">
+                      <RiSearchLine className="absolute top-2 left-2" />
+                      <input
+                        type="text"
+                        placeholder="Search"
+                        className="border border-gray-300 pl-8 py-1 w-24 rounded-md"
+                        value={searchValue}
+                        onChange={handleChange}
+                        onKeyDown={handleKeyPress}
+                      />
+                    </div>
+                    <div>
+                      <button
+                        type="button"
+                        className="relative border border-gray-300 pl-0 py-1 w-24 rounded-md bg-white"
+                        onClick={handleClick}
+                      >
+                        <AiFillFilter className="absolute top-2 left-2" />
+                        Filter
+                      </button>
+                      <div>
+                        <Menu
+                          id="basic-menu"
+                          anchorEl={anchorEl}
+                          open={open}
+                          onClose={handleClose}
+                          MenuListProps={{
+                            "aria-labelledby": "basic-button",
+                          }}
+                        >
+                          <MenuItem onClick={() => handleStatusClick("")}>
+                            All
+                          </MenuItem>
+                          <MenuItem
+                            onClick={() => handleStatusClick("PUBLISHED")}
+                          >
+                            Publish
+                          </MenuItem>
+                          <MenuItem onClick={() => handleStatusClick("HIDDEN")}>
+                            Hidden
+                          </MenuItem>
+                          <MenuItem onClick={() => handleStatusClick("DRAFT")}>
+                            Draft
+                          </MenuItem>
+                        </Menu>
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <button
-                      type="button"
-                      className="relative border border-gray-300 pl-0 py-1 w-24 rounded-md"
-                    >
-                      <AiFillFilter className="absolute top-2 left-2" />
-                      Filter
-                    </button>
+                  <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-2">
+                      <span>Min Price:</span>
+                      <div className="w-14">
+                        <Slider
+                          min={0}
+                          max={100000000}
+                          onChange={handleMinPriceChange}
+                          value={minPrice}
+                        />
+                      </div>
+                      <input
+                        className="bg-white px-3 py-1.5 w-20 border border-gray-200 rounded-md"
+                        min={0}
+                        max={100000000}
+                        value={minPrice}
+                        onChange={handleMinPriceChange}
+                      />
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span>Max Price:</span>
+                      <div className="w-14">
+                        <Slider
+                          min={0}
+                          max={100000000}
+                          onChange={handleMaxPriceChange}
+                          value={maxPrice}
+                        />
+                      </div>
+                      <input
+                        className="bg-white px-3 py-1.5 w-20 border border-gray-200 rounded-md"
+                        min={0}
+                        max={100000000}
+                        value={maxPrice}
+                        onChange={handleMaxPriceChange}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
 
               <div className="flex flex-col gap-4">
-                {dataTours?.length > 0 ? (
-                  Array.isArray(dataTours) &&
-                  [...dataTours]
+                {filterTour?.length > 0 ? (
+                  Array.isArray(filterTour) &&
+                  [...filterTour]
                     .sort((a, b) => {
                       return (
                         new Date(b?.updated_at).getTime() -

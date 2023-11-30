@@ -163,7 +163,7 @@ function NavBar() {
               <p className=" font-medium text-navy-blue">
                 <FcFactoryBreakdown />
               </p>
-              <span className="text-navy-blue">Information basic</span>
+              <span className="text-navy-blue">Tour detail</span>
             </div>
             <div
               className={`flex items-center font-medium pl-1 gap-7`}

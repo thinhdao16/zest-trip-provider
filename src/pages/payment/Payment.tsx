@@ -72,7 +72,7 @@ function Payment() {
       };
     });
 
-    return weeks.reverse();
+    return weeks;
   }
 
   const lableWeeks = calculateWeeks();

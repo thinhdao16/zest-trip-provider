@@ -23,15 +23,7 @@ export default function Header() {
               <FaAngleLeft />
               <span className=" font-medium text-xl"> {tourDetail?.name}</span>
             </div>
-            <div className="flex gap-x-8">
-              <button className="text-black font-medium border border-gray-300 px-3 py-2 rounded-3xl  hover:text-black hover:border-navy-blue ">
-                Any question ?
-              </button>
-
-              <button className="text-black font-medium border border-gray-300 px-3 py-2 rounded-3xl  hover:text-black hover:border-navy-blue">
-                Save
-              </button>
-            </div>
+            <div className="flex gap-x-8"></div>
           </div>
         </div>
         <div className="px-4">

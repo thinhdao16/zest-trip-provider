@@ -20,6 +20,7 @@ import { RiRefundFill } from "react-icons/ri";
 import { BsBookmarkCheck } from "react-icons/bs";
 import { GrCapacity } from "react-icons/gr";
 import { StatusTour } from "../../../styles/status/tour";
+import { DatePicker } from "antd";
 
 function BookDetailScreenMain() {
   const dispatch: AppDispatch = useDispatch();
@@ -28,11 +29,26 @@ function BookDetailScreenMain() {
   const { bookingDetail } = useSelector((detail: any) => detail?.booking);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [filteredBookings, setFilteredBookings] = useState(bookingDetail);
-  console.log(filteredBookings);
   const [selectedStatus, setSelectedStatus] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+  // const [startDate, setStartDate] = useState("");
+  // const [endDate, setEndDate] = useState("");
+  const [dateChoose, setDateChoose] = useState("");
+  const [openField, setOpenField] = useState(false);
 
+  const uniqueDates = new Set();
+  const filteredBookingDetails: any = [];
+  bookingDetail?.forEach((booking: any) => {
+    const bookedDate = dayjs(booking?.booked_date).format("YYYY-MM-DD");
+
+    if (!uniqueDates.has(bookedDate)) {
+      uniqueDates.add(bookedDate);
+      filteredBookingDetails.push(booking);
+    }
+  });
+  const book_date_fil = filteredBookingDetails?.map(
+    (data: { booked_date: string }) =>
+      dayjs(data?.booked_date)?.format("YYYY-MM-DD")
+  );
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -46,43 +62,108 @@ function BookDetailScreenMain() {
     setAnchorEl(null);
   };
 
-  const handleStartDateChange = (event: any) => {
-    setStartDate(event.target.value);
+  const generateDatesForWeekday = (weekday: any, from: any, to: any) => {
+    const formatFrom = dayjs(from).format("YYYY-MM-DD");
+    const formatTo = dayjs(to).format("YYYY-MM-DD");
+    const dates = [];
+    const currentDate = new Date(formatFrom);
+    const toDate = new Date(formatTo);
+
+    while (currentDate <= toDate) {
+      if (currentDate.getUTCDay() + 1 === weekday) {
+        dates.push(new Date(currentDate).toISOString().split("T")[0]);
+      }
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+
+    return dates;
   };
 
-  const handleEndDateChange = (event: any) => {
-    setEndDate(event.target.value);
-  };
+  const allDates = bookingDetail?.flatMap((tour: any) => {
+    const availabilityDates = tour?.BookingOnTour?.TourAvailability?.flatMap(
+      (availability: any) => {
+        const weekdays = availability?.weekdays?.map(
+          (weekday: any) => weekday.day
+        );
 
+        return weekdays.flatMap((item: any) =>
+          generateDatesForWeekday(
+            item,
+            availability.validity_date_range_from,
+            availability.validity_date_range_to
+          )
+        );
+      }
+    );
+
+    return availabilityDates;
+  });
+
+  const allSingleDates = bookingDetail
+    ?.flatMap((tour: any) =>
+      tour?.BookingOnTour?.TourAvailability?.flatMap((availability: any) =>
+        availability?.special_dates?.map((specialDate: any) => specialDate.date)
+      )
+    )
+    ?.filter((date: any) => date !== undefined);
+  const [dateAvailability, setDateAvailability] = useState([
+    ...allDates,
+    ...allSingleDates,
+  ]);
+
+  console.log(bookingDetail);
+  const handleBookingHave = () => {
+    const commonDates = dateAvailability.filter((date) =>
+      book_date_fil.includes(date)
+    );
+    setDateAvailability(commonDates);
+    setOpenField(true);
+  };
+  const handleAvailabilityHave = () => {
+    setDateAvailability([...allDates, ...allSingleDates]);
+    setOpenField(false);
+  };
   useEffect(() => {
     let filtered = bookingDetail?.filter((booking: any) =>
       selectedStatus === "" ? true : booking.status === selectedStatus
     );
-    console.log(startDate);
-
-    if (startDate && endDate) {
+    if (dateChoose) {
       filtered = filtered?.filter(
         (booking: any) =>
-          dayjs(booking.updated_at).format("YYYY-MM-DD") >= startDate &&
-          dayjs(booking.updated_at).format("YYYY-MM-DD") <= endDate
+          dayjs(booking.booked_date).format("YYYY-MM-DD") === dateChoose
       );
     }
+    setDateAvailability([...allDates, ...allSingleDates]);
 
     setFilteredBookings(filtered);
-  }, [bookingDetail, selectedStatus, startDate, endDate]);
+  }, [bookingDetail, selectedStatus, dateChoose]);
 
   useEffect(() => {
     if (index) {
       dispatch(getBookingDetail(index));
     }
   }, [dispatch, index]);
+
+  const availabilityIndex = 0;
+
+  const handleAddSingleDate = (_index: number, selectedDate: any) => {
+    setDateChoose(selectedDate?.format("YYYY-MM-DD"));
+  };
+
+  function disabledDate(current: any) {
+    return !dateAvailability.some((date: any) =>
+      dayjs(date).isSame(current, "day")
+    );
+  }
+
   return (
     <div className="bg-main rounded-xl p-8 h-full overflow-y-auto global-scrollbar">
       <div className="mb-6" id="booking">
         <div className="flex justify-between px-4">
           <div className="font-medium text-xl pb-4">List booking</div>
+
           <div>
-            <div className="flex gap-1">
+            {/* <div className="flex gap-1">
               <span>From</span>
               <input
                 type="date"
@@ -97,8 +178,32 @@ function BookDetailScreenMain() {
                 value={endDate}
                 onChange={handleEndDateChange}
               />
-            </div>
+            </div> */}
+            <div className="mb-2 flex items-center gap-1">
+              {!openField && (
+                <button
+                  className="bg-navy-blue py-1.5 px-2 text-white rounded-md text-sm "
+                  onClick={handleBookingHave}
+                >
+                  Check booking
+                </button>
+              )}
+              {openField && (
+                <button
+                  className="bg-navy-blue py-1.5 px-2 text-white rounded-md text-sm "
+                  onClick={handleAvailabilityHave}
+                >
+                  Check availability
+                </button>
+              )}
 
+              <DatePicker
+                disabledDate={disabledDate}
+                onChange={(date: any) =>
+                  handleAddSingleDate(availabilityIndex, date)
+                }
+              />
+            </div>
             <button
               type="button"
               className="relative border border-gray-300 pl-0 py-1 w-24 rounded-md bg-white"
@@ -336,10 +441,7 @@ function BookDetailScreenMain() {
         </div>
       </div> */}
       <div className="mb-4 " id="information_basic">
-        <div className="font-medium text-xl pb-4">
-          {" "}
-          Infomation basic tour detail
-        </div>
+        <div className="font-medium text-xl pb-4"> Tour detail</div>
 
         <div className="bg-white p-4 rounded-lg shadow-custom-card-mui">
           <div className="grid grid-cols-12 gap-4">

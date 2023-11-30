@@ -1,8 +1,7 @@
 import dayjs from "dayjs";
 import Navbar from "../../components/Navbar/Index";
-import { AiFillEye, AiFillFilter } from "react-icons/ai";
+import { AiFillEye } from "react-icons/ai";
 import { Link } from "react-router-dom";
-import { RiSearchLine } from "react-icons/ri";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { DataContext } from "../../store/dataContext/DataContext";
@@ -44,7 +43,6 @@ function Booker() {
         <>
           <Navbar />
           <main className="h-full bg-main overflow-auto global-scrollbar rounded-lg">
-            {/* Main Content */}
             <div className="container mx-auto px-8 py-4">
               <div className="mb-6 flex items-center justify-between">
                 <div className="flex flex-col">
@@ -53,7 +51,7 @@ function Booker() {
                     When provider have booking new, they open here
                   </span>
                 </div>
-                <div className="flex items-center gap-3">
+                {/* <div className="flex items-center gap-3">
                   <div className="relative">
                     <RiSearchLine className="absolute top-2 left-2" />
                     <input
@@ -73,7 +71,7 @@ function Booker() {
                       Filter
                     </button>
                   </div>
-                </div>
+                </div> */}
               </div>
               <div className="flex flex-col gap-4">
                 <div className="bg-white p-3 rounded-lg shadow-custom-card-mui">
@@ -81,9 +79,7 @@ function Booker() {
                     <div className="col-span-1">
                       <span className="font-medium">Booker</span>
                     </div>
-                    {/* <div className="col-span-2">
-                      <span className="font-medium">Duration</span>
-                    </div> */}
+
                     <div className="col-span-1">
                       <span className="font-medium">Book time</span>
                     </div>
@@ -162,14 +158,7 @@ function Booker() {
                                         </div>
                                       </div>
                                     </div>
-                                    {/* <div className="col-span-2">
-                                    <span className="block">
-                                      {dataManyBook?.duration_day} Day
-                                    </span>
-                                    <span className="">
-                                      {dataManyBook?.duration_night} Night
-                                    </span>
-                                  </div> */}
+
                                     <div className="col-span-1">
                                       <span className="block">
                                         {dayjs(dataBook?.booked_date).format(
@@ -182,21 +171,6 @@ function Booker() {
                                       </span>
                                     </div>
                                     <div className="col-span-1 flex items-center">
-                                      {/* {dataBook?.TicketOnBooking?.map(
-                                  (ticketQuantity: any, index: number) => (
-                                    <div key={index} className="">
-                                      <span className="">
-                                        {ticketQuantity?.ticket_type_id === 1
-                                          ? "Adult"
-                                          : "Children"}
-                                        {": "}
-                                      </span>
-                                      <span className="text-gray-500">
-                                        {ticketQuantity?.quantity}
-                                      </span>
-                                    </div>
-                                  )
-                                )} */}
                                       <span>
                                         {formatNumber(
                                           parseInt(dataBook?.refund_ammount)

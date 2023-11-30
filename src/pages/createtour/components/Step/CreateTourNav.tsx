@@ -21,7 +21,7 @@ function CreateTourNav() {
     { id: 4, name: "Transports " },
     { id: 5, name: "Categories" },
     { id: 6, name: "Location" },
-    { id: 7, name: "Departural" },
+    { id: 7, name: "Departure" },
     { id: 8, name: "Schedule" },
     { id: 9, name: "Availability" },
     { id: 10, name: "Pricing" },

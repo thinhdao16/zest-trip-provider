@@ -9,9 +9,10 @@ import { Rating } from "@mui/material";
 import SpringModal from "./SpringModal";
 import { getReview } from "../../store/redux/silce/reviewSlice";
 import dayjs from "dayjs";
-import { RiSearchLine } from "react-icons/ri";
 import { FaStar } from "react-icons/fa6";
 import LoadingFullScreen from "../../styles/loading/LoadingFullScreen";
+import { fetchTours } from "../../store/redux/silce/tourSlice";
+import { Pagination } from "antd";
 
 function Review() {
   const [activeButton, setActiveButton] = useState(1);
@@ -20,12 +21,16 @@ function Review() {
   React.useContext(DataContext);
   const dispatch: AppDispatch = useDispatch();
   const { review, loading } = useSelector((state: any) => state.review);
+  console.log(review);
+
+  function filterReviewsByTourId(review: any, tourId: string) {
+    return review?.filter(
+      (review: { tour_id: string }) => review.tour_id === tourId
+    );
+  }
 
   React.useEffect(() => {
-    // if (!apiCalledRef.current) {
     dispatch(getReview());
-    // apiCalledRef.current = true;
-    // }
   }, [dispatch, refeshReview]);
   const renderComponent = () => {
     let content;
@@ -85,6 +90,28 @@ function Review() {
     return content;
   };
   const renderedContentStar = renderComponentStar();
+  console.log(renderedContentStar);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const { refeshTour } = React.useContext(DataContext);
+  const { tours } = useSelector((state: any) => state.tour);
+  const dataTours = tours?.tours;
+  const countTours = tours?.total_count;
+
+  React.useEffect(() => {
+    const pagination = { pageSize, currentPage };
+    dispatch(fetchTours(pagination));
+  }, [dispatch, refeshTour, currentPage, pageSize]);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const handlePageSizeChange = (current: number, size: number) => {
+    console.log(current);
+    setPageSize(size);
+    setCurrentPage(current);
+  };
   return (
     <>
       {loading ? (
@@ -92,9 +119,295 @@ function Review() {
       ) : (
         <>
           <Navbar />
+          <main className="h-full bg-main overflow-auto global-scrollbar rounded-lg">
+            <div className="container mx-auto px-8 py-4">
+              <div className="mb-6 flex items-center justify-between">
+                <div className="flex flex-col">
+                  <h1 className="text-2xl font-semibold ">List of Reviews</h1>
+                  <span className="text-gray-500">
+                    When provider have review new, they open here
+                  </span>
+                </div>
+              </div>
+              <div className="mb-6">
+                <div className="flex flex-wrap mb-4">
+                  <button
+                    className={`button bg-white  px-4 py-3 ${
+                      activeButton === 1
+                        ? "active  border-b border-navy-blue text-navy-blue font-medium hover:text-black"
+                        : " border-b border-gray-300 text-gray-500 font-medium hover:text-black"
+                    }`}
+                    onClick={() => setActiveButton(1)}
+                  >
+                    All
+                  </button>
+                  <button
+                    className={`button bg-white px-4 py-3 ${
+                      activeButton === 2
+                        ? "active  border-b border-navy-blue text-navy-blue font-medium hover:text-black"
+                        : " border-b border-gray-300 text-gray-500 font-medium hover:text-black"
+                    }`}
+                    onClick={() => setActiveButton(2)}
+                  >
+                    Not answered({" "}
+                    {
+                      review?.filter(
+                        (review: any) => review.ReviewReplies === null
+                      ).length
+                    }{" "}
+                    )
+                  </button>
+                  <button
+                    className={`button bg-white px-4 py-3 ${
+                      activeButton === 3
+                        ? "active  border-b border-navy-blue text-navy-blue font-medium hover:text-black"
+                        : " border-b border-gray-300 text-gray-500 font-medium hover:text-black"
+                    }`}
+                    onClick={() => setActiveButton(3)}
+                  >
+                    Answered({" "}
+                    {
+                      review?.filter(
+                        (review: any) => review.ReviewReplies != null
+                      ).length
+                    }{" "}
+                    )
+                  </button>
+                </div>
+                <div className="flex flex-wrap">
+                  <button
+                    className={`button rounded-sm px-4 py-1.5 bg-white border ${
+                      filterImg === 1
+                        ? "active  border-navy-blue text-navy-blue font-medium hover:bg-navy-blue hover:text-white"
+                        : " border-gray-300 text-gray-500 font-medium hover:bg-gray-300 hover:text-black"
+                    }`}
+                    onClick={() => setFilterImg(1)}
+                  >
+                    All
+                  </button>
+                  <button
+                    className={` flex items-center gap-1  button rounded-sm px-4 py-1.5 bg-white border ${
+                      filterImg === 2
+                        ? "active   border-navy-blue text-navy-blue font-medium hover:bg-navy-blue hover:text-white"
+                        : "  border-gray-300 text-gray-500 font-medium hover:bg-gray-300 hover:text-black"
+                    }`}
+                    onClick={() => setFilterImg(2)}
+                  >
+                    5 <FaStar className="text-yellow-500" />({" "}
+                    {
+                      renderedContent?.filter(
+                        (review: any) => review?.rating === 5
+                      ).length
+                    }{" "}
+                    )
+                  </button>
+                  <button
+                    className={` flex items-center gap-1 button rounded-sm px-4 py-1.5 bg-white border ${
+                      filterImg === 3
+                        ? "active  border-navy-blue text-navy-blue font-medium hover:bg-navy-blue hover:text-white"
+                        : " border-gray-300 text-gray-500 font-medium hover:bg-gray-300 hover:text-black"
+                    }`}
+                    onClick={() => setFilterImg(3)}
+                  >
+                    4 <FaStar className="text-yellow-500" /> ({" "}
+                    {
+                      renderedContent?.filter(
+                        (review: any) => review?.rating === 4
+                      ).length
+                    }{" "}
+                    )
+                  </button>
+                  <button
+                    className={` flex items-center gap-1 button rounded-sm px-4 py-1.5 bg-white border ${
+                      filterImg === 4
+                        ? "active  border-navy-blue text-navy-blue font-medium hover:bg-navy-blue hover:text-white"
+                        : " border-gray-300 text-gray-500 font-medium hover:bg-gray-300 hover:text-black"
+                    }`}
+                    onClick={() => setFilterImg(4)}
+                  >
+                    3 <FaStar className="text-yellow-500" /> ({" "}
+                    {
+                      renderedContent?.filter(
+                        (review: any) => review?.rating === 3
+                      ).length
+                    }{" "}
+                    )
+                  </button>{" "}
+                  <button
+                    className={`flex items-center gap-1 button rounded-sm px-4 py-1.5 bg-white border ${
+                      filterImg === 5
+                        ? "active  border-navy-blue text-navy-blue font-medium hover:bg-navy-blue hover:text-white"
+                        : " border-gray-300 text-gray-500 font-medium hover:bg-gray-300 hover:text-black"
+                    }`}
+                    onClick={() => setFilterImg(5)}
+                  >
+                    2 <FaStar className="text-yellow-500" /> ({" "}
+                    {
+                      renderedContent?.filter(
+                        (review: any) => review?.rating === 2
+                      ).length
+                    }{" "}
+                    )
+                  </button>{" "}
+                  <button
+                    className={`flex items-center gap-1 button rounded-sm px-4 py-1.5 bg-white border ${
+                      filterImg === 6
+                        ? "active  border-navy-blue text-navy-blue font-medium hover:bg-navy-blue hover:text-white"
+                        : " border-gray-300 text-gray-500 font-medium hover:bg-gray-300 hover:text-black"
+                    }`}
+                    onClick={() => setFilterImg(6)}
+                  >
+                    1 <FaStar className="text-yellow-500" /> ({" "}
+                    {
+                      renderedContent?.filter(
+                        (review: any) => review?.rating === 1
+                      ).length
+                    }{" "}
+                    )
+                  </button>
+                </div>
+              </div>
+              <div className="flex flex-col gap-4">
+                <div className="bg-white p-3 rounded-lg shadow-custom-card-mui">
+                  <div className="grid grid-cols-7 gap-3">
+                    <div className="col-span-1">
+                      <span className="font-medium">Rating</span>
+                    </div>
 
-          <main className="h-full bg-main overflow-auto global-scrollbar rounded-lg py-4 px-8">
-            {/* Main Content */}
+                    <div className="col-span-2">
+                      <span className="font-medium">Review</span>
+                    </div>
+                    <div className="col-span-2">
+                      <span className="font-medium">Reply review</span>
+                    </div>
+                    <div className="col-span-1">
+                      <span className="font-medium">Date</span>
+                    </div>
+                    <div className="col-span-1 flex justify-center">
+                      <span className="font-medium"> Action</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex flex-col gap-2 shadow-custom-card-mui">
+                  {dataTours?.map((dataManyBook: any, index: number) => (
+                    <div
+                      className="bg-white  relative shadow-custom-card-mui rounded-lg flex flex-col"
+                      key={index}
+                    >
+                      <div className="bg-white flex items-center gap-2 p-4 rounded-lg">
+                        <img
+                          src={dataManyBook?.tour_images[0]}
+                          className="w-12 h-12 rounded-lg"
+                          alt="wait"
+                        />
+                        <div className="flex flex-col">
+                          <p className="font-medium">{dataManyBook?.name}</p>
+                          <span className="text-gray-500 font-medium">
+                            {dataManyBook?.address_district},{" "}
+                            {dataManyBook?.address_province},{" "}
+                            {dataManyBook?.address_country}
+                          </span>
+                        </div>
+                      </div>
+                      <hr />
+
+                      <div className="max-h-48 overflow-auto global-scrollbar">
+                        {filterReviewsByTourId(
+                          renderedContentStar,
+                          dataManyBook?.id
+                        )?.length > 0 ? (
+                          filterReviewsByTourId(
+                            renderedContentStar,
+                            dataManyBook?.id
+                          )?.map((dataReview: any, index: number) => (
+                            <div>
+                              <div className="p-4 relative" key={index}>
+                                <div className="grid grid-cols-7 gap-2">
+                                  <div className="col-span-1">
+                                    <div className="flex flex-col ">
+                                      <div className="flex flex-col">
+                                        <Rating
+                                          name="half-rating-read"
+                                          value={dataReview?.rating}
+                                          precision={0.5}
+                                          readOnly
+                                        />
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <div className="col-span-2">
+                                    <span className="block">
+                                      {dataReview?.content}
+                                    </span>{" "}
+                                  </div>
+                                  <div className="col-span-2">
+                                    <span>
+                                      {dataReview?.ReviewReplies?.content ? (
+                                        dataReview.ReviewReplies.content
+                                      ) : (
+                                        <span className="p-2 bg-zinc-100 rounded-md">
+                                          No reply review
+                                        </span>
+                                      )}
+                                    </span>
+                                  </div>
+                                  <div className="col-span-1 flex">
+                                    <div className="flex flex-col">
+                                      <div className="flex gap-1">
+                                        <span>
+                                          {dataReview?.updated_at &&
+                                            dayjs(
+                                              dataReview?.updated_at
+                                            ).format("HH:mm DD/MM/YYYY ")}
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="col-span-1 flex items-center justify-center ">
+                                    <SpringModal
+                                      data={dataReview}
+                                      setRefeshReview={setRefeshReview}
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                              {index < dataManyBook?.Booking.length - 1 && (
+                                <hr className="mt-2" />
+                              )}
+                            </div>
+                          ))
+                        ) : (
+                          <div className=" flex items-center justify-center p-6">
+                            <span className="bg-main border border-solid border-gray-300 p-2 rounded-lg shadow-custom-card-mui">
+                              No review tour
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                  <div className="flex justify-center">
+                    {dataTours?.length > 0 && (
+                      <Pagination
+                        current={currentPage}
+                        total={countTours}
+                        pageSize={pageSize}
+                        pageSizeOptions={[5, 10, 20, 30, 40]}
+                        showSizeChanger
+                        onChange={handlePageChange}
+                        onShowSizeChange={(current, size) =>
+                          handlePageSizeChange(current, size)
+                        }
+                      />
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </main>
+
+          {/* <main className="h-full bg-main overflow-auto global-scrollbar rounded-lg py-4 px-8">
             <div className="mb-4 flex items-center justify-between">
               <div className="flex flex-col">
                 <h1 className="text-2xl font-semibold ">List of Reviews</h1>
@@ -126,7 +439,6 @@ function Review() {
                   onClick={() => setActiveButton(1)}
                 >
                   All
-                  {/* ({review?.length}) */}
                 </button>
                 <button
                   className={`button bg-white px-4 py-3 ${
@@ -319,7 +631,7 @@ function Review() {
                 </div>
               </div>
             </div>
-          </main>
+          </main> */}
         </>
       )}
     </>

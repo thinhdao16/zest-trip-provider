@@ -44,6 +44,25 @@ export const fetchTours = createAsyncThunk(
   }
 );
 
+export const getTours = createAsyncThunk("tour/getTours", async () => {
+  try {
+    const response = await axiosInstance.get(`${BASE_URL}/tour/provider`, {
+      params: {
+        limit: "5000",
+      },
+    });
+    if (response.status === 200) {
+      return response.data.data;
+    } else {
+      throw new Error("Failed to fetch tours");
+    }
+  } catch (error) {
+    console.log(error);
+    // toast.error("Failed to fetch tours!");
+    throw new Error("Failed to fetch tours");
+  }
+});
+
 export const getAllTours = createAsyncThunk("tour/getAllTours", async () => {
   try {
     const response = await axiosInstance.get(`${BASE_URL}/tour/provider`, {
@@ -496,6 +515,20 @@ const tourSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchTours.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || null;
+      })
+
+      .addCase(getTours.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getTours.fulfilled, (state, action) => {
+        state.loading = false;
+        state.tours = action.payload;
+        state.error = null;
+      })
+      .addCase(getTours.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || null;
       })

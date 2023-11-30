@@ -55,6 +55,9 @@ const LocationStart: React.FC = () => {
   const [selectedDataDisStart, setSelectedDataDisStart] = useState<any>();
   const [selectedDataWardStart, setSelectedDataWardStart] = useState<any>();
 
+  const [dataManyLocationStart, setDataManyLocationStart] = useState<any>([]);
+  const [checkAddMore, setCheckAddMore] = useState(false);
+
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
   const [checkLocation, setCheckLocation] = useState(false);
   const [openLoading, setOpenLoading] = useState(false);
@@ -66,6 +69,15 @@ const LocationStart: React.FC = () => {
   const [lng, setLng] = useState(
     parseFloat(coordinates?.longitude || "106.8061656")
   );
+
+  const handleAddMoreDeparture = () => {
+    setSelectedDataProStart(undefined);
+    setSelectedDataDisStart(undefined);
+    setAddressDistrictStart(undefined);
+    setSelectedDataWardStart(undefined);
+    setAddressWardStart(undefined);
+    setCheckAddMore(false);
+  };
 
   useEffect(() => {
     updateFormValues(9, {
@@ -99,13 +111,81 @@ const LocationStart: React.FC = () => {
       .get(`${BASE_URL}/resource/province/all`)
       .then((response: any) => {
         setAddressProvinceStart(response.data.data);
-        setAddressProvinceStart(response.data.data);
       })
       .catch((error) => {
         console.log(error);
       });
   }, []);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setOpenLoading(true);
+
+        const addressSearch = `${addressNameStart}, ${addWardStart?.full_name}, ${addDisStart?.full_name}, ${addProStart?.full_name}, Việt Nam`;
+        console.log(addressSearch);
+
+        const response = await axios.get(
+          `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+            addressSearch
+          )}&limit=1` // Limit to 1 result since you are only using the first one
+        );
+
+        console.log(response);
+
+        if (response.data.length > 0) {
+          const latitude = parseFloat(response.data[0].lat);
+          const longitude = parseFloat(response.data[0].lon);
+          setCoordinates({ latitude, longitude });
+          setOpenLoading(false);
+          setCheckLocation(true);
+          if (checkAddMore && dataManyLocationStart?.length > 0) {
+            setDataManyLocationStart((prevData: any) => {
+              const newData = [...prevData];
+              newData.pop();
+
+              return [
+                ...newData,
+                {
+                  addressLocationStart: addressSearch,
+                  lat: latitude,
+                  long: longitude,
+                },
+              ];
+            });
+            setCheckAddMore(true);
+          } else {
+            setDataManyLocationStart((prevData: any) => [
+              ...prevData,
+              {
+                addressLocationStart: addressSearch,
+                lat: latitude,
+                long: longitude,
+              },
+            ]);
+          }
+          setCheckAddMore(true);
+        } else {
+          console.error("Address not found.");
+          setOpenSnackbar(true);
+          setOpenLoading(false);
+          setSelectedDataProStart(undefined);
+          setSelectedDataDisStart(undefined);
+          setAddressDistrictStart(undefined);
+          setSelectedDataWardStart(undefined);
+          setAddressWardStart(undefined);
+        }
+      } catch (error) {
+        console.error("Error fetching coordinates:", error);
+        setOpenSnackbar(true);
+        setOpenLoading(false);
+      }
+    };
+
+    if (addWardStart) {
+      fetchData();
+    }
+  }, [addWardStart]);
   const handleSelectLocation = (data: any, key: string, field: string) => {
     if (field === "locationStart") {
       if (key === "address_province") {
@@ -138,34 +218,6 @@ const LocationStart: React.FC = () => {
   if (currentStep !== 7) {
     return null;
   }
-  const handleSearch = async () => {
-    try {
-      setOpenLoading(true);
-      const addressSearch = `${addressNameStart}, ${addWardStart?.full_name}, ${addDisStart?.full_name}, ${addProStart?.full_name}, Việt Nam`;
-      console.log(addressSearch);
-      const response = await axios.get(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-          addressSearch
-        )}&limit=5000000`
-      );
-      console.log(response);
-      if (response.data.length > 0) {
-        const latitude = parseFloat(response.data[0].lat);
-        const longitude = parseFloat(response.data[0].lon);
-        setCoordinates({ latitude, longitude });
-        setOpenLoading(false);
-        setCheckLocation(true);
-      } else {
-        console.error("Address not found.");
-        setOpenSnackbar(true);
-        setOpenLoading(false);
-      }
-    } catch (error) {
-      console.error("Error fetching coordinates:", error);
-      setOpenSnackbar(true);
-      setOpenLoading(false);
-    }
-  };
 
   const AnyReactComponent = ({
     // lat,
@@ -411,32 +463,33 @@ const LocationStart: React.FC = () => {
                     Location
                     {!checkLocation && <ElementCheckInput />}
                   </p>
-                  {!checkLocation ? (
+                  {dataManyLocationStart?.length === 0 ? (
                     <div className="bg-white shadow-custom-card-mui p-3 rounded-lg text-red-500">
                       Please handle search find location
                     </div>
                   ) : (
-                    <div className="bg-white shadow-custom-card-mui p-3 rounded-lg ">
-                      {addressNameStart && addressNameStart.length > 0 && (
-                        <>
-                          {addressNameStart}
-                          {", "}
-                        </>
-                      )}
-                      {selectedDataWardStart?.full_name} {", "}
-                      {selectedDataDisStart?.full_name} {", "}
-                      {selectedDataProStart?.full_name} {", "}Việt Nam
-                    </div>
+                    <>
+                      <div className="flex flex-col gap-2">
+                        {dataManyLocationStart?.map(
+                          (dataLocationStart: {
+                            addressLocationStart: string;
+                          }) => (
+                            <div className="bg-white shadow-custom-card-mui p-3 rounded-lg ">
+                              {dataLocationStart?.addressLocationStart}
+                            </div>
+                          )
+                        )}
+                      </div>
+                    </>
                   )}
-                </div>
-                <div className="text-center mt-4">
-                  <button
-                    type="button"
-                    className="bg-white border border-navy-blue px-4 py-2 text-navy-blue rounded-lg"
-                    onClick={handleSearch}
-                  >
-                    Search
-                  </button>
+                  <div className="text-center mt-4">
+                    <button
+                      className="bg-white text-center rounded-md p-1 border border-solid border-navy-blue text-navy-blue"
+                      onClick={handleAddMoreDeparture}
+                    >
+                      Add departure
+                    </button>
+                  </div>
                 </div>
               </div>
             </BannerMapContainer>
