@@ -1,32 +1,47 @@
+import axios from "axios";
 import {
   BannerContainer,
   BannerContent,
+  BannerMapContainer,
   CreateDescription,
   CreateTitleNullDes,
 } from "../../../styles/createtour/createtour";
 import { useStepContext } from "../context/ui/useStepContext";
 import React, { ReactNode, useEffect, useState } from "react";
+import { GoLocation } from "react-icons/go";
+import { BASE_URL } from "../../../store/apiInterceptors";
 import {
   Backdrop,
   Button,
   CircularProgress,
+  FormControl,
   IconButton,
+  MenuItem,
+  Select,
   Snackbar,
 } from "@mui/material";
+import { FaStaylinked } from "react-icons/fa6";
 
 import GoogleMapReact from "google-map-react";
 import { IoMdClose } from "react-icons/io";
-
-import PlacesAutocomplete, {
-  geocodeByAddress,
-  getLatLng,
-} from "react-places-autocomplete";
+import { ElementCheckInput } from "../../../utils/ElementCheckInput";
 
 const LocationStart: React.FC = () => {
-  const { currentStep, updateFormValues, formValues } = useStepContext();
-  console.log(formValues);
+  const { currentStep, updateFormValues } = useStepContext();
+
   //location start
   const [addressNameStart, setAddressNameStart] = useState("");
+  const [addressProvinceStart, setAddressProvinceStart] = useState<any>();
+
+  const [addressDistrictStart, setAddressDistrictStart] = useState<any>();
+
+  const [addressWardStart, setAddressWardStart] = useState<any>();
+
+  const [addProStart, setAddProStart] = useState<any>();
+
+  const [addDisStart, setAddDisStart] = useState<any>();
+
+  const [addWardStart, setAddWardStart] = useState<any>();
 
   const [coordinates, setCoordinates] = React.useState<
     | {
@@ -40,56 +55,42 @@ const LocationStart: React.FC = () => {
   const [selectedDataDisStart, setSelectedDataDisStart] = useState<any>();
   const [selectedDataWardStart, setSelectedDataWardStart] = useState<any>();
 
+  const [dataManyLocationStart, setDataManyLocationStart] = useState<any>([]);
+  const [checkAddMore, setCheckAddMore] = useState(false);
+
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
   const [checkLocation, setCheckLocation] = useState(false);
   const [openLoading, setOpenLoading] = useState(false);
-  const [valueRecommend, setValueRecommend] = useState<any>(null);
-  const [valueDate, setValueDate] = useState("");
-
-  const [addValueLocation, setAddValueLocation] = useState(true);
 
   const [lat, setLat] = useState(
-    parseFloat(valueRecommend?.lat || "10.8422931")
+    parseFloat(coordinates?.latitude || "10.8422931")
   );
+
   const [lng, setLng] = useState(
-    parseFloat(valueRecommend?.lng || "106.8061656")
+    parseFloat(coordinates?.longitude || "106.8061656")
   );
 
-  const [departure, setDeparture] = useState<any>([]);
+  const handleAddMoreDeparture = () => {
+    setSelectedDataProStart(undefined);
+    setSelectedDataDisStart(undefined);
+    setAddressDistrictStart(undefined);
+    setSelectedDataWardStart(undefined);
+    setAddressWardStart(undefined);
+    setCheckAddMore(false);
+  };
 
-  console.log(departure);
-  const [address, setAddress] = useState("");
-  useEffect(() => {
-    if (addValueLocation) {
-      setDeparture((prevData: any) => {
-        const newData = [...prevData];
-        newData.pop();
-
-        return [
-          ...newData,
-          {
-            addressLocationStart: valueRecommend,
-            time: valueDate,
-          },
-        ];
-      });
-    } else {
-      setDeparture((prevData: any) => [
-        ...prevData,
-        {
-          addressLocationStart: valueRecommend,
-          time: valueDate,
-        },
-      ]);
-    }
-  }, [valueDate, valueRecommend]);
-
-  useEffect(() => {
-    setAddValueLocation(true);
-  }, [valueDate, valueRecommend]);
   useEffect(() => {
     updateFormValues(9, {
-      LocationStart: departure,
+      LocationStart: {
+        address_name: addressNameStart,
+        address_province: selectedDataProStart,
+        address_district: selectedDataDisStart,
+        address_ward: selectedDataWardStart,
+        address_country: "Việt Nam",
+        lat_start: lat,
+        lng_start: lng,
+        find_tour: checkLocation,
+      },
     });
   }, [
     addressNameStart,
@@ -101,21 +102,132 @@ const LocationStart: React.FC = () => {
   ]);
 
   useEffect(() => {
-    setLat(parseFloat(valueRecommend?.lat || "10.8422931"));
-    setLng(parseFloat(valueRecommend?.lng || "106.8061656"));
-  }, [valueRecommend]);
+    setLat(parseFloat(coordinates?.latitude || "10.8422931"));
+    setLng(parseFloat(coordinates?.longitude || "106.8061656"));
+  }, [coordinates]);
+
+  useEffect(() => {
+    axios
+      .get(`${BASE_URL}/resource/province/all`)
+      .then((response: any) => {
+        setAddressProvinceStart(response.data.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+  const apiKey = "AIzaSyC56vS8LJX2V0Kz19p3MZ1BWdQ122rjMdI";
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setOpenLoading(true);
+
+        const addressSearch = `${addressNameStart}, ${addWardStart?.full_name}, ${addDisStart?.full_name}, ${addProStart?.full_name}, Việt Nam`;
+        console.log(addressSearch);
+
+        const response = await axios.get(
+          `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
+            addressSearch
+          )}&key=${apiKey}`
+        );
+
+        console.log(response);
+
+        if (response.data.length > 0) {
+          const latitude = parseFloat(response.data[0].lat);
+          const longitude = parseFloat(response.data[0].lon);
+          setCoordinates({ latitude, longitude });
+          setOpenLoading(false);
+          setCheckLocation(true);
+          if (checkAddMore && dataManyLocationStart?.length > 0) {
+            setDataManyLocationStart((prevData: any) => {
+              const newData = [...prevData];
+              newData.pop();
+
+              return [
+                ...newData,
+                {
+                  addressLocationStart: addressSearch,
+                  lat: latitude,
+                  long: longitude,
+                },
+              ];
+            });
+            setCheckAddMore(true);
+          } else {
+            setDataManyLocationStart((prevData: any) => [
+              ...prevData,
+              {
+                addressLocationStart: addressSearch,
+                lat: latitude,
+                long: longitude,
+              },
+            ]);
+          }
+          setCheckAddMore(true);
+        } else {
+          console.error("Address not found.");
+          setOpenSnackbar(true);
+          setOpenLoading(false);
+          setSelectedDataProStart(undefined);
+          setSelectedDataDisStart(undefined);
+          setAddressDistrictStart(undefined);
+          setSelectedDataWardStart(undefined);
+          setAddressWardStart(undefined);
+        }
+      } catch (error) {
+        console.error("Error fetching coordinates:", error);
+        setOpenSnackbar(true);
+        setOpenLoading(false);
+      }
+    };
+
+    if (addWardStart) {
+      fetchData();
+    }
+  }, [addWardStart]);
+  const handleSelectLocation = (data: any, key: string, field: string) => {
+    if (field === "locationStart") {
+      if (key === "address_province") {
+        axios
+          .get(`${BASE_URL}/resource/district/provinceCode/${data?.code}`)
+          .then((response) => {
+            setAddressDistrictStart(response.data.data);
+          })
+          .catch((error) => {
+            console.error("Lỗi khi gọi API:", error);
+          });
+        setAddProStart(data);
+      }
+      if (key === "address_district") {
+        axios
+          .get(`${BASE_URL}/resource/ward/districtCode/${data?.code}`)
+          .then((response) => {
+            setAddressWardStart(response.data.data);
+          })
+          .catch((error) => {
+            console.error("Lỗi khi gọi API:", error);
+          });
+        setAddDisStart(data);
+      }
+      if (key === "address_ward") {
+        setAddWardStart(data);
+      }
+    }
+  };
   if (currentStep !== 7) {
     return null;
   }
 
-  const handleTimeChange = (e: any) => {
-    console.log(e.target.value);
-    setValueDate(e.target.value);
-  };
-
-  const AnyReactComponent = ({ text }: { text: ReactNode }) => (
-    <div>{text}</div>
-  );
+  const AnyReactComponent = ({
+    // lat,
+    // lng,
+    text,
+  }: {
+    // lat: number;
+    // lng: number;
+    text: ReactNode;
+  }) => <div>{text}</div>;
 
   const handleCloseSnackbar = (
     _event: React.SyntheticEvent | Event,
@@ -133,7 +245,7 @@ const LocationStart: React.FC = () => {
       lat: lat,
       lng: lng,
     },
-    zoom: 15,
+    zoom: 13,
   };
   const RedMarker = () => <div style={{ color: "red" }}>📍</div>;
   const action = (
@@ -151,36 +263,6 @@ const LocationStart: React.FC = () => {
       </IconButton>
     </React.Fragment>
   );
-  const handleChange = (newAddress: any) => {
-    setAddress(newAddress);
-  };
-
-  const handleSelect = async (newAddress: any) => {
-    try {
-      const results = await geocodeByAddress(newAddress);
-      const latLng = await getLatLng(results[0]);
-
-      const { lat, lng } = latLng;
-
-      console.log("Success", latLng);
-      setValueRecommend({
-        address: newAddress,
-        lat,
-        lng,
-        status: "success",
-      });
-    } catch (error) {
-      console.error("Error", error);
-      setValueRecommend({
-        address: newAddress,
-        status: "error",
-      });
-    }
-  };
-  const handleAddlocation = () => {
-    console.log("object");
-    setAddValueLocation(false);
-  };
   return (
     <>
       <Backdrop
@@ -206,106 +288,7 @@ const LocationStart: React.FC = () => {
               message="Address not found yet, please enter another address"
               action={action}
             />
-
-            <div
-              style={{ height: "400px", width: "600px" }}
-              className="relative"
-            >
-              <div className="py-4 px-20 absolute top-2 z-50 w-full">
-                <div className="w-full">
-                  <div className="text-center">
-                    <input
-                      className="bg-white mb-2 p-2 rounded-lg border border-gray-300"
-                      type="time"
-                      value={valueDate}
-                      onChange={handleTimeChange}
-                    />
-                  </div>
-
-                  <PlacesAutocomplete
-                    value={address}
-                    onChange={handleChange}
-                    onSelect={handleSelect}
-                    searchOptions={{ types: ["address"] }} // Thêm các tùy chọn để chỉ định loại địa chỉ cần tìm kiếm
-                  >
-                    {({
-                      getInputProps,
-                      suggestions,
-                      getSuggestionItemProps,
-                      loading,
-                    }) => (
-                      <div className="">
-                        <input
-                          {...getInputProps({
-                            placeholder: "Search Places ...",
-                            className: "location-search-input",
-                          })}
-                          className=" w-full rounded-xl p-4 focus:outline-none focus:rounded-b-none focus:border-b focus:border-solid focus:border-gray-300"
-                        />
-                        <div className="autocomplete-dropdown-container bg-white max-h-56 overflow-auto global-scrollbar rounded-b-xl ">
-                          {loading && <div>Loading...</div>}
-                          {suggestions.map((suggestion: any) => {
-                            const className = suggestion.active
-                              ? "suggestion-item--active"
-                              : "suggestion-item";
-                            return (
-                              <div
-                                {...getSuggestionItemProps(suggestion, {
-                                  className,
-                                  // style,
-                                })}
-                                className=" px-4 py-3"
-                              >
-                                <span>{suggestion.description}</span>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    )}
-                  </PlacesAutocomplete>
-                </div>
-              </div>
-
-              <GoogleMapReact
-                bootstrapURLKeys={{
-                  key: "AIzaSyBx6NX4xtTaUpaTpHt6jiWNkrYdD85S5Vw",
-                }}
-                center={defaultProps.center}
-                defaultZoom={defaultProps.zoom}
-              >
-                <AnyReactComponent
-                  // lat={defaultProps.center.lat}
-                  // lng={defaultProps.center.lng}
-                  text={<RedMarker />}
-                />
-              </GoogleMapReact>
-            </div>
-            <div className="flex flex-col gap-2 mt-5">
-              {departure?.length > 0 &&
-                departure?.map((departureScreen: any, index: number) => (
-                  <div
-                    key={index}
-                    className="bg-white rounded-lg p-2 shadow-custom-card-mui "
-                  >
-                    <span>
-                      {departureScreen?.addressLocationStart?.address}
-                    </span>
-                    <span>{departureScreen?.time}</span>
-                  </div>
-                ))}
-            </div>
-
-            {addValueLocation && (
-              <button
-                type="button"
-                className="bg-white  rounded-lg  px-4 py-1 mt-4 text-navy-blue border border-navy-blue"
-                onClick={() => handleAddlocation()}
-              >
-                Add more departure
-              </button>
-            )}
-            {/* <BannerMapContainer>
+            <BannerMapContainer>
               <div className="text-black flex flex-col gap-3 ">
                 <div>
                   <p className="font-medium mb-1">Country Name</p>
@@ -509,7 +492,22 @@ const LocationStart: React.FC = () => {
                   </div>
                 </div>
               </div>
-            </BannerMapContainer> */}
+            </BannerMapContainer>
+            <div style={{ height: "400px", width: "600px" }}>
+              <GoogleMapReact
+                bootstrapURLKeys={{
+                  key: "AIzaSyBx6NX4xtTaUpaTpHt6jiWNkrYdD85S5Vw",
+                }}
+                center={defaultProps.center}
+                defaultZoom={defaultProps.zoom}
+              >
+                <AnyReactComponent
+                  // lat={defaultProps.center.lat}
+                  // lng={defaultProps.center.lng}
+                  text={<RedMarker />}
+                />
+              </GoogleMapReact>
+            </div>
           </BannerContent>
         </div>
       </BannerContainer>

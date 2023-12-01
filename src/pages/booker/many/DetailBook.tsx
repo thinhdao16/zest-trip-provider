@@ -6,14 +6,7 @@ import BookDetailScreenMain from "./BookDetailScreenMain";
 
 function DetailBook() {
   useParams<{ index: string }>();
-  const [isSidebarOpen, setSidebarOpen] = useState(true);
 
-  const toggleSidebar = () => {
-    setSidebarOpen(!isSidebarOpen);
-  };
-  const closeSidebar = () => {
-    setSidebarOpen(false);
-  };
   return (
     <div className="h-[100vh]">
       <div>
@@ -75,7 +68,7 @@ function DetailBook() {
         ></aside> */}
         <div
           className={`p-4 
-         sm:mr-0 h-screen ${isSidebarOpen ? "" : "top-0"}`}
+         sm:mr-0 h-screen `}
         >
           <BookDetailScreenMain />
         </div>

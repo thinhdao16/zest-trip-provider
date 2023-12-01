@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NavLink } from "react-router-dom";
 import SubMenu from "./SubMenu";
+import Navbar from "../Layout/Navbar";
 
 interface MenuListProps {
   menus: any; // Đảm bảo rằng mỗi phần tử có thuộc tính path
@@ -9,8 +10,9 @@ interface MenuListProps {
 
 function MenuList({ menus, ...props }: MenuListProps): JSX.Element {
   return (
-    <div className="navWrapper px-0.5 py-4">
-      <ul id="menu" className="">
+    <div className="navWrapper ">
+      <Navbar />
+      {/* <ul id="menu" className="">
         {menus?.map(
           (menu: any) =>
             menu.submenu ? (
@@ -36,7 +38,7 @@ function MenuList({ menus, ...props }: MenuListProps): JSX.Element {
           //   </li>
           // )
         )}
-      </ul>
+      </ul> */}
     </div>
   );
 }

@@ -286,7 +286,7 @@ const Review: React.FC = () => {
                       <FaLocationDot className="mr-2" />
                       <div className="block">
                         <p className="font-medium mb-1 text-lg"> Departure</p>
-                        <span className="flex flex-wrap">
+                        {/* <span className="flex flex-wrap">
                           {formValues[9]?.LocationStart?.address_name?.length >
                             0 && (
                             <>{formValues[9]?.LocationStart?.address_name},</>
@@ -306,7 +306,19 @@ const Review: React.FC = () => {
                               ?.full_name
                           }
                           , {formValues[9]?.LocationStart?.address_country}
-                        </span>
+                        </span> */}
+                        {formValues[9]?.LocationStart?.map(
+                          (departure: any, index: number) => (
+                            <div key={index} className="">
+                              <span>
+                                {departure?.addressLocationStart?.address}
+                                <span className="ml-1 text-gray-500">
+                                  {departure?.time}
+                                </span>
+                              </span>
+                            </div>
+                          )
+                        )}
                       </div>
                     </div>
                   </div>

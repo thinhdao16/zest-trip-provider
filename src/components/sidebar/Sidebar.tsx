@@ -28,7 +28,6 @@ function Sidebar({ ...props }) {
     dispatch(getPersonalInfo())
       .then((action) => {
         if (getPersonalInfo.fulfilled.match(action)) {
-          console.log(action);
           if (action?.payload?.status === "PROCESSING") {
             localStorage.clear();
             setRefeshLogin((prev) => !prev);

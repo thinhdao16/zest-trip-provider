@@ -1,21 +1,30 @@
+import axios from "axios";
 import {
   BannerContainer,
   BannerContent,
+  BannerMapContainer,
   CreateDescription,
   CreateTitleNullDes,
 } from "../../../styles/createtour/createtour";
 import { useStepContext } from "../context/ui/useStepContext";
 import React, { ReactNode, useEffect, useState } from "react";
+import { GoLocation } from "react-icons/go";
+import { BASE_URL } from "../../../store/apiInterceptors";
 import {
   Backdrop,
   Button,
   CircularProgress,
+  FormControl,
   IconButton,
+  MenuItem,
+  Select,
   Snackbar,
 } from "@mui/material";
+import { FaStaylinked } from "react-icons/fa6";
 
 import GoogleMapReact from "google-map-react";
 import { IoMdClose } from "react-icons/io";
+import { ElementCheckInput } from "../../../utils/ElementCheckInput";
 
 import PlacesAutocomplete, {
   geocodeByAddress,
@@ -23,8 +32,8 @@ import PlacesAutocomplete, {
 } from "react-places-autocomplete";
 
 const LocationStart: React.FC = () => {
-  const { currentStep, updateFormValues, formValues } = useStepContext();
-  console.log(formValues);
+  const { currentStep, updateFormValues } = useStepContext();
+
   //location start
   const [addressNameStart, setAddressNameStart] = useState("");
 
@@ -45,9 +54,6 @@ const LocationStart: React.FC = () => {
   const [openLoading, setOpenLoading] = useState(false);
   const [valueRecommend, setValueRecommend] = useState<any>(null);
   const [valueDate, setValueDate] = useState("");
-
-  const [addValueLocation, setAddValueLocation] = useState(true);
-
   const [lat, setLat] = useState(
     parseFloat(valueRecommend?.lat || "10.8422931")
   );
@@ -55,41 +61,23 @@ const LocationStart: React.FC = () => {
     parseFloat(valueRecommend?.lng || "106.8061656")
   );
 
-  const [departure, setDeparture] = useState<any>([]);
+  const [departure, setDeparture] = useState([]);
 
   console.log(departure);
   const [address, setAddress] = useState("");
-  useEffect(() => {
-    if (addValueLocation) {
-      setDeparture((prevData: any) => {
-        const newData = [...prevData];
-        newData.pop();
 
-        return [
-          ...newData,
-          {
-            addressLocationStart: valueRecommend,
-            time: valueDate,
-          },
-        ];
-      });
-    } else {
-      setDeparture((prevData: any) => [
-        ...prevData,
-        {
-          addressLocationStart: valueRecommend,
-          time: valueDate,
-        },
-      ]);
-    }
-  }, [valueDate, valueRecommend]);
-
-  useEffect(() => {
-    setAddValueLocation(true);
-  }, [valueDate, valueRecommend]);
   useEffect(() => {
     updateFormValues(9, {
-      LocationStart: departure,
+      LocationStart: {
+        address_name: addressNameStart,
+        address_province: selectedDataProStart,
+        address_district: selectedDataDisStart,
+        address_ward: selectedDataWardStart,
+        address_country: "Việt Nam",
+        lat_start: lat,
+        lng_start: lng,
+        find_tour: checkLocation,
+      },
     });
   }, [
     addressNameStart,
@@ -107,11 +95,6 @@ const LocationStart: React.FC = () => {
   if (currentStep !== 7) {
     return null;
   }
-
-  const handleTimeChange = (e: any) => {
-    console.log(e.target.value);
-    setValueDate(e.target.value);
-  };
 
   const AnyReactComponent = ({ text }: { text: ReactNode }) => (
     <div>{text}</div>
@@ -133,7 +116,7 @@ const LocationStart: React.FC = () => {
       lat: lat,
       lng: lng,
     },
-    zoom: 15,
+    zoom: 18,
   };
   const RedMarker = () => <div style={{ color: "red" }}>📍</div>;
   const action = (
@@ -171,15 +154,13 @@ const LocationStart: React.FC = () => {
       });
     } catch (error) {
       console.error("Error", error);
+
+      // Nếu có lỗi, cũng lưu thông tin địa chỉ, nhưng không lưu toạ độ và đặt trạng thái là 'error'
       setValueRecommend({
         address: newAddress,
         status: "error",
       });
     }
-  };
-  const handleAddlocation = () => {
-    console.log("object");
-    setAddValueLocation(false);
   };
   return (
     <>
@@ -206,67 +187,57 @@ const LocationStart: React.FC = () => {
               message="Address not found yet, please enter another address"
               action={action}
             />
-
-            <div
-              style={{ height: "400px", width: "600px" }}
-              className="relative"
-            >
-              <div className="py-4 px-20 absolute top-2 z-50 w-full">
-                <div className="w-full">
-                  <div className="text-center">
+            <div>
+              <input
+                type="time"
+                value={valueDate}
+                onChange={(e) => setValueDate(e.target.value)}
+              />
+              <PlacesAutocomplete
+                value={address}
+                onChange={handleChange}
+                onSelect={handleSelect}
+                searchOptions={{ types: ["address"] }} // Thêm các tùy chọn để chỉ định loại địa chỉ cần tìm kiếm
+              >
+                {({
+                  getInputProps,
+                  suggestions,
+                  getSuggestionItemProps,
+                  loading,
+                }) => (
+                  <div>
                     <input
-                      className="bg-white mb-2 p-2 rounded-lg border border-gray-300"
-                      type="time"
-                      value={valueDate}
-                      onChange={handleTimeChange}
+                      {...getInputProps({
+                        placeholder: "Search Places ...",
+                        className: "location-search-input",
+                      })}
                     />
+                    <div className="autocomplete-dropdown-container">
+                      {loading && <div>Loading...</div>}
+                      {suggestions.map((suggestion) => {
+                        const className = suggestion.active
+                          ? "suggestion-item--active"
+                          : "suggestion-item";
+                        const style = suggestion.active
+                          ? { backgroundColor: "#fafafa", cursor: "pointer" }
+                          : { backgroundColor: "#ffffff", cursor: "pointer" };
+                        return (
+                          <div
+                            {...getSuggestionItemProps(suggestion, {
+                              className,
+                              style,
+                            })}
+                          >
+                            <span>{suggestion.description}</span>
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
-
-                  <PlacesAutocomplete
-                    value={address}
-                    onChange={handleChange}
-                    onSelect={handleSelect}
-                    searchOptions={{ types: ["address"] }} // Thêm các tùy chọn để chỉ định loại địa chỉ cần tìm kiếm
-                  >
-                    {({
-                      getInputProps,
-                      suggestions,
-                      getSuggestionItemProps,
-                      loading,
-                    }) => (
-                      <div className="">
-                        <input
-                          {...getInputProps({
-                            placeholder: "Search Places ...",
-                            className: "location-search-input",
-                          })}
-                          className=" w-full rounded-xl p-4 focus:outline-none focus:rounded-b-none focus:border-b focus:border-solid focus:border-gray-300"
-                        />
-                        <div className="autocomplete-dropdown-container bg-white max-h-56 overflow-auto global-scrollbar rounded-b-xl ">
-                          {loading && <div>Loading...</div>}
-                          {suggestions.map((suggestion: any) => {
-                            const className = suggestion.active
-                              ? "suggestion-item--active"
-                              : "suggestion-item";
-                            return (
-                              <div
-                                {...getSuggestionItemProps(suggestion, {
-                                  className,
-                                  // style,
-                                })}
-                                className=" px-4 py-3"
-                              >
-                                <span>{suggestion.description}</span>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    )}
-                  </PlacesAutocomplete>
-                </div>
-              </div>
-
+                )}
+              </PlacesAutocomplete>
+            </div>
+            <div style={{ height: "400px", width: "600px" }}>
               <GoogleMapReact
                 bootstrapURLKeys={{
                   key: "AIzaSyBx6NX4xtTaUpaTpHt6jiWNkrYdD85S5Vw",
@@ -281,30 +252,6 @@ const LocationStart: React.FC = () => {
                 />
               </GoogleMapReact>
             </div>
-            <div className="flex flex-col gap-2 mt-5">
-              {departure?.length > 0 &&
-                departure?.map((departureScreen: any, index: number) => (
-                  <div
-                    key={index}
-                    className="bg-white rounded-lg p-2 shadow-custom-card-mui "
-                  >
-                    <span>
-                      {departureScreen?.addressLocationStart?.address}
-                    </span>
-                    <span>{departureScreen?.time}</span>
-                  </div>
-                ))}
-            </div>
-
-            {addValueLocation && (
-              <button
-                type="button"
-                className="bg-white  rounded-lg  px-4 py-1 mt-4 text-navy-blue border border-navy-blue"
-                onClick={() => handleAddlocation()}
-              >
-                Add more departure
-              </button>
-            )}
             {/* <BannerMapContainer>
               <div className="text-black flex flex-col gap-3 ">
                 <div>

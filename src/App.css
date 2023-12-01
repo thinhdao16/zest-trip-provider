@@ -172,9 +172,7 @@ video {
 }
 
 * {
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-    Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif,
-    Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+  font-family: 'PingFang SC', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 }
 
 /* HTML5 display-role reset for older browsers */
@@ -194,6 +192,10 @@ section {
 
 body {
   line-height: 1;
+}
+/* Thêm đoạn mã sau vào file CSS của bạn */
+body {
+  font-family: 'PingFang SC', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 }
 
 ol,
@@ -370,6 +372,8 @@ table {
   transform: translateY(20px);
   transition: opacity 500ms, transform 500ms;
 }
+
+
 
 /*end*/
 /*end*/

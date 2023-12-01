@@ -25,7 +25,7 @@ export default function Banner() {
   const { tours, loading } = useSelector((state: any) => state.tour);
   const dataTours = tours?.tours;
   const countTours = tours?.total_count;
-
+  console.log(dataTours);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [searchValue, setSearchValue] = useState("");

@@ -27,6 +27,9 @@ import Promotion from "../../pages/promotion/Promotion";
 import PromotionPlan from "../../pages/promotion/plan/PromotionPlan";
 import DetailTour from "../../pages/homepage/detail/DetailTour";
 import ProviderProcessing from "../../components/processing/ProviderProcessing";
+import Ticket from "../../pages/ticket/Ticket";
+import TicketSpecial from "../../pages/ticket/TicketSpecial";
+import CancelBooking from "../../pages/booker/many/CancelBooking";
 
 function MainRouter() {
   const { refeshLogin } = React.useContext(DataContext);
@@ -62,6 +65,7 @@ function MainRouter() {
               <Route path="/booking">
                 <Route path="" element={<Booker />} />
                 <Route path="many/:index" element={<DetailBook />} />
+                <Route path="many/cancel/:index" element={<CancelBooking />} />
               </Route>
 
               <Route path="/voucher" element={<Voucher />}>
@@ -73,6 +77,10 @@ function MainRouter() {
               <Route path="/account-settings" element={<AccountSettings />}>
                 <Route path="" element={<AccountSettings />} />
                 <Route path="personal-info" element={<PersonalInfo />} />
+              </Route>
+              <Route path="/ticket">
+                <Route path="" element={<Ticket />} />
+                <Route path="create" element={<TicketSpecial />} />
               </Route>
             </Route>
             <Route

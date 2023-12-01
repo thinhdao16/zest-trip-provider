@@ -125,10 +125,13 @@ function CreateTourNav() {
         })
       ),
       departure_location: {
-        lat: formValues[9]?.LocationStart?.lat_start?.toString(),
-        long: formValues[9]?.LocationStart?.lng_start?.toString(),
+        lat: "10.8161456",
+        long: "106.6615997",
         zoom: "18",
-        location: locationStart,
+        location: formValues[9]?.LocationStart?.map((dataDeparture: any) => ({
+          deparute: dataDeparture?.addressLocationStart?.address,
+          time: dataDeparture?.time,
+        })),
       },
       // departure_location: {
       //   lat: "10.8161456",
@@ -222,6 +225,8 @@ function CreateTourNav() {
               minimum_ticket_count: 1,
               from_age: item?.ageStart?.toString(),
               to_age: item?.ageEnd?.toString(),
+              is_default: true,
+              apply_dates: [],
             };
 
             if (item.price_range) {
@@ -256,6 +261,7 @@ function CreateTourNav() {
         console.error("Error:", tourError);
       });
   };
+
   const chooseCurrentStep = (data: number) => {
     if (data < currentStep) {
       chooseStep(data);
@@ -301,7 +307,7 @@ function CreateTourNav() {
       }
     }
     if (currentStep === 7) {
-      if (formValues[9]?.LocationStart?.find_tour === true) {
+      if (formValues[9]?.LocationStart?.length > 0) {
         classSkip = "yes"; // Nếu điều kiện thỏa mãn, thì set thành "yes"
       }
     }

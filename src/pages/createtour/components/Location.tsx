@@ -7,12 +7,13 @@ import {
   CreateTitleNullDes,
 } from "../../../styles/createtour/createtour";
 import { useStepContext } from "../context/ui/useStepContext";
-import React, { useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import { GoLocation } from "react-icons/go";
 import { BASE_URL } from "../../../store/apiInterceptors";
 import { FormControl, MenuItem, Select } from "@mui/material";
 import { FaStaylinked } from "react-icons/fa6";
 import { ElementCheckInput } from "../../../utils/ElementCheckInput";
+import GoogleMapReact from "google-map-react";
 
 const Location: React.FC = () => {
   const { currentStep, updateFormValues, formValues } = useStepContext();
@@ -32,6 +33,24 @@ const Location: React.FC = () => {
   const [addWard, setAddWard] = useState<any>();
 
   const [selectedData, setSelectedData] = useState<any>();
+
+  const [inputCompleted, setInputCompleted] = useState<any>(false);
+
+  const [coordinates, setCoordinates] = React.useState<
+    | {
+        latitude: number;
+        longitude: number;
+      }
+    | any
+  >(null);
+
+  const [lat, setLat] = useState(
+    parseFloat(coordinates?.latitude || "10.8422931")
+  );
+
+  const [lng, setLng] = useState(
+    parseFloat(coordinates?.longitude || "106.8061656")
+  );
 
   useEffect(() => {
     axios
@@ -55,6 +74,54 @@ const Location: React.FC = () => {
       },
     });
   }, [addressName, addPro, addWard, addDis, selectedData]);
+
+  const apiKey = "AIzaSyDKm7Jq04yAY0uFMM2GrcDDY-39lEez9e4";
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (inputCompleted) {
+          const addressSearch = `${addressName}, ${addWard?.full_name}, ${addDis?.full_name}, ${addPro?.full_name}, Việt Nam`;
+          const response = await axios.get(
+            `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
+              addressSearch
+            )}&key=${apiKey}`
+          );
+          console.log(response);
+          // Check if there is a valid result in the response
+          if (
+            response.data &&
+            response.data.results &&
+            response.data.results.length > 0 &&
+            response.data.results[0].geometry &&
+            response.data.results[0].geometry.location
+          ) {
+            const { lat, lng } = response.data.results[0].geometry.location;
+
+            // Set coordinates
+            setCoordinates({
+              latitude: lat,
+              longitude: lng,
+            });
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching coordinates:", error);
+      }
+    };
+
+    fetchData();
+  }, [
+    addDis?.full_name,
+    addPro?.full_name,
+    addWard?.full_name,
+    addressName,
+    inputCompleted,
+  ]);
+
+  useEffect(() => {
+    setLat(parseFloat(coordinates?.latitude || "10.8422931"));
+    setLng(parseFloat(coordinates?.longitude || "106.8061656"));
+  }, [coordinates]);
 
   const handleFormChange = (value: string) => {
     setAddressName(value);
@@ -89,6 +156,34 @@ const Location: React.FC = () => {
       }
     }
   };
+
+  const handleInputFocus = () => {
+    setInputCompleted(false);
+  };
+  const handleInputBlur = () => {
+    setInputCompleted(true);
+    // Lưu trạng thái khi input đã nhập xong và thoát khỏi focus
+  };
+
+  const AnyReactComponent = ({
+    // lat,
+    // lng,
+    text,
+  }: {
+    // lat: number;
+    // lng: number;
+    text: ReactNode;
+  }) => <div>{text}</div>;
+
+  const defaultProps = {
+    center: {
+      lat: lat,
+      lng: lng,
+    },
+    zoom: 13,
+  };
+  const RedMarker = () => <div style={{ color: "red" }}>📍</div>;
+
   if (currentStep !== 6) {
     return null;
   }
@@ -278,8 +373,27 @@ const Location: React.FC = () => {
                     placeholder="Address"
                     type="text"
                     autoComplete="address-line1"
+                    onBlur={handleInputBlur}
+                    onFocus={handleInputFocus}
                   />
                 </div>
+              </div>
+              <div
+                style={{ height: "400px", width: "500px", marginTop: "10px" }}
+              >
+                <GoogleMapReact
+                  bootstrapURLKeys={{
+                    key: "AIzaSyBx6NX4xtTaUpaTpHt6jiWNkrYdD85S5Vw",
+                  }}
+                  center={defaultProps.center}
+                  defaultZoom={defaultProps.zoom}
+                >
+                  <AnyReactComponent
+                    // lat={defaultProps.center.lat}
+                    // lng={defaultProps.center.lng}
+                    text={<RedMarker />}
+                  />
+                </GoogleMapReact>
               </div>
             </div>
           </BannerMapContainer>
