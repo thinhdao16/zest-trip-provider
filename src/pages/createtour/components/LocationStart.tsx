@@ -26,22 +26,8 @@ const LocationStart: React.FC = () => {
   const { currentStep, updateFormValues, formValues } = useStepContext();
   console.log(formValues);
   //location start
-  const [addressNameStart, setAddressNameStart] = useState("");
-
-  const [coordinates, setCoordinates] = React.useState<
-    | {
-        latitude: number;
-        longitude: number;
-      }
-    | any
-  >(null);
-
-  const [selectedDataProStart, setSelectedDataProStart] = useState<any>();
-  const [selectedDataDisStart, setSelectedDataDisStart] = useState<any>();
-  const [selectedDataWardStart, setSelectedDataWardStart] = useState<any>();
 
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
-  const [checkLocation, setCheckLocation] = useState(false);
   const [openLoading, setOpenLoading] = useState(false);
   const [valueRecommend, setValueRecommend] = useState<any>(null);
   const [valueDate, setValueDate] = useState("");
@@ -91,14 +77,7 @@ const LocationStart: React.FC = () => {
     updateFormValues(9, {
       LocationStart: departure,
     });
-  }, [
-    addressNameStart,
-    selectedDataProStart,
-    selectedDataDisStart,
-    selectedDataWardStart,
-    lat,
-    lng,
-  ]);
+  }, [valueDate, valueRecommend, lat, lng]);
 
   useEffect(() => {
     setLat(parseFloat(valueRecommend?.lat || "10.8422931"));

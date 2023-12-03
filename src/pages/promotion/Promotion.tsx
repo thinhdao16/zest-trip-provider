@@ -2,9 +2,19 @@ import { IoMdCheckmark } from "react-icons/io";
 import { DataPromotionChoose, dataPromotionChoose } from "./data";
 import { useNavigate } from "react-router-dom";
 import { FaHouseMedical } from "react-icons/fa6";
+import { useEffect } from "react";
+import { AppDispatch } from "../../store/redux/store";
+import { useDispatch } from "react-redux";
+import { getBoostPrice } from "../../store/redux/silce/authSilce";
+import { useSelector } from "react-redux";
+import { formatNumber } from "../../utils/formatNumber";
 
 function Promotion() {
   const navigate = useNavigate();
+  const dispatch: AppDispatch = useDispatch();
+  const { boost } = useSelector(
+    (state: { auth: { boost: number } }) => state.auth
+  );
   const handleChooseTypePromotion = (data: DataPromotionChoose) => {
     localStorage.setItem("data_type_promotion", JSON.stringify(data));
     navigate("/promotion/plan");
@@ -12,6 +22,9 @@ function Promotion() {
   const handleGoBack = () => {
     navigate("/");
   };
+  useEffect(() => {
+    dispatch(getBoostPrice());
+  });
   return (
     <>
       <main className="h-full bg-main overflow-auto global-scrollbar rounded-lg  px-8 py-11 relative">
@@ -70,8 +83,12 @@ function Promotion() {
                         {promotion?.title}
                       </span>
                       {promotion?.titleInfo?.map((titleInfo, indexTitle) => (
-                        <span key={indexTitle}>{titleInfo}</span>
+                        <span key={indexTitle}>
+                          {formatNumber(boost)}
+                          {titleInfo}
+                        </span>
                       ))}
+                      <span>1 tour</span>
                     </div>
                     <hr />
                     <div className="mt-4 flex flex-col gap-3 h-44">

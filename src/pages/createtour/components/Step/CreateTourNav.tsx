@@ -76,7 +76,7 @@ function CreateTourNav() {
 
     return true;
   }
-
+  console.log(formValues);
   const isMaxValid = checkMaxForPriceRanges(formValues[6]?.ticket);
   const allDefaultTicketsHavePositivePrice = useMemo(() => {
     return formValues[6]?.ticket?.every((ticket: any) => {
@@ -89,7 +89,6 @@ function CreateTourNav() {
       }
     });
   }, [formValues]);
-  const locationStart = `${formValues[9]?.LocationStart?.address_name}, ${formValues[9]?.LocationStart?.address_ward?.full_name},${formValues[9]?.LocationStart?.address_district?.full_name},${formValues[9]?.LocationStart?.address_province?.full_name},${formValues[9]?.LocationStart?.address_country}`;
   const handleCreateTourAndAvailability = () => {
     const formData = new FormData();
     const dataValueCreate = {
@@ -125,8 +124,8 @@ function CreateTourNav() {
         })
       ),
       departure_location: {
-        lat: "10.8161456",
-        long: "106.6615997",
+        lat: formValues[3]?.Location?.lat?.toString(),
+        long: formValues[3]?.Location?.lng?.toString(),
         zoom: "18",
         location: formValues[9]?.LocationStart?.map((dataDeparture: any) => ({
           deparute: dataDeparture?.addressLocationStart?.address,

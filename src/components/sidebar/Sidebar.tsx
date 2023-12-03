@@ -1,28 +1,22 @@
 import { faLeaf } from "@fortawesome/free-solid-svg-icons";
-import React, { useEffect, useState } from "react";
-import initMenus from "../../data/menus.ts";
+import React, { useEffect } from "react";
 import "./sidebar.css";
 import SidebarLogo from "./SidebarLogo.js";
-import MenuList from "./MenuList";
 import { useNavigate } from "react-router-dom";
 import { AppDispatch } from "../../store/redux/store.ts";
 import { useDispatch } from "react-redux";
 import { getPersonalInfo } from "../../store/redux/silce/authSilce.ts";
 import { MdOutlineWorkspacePremium } from "react-icons/md";
 import { DataContext } from "../../store/dataContext/DataContext.tsx";
+import Navbar from "../Navbar/Navbar.tsx";
 
 function Sidebar({ ...props }) {
   const navigation = useNavigate();
   const dispatch: AppDispatch = useDispatch();
   const { setRefeshLogin } = React.useContext(DataContext);
 
-  const [menus] = useState(initMenus);
   const handleLogout = () => {
-    // setAnchorEl(null);
-    // localStorage.clear();
-    // setRefeshLogin((prev) => !prev);
     navigation("/promotion");
-    // window.open("/promotion", "_blank");
   };
   useEffect(() => {
     dispatch(getPersonalInfo())
@@ -43,7 +37,6 @@ function Sidebar({ ...props }) {
       })
       .catch((error) => {
         console.error("Unexpected error:", error);
-        // Handle unexpected errors (optional)
       });
   }, [dispatch]);
   return (
@@ -54,7 +47,9 @@ function Sidebar({ ...props }) {
       >
         <div className="md:w-64 border-r-2 border-gray-100 h-full flex-col flex flex-shrink-0">
           <SidebarLogo toggle={props.toggle} icon={faLeaf} text="Zest Travel" />
-          <MenuList menus={menus} toggle={props.toggle} />
+          <div className="navWrapper ">
+            <Navbar />
+          </div>
           <div className="pt-2 border-t border-gray-300">
             <div className="px-8 py-4">
               <button

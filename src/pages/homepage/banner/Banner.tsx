@@ -115,6 +115,7 @@ export default function Banner() {
     }
   };
   const handleMinPriceChange = (value: any) => {
+    console.log(value);
     setMinPrice(value);
   };
 
@@ -181,9 +182,9 @@ export default function Banner() {
                           <MenuItem onClick={() => handleStatusClick("HIDDEN")}>
                             Hidden
                           </MenuItem>
-                          <MenuItem onClick={() => handleStatusClick("DRAFT")}>
+                          {/* <MenuItem onClick={() => handleStatusClick("DRAFT")}>
                             Draft
-                          </MenuItem>
+                          </MenuItem> */}
                         </Menu>
                       </div>
                     </div>
@@ -194,17 +195,18 @@ export default function Banner() {
                       <div className="w-14">
                         <Slider
                           min={0}
-                          max={100000000}
+                          max={1000000}
                           onChange={handleMinPriceChange}
                           value={minPrice}
                         />
                       </div>
                       <input
-                        className="bg-white px-3 py-1.5 w-20 border border-gray-200 rounded-md"
+                        type="number"
+                        className="bg-white pl-3 py-1.5 w-24 border border-gray-200 rounded-md"
                         min={0}
                         max={100000000}
                         value={minPrice}
-                        onChange={handleMinPriceChange}
+                        onChange={(e) => handleMinPriceChange(e.target.value)}
                       />
                     </div>
                     <div className="flex items-center gap-2">
@@ -218,11 +220,12 @@ export default function Banner() {
                         />
                       </div>
                       <input
-                        className="bg-white px-3 py-1.5 w-20 border border-gray-200 rounded-md"
+                        type="number"
+                        className="bg-white pl-3 py-1.5 w-24 border border-gray-200 rounded-md"
                         min={0}
                         max={100000000}
                         value={maxPrice}
-                        onChange={handleMaxPriceChange}
+                        onChange={(e) => handleMaxPriceChange(e.target.value)}
                       />
                     </div>
                   </div>

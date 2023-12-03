@@ -11,12 +11,7 @@ const renderMenuItems = (items: any) => {
   const currentPath = window.location.pathname;
   return items.map((item: any) =>
     item.children ? (
-      <Menu.SubMenu
-        key={item.key}
-        title={item.label}
-        icon={item.icon}
-        className="active:bg-black"
-      >
+      <Menu.SubMenu key={item.key} title={item.label} icon={item.icon}>
         {renderMenuItems(item.children)}
       </Menu.SubMenu>
     ) : item.type === "divider" ? (

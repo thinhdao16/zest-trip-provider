@@ -107,11 +107,11 @@ function DashBoardBooker() {
                       </div>
                     )}
 
-                    <div className="col-span-1 flex justify-start">
+                    <div className="col-span-1 flex justify-center">
                       <img
                         src={item?.BookingOnTour?.tour_images[0]}
                         alt="image"
-                        className="rounded-lg h-14"
+                        className="rounded-lg h-16 w-16"
                       />
                     </div>
                     <div className="col-span-3 flex justify-center">

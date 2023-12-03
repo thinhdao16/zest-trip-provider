@@ -12,7 +12,6 @@ import PersonalInfo from "../../pages/accountsettings/personalinfo/PersonalInfo"
 import { DataContext } from "../../store/dataContext/DataContext";
 import AuthLayout from "../../components/Layout/AuthLayout";
 import Dashboard from "../../pages/dashboard/Dashboard";
-import Blank from "../../pages/Blank";
 import ForgotPassWord from "../../components/forgotPassword/ForgotPassword";
 import Review from "../../pages/review/Review";
 import Booker from "../../pages/booker/Booker";
@@ -28,8 +27,7 @@ import PromotionPlan from "../../pages/promotion/plan/PromotionPlan";
 import DetailTour from "../../pages/homepage/detail/DetailTour";
 import ProviderProcessing from "../../components/processing/ProviderProcessing";
 import Ticket from "../../pages/ticket/Ticket";
-import TicketSpecial from "../../pages/ticket/TicketSpecial";
-import CancelBooking from "../../pages/booker/many/CancelBooking";
+import DetailTicketTour from "../../pages/ticket/DetailTicketTour";
 
 function MainRouter() {
   const { refeshLogin } = React.useContext(DataContext);
@@ -57,17 +55,12 @@ function MainRouter() {
           <>
             <Route path="/" element={<AuthLayout />}>
               <Route path="/" element={<Dashboard />} />
-              <Route path="/blank" element={<Blank />} />
-              <Route path="/profile" element={<Blank />} />
               <Route path="/review" element={<Review />} />
-
               <Route path="/listtour" element={<HomePage />} />
               <Route path="/booking">
                 <Route path="" element={<Booker />} />
                 <Route path="many/:index" element={<DetailBook />} />
-                <Route path="many/cancel/:index" element={<CancelBooking />} />
               </Route>
-
               <Route path="/voucher" element={<Voucher />}>
                 <Route path="" element={<Voucher />} />
               </Route>
@@ -80,7 +73,7 @@ function MainRouter() {
               </Route>
               <Route path="/ticket">
                 <Route path="" element={<Ticket />} />
-                <Route path="create" element={<TicketSpecial />} />
+                <Route path="detail/:index" element={<DetailTicketTour />} />
               </Route>
             </Route>
             <Route
@@ -91,12 +84,10 @@ function MainRouter() {
               <Route path="" element={<Promotion />} />
               <Route path="plan" element={<PromotionPlan />} />
             </Route>
-
             <Route path="/createtour" element={<CreateTour />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/forgotpassword" element={<ForgotPassWord />} />
-
             <Route path="/:index" element={<SinglePage />} />
             <Route
               path="/booking/:index"

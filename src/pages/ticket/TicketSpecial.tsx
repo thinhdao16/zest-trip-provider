@@ -1,12 +1,19 @@
-import React, { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { FaRegTrashCan } from "react-icons/fa6";
 import { GoLocation } from "react-icons/go";
 import { IoMdClose } from "react-icons/io";
 import { formatNumberInput } from "../../utils/formatNumberInput";
-import DatePicker, { Calendar } from "react-multi-date-picker";
+import DatePicker from "react-multi-date-picker";
 import dayjs from "dayjs";
 import { ButtonCreateTicketSpecial } from "./ButtonCreateTicketSpecial";
+import { AppDispatch } from "../../store/redux/store";
+import { useDispatch } from "react-redux";
+import { fetchTourDetail } from "../../store/redux/silce/tourSlice";
+import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { DataContext } from "../../store/dataContext/DataContext";
+import { getCommistionRate } from "../../store/redux/silce/authSilce";
 
 const radioItems = [
   "Standard",
@@ -17,11 +24,18 @@ const typeDefault = {
   role: "ADULT",
   type: "DEFAULT",
 };
-const TicketSpecial: React.FC = () => {
-  // const { currentStep, updateFormValues } = useStepContext();
+function TicketSpecial() {
+  const { index } = useParams();
+  const dispatch: AppDispatch = useDispatch();
+  const { commision } = useSelector(
+    (state: { auth: { commision: number } }) => state.auth
+  );
+  const tourDetail: any = useSelector((state: any) => state.tour.tourGetDetail);
+
+  const { setDataTicketCreate } = useContext(DataContext);
+
   const [selectedCountries, setSelectedCountries]: any = useState([]);
   const [dataTicket, setDataTicket]: any = useState([]);
-  console.log(dataTicket);
   const [selectedRadio, setSelectedRadio] = useState({
     children: radioItems[0],
     adults: radioItems[0],
@@ -275,10 +289,7 @@ const TicketSpecial: React.FC = () => {
   const [selectDateDefault, setSelectDateDefault] = useState([]);
   const [selectDateAdult, setSelectDateAdult] = useState([]);
   const [selectDateChildren, setSelectDateChildren] = useState([]);
-  const [disabledDates, setDisabledDates] = useState([
-    "2023-12-01",
-    "2023-12-05",
-  ]);
+
   const handleInputChange = (e: any, field: string, type: string) => {
     const value = parseInt(e.target.value);
     if (type === "default") {
@@ -365,7 +376,7 @@ const TicketSpecial: React.FC = () => {
               newNumberOfPeople >= form.numberOfPeople
                 ? newNumberOfPeople
                 : form.numberOfPeople,
-            payoutPerPerson: (form.retailPrice * 30) / 100,
+            payoutPerPerson: form.retailPrice * commision,
           };
           return updatedForm;
         } else if (index === id + 1) {
@@ -389,7 +400,7 @@ const TicketSpecial: React.FC = () => {
               newNumberOfPeople >= form.numberOfPeople
                 ? newNumberOfPeople
                 : form.numberOfPeople,
-            payoutPerPerson: (form.retailPrice * 30) / 100,
+            payoutPerPerson: form.retailPrice * commision,
           };
           return updatedForm;
         } else if (index === id + 1) {
@@ -413,7 +424,7 @@ const TicketSpecial: React.FC = () => {
               newNumberOfPeople >= form.numberOfPeople
                 ? newNumberOfPeople
                 : form.numberOfPeople,
-            payoutPerPerson: (form.retailPrice * 30) / 100,
+            payoutPerPerson: form.retailPrice * commision,
           };
           return updatedForm;
         } else if (index === id + 1) {
@@ -529,7 +540,7 @@ const TicketSpecial: React.FC = () => {
       });
     }
   };
-  React.useEffect(() => {
+  useEffect(() => {
     if (selectedCountries.length === 0) {
       const convertArray = {
         price_range: formList,
@@ -547,9 +558,8 @@ const TicketSpecial: React.FC = () => {
     typeDefault,
     selectDateDefault,
   ]);
-
-  React.useEffect(() => {
-    funcUpdateTicketRole(); // Hàm này sẽ được gọi lại khi các dependency thay đổi
+  useEffect(() => {
+    funcUpdateTicketRole();
   }, [
     selectedCountries,
     selectedRadio,
@@ -563,6 +573,15 @@ const TicketSpecial: React.FC = () => {
     selectDateAdult,
   ]);
 
+  useEffect(() => {
+    if (index) {
+      dispatch(fetchTourDetail(index));
+    }
+    dispatch(getCommistionRate());
+  }, [dispatch, index]);
+  useEffect(() => {
+    setDataTicketCreate(dataTicket);
+  }, [dataTicket, setDataTicketCreate]);
   const formatNumberWithCommas = (value: any) => {
     const numericValue = value?.toString()?.replace(/[^0-9]/g, "");
 
@@ -588,17 +607,41 @@ const TicketSpecial: React.FC = () => {
     }
   };
 
-  const disabledDatesArray = ["2023-12-01", "2023-12-02", "2023-12-04"];
+  const disableDateAdult = () => {
+    const adultTicket = tourDetail?.TicketPricing.filter(
+      (ticket: any) => ticket.Ticket.name === "ADULT"
+    );
+    const formattedDates = adultTicket?.flatMap((dateFil: any) =>
+      dateFil?.apply_dates?.map((dateApp: string) =>
+        dayjs(dateApp).format("YYYY-MM-DD")
+      )
+    );
+    return formattedDates;
+  };
+  const disableDateChildren = () => {
+    const adultTicket = tourDetail?.TicketPricing.filter(
+      (ticket: any) => ticket.Ticket.name === "CHILDREN"
+    );
+    const formattedDates = adultTicket?.flatMap((dateFil: any) =>
+      dateFil?.apply_dates?.map((dateApp: string) =>
+        dayjs(dateApp).format("YYYY-MM-DD")
+      )
+    );
+    return formattedDates;
+  };
+  const dataDisableDateAdult = disableDateAdult();
+  const dataDisableDateChildren = disableDateChildren();
   return (
     <div className="global-scrollbar">
       <div className="flex items-center justify-center">
         <div className="py-5">
-          <ButtonCreateTicketSpecial dataTicket={dataTicket} />
+          <div className="hidden">
+            <ButtonCreateTicketSpecial />
+          </div>
           {selectedCountries.length === 0 && (
             <div className="mt-3 flex flex-col items-start gap-4">
-              <div className="flex flex-col w-full">
-                {" "}
-                <div className="mb-2">
+              <div className="flex items-center gap-8">
+                <div className="">
                   <p className="font-medium mb-1">Minimum ticket count</p>
                   <div className=" relative ">
                     <p className="absolute top-4 left-2">
@@ -636,18 +679,28 @@ const TicketSpecial: React.FC = () => {
                     />
                   </div>
                 </div>
-                <DatePicker
-                  multiple
-                  mapDays={({ date }) => {
-                    const formattedDate = date.format("YYYY-MM-DD");
-                    const isDisabled =
-                      disabledDatesArray.includes(formattedDate);
-                    return { disabled: isDisabled };
-                  }}
-                  onChange={(e) => handleDateChange(e, "default")}
-                />
-                <div>
-                  Selected Dates: {selectDateDefault.map((date) => date)}
+              </div>
+              <div className="flex flex-col w-full">
+                {" "}
+                <div className="flex flex-col mt-2">
+                  <span className="font-medium">Date for special</span>
+                  <div className="bg-white">
+                    <DatePicker
+                      multiple
+                      id="selectDateSingle"
+                      mapDays={({ date }) => {
+                        const formattedDate = date.format("YYYY-MM-DD");
+                        const isDisabled =
+                          dataDisableDateAdult.includes(formattedDate);
+                        const dayClasses = isDisabled
+                          ? "text-gray-500 bg-gray-200 cursor-not-allowed"
+                          : "hover:bg-blue-500 hover:text-white cursor-pointer";
+
+                        return { className: dayClasses, disabled: isDisabled };
+                      }}
+                      onChange={(e) => handleDateChange(e, "default")}
+                    />
+                  </div>
                 </div>
               </div>
               <div className="p-4 rounded-lg bg-white relative border border-gray-400 border-solid shadow-custom-card-mui">
@@ -727,7 +780,7 @@ const TicketSpecial: React.FC = () => {
                           </div>
                           <div>
                             <p className="font-medium h-4 mb-2">Commission</p>
-                            <p className="font-medium">30%</p>
+                            <p className="font-medium">{commision * 100}%</p>
                           </div>
                           <div>
                             <div className="font-medium h-4 mb-2">
@@ -779,124 +832,127 @@ const TicketSpecial: React.FC = () => {
           {selectedCountries.includes("Adults") &&
             selectedCountries.includes("Children") && (
               <div className="flex justify-between">
-                <div className="">
-                  <div className="mb-3">
-                    <p className="font-medium mb-1">
-                      Minimum adult ticket count
-                    </p>
-                    <div className=" relative ">
-                      <p className="absolute top-4 left-2">
-                        <GoLocation />
+                <div className="flex flex-col gap-2">
+                  <div className=" flex items-center gap-8">
+                    <div className="">
+                      <p className="font-medium mb-1">
+                        Minimum adult ticket count
                       </p>
-                      <input
-                        disabled
-                        className="w-28 border rounded-lg pr-1 pl-8 py-3 border-gray-400 shadow-custom-card-mui focus:outline-none hover:border-navy-blue focus:border-navy-blue"
-                        type="number"
-                        value={quantityAdult.min}
-                        onChange={(e) => handleInputChange(e, "min", "adult")}
-                      />
+                      <div className=" relative ">
+                        <p className="absolute top-4 left-2">
+                          <GoLocation />
+                        </p>
+                        <input
+                          disabled
+                          className="w-28 border rounded-lg pr-1 pl-8 py-3 border-gray-400 shadow-custom-card-mui focus:outline-none hover:border-navy-blue focus:border-navy-blue"
+                          type="number"
+                          value={quantityAdult.min}
+                          onChange={(e) => handleInputChange(e, "min", "adult")}
+                        />
+                      </div>
                     </div>
-                  </div>
-                  <div className="mb-3">
-                    <div className="mb-1 flex flex-col">
-                      <span className="font-medium mb-1">
-                        Maximum adult ticket count
-                      </span>
-                      {formListAdult[formListAdult.length - 1]
-                        ?.numberOfPeopleAfter > quantityAdult?.max && (
-                        <span className="text-red-500 text-sm">
-                          Max greater than or equal max number of people
+                    <div className="">
+                      <div className="mb-1 flex flex-col">
+                        <span className="font-medium mb-1">
+                          Maximum adult ticket count
                         </span>
-                      )}
-                    </div>
+                        {formListAdult[formListAdult.length - 1]
+                          ?.numberOfPeopleAfter > quantityAdult?.max && (
+                          <span className="text-red-500 text-sm">
+                            Max greater than or equal max number of people
+                          </span>
+                        )}
+                      </div>
 
-                    <div className=" relative ">
-                      <p className="absolute top-4 left-2">
-                        <GoLocation />
-                      </p>
-                      <input
-                        className="w-28 border rounded-lg pr-1 pl-8 py-3 border-gray-400 shadow-custom-card-mui focus:outline-none hover:border-navy-blue focus:border-navy-blue"
-                        type="number"
-                        value={quantityAdult.max}
-                        onChange={(e) => handleInputChange(e, "max", "adult")}
-                      />
+                      <div className=" relative ">
+                        <p className="absolute top-4 left-2">
+                          <GoLocation />
+                        </p>
+                        <input
+                          className="w-28 border rounded-lg pr-1 pl-8 py-3 border-gray-400 shadow-custom-card-mui focus:outline-none hover:border-navy-blue focus:border-navy-blue"
+                          type="number"
+                          value={quantityAdult.max}
+                          onChange={(e) => handleInputChange(e, "max", "adult")}
+                        />
+                      </div>
                     </div>
                   </div>
                   <DatePicker
+                    id="selectDateSingle"
                     multiple
                     mapDays={({ date }) => {
                       const formattedDate = date.format("YYYY-MM-DD");
                       const isDisabled =
-                        disabledDatesArray.includes(formattedDate);
+                        dataDisableDateAdult.includes(formattedDate);
                       return { disabled: isDisabled };
                     }}
                     onChange={(e) => handleDateChange(e, "adult")}
                   />
-                  <div>
-                    Selected Dates: {selectDateAdult.map((date) => date)}
-                  </div>
                 </div>
-                <div>
-                  <div className="mb-3">
-                    <p className="font-medium mb-1">
-                      Minimum children ticket count
-                    </p>
-                    <div className=" relative ">
-                      <p className="absolute top-4 left-2">
-                        <GoLocation />
+
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center gap-8">
+                    <div className="">
+                      <p className="font-medium mb-1">
+                        Minimum children ticket count
                       </p>
-                      <input
-                        disabled
-                        className="w-28 border rounded-lg pl-8 py-3 border-gray-400 shadow-custom-card-mui focus:outline-none hover:border-navy-blue focus:border-navy-blue"
-                        type="number"
-                        value={quantityChildren.min}
-                        onChange={(e) =>
-                          handleInputChange(e, "min", "children")
-                        }
-                      />
+                      <div className=" relative ">
+                        <p className="absolute top-4 left-2">
+                          <GoLocation />
+                        </p>
+                        <input
+                          disabled
+                          className="w-28 border rounded-lg pl-8 py-3 border-gray-400 shadow-custom-card-mui focus:outline-none hover:border-navy-blue focus:border-navy-blue"
+                          type="number"
+                          value={quantityChildren.min}
+                          onChange={(e) =>
+                            handleInputChange(e, "min", "children")
+                          }
+                        />
+                      </div>
                     </div>
-                  </div>
-                  <div className="mb-3">
-                    <div className="mb-1 flex flex-col">
-                      <span className="font-medium mb-1">
-                        Maximum children ticket count
-                      </span>
-                      {formListChildren[formListChildren.length - 1]
-                        ?.numberOfPeopleAfter > quantityChildren?.max && (
-                        <span className="text-red-500 text-sm">
-                          Max greater than or equal max number of people
+                    <div className="">
+                      <div className="mb-1 flex flex-col">
+                        <span className="font-medium mb-1">
+                          Maximum children ticket count
                         </span>
-                      )}
-                    </div>
-                    <div className=" relative ">
-                      <p className="absolute top-4 left-2">
-                        <GoLocation />
-                      </p>
-                      <input
-                        className="w-28 border rounded-lg pl-8 py-3 border-gray-400 shadow-custom-card-mui focus:outline-none hover:border-navy-blue focus:border-navy-blue"
-                        type="number"
-                        value={quantityChildren.max}
-                        onChange={(e) =>
-                          handleInputChange(e, "max", "children")
-                        }
-                      />
+                        {formListChildren[formListChildren.length - 1]
+                          ?.numberOfPeopleAfter > quantityChildren?.max && (
+                          <span className="text-red-500 text-sm">
+                            Max greater than or equal max number of people
+                          </span>
+                        )}
+                      </div>
+                      <div className=" relative ">
+                        <p className="absolute top-4 left-2">
+                          <GoLocation />
+                        </p>
+                        <input
+                          className="w-28 border rounded-lg pl-8 py-3 border-gray-400 shadow-custom-card-mui focus:outline-none hover:border-navy-blue focus:border-navy-blue"
+                          type="number"
+                          value={quantityChildren.max}
+                          onChange={(e) =>
+                            handleInputChange(e, "max", "children")
+                          }
+                        />
+                      </div>
                     </div>
                   </div>
+
+                  <div>
+                    <DatePicker
+                      multiple
+                      id="selectDateSingle"
+                      mapDays={({ date }) => {
+                        const formattedDate = date.format("YYYY-MM-DD");
+                        const isDisabled =
+                          dataDisableDateChildren.includes(formattedDate);
+                        return { disabled: isDisabled };
+                      }}
+                      onChange={(e) => handleDateChange(e, "children")}
+                    />
+                  </div>
                 </div>
-                <DatePicker
-                  multiple
-                  mapDays={({ date }) => {
-                    const formattedDate = date.format("YYYY-MM-DD");
-                    const isDisabled =
-                      disabledDatesArray.includes(formattedDate);
-                    return { disabled: isDisabled };
-                  }}
-                  onChange={(e) => handleDateChange(e, "children")}
-                />
-                <div>
-                  Selected Dates: {selectDateChildren.map((date) => date)}
-                </div>
-                <div></div>
               </div>
             )}
 
@@ -1036,7 +1092,7 @@ const TicketSpecial: React.FC = () => {
                             </div>
                             <div>
                               <p className="font-medium">Commission</p>
-                              <p className="font-medium">30%</p>
+                              <p className="font-medium">{commision * 100}%</p>
                             </div>
                             <div>
                               <div className="font-medium">
@@ -1281,7 +1337,7 @@ const TicketSpecial: React.FC = () => {
                             </div>
                             <div>
                               <p className="font-medium">Commission</p>
-                              <p className="font-medium">30%</p>
+                              <p className="font-medium">{commision * 100}%</p>
                             </div>
                             <div>
                               <div className="font-medium">
@@ -1402,6 +1458,6 @@ const TicketSpecial: React.FC = () => {
       </div>
     </div>
   );
-};
+}
 
 export default TicketSpecial;

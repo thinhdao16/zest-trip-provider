@@ -71,6 +71,8 @@ const Location: React.FC = () => {
         address_district: addDis,
         address_ward: addWard,
         address_country: "Việt Nam",
+        lat: lat,
+        lng: lng,
       },
     });
   }, [addressName, addPro, addWard, addDis, selectedData]);

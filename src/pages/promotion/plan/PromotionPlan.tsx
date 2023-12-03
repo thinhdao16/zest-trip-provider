@@ -18,10 +18,15 @@ import {
 import LoadingFullScreen from "../../../styles/loading/LoadingFullScreen";
 import { IoIosArrowBack } from "react-icons/io";
 import { VehicleTag } from "../../../components/icon/tour/vehicle";
+import { getBoostPrice } from "../../../store/redux/silce/authSilce";
+import { formatNumber } from "../../../utils/formatNumber";
 
 function PromotionPlan() {
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
+  const { boost } = useSelector(
+    (state: { auth: { boost: number } }) => state.auth
+  );
   const [createTourId, setCreateTourId] = useState<any>([]);
   const promotionType: DataPromotionChoose = useMemo(() => {
     const getPromotionDetail = localStorage.getItem("data_type_promotion");
@@ -54,6 +59,7 @@ function PromotionPlan() {
     const pagination = { pageSize, currentPage };
     dispatch(fetchTours(pagination));
     dispatch(getProviderTourBoost());
+    dispatch(getBoostPrice());
   }, [dispatch, refeshTour, currentPage, pageSize]);
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -181,7 +187,10 @@ function PromotionPlan() {
                     <p className="font-medium mb-4">
                       Sign up with a credit card or wallet
                     </p>
-                    <span>{promotionType?.titleInfo[0]}</span>
+                    <span>
+                      {formatNumber(boost)}
+                      {promotionType?.titleInfo[0]}
+                    </span>
                   </div>
                 </div>
               </div>

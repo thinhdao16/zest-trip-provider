@@ -8,19 +8,43 @@ const initialState = {
   check: "abc ",
   loading: false,
   error: null as string | null,
+  commision: [],
+  boost: [],
 };
 
-export const getPersonalInfo = createAsyncThunk(
-  "auth/getInfo", // Slice name: "tour"
+export const getPersonalInfo = createAsyncThunk("auth/getInfo", async () => {
+  try {
+    const response = await axiosInstance.get(`${BASE_URL}/provider/profile`);
+    localStorage.setItem("id_provider", response.data.data.id);
+
+    return response.data.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Failed to fetch other data");
+  }
+});
+
+export const getCommistionRate = createAsyncThunk(
+  "auth/getCommistionRate",
   async () => {
-    // const navigate = useNavigate();
     try {
-      const response = await axiosInstance.get(`${BASE_URL}/provider/profile`);
-      localStorage.setItem("id_provider", response.data.data.id);
-      // if (response.status === 404) {
-      //   localStorage.clear();
-      //   navigate("/login");
-      // }
+      const response = await axiosInstance.get(
+        `${BASE_URL}/global/commission-rate`
+      );
+      return response.data.data;
+    } catch (error) {
+      console.log(error);
+      throw new Error("Failed to fetch other data");
+    }
+  }
+);
+export const getBoostPrice = createAsyncThunk(
+  "auth/getBoostPrice",
+  async () => {
+    try {
+      const response = await axiosInstance.get(
+        `${BASE_URL}/global/boost-price`
+      );
       return response.data.data;
     } catch (error) {
       console.log(error);
@@ -56,6 +80,33 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(getPersonalInfo.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || null;
+      })
+
+      .addCase(getCommistionRate.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getCommistionRate.fulfilled, (state, action) => {
+        state.loading = false;
+        state.commision = action.payload;
+        state.error = null;
+      })
+      .addCase(getCommistionRate.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || null;
+      })
+      .addCase(getBoostPrice.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getBoostPrice.fulfilled, (state, action) => {
+        state.loading = false;
+        state.boost = action.payload;
+        state.error = null;
+      })
+      .addCase(getBoostPrice.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || null;
       });

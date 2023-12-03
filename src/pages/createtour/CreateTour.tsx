@@ -22,10 +22,9 @@ import CreateTourNav from "./components/Step/CreateTourNav";
 import LocationStart from "./components/LocationStart";
 import { useSelector } from "react-redux";
 import { useSpring, animated } from "@react-spring/web";
+import { getCommistionRate } from "../../store/redux/silce/authSilce";
 
 const steps = [
-  // Capacity,
-
   Welcome,
   Tourtype,
   Title,
@@ -34,8 +33,6 @@ const steps = [
   Location,
   LocationStart,
   DurationCheckIn,
-  // Welcome,
-
   Capacity,
   Price,
   Media,
@@ -64,6 +61,7 @@ const StepRenderer: React.FC = () => {
   useEffect(() => {
     dispatch(getTagTour());
     dispatch(getVehicleTour());
+    dispatch(getCommistionRate());
   }, []);
   const StepsToRender = (
     <>

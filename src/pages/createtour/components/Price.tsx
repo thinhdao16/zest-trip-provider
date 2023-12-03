@@ -9,6 +9,7 @@ import { FaRegTrashCan } from "react-icons/fa6";
 import { GoLocation } from "react-icons/go";
 import { IoMdClose } from "react-icons/io";
 import { formatNumberInput } from "../../../utils/formatNumberInput";
+import { useSelector } from "react-redux";
 
 const radioItems = [
   "Standard",
@@ -20,6 +21,10 @@ const typeDefault = {
   type: "DEFAULT",
 };
 const Price: React.FC = () => {
+  const { commision } = useSelector(
+    (state: { auth: { commision: number } }) => state.auth
+  );
+
   const { currentStep, updateFormValues } = useStepContext();
   const [selectedCountries, setSelectedCountries]: any = useState([]);
   const [dataTicket, setDataTicket]: any = useState([]);
@@ -351,7 +356,7 @@ const Price: React.FC = () => {
               newNumberOfPeople >= form.numberOfPeople
                 ? newNumberOfPeople
                 : form.numberOfPeople,
-            payoutPerPerson: (form.retailPrice * 30) / 100,
+            payoutPerPerson: form.retailPrice * commision,
           };
           return updatedForm;
         } else if (index === id + 1) {
@@ -375,7 +380,7 @@ const Price: React.FC = () => {
               newNumberOfPeople >= form.numberOfPeople
                 ? newNumberOfPeople
                 : form.numberOfPeople,
-            payoutPerPerson: (form.retailPrice * 30) / 100,
+            payoutPerPerson: form.retailPrice * commision,
           };
           return updatedForm;
         } else if (index === id + 1) {
@@ -399,7 +404,7 @@ const Price: React.FC = () => {
               newNumberOfPeople >= form.numberOfPeople
                 ? newNumberOfPeople
                 : form.numberOfPeople,
-            payoutPerPerson: (form.retailPrice * 30) / 100,
+            payoutPerPerson: form.retailPrice * commision,
           };
           return updatedForm;
         } else if (index === id + 1) {
@@ -687,7 +692,7 @@ const Price: React.FC = () => {
                           </div>
                           <div>
                             <p className="font-medium h-4 mb-2">Commission</p>
-                            <p className="font-medium">30%</p>
+                            <p className="font-medium">{commision * 100}%</p>
                           </div>
                           <div>
                             <div className="font-medium h-4 mb-2">
@@ -970,7 +975,7 @@ const Price: React.FC = () => {
                             </div>
                             <div>
                               <p className="font-medium">Commission</p>
-                              <p className="font-medium">30%</p>
+                              <p className="font-medium">{commision * 100}%</p>
                             </div>
                             <div>
                               <div className="font-medium">
@@ -1215,7 +1220,7 @@ const Price: React.FC = () => {
                             </div>
                             <div>
                               <p className="font-medium">Commission</p>
-                              <p className="font-medium">30%</p>
+                              <p className="font-medium">{commision * 100}%</p>
                             </div>
                             <div>
                               <div className="font-medium">

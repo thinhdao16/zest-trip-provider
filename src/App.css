@@ -172,7 +172,9 @@ video {
 }
 
 * {
-  font-family: 'PingFang SC', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-family: "PingFang SC", "Microsoft YaHei", -apple-system,
+    BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell",
+    "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
 }
 
 /* HTML5 display-role reset for older browsers */
@@ -195,7 +197,9 @@ body {
 }
 /* Thêm đoạn mã sau vào file CSS của bạn */
 body {
-  font-family: 'PingFang SC', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-family: "PingFang SC", "Microsoft YaHei", -apple-system,
+    BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell",
+    "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
 }
 
 ol,
@@ -342,13 +346,13 @@ table {
 
 /* Add this to your CSS or SCSS file */
 .ant-popover-inner .ant-popconfirm-buttons .ant-btn-primary {
-  background:#05445E !important ; 
-  transition: background-color 0.3s ease; 
+  background: #05445e !important ;
+  transition: background-color 0.3s ease;
   z-index: 99999;
 }
 .ant-popover-inner .ant-popconfirm-buttons .ant-btn-primary:hover {
-  background:rgba(5, 68, 94, 0.4) !important ;
-  color: #05445E; 
+  background: rgba(5, 68, 94, 0.4) !important ;
+  color: #05445e;
 }
 /*add  anitmation*/
 .step-enter {
@@ -373,7 +377,25 @@ table {
   transition: opacity 500ms, transform 500ms;
 }
 
-
+.ant-menu-submenu-selected .ant-menu-item-selected {
+  background: rgba(5, 68, 94, 0.3) !important;
+  color: #05445e !important;
+}
+.ant-menu-submenu-selected .ant-menu-submenu-title {
+  color: #05445e !important;
+}
+li .ant-menu-submenu-selected .ant-menu-title-content {
+  color: #05445e !important;
+}
+.ant-menu-item-selected {
+  background: rgba(5, 68, 94, 0.1) !important;
+  color: #05445e !important;
+}
+#selectDateSingle {
+  padding: 20px;
+  width: 500px;
+  flex-warp: warp;
+}
 
 /*end*/
 /*end*/

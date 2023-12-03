@@ -19,6 +19,8 @@ interface AuthContextValue {
   setVoucherView: any;
   loading: any;
   setLoading: any;
+  dataTicketCreate: any;
+  setDataTicketCreate: any;
 }
 
 export const DataContext = createContext<AuthContextValue>(
@@ -37,6 +39,7 @@ export function DataContextProvider({
   const [dataManyBookFake, setDataManyBookFake] = useState<any>();
   const [voucherView, setVoucherView] = useState<any>();
   const [loading, setLoading] = useState<boolean>(false);
+  const [dataTicketCreate, setDataTicketCreate] = useState<any>([]);
   return (
     <DataContext.Provider
       value={{
@@ -52,6 +55,8 @@ export function DataContextProvider({
         setDataManyBookFake,
         voucherView,
         setVoucherView,
+        dataTicketCreate,
+        setDataTicketCreate,
       }}
     >
       {children}

@@ -1,7 +1,4 @@
 import { useParams } from "react-router-dom";
-import { useState } from "react";
-import Header from "./Header";
-import NavBar from "./Navbar";
 import BookDetailScreenMain from "./BookDetailScreenMain";
 
 function DetailBook() {

@@ -18,6 +18,7 @@ export const boostTour = createAsyncThunk(
         tour_ids: data?.tour_ids,
         redirectUrl: "https://zest-trip-provider.vercel.app",
       });
+      console.log(response);
       if (response.status === 201) {
         console.log(response);
         const checkoutUrl = response.data.data.checkout_session;
@@ -41,10 +42,10 @@ export const boostTour = createAsyncThunk(
           console.log(errorMessages);
           toast.error(errorMessages);
         } else {
-          toast.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
+          toast.error("Setup fail!");
         }
       } else {
-        toast.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
+        toast.error("Setup fail!");
       }
       throw new Error("Failed to fetch other data");
     }

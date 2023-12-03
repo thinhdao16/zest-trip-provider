@@ -96,7 +96,6 @@ export const createRefundForCus = createAsyncThunk(
   "booking/createRefundForCus", // Slice name: "tour"
   async (requestData: any) => {
     try {
-      console.log(requestData);
       const formData = new FormData();
       formData.append("file", requestData?.File);
       formData.append("booking_id", requestData?.booking_id);
@@ -186,6 +185,87 @@ export const getBookingDetail = createAsyncThunk(
     }
   }
 );
+export const cancelTour = createAsyncThunk(
+  "booking/cancelTour",
+  async (idBookDetail: any) => {
+    try {
+      const response = await axiosInstance.post(
+        `${BASE_URL}/booking/cancel/${idBookDetail?.idTour}`,
+        {
+          date: idBookDetail?.dataDate,
+          reason: idBookDetail?.reason,
+        }
+      );
+      if (response.status === 201) {
+        toast.success("Cancell success");
+        return response.data.data;
+      }
+    } catch (error: any) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        const errorMessages = error.response.data.message;
+
+        if (Array.isArray(errorMessages)) {
+          errorMessages.forEach((errorMessage: string) => {
+            console.log(errorMessage);
+            toast.error(errorMessage);
+          });
+        } else if (typeof errorMessages === "string") {
+          console.log(errorMessages);
+          toast.error(errorMessages);
+        } else {
+          toast.error("Setup fail!");
+        }
+      } else {
+        toast.error("Setup fail!");
+      }
+      throw new Error("Failed to fetch other data");
+    }
+  }
+);
+export const blockTour = createAsyncThunk(
+  "booking/blockTour",
+  async (idBookDetail: any) => {
+    try {
+      const response = await axiosInstance.post(
+        `${BASE_URL}/booking/block/${idBookDetail?.idTour}`,
+        {
+          date: idBookDetail?.dataDate,
+        }
+      );
+      if (response.status === 201) {
+        toast.success("Block success");
+        return response.data.data;
+      }
+    } catch (error: any) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        const errorMessages = error.response.data.message;
+
+        if (Array.isArray(errorMessages)) {
+          errorMessages.forEach((errorMessage: string) => {
+            console.log(errorMessage);
+            toast.error(errorMessage);
+          });
+        } else if (typeof errorMessages === "string") {
+          console.log(errorMessages);
+          toast.error(errorMessages);
+        } else {
+          toast.error("Setup fail!");
+        }
+      } else {
+        toast.error("Setup fail!");
+      }
+      throw new Error("Failed to fetch other data");
+    }
+  }
+);
 const bookingSice = createSlice({
   name: "booking",
   initialState,
@@ -243,6 +323,32 @@ const bookingSice = createSlice({
         state.errorBooking = null;
       })
       .addCase(getBookingDetail.rejected, (state: any, action) => {
+        state.loadingBooking = false;
+        state.error = action.error.message;
+      })
+
+      .addCase(cancelTour.pending, (state) => {
+        state.loadingBooking = true;
+        state.errorBooking = null;
+      })
+      .addCase(cancelTour.fulfilled, (state) => {
+        state.loadingBooking = false;
+        state.errorBooking = null;
+      })
+      .addCase(cancelTour.rejected, (state: any, action) => {
+        state.loadingBooking = false;
+        state.error = action.error.message;
+      })
+
+      .addCase(blockTour.pending, (state) => {
+        state.loadingBooking = true;
+        state.errorBooking = null;
+      })
+      .addCase(blockTour.fulfilled, (state) => {
+        state.loadingBooking = false;
+        state.errorBooking = null;
+      })
+      .addCase(blockTour.rejected, (state: any, action) => {
         state.loadingBooking = false;
         state.error = action.error.message;
       });

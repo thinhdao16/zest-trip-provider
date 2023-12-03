@@ -1,7 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import { FcPaid } from "react-icons/fc";
 import { GiPriceTag } from "react-icons/gi";
-import { MdCreateNewFolder, MdUpdate } from "react-icons/md";
+import { MdCreateNewFolder } from "react-icons/md";
 import dayjs from "dayjs";
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import { AiFillFilter } from "react-icons/ai";
@@ -11,19 +11,17 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { getBookingDetail } from "../../../store/redux/silce/booking";
 import { StatusBooking } from "../../../styles/status/booking";
-import { Menu, MenuItem } from "@mui/material";
+import { Menu, MenuItem, Rating } from "@mui/material";
 import { formatNumber } from "../../../utils/formatNumber";
 import Tooltip from "@mui/material/Tooltip";
-import { FaLocationDot } from "react-icons/fa6";
-import { RiRefundFill } from "react-icons/ri";
-import { BsBookmarkCheck } from "react-icons/bs";
-import { GrCapacity } from "react-icons/gr";
 import { StatusTour } from "../../../styles/status/tour";
 import { DatePicker } from "antd";
 import { fetchTourDetail } from "../../../store/redux/silce/tourSlice";
 import { IoHomeOutline } from "react-icons/io5";
 import TruncatedText from "../../../utils/TruncatedText";
 import { Calendar } from "react-multi-date-picker";
+import ModalCancelBooking from "./ModalCancelBooking";
+import ModalBlockBooking from "./ModalBlockBooking";
 
 function BookDetailScreenMain() {
   const dispatch: AppDispatch = useDispatch();
@@ -31,15 +29,14 @@ function BookDetailScreenMain() {
 
   const { bookingDetail } = useSelector((detail: any) => detail?.booking);
   const tourDetail: any = useSelector((state: any) => state.tour.tourGetDetail);
+  console.log(tourDetail);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [filteredBookings, setFilteredBookings] = useState(bookingDetail);
-  console.log(filteredBookings);
   const [selectedStatus, setSelectedStatus] = useState("");
-  // const [startDate, setStartDate] = useState("");
-  // const [endDate, setEndDate] = useState("");
+
   const [dateChoose, setDateChoose] = useState<any>([]);
   const [openField, setOpenField] = useState(false);
-
+  console.log(dateChoose);
   const uniqueDates = new Set();
   const filteredBookingDetails: any = [];
   bookingDetail?.forEach((booking: any) => {
@@ -53,12 +50,6 @@ function BookDetailScreenMain() {
   const book_date_fil = filteredBookingDetails?.map(
     (data: { booked_date: string }) =>
       dayjs(data?.booked_date)?.format("YYYY-MM-DD")
-  );
-  const filteredBookingStatus = filteredBookings?.filter(
-    (booking: any) =>
-      booking.status !== "REJECT" &&
-      booking.status !== "PENDING" &&
-      booking.status !== "0"
   );
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -197,7 +188,7 @@ function BookDetailScreenMain() {
   };
   const uniqueDatesMap = new Map();
   filteredBookings.forEach((booking: any) => {
-    const bookedDate = booking.booked_date.split("T")[0];
+    const bookedDate = dayjs(booking.booked_date).format("YYYY-MM-DD");
     if (!uniqueDatesMap.has(bookedDate)) {
       uniqueDatesMap.set(bookedDate, booking);
     }
@@ -224,149 +215,147 @@ function BookDetailScreenMain() {
               </div>
             </Link>
           </div>
-
-          <div className="text-end flex flex-col justify-end items-end">
-            <div className="mb-2 flex items-center gap-1">
-              {!openField && (
-                <button
-                  className="bg-navy-blue py-1.5 px-2 text-white rounded-md text-sm "
-                  onClick={handleBookingHave}
-                >
-                  Check booking
-                </button>
-              )}
-              {openField && (
-                <button
-                  className="bg-navy-blue py-1.5 px-2 text-white rounded-md text-sm "
-                  onClick={handleAvailabilityHave}
-                >
-                  Check availability
-                </button>
-              )}
-
-              <DatePicker
-                disabledDate={disabledDate}
-                onChange={(date: any) =>
-                  handleAddSingleDate(availabilityIndex, date)
-                }
-              />
-            </div>
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                className="relative border border-gray-300 pl-0 py-1 w-24 rounded-md bg-white"
-                onClick={handleClick}
-              >
-                <AiFillFilter className="absolute top-2 left-2" />
-                Filter
-              </button>
-              <div>
-                <Menu
-                  id="basic-menu"
-                  anchorEl={anchorEl}
-                  open={open}
-                  onClose={handleClose}
-                  MenuListProps={{
-                    "aria-labelledby": "basic-button",
-                  }}
-                >
-                  <MenuItem onClick={() => handleStatusClick("")}>All</MenuItem>
-                  <MenuItem onClick={() => handleStatusClick("PENDING")}>
-                    Pending
-                  </MenuItem>
-                  <MenuItem onClick={() => handleStatusClick("REJECT")}>
-                    Reject
-                  </MenuItem>
-                  <MenuItem
-                    onClick={() => handleStatusClick("USER_REQUEST_REFUND")}
-                  >
-                    User resquest refund
-                  </MenuItem>
-                  <MenuItem onClick={() => handleStatusClick("ACCEPTED")}>
-                    Accept
-                  </MenuItem>
-                  <MenuItem
-                    onClick={() => handleStatusClick("PROVIDER_REFUND")}
-                  >
-                    Provider_refund
-                  </MenuItem>
-                  <MenuItem onClick={() => handleStatusClick("REFUNDED")}>
-                    Refunded
-                  </MenuItem>
-                </Menu>
-              </div>
-              <div>
-                <Link to={`/booking/many/cancel/${index}`}>
-                  <button className="bg-red-500 text-white py-1 px-2 rounded-lg">
-                    Cancel trip
-                  </button>
-                </Link>
-              </div>
-            </div>
-          </div>
         </div>
-        <div className="bg-white p-4 rounded-lg shadow-custom-card-mui">
-          <div className="grid grid-cols-12 gap-4">
-            <div className="col-span-2">
-              <img
-                src={tourDetail?.tour_images?.[0]}
-                alt={`Image ${index}`}
-                className="w-full rounded-lg "
-              />
-            </div>
-            <div className="col-span-10">
-              <div className="flex flex-col gap-2">
-                <div className="grid grid-cols-12"></div>
-                <div className="flex justify-between">
-                  <span className="font-medium text-lg">
-                    {tourDetail?.name}
-                  </span>
-                  <div>
-                    <StatusTour>{tourDetail?.status}</StatusTour>
-                  </div>
-                </div>
-
-                <div className="flex gap-1 items-center">
-                  <FaLocationDot />
-                  <div>
-                    <p className="font-medium">Location</p>
-                    <span>
-                      {tourDetail?.address_name}, {tourDetail?.address_ward},{" "}
-                      {tourDetail?.address_district},{" "}
-                      {tourDetail?.address_province},{" "}
-                      {tourDetail?.address_country}
+        <div className="grid grid-cols-12">
+          <div className="col-span-8">
+            <div className="flex items-center gap-4 bg-white  p-4 shadow-custom-card-mui rounded-lg">
+              <div className="">
+                <img
+                  src={tourDetail?.tour_images?.[0]}
+                  alt={`Image ${index}`}
+                  className="rounded-lg h-20 w-20 "
+                />
+              </div>
+              <div className="">
+                <div className="flex flex-col">
+                  <div className="flex justify-between">
+                    <span className="font-medium text-lg">
+                      {tourDetail?.name}
                     </span>
-                  </div>
-                </div>
-                <div className="grid grid-cols-3">
-                  <div className="flex items-center gap-1">
-                    <GrCapacity />
                     <div>
-                      <p className="font-medium">Duration</p>
-                      <span>{tourDetail?.duration}</span>
+                      <StatusTour>{tourDetail?.status}</StatusTour>
                     </div>
                   </div>
-                  <div className="flex items-center gap-1">
-                    <BsBookmarkCheck />
-                    <div>
-                      <p className="font-medium">Book before</p>
-                      <span>{tourDetail?.book_before}</span>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <RiRefundFill />
-                    <div>
-                      <p className="font-medium">Refund before</p>
-                      <span>{tourDetail?.refund_before}</span>
-                    </div>
+
+                  <span>
+                    {tourDetail?.address_name}, {tourDetail?.address_ward},{" "}
+                    {tourDetail?.address_district},{" "}
+                    {tourDetail?.address_province},{" "}
+                    {tourDetail?.address_country}
+                  </span>
+
+                  <div className="grid grid-cols-3">
+                    <span>
+                      <span className="font-medium">
+                        {tourDetail?.duration_day}
+                      </span>
+                      /day
+                    </span>
+                    <span>
+                      <span className="font-medium">
+                        {tourDetail?.duration_night}
+                      </span>
+                      /night
+                    </span>
+                    <Rating
+                      name="half-rating-read"
+                      defaultValue={tourDetail?.avgRating}
+                      precision={0.5}
+                      readOnly
+                    />
                   </div>
                 </div>
               </div>
             </div>
           </div>
+
+          <div className="col-span-4">
+            <div className="text-end flex flex-col justify-end items-end">
+              <div className="mb-2 flex items-center gap-1">
+                {!openField && (
+                  <button
+                    className="bg-navy-blue py-1.5 px-2 text-white rounded-md text-sm "
+                    onClick={handleBookingHave}
+                  >
+                    Check booking
+                  </button>
+                )}
+                {openField && (
+                  <button
+                    className="bg-navy-blue py-1.5 px-2 text-white rounded-md text-sm "
+                    onClick={handleAvailabilityHave}
+                  >
+                    Check availability
+                  </button>
+                )}
+
+                <DatePicker
+                  disabledDate={disabledDate}
+                  onChange={(date: any) =>
+                    handleAddSingleDate(availabilityIndex, date)
+                  }
+                />
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  className="relative border border-gray-300 pl-0 py-1 w-24 rounded-md bg-white"
+                  onClick={handleClick}
+                >
+                  <AiFillFilter className="absolute top-2 left-2" />
+                  Filter
+                </button>
+                <div>
+                  <Menu
+                    id="basic-menu"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    MenuListProps={{
+                      "aria-labelledby": "basic-button",
+                    }}
+                  >
+                    <MenuItem onClick={() => handleStatusClick("")}>
+                      All
+                    </MenuItem>
+                    <MenuItem onClick={() => handleStatusClick("PENDING")}>
+                      Pending
+                    </MenuItem>
+                    <MenuItem onClick={() => handleStatusClick("REJECT")}>
+                      Reject
+                    </MenuItem>
+                    <MenuItem
+                      onClick={() => handleStatusClick("USER_REQUEST_REFUND")}
+                    >
+                      User resquest refund
+                    </MenuItem>
+                    <MenuItem onClick={() => handleStatusClick("ACCEPTED")}>
+                      Accept
+                    </MenuItem>
+                    <MenuItem
+                      onClick={() => handleStatusClick("PROVIDER_REFUND")}
+                    >
+                      Provider_refund
+                    </MenuItem>
+                    <MenuItem onClick={() => handleStatusClick("REFUNDED")}>
+                      Refunded
+                    </MenuItem>
+                  </Menu>
+                </div>
+                <div>
+                  {/* <Link to={`/booking/many/cancel/${index}`}>
+                    <button className="bg-red-500 text-white py-1 px-2 rounded-lg">
+                      Cancel trip
+                    </button>
+                  </Link> */}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+
         <div>
-          <div className="grid grid-cols-12 gap-4 p-4 shadow-custom-card-mui ">
+          <div className="grid grid-cols-12 gap-4 p-4 ">
             <div className="col-span-5">
               <div className="bg-white rounded-lg shadow-custom-card-mui p-4 flex flex-col gap-2">
                 <div className="grid grid-cols-6 gap-4">
@@ -415,22 +404,37 @@ function BookDetailScreenMain() {
                   <div className="col-span-2">
                     <span className="font-medium">Time slot</span>
                   </div>
+
                   <div className="col-span-4">
-                    {uniqueBookings?.map((time) => (
+                    {dateChoose?.length === 0 ? (
                       <span>
-                        {dayjs(time?.booked_date)?.format("YYYY-MM-DD")}
+                        {dateChoose?.length === 0 && (
+                          <span className="font-medium text-gray-500 text-xs">
+                            (All Booked),{" "}
+                          </span>
+                        )}
+                        {uniqueBookings?.map((time) => (
+                          <span>
+                            {dayjs(time?.booked_date)?.format("YYYY-MM-DD")},{" "}
+                          </span>
+                        ))}
                       </span>
-                    ))}
+                    ) : (
+                      <>
+                        {dateChoose?.map((choose: string) => (
+                          <span>{choose}</span>
+                        ))}
+                      </>
+                    )}
                   </div>
                 </div>
                 <hr />
-                <div className="mt-2 text-end">
-                  <button
-                    type="button"
-                    className="bg-red-500 px-2 py-1 text-white rounded-md"
-                  >
-                    Cancel trip
-                  </button>
+
+                <div className="mt-2  flex items-center justify-end gap-4">
+                  <ModalBlockBooking dateDate={dateChoose} />
+                  {dateChoose?.length < 2 && (
+                    <ModalCancelBooking dateDate={dateChoose} />
+                  )}
                 </div>
               </div>
             </div>
@@ -451,9 +455,7 @@ function BookDetailScreenMain() {
             </div>
           </div>
         </div>
-        <div className="mb-4 " id="information_basic">
-          <div className="font-medium text-xl pb-4"> Tour detail</div>
-        </div>
+
         <div className=" p-4 flex flex-col gap-3">
           {filteredBookings && filteredBookings.length > 0 ? (
             filteredBookings.map((booking: any, index: number) => (

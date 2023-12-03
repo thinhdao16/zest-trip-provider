@@ -43,7 +43,7 @@ export const dataPromotionChoose: DataPromotionChoose[] = [
       },
     ],
     title: "Tailored",
-    titleInfo: ["200,000 VND/2 weeks for each boosted tour", "1 account "],
+    titleInfo: ["/2 weeks for each boosted tour"],
     desctiption: [
       "Explore the tour without interruptions from ads",
       "Enjoy the tour anywhere, even offline",
