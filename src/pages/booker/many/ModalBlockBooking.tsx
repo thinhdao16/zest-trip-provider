@@ -13,7 +13,7 @@ import { useDispatch } from "react-redux";
 import { blockTour } from "../../../store/redux/silce/booking";
 import { Alert, CircularProgress } from "@mui/joy";
 import Warning from "@mui/icons-material/Warning";
-import { toast } from "react-toastify";
+import { message } from "antd";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -31,7 +31,7 @@ export default function ModalBlockBooking(dataDate: any) {
   const [openConfirm, setOpenConfirm] = React.useState(false);
   const handleClickOpen = () => {
     if (dataDate?.dateDate.length === 0) {
-      toast.warning("Please select a date before block the trip.");
+      message.warning("Please select a date before block the trip.");
     } else {
       setOpen(true);
     }

@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { BASE_URL, axiosInstance } from "../../apiInterceptors";
-import { toast } from "react-toastify";
+import { message } from "antd";
 
 const initialState = {
   tours: [],
@@ -38,7 +38,7 @@ export const fetchTours = createAsyncThunk(
       }
     } catch (error) {
       console.log(error);
-      // toast.error("Failed to fetch tours!");
+      // message.error("Failed to fetch tours!");
       throw new Error("Failed to fetch tours");
     }
   }
@@ -58,7 +58,7 @@ export const getTours = createAsyncThunk("tour/getTours", async () => {
     }
   } catch (error) {
     console.log(error);
-    // toast.error("Failed to fetch tours!");
+    // message.error("Failed to fetch tours!");
     throw new Error("Failed to fetch tours");
   }
 });
@@ -77,7 +77,7 @@ export const getAllTours = createAsyncThunk("tour/getAllTours", async () => {
     }
   } catch (error) {
     console.log(error);
-    // toast.error("Failed to fetch tours!");
+    // message.error("Failed to fetch tours!");
     throw new Error("Failed to fetch tours");
   }
 });
@@ -130,10 +130,10 @@ export const postCreateTour = createAsyncThunk(
         }
       );
       if (response.status === 201) {
-        toast.success("Tour created successfully!"); // Thông báo tạo tour thành công
+        message.success("Tour created successfully!"); // Thông báo tạo tour thành công
         return response.data;
       } else {
-        toast.error("Failed to create tour!"); // Thông báo lỗi khi tạo tour
+        message.error("Failed to create tour!"); // Thông báo lỗi khi tạo tour
         throw new Error("Failed to create tour");
       }
     } catch (error: any) {
@@ -148,16 +148,16 @@ export const postCreateTour = createAsyncThunk(
         if (Array.isArray(errorMessages)) {
           errorMessages.forEach((errorMessage: string) => {
             console.log(errorMessage);
-            toast.error(errorMessage);
+            message.error(errorMessage);
           });
         } else if (typeof errorMessages === "string") {
           console.log(errorMessages);
-          toast.error(errorMessages);
+          message.error(errorMessages);
         } else {
-          toast.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
+          message.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
         }
       } else {
-        toast.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
+        message.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
       }
       throw new Error("Failed to fetch other data");
     }
@@ -178,10 +178,10 @@ export const postCreateAvailabilityTour = createAsyncThunk(
         }
       );
       if (response.status === 201) {
-        // toast.success("Availability created successfully!"); // Thông báo tạo Availability thành công
+        // message.success("Availability created successfully!"); // Thông báo tạo Availability thành công
         return response.data;
       } else {
-        // toast.error("Failed to create Availability!"); // Thông báo lỗi khi tạo Availability
+        // message.error("Failed to create Availability!"); // Thông báo lỗi khi tạo Availability
         throw new Error("Failed to create Availability");
       }
     } catch (error: any) {
@@ -195,16 +195,16 @@ export const postCreateAvailabilityTour = createAsyncThunk(
         if (Array.isArray(errorMessages)) {
           errorMessages.forEach((errorMessage: string) => {
             console.log(errorMessage);
-            toast.error(errorMessage);
+            message.error(errorMessage);
           });
         } else if (typeof errorMessages === "string") {
           console.log(errorMessages);
-          toast.error(errorMessages);
+          message.error(errorMessages);
         } else {
-          toast.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
+          message.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
         }
       } else {
-        toast.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
+        message.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
       }
       throw new Error("Failed to fetch other data");
     }
@@ -225,10 +225,10 @@ export const postCreateTicketTour = createAsyncThunk(
         }
       );
       if (response.status === 201) {
-        // toast.success("Availability created successfully!"); // Thông báo tạo Availability thành công
+        // message.success("Availability created successfully!"); // Thông báo tạo Availability thành công
         return response.data;
       } else {
-        // toast.error("Failed to create Availability!"); // Thông báo lỗi khi tạo Availability
+        // message.error("Failed to create Availability!"); // Thông báo lỗi khi tạo Availability
         throw new Error("Failed to create Availability");
       }
     } catch (error: any) {
@@ -242,16 +242,16 @@ export const postCreateTicketTour = createAsyncThunk(
         if (Array.isArray(errorMessages)) {
           errorMessages.forEach((errorMessage: string) => {
             console.log(errorMessage);
-            toast.error(errorMessage);
+            message.error(errorMessage);
           });
         } else if (typeof errorMessages === "string") {
           console.log(errorMessages);
-          toast.error(errorMessages);
+          message.error(errorMessages);
         } else {
-          toast.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
+          message.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
         }
       } else {
-        toast.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
+        message.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
       }
       throw new Error("Failed to fetch other data");
     }
@@ -274,7 +274,7 @@ export const addTourImage = createAsyncThunk(
       if (response.status === 200) {
         return response.data;
       } else {
-        toast.error("Failed to create tour!"); // Thông báo lỗi khi tạo tour
+        message.error("Failed to create tour!"); // Thông báo lỗi khi tạo tour
         throw new Error("Failed to create tour");
       }
     } catch (error: any) {
@@ -288,16 +288,16 @@ export const addTourImage = createAsyncThunk(
         if (Array.isArray(errorMessages)) {
           errorMessages.forEach((errorMessage: string) => {
             console.log(errorMessage);
-            toast.error(errorMessage);
+            message.error(errorMessage);
           });
         } else if (typeof errorMessages === "string") {
           console.log(errorMessages);
-          toast.error(errorMessages);
+          message.error(errorMessages);
         } else {
-          toast.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
+          message.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
         }
       } else {
-        toast.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
+        message.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
       }
       throw new Error("Failed to fetch other data");
     }
@@ -320,7 +320,7 @@ export const editContentTour = createAsyncThunk(
       if (response.status === 200) {
         return response.data;
       } else {
-        toast.error("Failed to create tour!"); // Thông báo lỗi khi tạo tour
+        message.error("Failed to create tour!"); // Thông báo lỗi khi tạo tour
         throw new Error("Failed to create tour");
       }
     } catch (error: any) {
@@ -334,16 +334,16 @@ export const editContentTour = createAsyncThunk(
         if (Array.isArray(errorMessages)) {
           errorMessages.forEach((errorMessage: string) => {
             console.log(errorMessage);
-            toast.error(errorMessage);
+            message.error(errorMessage);
           });
         } else if (typeof errorMessages === "string") {
           console.log(errorMessages);
-          toast.error(errorMessages);
+          message.error(errorMessages);
         } else {
-          toast.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
+          message.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
         }
       } else {
-        toast.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
+        message.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
       }
       throw new Error("Failed to fetch other data");
     }
@@ -379,16 +379,16 @@ export const editTicketTour = createAsyncThunk(
         if (Array.isArray(errorMessages)) {
           errorMessages.forEach((errorMessage: string) => {
             console.log(errorMessage);
-            toast.error(errorMessage);
+            message.error(errorMessage);
           });
         } else if (typeof errorMessages === "string") {
           console.log(errorMessages);
-          toast.error(errorMessages);
+          message.error(errorMessages);
         } else {
-          toast.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
+          message.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
         }
       } else {
-        toast.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
+        message.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
       }
       throw new Error("Failed to fetch other data");
     }
@@ -408,10 +408,10 @@ export const editTicketAvailability = createAsyncThunk(
         }
       );
       if (response.status === 200) {
-        // toast.success("Availability created successfully!"); // Thông báo tạo Availability thành công
+        // message.success("Availability created successfully!"); // Thông báo tạo Availability thành công
         return response.data;
       } else {
-        // toast.error("Failed to create Availability!"); // Thông báo lỗi khi tạo Availability
+        // message.error("Failed to create Availability!"); // Thông báo lỗi khi tạo Availability
         throw new Error("Failed to create Availability");
       }
     } catch (error: any) {
@@ -425,16 +425,16 @@ export const editTicketAvailability = createAsyncThunk(
         if (Array.isArray(errorMessages)) {
           errorMessages.forEach((errorMessage: string) => {
             console.log(errorMessage);
-            toast.error(errorMessage);
+            message.error(errorMessage);
           });
         } else if (typeof errorMessages === "string") {
           console.log(errorMessages);
-          toast.error(errorMessages);
+          message.error(errorMessages);
         } else {
-          toast.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
+          message.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
         }
       } else {
-        toast.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
+        message.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
       }
       throw new Error("Failed to fetch other data");
     }
@@ -469,16 +469,16 @@ export const editStatusTour = createAsyncThunk(
         if (Array.isArray(errorMessages)) {
           errorMessages.forEach((errorMessage: string) => {
             console.log(errorMessage);
-            toast.error(errorMessage);
+            message.error(errorMessage);
           });
         } else if (typeof errorMessages === "string") {
           console.log(errorMessages);
-          toast.error(errorMessages);
+          message.error(errorMessages);
         } else {
-          toast.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
+          message.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
         }
       } else {
-        toast.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
+        message.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
       }
       throw new Error("Failed to fetch other data");
     }

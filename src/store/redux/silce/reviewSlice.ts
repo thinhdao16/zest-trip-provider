@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axiosInstance, { BASE_URL } from "../../apiInterceptors";
-import { toast } from "react-toastify";
+import { message } from "antd";
 
 const initialState = {
   review: [],
@@ -16,10 +16,10 @@ export const getReview = createAsyncThunk("review/getReview", async () => {
       `${BASE_URL}/review/provider/${idUser}`,
       {}
     );
-    // toast.success("This is review!");
+    // message.success("This is review!");
     return response.data.data;
   } catch (error) {
-    toast.error("Failed to get review!");
+    message.error("Failed to get review!");
     throw new Error("Failed to fetch tours");
   }
 });
@@ -32,10 +32,10 @@ export const replyReview = createAsyncThunk(
         `${BASE_URL}/review/${data?.tourId}/reply/${data.id}`,
         { content: data?.content }
       );
-      toast.success("Reply success!");
+      message.success("Reply success!");
       return response.data.data;
     } catch (error) {
-      toast.error("Failed to reply!");
+      message.error("Failed to reply!");
       throw new Error("Failed to fetch tours");
     }
   }

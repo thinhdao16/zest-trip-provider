@@ -11,8 +11,6 @@ import {
   InputAdornment,
   TextField,
 } from "@mui/material";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"; // Import CSS của react-toastify
 import login from "../../assets/login.svg";
 interface FormElements extends HTMLFormControlsCollection {
   email: HTMLInputElement;
@@ -33,6 +31,7 @@ import { DataContext } from "../../store/dataContext/DataContext";
 import axios from "axios";
 import { BASE_URL } from "../../store/apiInterceptors";
 import { IoPersonOutline } from "react-icons/io5";
+import { message } from "antd";
 
 function Login() {
   const navigate = useNavigate();
@@ -93,16 +92,16 @@ function Login() {
         if (Array.isArray(errorMessages)) {
           errorMessages.forEach((errorMessage: string) => {
             console.log(errorMessage);
-            toast.error(errorMessage);
+            message.error(errorMessage);
           });
         } else if (typeof errorMessages === "string") {
           console.log(errorMessages);
-          toast.error(errorMessages);
+          message.error(errorMessages);
         } else {
-          toast.error("SignIn fail!"); // Thông báo đăng nhập thất bại mặc định
+          message.error("SignIn fail!"); // Thông báo đăng nhập thất bại mặc định
         }
       } else {
-        toast.error("SignIn fail!"); // Thông báo đăng nhập thất bại mặc định
+        message.error("SignIn fail!"); // Thông báo đăng nhập thất bại mặc định
       }
     }
   };

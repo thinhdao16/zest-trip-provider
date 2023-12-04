@@ -342,13 +342,6 @@ function BookDetailScreenMain() {
                     </MenuItem>
                   </Menu>
                 </div>
-                <div>
-                  {/* <Link to={`/booking/many/cancel/${index}`}>
-                    <button className="bg-red-500 text-white py-1 px-2 rounded-lg">
-                      Cancel trip
-                    </button>
-                  </Link> */}
-                </div>
               </div>
             </div>
           </div>

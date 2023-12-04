@@ -11,7 +11,7 @@ import { GoLocation } from "react-icons/go";
 import { AppDispatch } from "../../../store/redux/store";
 import { useDispatch } from "react-redux";
 import { postCreateAvailabilityTour } from "../../../store/redux/silce/tourSlice";
-import { toast } from "react-toastify";
+import { message } from "antd";
 
 const style = {
   position: "absolute" as const,
@@ -436,7 +436,7 @@ function AddAvailability({
         if (postCreateAvailabilityTour.fulfilled.match(response)) {
           setLoading((prev: any) => !prev);
           setOpen(false);
-          toast.success("Add availability success");
+          message.success("Add availability success");
         }
       }
     );

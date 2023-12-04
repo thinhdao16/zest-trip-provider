@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axiosInstance, { BASE_URL } from "../../apiInterceptors";
-import { toast } from "react-toastify";
+import { message } from "antd";
 
 const initialState = {
   promotion: [],
@@ -36,16 +36,16 @@ export const boostTour = createAsyncThunk(
         if (Array.isArray(errorMessages)) {
           errorMessages.forEach((errorMessage: string) => {
             console.log(errorMessage);
-            toast.error(errorMessage);
+            message.error(errorMessage);
           });
         } else if (typeof errorMessages === "string") {
           console.log(errorMessages);
-          toast.error(errorMessages);
+          message.error(errorMessages);
         } else {
-          toast.error("Setup fail!");
+          message.error("Setup fail!");
         }
       } else {
-        toast.error("Setup fail!");
+        message.error("Setup fail!");
       }
       throw new Error("Failed to fetch other data");
     }
@@ -74,16 +74,16 @@ export const getProviderTourBoost = createAsyncThunk(
       //   if (Array.isArray(errorMessages)) {
       //     errorMessages.forEach((errorMessage: string) => {
       //       console.log(errorMessage);
-      //       toast.error(errorMessage);
+      //       message.error(errorMessage);
       //     });
       //   } else if (typeof errorMessages === "string") {
       //     console.log(errorMessages);
-      //     toast.error(errorMessages);
+      //     message.error(errorMessages);
       //   } else {
-      //     toast.error("Get fail!"); // Thông báo đăng nhập thất bại mặc định
+      //     message.error("Get fail!"); // Thông báo đăng nhập thất bại mặc định
       //   }
       // } else {
-      //   toast.error("Get fail!"); // Thông báo đăng nhập thất bại mặc định
+      //   message.error("Get fail!"); // Thông báo đăng nhập thất bại mặc định
       // }
       throw new Error("Failed to fetch other data");
     }

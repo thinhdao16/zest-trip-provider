@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axiosInstance, { BASE_URL } from "../../apiInterceptors";
-import { toast } from "react-toastify";
+import { message } from "antd";
 
 const initialState = {
   booking: [],
@@ -26,16 +26,16 @@ export const getBooking = createAsyncThunk("booking/getBooking", async () => {
     //   if (Array.isArray(errorMessages)) {
     //     errorMessages.forEach((errorMessage: string) => {
     //       console.log(errorMessage);
-    //       toast.error(errorMessage);
+    //       message.error(errorMessage);
     //     });
     //   } else if (typeof errorMessages === "string") {
     //     console.log(errorMessages);
-    //     toast.error(errorMessages);
+    //     message.error(errorMessages);
     //   } else {
-    //     toast.error("Setup fail!");
+    //     message.error("Setup fail!");
     //   }
     // } else {
-    //   toast.error("Setup fail!");
+    //   message.error("Setup fail!");
     // }
     throw new Error("Failed to fetch other data");
   }
@@ -59,10 +59,10 @@ export const acceptRefund = createAsyncThunk(
       );
       console.log(response);
       if (response.status === 200) {
-        toast.success("Accept refund successfully!");
+        message.success("Accept refund successfully!");
         return response.data;
       } else {
-        // toast.error("Failed to create Availability!"); // Thông báo lỗi khi tạo Availability
+        // message.error("Failed to create Availability!"); // Thông báo lỗi khi tạo Availability
         throw new Error("Failed to create Availability");
       }
     } catch (error: any) {
@@ -77,16 +77,16 @@ export const acceptRefund = createAsyncThunk(
         if (Array.isArray(errorMessages)) {
           errorMessages.forEach((errorMessage: string) => {
             console.log(errorMessage);
-            toast.error(errorMessage);
+            message.error(errorMessage);
           });
         } else if (typeof errorMessages === "string") {
           console.log(errorMessages);
-          toast.error(errorMessages);
+          message.error(errorMessages);
         } else {
-          toast.error("Accept fail!"); // Thông báo đăng nhập thất bại mặc định
+          message.error("Accept fail!"); // Thông báo đăng nhập thất bại mặc định
         }
       } else {
-        toast.error("Accept fail!"); // Thông báo đăng nhập thất bại mặc định
+        message.error("Accept fail!"); // Thông báo đăng nhập thất bại mặc định
       }
       throw new Error("Failed to fetch other data");
     }
@@ -113,10 +113,10 @@ export const createRefundForCus = createAsyncThunk(
       );
       console.log(response);
       if (response.status === 200) {
-        toast.success("Create issue successfully!");
+        message.success("Create issue successfully!");
         return response.data;
       } else {
-        // toast.error("Failed to create Availability!"); // Thông báo lỗi khi tạo Availability
+        // message.error("Failed to create Availability!"); // Thông báo lỗi khi tạo Availability
         throw new Error("Failed to Issue Refund");
       }
     } catch (error: any) {
@@ -131,16 +131,16 @@ export const createRefundForCus = createAsyncThunk(
         if (Array.isArray(errorMessages)) {
           errorMessages.forEach((errorMessage: string) => {
             console.log(errorMessage);
-            toast.error(errorMessage);
+            message.error(errorMessage);
           });
         } else if (typeof errorMessages === "string") {
           console.log(errorMessages);
-          toast.error(errorMessages);
+          message.error(errorMessages);
         } else {
-          toast.error("Accept fail!"); // Thông báo đăng nhập thất bại mặc định
+          message.error("Accept fail!"); // Thông báo đăng nhập thất bại mặc định
         }
       } else {
-        toast.error("Accept fail!"); // Thông báo đăng nhập thất bại mặc định
+        message.error("Accept fail!"); // Thông báo đăng nhập thất bại mặc định
       }
       throw new Error("Failed to fetch other data");
     }
@@ -170,16 +170,16 @@ export const getBookingDetail = createAsyncThunk(
         if (Array.isArray(errorMessages)) {
           errorMessages.forEach((errorMessage: string) => {
             console.log(errorMessage);
-            toast.error(errorMessage);
+            message.error(errorMessage);
           });
         } else if (typeof errorMessages === "string") {
           console.log(errorMessages);
-          toast.error(errorMessages);
+          message.error(errorMessages);
         } else {
-          toast.error("Setup fail!");
+          message.error("Setup fail!");
         }
       } else {
-        toast.error("Setup fail!");
+        message.error("Setup fail!");
       }
       throw new Error("Failed to fetch other data");
     }
@@ -197,7 +197,7 @@ export const cancelTour = createAsyncThunk(
         }
       );
       if (response.status === 201) {
-        toast.success("Cancell success");
+        message.success("Cancell success");
         return response.data.data;
       }
     } catch (error: any) {
@@ -211,16 +211,16 @@ export const cancelTour = createAsyncThunk(
         if (Array.isArray(errorMessages)) {
           errorMessages.forEach((errorMessage: string) => {
             console.log(errorMessage);
-            toast.error(errorMessage);
+            message.error(errorMessage);
           });
         } else if (typeof errorMessages === "string") {
           console.log(errorMessages);
-          toast.error(errorMessages);
+          message.error(errorMessages);
         } else {
-          toast.error("Setup fail!");
+          message.error("Setup fail!");
         }
       } else {
-        toast.error("Setup fail!");
+        message.error("Setup fail!");
       }
       throw new Error("Failed to fetch other data");
     }
@@ -237,7 +237,7 @@ export const blockTour = createAsyncThunk(
         }
       );
       if (response.status === 201) {
-        toast.success("Block success");
+        message.success("Block success");
         return response.data.data;
       }
     } catch (error: any) {
@@ -251,16 +251,16 @@ export const blockTour = createAsyncThunk(
         if (Array.isArray(errorMessages)) {
           errorMessages.forEach((errorMessage: string) => {
             console.log(errorMessage);
-            toast.error(errorMessage);
+            message.error(errorMessage);
           });
         } else if (typeof errorMessages === "string") {
           console.log(errorMessages);
-          toast.error(errorMessages);
+          message.error(errorMessages);
         } else {
-          toast.error("Setup fail!");
+          message.error("Setup fail!");
         }
       } else {
-        toast.error("Setup fail!");
+        message.error("Setup fail!");
       }
       throw new Error("Failed to fetch other data");
     }

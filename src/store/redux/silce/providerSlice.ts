@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axiosInstance, { BASE_URL } from "../../apiInterceptors";
-import { toast } from "react-toastify";
+import { message } from "antd";
 
 const initialState = {
   voucher: [],
@@ -47,16 +47,16 @@ export const becomeProvider = createAsyncThunk(
         if (Array.isArray(errorMessages)) {
           errorMessages.forEach((errorMessage: string) => {
             console.log(errorMessage);
-            toast.error(errorMessage);
+            message.error(errorMessage);
           });
         } else if (typeof errorMessages === "string") {
           console.log(errorMessages);
-          toast.error(errorMessages);
+          message.error(errorMessages);
         } else {
-          toast.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
+          message.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
         }
       } else {
-        toast.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
+        message.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
       }
       throw new Error("Failed to fetch other data");
     }
@@ -78,15 +78,15 @@ export const createProviderAvt = createAsyncThunk(
       );
       console.log(response);
       if (response.status === 201) {
-        // toast.success("Voucher created successfully!");
+        // message.success("Voucher created successfully!");
         return response.data;
       } else {
-        // toast.error("Failed to create Availability!"); // Thông báo lỗi khi tạo Availability
+        // message.error("Failed to create Availability!"); // Thông báo lỗi khi tạo Availability
         throw new Error("Failed to create Availability");
       }
     } catch (error) {
       console.log(error);
-      // toast.error("Failed to create Availability!");
+      // message.error("Failed to create Availability!");
       throw new Error("Failed to create Availability");
     }
   }
@@ -108,10 +108,10 @@ export const createProviderBanner = createAsyncThunk(
       );
       console.log(response);
       if (response.status === 200) {
-        // toast.success("Availability created successfully!"); // Thông báo tạo Availability thành công
+        // message.success("Availability created successfully!"); // Thông báo tạo Availability thành công
         return response.data;
       } else {
-        // toast.error("Failed to create Availability!"); // Thông báo lỗi khi tạo Availability
+        // message.error("Failed to create Availability!"); // Thông báo lỗi khi tạo Availability
         throw new Error("Failed to create Availability");
       }
     } catch (error: any) {
@@ -126,16 +126,16 @@ export const createProviderBanner = createAsyncThunk(
         if (Array.isArray(errorMessages)) {
           errorMessages.forEach((errorMessage: string) => {
             console.log(errorMessage);
-            // toast.error(errorMessage);
+            // message.error(errorMessage);
           });
         } else if (typeof errorMessages === "string") {
           console.log(errorMessages);
-          // toast.error(errorMessages);
+          // message.error(errorMessages);
         } else {
-          // toast.error("Setup fail!");
+          // message.error("Setup fail!");
         }
       } else {
-        toast.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
+        message.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
       }
       throw new Error("Failed to fetch other data");
     }
@@ -159,7 +159,7 @@ export const createVoucher = createAsyncThunk(
       );
       // alert("Please wait for admin approval.");
       if (response.status === 201) {
-        toast.success("Voucher created successfully!");
+        message.success("Voucher created successfully!");
       }
       console.log(response);
       return response.data;
@@ -175,16 +175,16 @@ export const createVoucher = createAsyncThunk(
         if (Array.isArray(errorMessages)) {
           errorMessages.forEach((errorMessage: string) => {
             console.log(errorMessage);
-            toast.error(errorMessage);
+            message.error(errorMessage);
           });
         } else if (typeof errorMessages === "string") {
           console.log(errorMessages);
-          toast.error(errorMessages);
+          message.error(errorMessages);
         } else {
-          toast.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
+          message.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
         }
       } else {
-        toast.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
+        message.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
       }
       throw new Error("Failed to fetch other data");
     }
@@ -209,16 +209,16 @@ export const getVoucher = createAsyncThunk("provider/getVoucher", async () => {
       if (Array.isArray(errorMessages)) {
         errorMessages.forEach((errorMessage: string) => {
           console.log(errorMessage);
-          toast.error(errorMessage);
+          message.error(errorMessage);
         });
       } else if (typeof errorMessages === "string") {
         console.log(errorMessages);
-        toast.error(errorMessages);
+        message.error(errorMessages);
       } else {
-        toast.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
+        message.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
       }
     } else {
-      toast.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
+      message.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
     }
     throw new Error("Failed to fetch other data");
   }
@@ -240,10 +240,10 @@ export const updateVoucher = createAsyncThunk(
       );
       console.log(response);
       if (response.status === 200) {
-        // toast.success("Availability created successfully!"); // Thông báo tạo Availability thành công
+        // message.success("Availability created successfully!"); // Thông báo tạo Availability thành công
         return response.data;
       } else {
-        // toast.error("Failed to create Availability!"); // Thông báo lỗi khi tạo Availability
+        // message.error("Failed to create Availability!"); // Thông báo lỗi khi tạo Availability
         throw new Error("Failed to update Voucher");
       }
     } catch (error: any) {
@@ -258,16 +258,16 @@ export const updateVoucher = createAsyncThunk(
         if (Array.isArray(errorMessages)) {
           errorMessages.forEach((errorMessage: string) => {
             console.log(errorMessage);
-            toast.error(errorMessage);
+            message.error(errorMessage);
           });
         } else if (typeof errorMessages === "string") {
           console.log(errorMessages);
-          toast.error(errorMessages);
+          message.error(errorMessages);
         } else {
-          toast.error("Update fail"); // Thông báo đăng nhập thất bại mặc định
+          message.error("Update fail"); // Thông báo đăng nhập thất bại mặc định
         }
       } else {
-        toast.error("Update fail!"); // Thông báo đăng nhập thất bại mặc định
+        message.error("Update fail!"); // Thông báo đăng nhập thất bại mặc định
       }
       throw new Error("Failed to update other data");
     }
@@ -290,10 +290,10 @@ export const updateVoucherMapTour = createAsyncThunk(
       );
       console.log(response);
       if (response.status === 200) {
-        // toast.success("Availability created successfully!"); // Thông báo tạo Availability thành công
+        // message.success("Availability created successfully!"); // Thông báo tạo Availability thành công
         return response.data;
       } else {
-        // toast.error("Failed to create Availability!"); // Thông báo lỗi khi tạo Availability
+        // message.error("Failed to create Availability!"); // Thông báo lỗi khi tạo Availability
         throw new Error("Failed to update Voucher");
       }
     } catch (error: any) {
@@ -308,16 +308,16 @@ export const updateVoucherMapTour = createAsyncThunk(
         if (Array.isArray(errorMessages)) {
           errorMessages.forEach((errorMessage: string) => {
             console.log(errorMessage);
-            toast.error(errorMessage);
+            message.error(errorMessage);
           });
         } else if (typeof errorMessages === "string") {
           console.log(errorMessages);
-          toast.error(errorMessages);
+          message.error(errorMessages);
         } else {
-          toast.error("Update fail"); // Thông báo đăng nhập thất bại mặc định
+          message.error("Update fail"); // Thông báo đăng nhập thất bại mặc định
         }
       } else {
-        toast.error("Update fail!"); // Thông báo đăng nhập thất bại mặc định
+        message.error("Update fail!"); // Thông báo đăng nhập thất bại mặc định
       }
       throw new Error("Failed to update other data");
     }

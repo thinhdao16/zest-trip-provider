@@ -25,8 +25,8 @@ import { DataContext } from "../../store/dataContext/DataContext";
 import { BASE_URL } from "../../store/apiInterceptors";
 import axios from "axios";
 import OtpInput from "react-otp-input";
-import { toast } from "react-toastify";
 import register from "../../assets/register.svg";
+import { message } from "antd";
 
 interface FormElements extends HTMLFormControlsCollection {
   email: HTMLInputElement;
@@ -127,7 +127,7 @@ export default function SignUp() {
       !confirmPassword.trim()
     ) {
       // Nếu rỗng, hiển thị thông báo hoặc thực hiện các hành động khác
-      toast.warn("please input do not leave empty");
+      message.warning("please input do not leave empty");
       return;
     } else {
       setOpenLoading(true);
@@ -149,10 +149,10 @@ export default function SignUp() {
           setOpen(true);
           setMinutes(3);
           setSeconds(1);
-          toast.warn("OTP sent to mail successfully!");
+          message.warning("OTP sent to mail successfully!");
         } else {
           alert("email unknow");
-          toast.error("Failed to send OTP!");
+          message.error("Failed to send OTP!");
         }
         setOpenLoading(false);
       } catch (error: any) {
@@ -167,16 +167,16 @@ export default function SignUp() {
           if (Array.isArray(errorMessages)) {
             errorMessages.forEach((errorMessage: string) => {
               console.log(errorMessage);
-              toast.error(errorMessage);
+              message.error(errorMessage);
             });
           } else if (typeof errorMessages === "string") {
             console.log(error);
-            toast.error(errorMessages);
+            message.error(errorMessages);
           } else {
-            toast.error("SignIn fail!");
+            message.error("SignIn fail!");
           }
         } else {
-          toast.error("SignUp fail!");
+          message.error("SignUp fail!");
         }
       }
     }
@@ -211,10 +211,10 @@ export default function SignUp() {
         localStorage.setItem("information_setup", informationSetUpString);
         localStorage.setItem("access_token", response.data.data.access_token);
         localStorage.setItem("refresh_token", response.data.data.refresh_token);
-        toast.success("SignUp success!"); // Thông báo đăng ký thành công
+        message.success("SignUp success!"); // Thông báo đăng ký thành công
       } else {
         alert("email unknow");
-        toast.error("SignUp fail!"); // Thông báo đăng ký thất bại
+        message.error("SignUp fail!"); // Thông báo đăng ký thất bại
       }
       setOpenLoading(false);
     } catch (error: any) {
@@ -228,19 +228,19 @@ export default function SignUp() {
         if (Array.isArray(errorMessages)) {
           errorMessages.forEach((errorMessage: string) => {
             console.log(errorMessage);
-            toast.error(errorMessage);
+            message.error(errorMessage);
           });
         } else if (typeof errorMessages === "string") {
           console.log(error);
-          toast.error(errorMessages);
+          message.error(errorMessages);
         } else {
-          toast.error("SignIn fail!");
+          message.error("SignIn fail!");
         }
       } else {
-        toast.error("SignUp fail!");
+        message.error("SignUp fail!");
       }
       setOpenLoading(false);
-      toast.error("SignUp fail!"); // Thông báo đăng ký thất bại
+      message.error("SignUp fail!"); // Thông báo đăng ký thất bại
     }
   };
 

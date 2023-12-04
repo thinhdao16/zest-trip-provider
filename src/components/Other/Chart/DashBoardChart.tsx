@@ -170,7 +170,7 @@ function DashboardChart() {
               />
             </div>
           </div>
-          <div className="col-span-1">
+          {/* <div className="col-span-1">
             <div className="">
               <div className="bg-white shadow-custom-card-mui rounded-t-xl p-6 pb-12 pt-6">
                 <div className="flex gap-3 items-end justify-between">
@@ -200,7 +200,7 @@ function DashboardChart() {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </main>
     </>

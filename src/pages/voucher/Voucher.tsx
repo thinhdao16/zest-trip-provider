@@ -43,11 +43,7 @@ function Voucher() {
     }
   };
   useEffect(() => {
-    dispatch(getVoucher()).then((response) => {
-      if (getVoucher.fulfilled.match(response)) {
-        // toast.success("This is voucher!");
-      }
-    });
+    dispatch(getVoucher());
   }, [dispatch]);
 
   useEffect(() => {

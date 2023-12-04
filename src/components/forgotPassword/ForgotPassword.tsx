@@ -11,8 +11,6 @@ import {
   InputAdornment,
   TextField,
 } from "@mui/material";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"; // Import CSS của react-toastify
 import forgot from "../../assets/forgot.svg";
 interface FormElements extends HTMLFormControlsCollection {
   email: HTMLInputElement;
@@ -33,6 +31,7 @@ import { DataContext } from "../../store/dataContext/DataContext";
 import axios from "axios";
 import { BASE_URL } from "../../store/apiInterceptors";
 import { FaArrowLeft } from "react-icons/fa6";
+import { message } from "antd";
 
 function ForgotPassWord() {
   const navigate = useNavigate();
@@ -81,10 +80,10 @@ function ForgotPassWord() {
       ) {
         const errorMessages = error.response.data.message;
         errorMessages.forEach((errorMessage: string) => {
-          toast.error(errorMessage); // Thông báo đăng nhập thất bại
+          message.error(errorMessage); // Thông báo đăng nhập thất bại
         });
       } else {
-        toast.error("SignIn fail!"); // Thông báo đăng nhập thất bại mặc định
+        message.error("SignIn fail!"); // Thông báo đăng nhập thất bại mặc định
       }
     }
   };
