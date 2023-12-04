@@ -1,8 +1,6 @@
 import dayjs from "dayjs";
 import AppWebsiteVisits from "./app-website-visits";
 import { useSelector } from "react-redux";
-import { RiMoneyDollarCircleLine } from "react-icons/ri";
-import { IoMdPerson } from "react-icons/io";
 
 interface Booking {
   updated_at: string;
@@ -18,37 +16,37 @@ function DashboardChart() {
   const dataBooking = booking?.filter(
     (bookingItem: { status: string }) => bookingItem.status !== "REJECT"
   );
-  function calculateAverage(arr: number[]) {
-    const sum = arr.reduce(
-      (accumulator, currentValue) => accumulator + currentValue,
-      0
-    );
-    const average = sum / arr.length;
-    return average;
-  }
+  // function calculateAverage(arr: number[]) {
+  //   const sum = arr.reduce(
+  //     (accumulator, currentValue) => accumulator + currentValue,
+  //     0
+  //   );
+  //   const average = sum / arr.length;
+  //   return average;
+  // }
   const labelWeeks = Array.from({ length: 7 }, (_, i) =>
     dayjs().subtract(i, "day").format("ddd")
   ).reverse();
-  const totalPayments = calculateAverage(
-    labelWeeks.map((day) =>
-      calculateTotalByDay(
-        dataBooking,
-        day,
-        "refund_ammount",
-        "chart_day_length"
-      )
-    )
-  );
-  const totalPersonPayments = calculateAverage(
-    labelWeeks.map((day) =>
-      calculateTotalByDay(
-        dataBooking,
-        day,
-        "refund_ammount",
-        "chart_day_person_length"
-      )
-    )
-  );
+  // const totalPayments = calculateAverage(
+  //   labelWeeks.map((day) =>
+  //     calculateTotalByDay(
+  //       dataBooking,
+  //       day,
+  //       "refund_ammount",
+  //       "chart_day_length"
+  //     )
+  //   )
+  // );
+  // const totalPersonPayments = calculateAverage(
+  //   labelWeeks.map((day) =>
+  //     calculateTotalByDay(
+  //       dataBooking,
+  //       day,
+  //       "refund_ammount",
+  //       "chart_day_person_length"
+  //     )
+  //   )
+  // );
   function calculateTotalByDay(
     bookings: Booking[],
     targetDay: string,

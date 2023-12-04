@@ -75,6 +75,7 @@ function Login() {
       localStorage.setItem("refresh_token", response.data.data.refresh_token);
       setRefeshTour((prev) => !prev);
       setRefeshLogin((prev) => !prev);
+      message.success("Login successful");
       navigate("/listtour");
       setOpenLoading(false);
     } catch (error: any) {
