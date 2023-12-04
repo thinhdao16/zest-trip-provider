@@ -1,12 +1,10 @@
 import Navbar from "../../components/Navbar/Index";
 import {
-  AiFillFilter,
   AiOutlineDown,
   AiOutlinePlusCircle,
   AiOutlineUp,
 } from "react-icons/ai";
 import { Fade } from "@mui/material";
-import { RiSearchLine } from "react-icons/ri";
 import { Link, useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";

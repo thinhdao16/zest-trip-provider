@@ -1,6 +1,5 @@
 import Navbar from "../../components/Navbar/Index";
-import { AiFillFilter, AiOutlineDown, AiOutlineUp } from "react-icons/ai";
-import { RiSearchLine } from "react-icons/ri";
+import { AiOutlineDown, AiOutlineUp } from "react-icons/ai";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { AppDispatch } from "../../store/redux/store";
