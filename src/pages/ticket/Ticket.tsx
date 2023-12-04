@@ -21,6 +21,9 @@ import LoadingFullScreen from "../../styles/loading/LoadingFullScreen";
 import TruncatedText from "../../utils/TruncatedText";
 import { StatusTour } from "../../styles/status/tour";
 import { Link } from "react-router-dom";
+import { TbLock } from "react-icons/tb";
+import { CiCircleCheck } from "react-icons/ci";
+import { FiLoader } from "react-icons/fi";
 
 function Ticket() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -208,16 +211,29 @@ function Ticket() {
                                   </span>
                                 </div>
                               </div>
-                              <div className="col-span-2 text-center ">
-                                <span>{countTickets(dataTour, "adult")}</span>
+                              <div className="col-span-2 text-center flex justify-center ">
+                                {countTickets(dataTour, "adult") === 1 ? (
+                                  <CiCircleCheck className="text-navy-blue" />
+                                ) : (
+                                  <TbLock className="text-red-700" />
+                                )}
                               </div>
-                              <div className="col-span-2 text-center">
-                                <span>
-                                  {countTickets(dataTour, "children")}
-                                </span>
+
+                              <div className="col-span-2 text-center flex justify-center ">
+                                {countTickets(dataTour, "children") === 1 ? (
+                                  <CiCircleCheck className="text-navy-blue" />
+                                ) : (
+                                  <TbLock className="text-red-700" />
+                                )}
                               </div>
-                              <div className="col-span-2 text-center ">
-                                <span>{countTickets(dataTour, "special")}</span>
+                              <div className="col-span-2 text-center flex justify-center ">
+                                {countTickets(dataTour, "special") === 0 ? (
+                                  <FiLoader className="text-yellow-700" />
+                                ) : (
+                                  <span>
+                                    {countTickets(dataTour, "special")}
+                                  </span>
+                                )}
                               </div>
                             </div>
                           </Link>

@@ -49,6 +49,7 @@ function ScreenMain() {
   const tourDetail: any = useSelector(
     (state: StateTour) => state.tour.tourGetDetail
   );
+  console.log(tourDetail);
   const {
     name,
     setName,
@@ -204,7 +205,14 @@ function ScreenMain() {
               </div>
               <div className="col-span-8 ">
                 <div className="p-2 rounded-lg bg-white shadow-custom-card-mui cursor-not-allowed border-solid ">
-                  {tourDetail?.duration}
+                  <span className="mr-2">
+                    {tourDetail?.duration_day}/
+                    <span className="text-gray-500">day</span>
+                  </span>
+                  <span>
+                    {tourDetail?.duration_night}/
+                    <span className="text-gray-500">night</span>
+                  </span>
                 </div>
               </div>
             </div>

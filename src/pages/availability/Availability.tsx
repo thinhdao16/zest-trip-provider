@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import dayjs from "dayjs";
 import AddAvailability from "./Modal/AddAvailability";
 import EditAvailability from "./Modal/EditAvailability";
-import { AiFillFilter, AiOutlineDown } from "react-icons/ai";
+import { AiOutlineDown } from "react-icons/ai";
 import PersonAdd from "@mui/icons-material/PersonAdd";
 import Settings from "@mui/icons-material/Settings";
 import {
@@ -20,7 +20,6 @@ import {
 } from "@mui/material";
 import React from "react";
 import { GoDotFill } from "react-icons/go";
-import { RiSearchLine } from "react-icons/ri";
 import { Pagination } from "antd";
 import { DataContext } from "../../store/dataContext/DataContext";
 import LoadingFullScreen from "../../styles/loading/LoadingFullScreen";
@@ -37,9 +36,9 @@ function Availability() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
+  // const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+  //   setAnchorEl(event.currentTarget);
+  // };
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -97,7 +96,7 @@ function Availability() {
                     When provider have availability new, they open here
                   </span>
                 </div>
-                <div className="flex items-center gap-3">
+                {/* <div className="flex items-center gap-3">
                   <div className="relative">
                     <RiSearchLine className="absolute top-2 left-2" />
                     <input
@@ -117,7 +116,7 @@ function Availability() {
                       Filter
                     </button>
                   </div>
-                </div>
+                </div> */}
               </div>
               <div className="container flex flex-col gap-4">
                 <Box sx={{ flexGrow: 1, textAlign: "right", color: "black" }}>
@@ -230,10 +229,10 @@ function Availability() {
                               dataDetailTour={dataTour}
                               setLoading={setLoadings}
                             />
-                            <AiOutlineDown
+                            {/* <AiOutlineDown
                               style={{ fontWeight: "800" }}
                               onClick={handleClick}
-                            />
+                            /> */}
                           </div>
                           {dataTour?.TourAvailability?.length > 0 ? (
                             dataTour?.TourAvailability?.map(

@@ -87,7 +87,7 @@ function Voucher() {
                   </span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <div className="relative">
+                  {/* <div className="relative">
                     <RiSearchLine className="absolute top-2 left-2" />
                     <input
                       type="text"
@@ -105,7 +105,7 @@ function Voucher() {
                       <AiFillFilter className="absolute top-2 left-2" />
                       Filter
                     </button>
-                  </div>
+                  </div> */}
                   <div>
                     <Link to="/voucher-create">
                       <button

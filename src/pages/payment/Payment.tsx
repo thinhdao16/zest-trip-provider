@@ -155,7 +155,7 @@ function Payment() {
                 When provider have voucher new, they open here
               </span>
             </div>
-            <div className="flex items-center gap-3">
+            {/* <div className="flex items-center gap-3">
               <div className="relative">
                 <RiSearchLine className="absolute top-2 left-2" />
                 <input
@@ -175,7 +175,7 @@ function Payment() {
                   Filter
                 </button>
               </div>
-            </div>
+            </div> */}
           </div>
           <div>
             <BillingDetail />

@@ -44,7 +44,14 @@ export default function ModalBlockBooking(dataDate: any) {
       idTour: index,
       dataDate: dataDate?.dateDate,
     };
-    dispatch(blockTour(data));
+    dispatch(blockTour(data)).then((response) => {
+      if (blockTour.fulfilled.match(response)) {
+        setOpen(false);
+      }
+      if (blockTour.rejected.match(response)) {
+        setOpen(false);
+      }
+    });
   };
   const handleOpenConfirm = () => {
     setOpenConfirm(true);
@@ -85,10 +92,13 @@ export default function ModalBlockBooking(dataDate: any) {
         <div className="min-h-[70vh] flex  items-center justify-center">
           <div className="flex flex-col w-96 ">
             <span className="text-lg   font-semibold">Date Block</span>
+
             {dataDate && dataDate?.dateDate?.length > 0 && (
-              <span className="block ">
+              <span className="flex flex-wrap ">
                 {dataDate?.dateDate?.map((date: string) => (
-                  <span>{date}</span>
+                  <span className="mr-2">
+                    {date},{""}
+                  </span>
                 ))}
               </span>
             )}

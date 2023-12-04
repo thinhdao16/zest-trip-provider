@@ -248,7 +248,7 @@ const LocationStart: React.FC = () => {
 
               <GoogleMapReact
                 bootstrapURLKeys={{
-                  key: "AIzaSyBx6NX4xtTaUpaTpHt6jiWNkrYdD85S5Vw",
+                  key: "AIzaSyC56vS8LJX2V0Kz19p3MZ1BWdQ122rjMdI",
                 }}
                 center={defaultProps.center}
                 defaultZoom={defaultProps.zoom}
@@ -267,10 +267,13 @@ const LocationStart: React.FC = () => {
                     key={index}
                     className="bg-white rounded-lg p-2 shadow-custom-card-mui "
                   >
+                    <span className="font-medium mr-1">
+                      {departureScreen?.time}
+                    </span>
+
                     <span>
                       {departureScreen?.addressLocationStart?.address}
                     </span>
-                    <span>{departureScreen?.time}</span>
                   </div>
                 ))}
             </div>

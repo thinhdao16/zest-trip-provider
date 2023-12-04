@@ -683,7 +683,7 @@ function TicketSpecial() {
               <div className="flex flex-col w-full">
                 {" "}
                 <div className="flex flex-col mt-2">
-                  <span className="font-medium">Date for special</span>
+                  <span className="font-medium mb-1">Date special</span>
                   <div className="bg-white">
                     <DatePicker
                       multiple
@@ -877,6 +877,8 @@ function TicketSpecial() {
                       </div>
                     </div>
                   </div>
+                  <p className="font-medium">Date special adult</p>
+
                   <DatePicker
                     id="selectDateSingle"
                     multiple
@@ -940,6 +942,7 @@ function TicketSpecial() {
                   </div>
 
                   <div>
+                    <p className="font-medium mb-1">Date special children</p>
                     <DatePicker
                       multiple
                       id="selectDateSingle"

@@ -15,7 +15,6 @@ import { Menu, MenuItem, Rating } from "@mui/material";
 import { formatNumber } from "../../../utils/formatNumber";
 import Tooltip from "@mui/material/Tooltip";
 import { StatusTour } from "../../../styles/status/tour";
-import { DatePicker } from "antd";
 import { fetchTourDetail } from "../../../store/redux/silce/tourSlice";
 import { IoHomeOutline } from "react-icons/io5";
 import TruncatedText from "../../../utils/TruncatedText";
@@ -154,11 +153,11 @@ function BookDetailScreenMain() {
     setDateChoose(format);
   };
 
-  function disabledDate(current: any) {
-    return dateAvailability.some((date: any) =>
-      dayjs(date).isSame(current, "day")
-    );
-  }
+  // function disabledDate(current: any) {
+  //   return dateAvailability.some((date: any) =>
+  //     dayjs(date).isSame(current, "day")
+  //   );
+  // }
 
   const calculateTotalPaidPrice = (bookings: any): number => {
     return bookings
@@ -196,6 +195,7 @@ function BookDetailScreenMain() {
 
   // Chuyển kết quả từ Map thành mảng các booking objects duy nhất
   const uniqueBookings = Array.from(uniqueDatesMap.values());
+
   return (
     <div className="bg-main rounded-xl px-8 py-2 h-full overflow-y-auto global-scrollbar">
       <div className="mb-6" id="booking">
@@ -271,31 +271,6 @@ function BookDetailScreenMain() {
 
           <div className="col-span-4">
             <div className="text-end flex flex-col justify-end items-end">
-              <div className="mb-2 flex items-center gap-1">
-                {!openField && (
-                  <button
-                    className="bg-navy-blue py-1.5 px-2 text-white rounded-md text-sm "
-                    onClick={handleBookingHave}
-                  >
-                    Check booking
-                  </button>
-                )}
-                {openField && (
-                  <button
-                    className="bg-navy-blue py-1.5 px-2 text-white rounded-md text-sm "
-                    onClick={handleAvailabilityHave}
-                  >
-                    Check availability
-                  </button>
-                )}
-
-                <DatePicker
-                  disabledDate={disabledDate}
-                  onChange={(date: any) =>
-                    handleAddSingleDate(availabilityIndex, date)
-                  }
-                />
-              </div>
               <div className="flex items-center gap-2">
                 <button
                   type="button"
@@ -303,7 +278,11 @@ function BookDetailScreenMain() {
                   onClick={handleClick}
                 >
                   <AiFillFilter className="absolute top-2 left-2" />
-                  Filter
+                  {selectedStatus === "" ? (
+                    <span>Filter</span>
+                  ) : (
+                    <span className="text-xs">{selectedStatus}</span>
+                  )}
                 </button>
                 <div>
                   <Menu
@@ -431,9 +410,9 @@ function BookDetailScreenMain() {
                 </div>
               </div>
             </div>
-            <div className="col-span-7">
+            <div className="col-span-7 relative">
               <Calendar
-                className="px-8"
+                className="px-8 pt-4 "
                 multiple
                 numberOfMonths={2}
                 mapDays={({ date }) => {
@@ -445,6 +424,24 @@ function BookDetailScreenMain() {
                   handleAddSingleDate(availabilityIndex, date)
                 }
               />
+              <div className="mb-2 flex items-center gap-1 absolute top-1 right-20">
+                {!openField && (
+                  <button
+                    className="bg-navy-blue py-1.5 px-2 text-white rounded-md text-sm "
+                    onClick={handleBookingHave}
+                  >
+                    Check booking
+                  </button>
+                )}
+                {openField && (
+                  <button
+                    className="bg-navy-blue py-1.5 px-2 text-white rounded-md text-sm "
+                    onClick={handleAvailabilityHave}
+                  >
+                    Check availability
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         </div>
