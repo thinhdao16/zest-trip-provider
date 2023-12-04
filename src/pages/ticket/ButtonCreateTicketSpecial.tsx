@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import dayjs from "dayjs";
 import { useContext } from "react";
 import { DataContext } from "../../store/dataContext/DataContext";
+import { message } from "antd";
 
 export const ButtonCreateTicketSpecial = () => {
   const { index } = useParams();
@@ -43,6 +44,7 @@ export const ButtonCreateTicketSpecial = () => {
     dispatch(postCreateTicketTour(data)).then((data) => {
       if (postCreateTicketTour.fulfilled.match(data)) {
         console.log("create ticket success");
+        message.success("Create ticket success");
       } else {
         console.log("ticket create failed");
       }

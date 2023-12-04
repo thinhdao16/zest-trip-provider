@@ -47,7 +47,14 @@ export default function ModalCancelBooking(dataDate: any) {
       dataDate: dataDate?.dateDate?.[0],
       reason: reason,
     };
-    dispatch(cancelTour(data));
+    dispatch(cancelTour(data)).then((response) => {
+      if (cancelTour.fulfilled.match(response)) {
+        setOpen(false);
+      }
+      if (cancelTour.rejected.match(response)) {
+        setOpen(false);
+      }
+    });
   };
   const handleOpenConfirm = () => {
     setOpenConfirm(true);
@@ -87,7 +94,7 @@ export default function ModalCancelBooking(dataDate: any) {
         </AppBar>
         <div className="min-h-[70vh] flex  items-center justify-center">
           <div className="flex flex-col w-96 ">
-            <span className="text-lg   font-semibold">Date Cancel</span>
+            <span className="text-lg   font-semibold">Cancel Date</span>
             {dataDate && dataDate?.dateDate?.length > 0 && (
               <span className="block ">
                 {dataDate?.dateDate?.map((date: string) => (
