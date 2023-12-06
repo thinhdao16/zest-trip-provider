@@ -11,12 +11,11 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { DataSelectCard, StateTour } from "../types/index.t";
 import { TourTag } from "../../../components/icon/tour/tag";
-import { SnackbarNoti } from "./Title/Snackbar";
+import { message } from "antd";
 
 const AccomType: React.FC = () => {
   const { currentStep, updateFormValues } = useStepContext();
   const [selectedCards, setSelectedCards] = useState<number[]>([]);
-  const { openSnackbar, setOpenSnackbar } = useStepContext();
 
   const tagTour = useSelector((state: StateTour) => state.tour.tagTour);
 
@@ -26,7 +25,7 @@ const AccomType: React.FC = () => {
         prevSelectedCards.length === 4 &&
         !prevSelectedCards.includes(data.id)
       ) {
-        setOpenSnackbar(true);
+        message.warning(" Please only select a maximum of 4 category");
         return prevSelectedCards;
       }
 
@@ -37,20 +36,7 @@ const AccomType: React.FC = () => {
       }
     });
   };
-  const handleCloseSnackbar = (
-    _event: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
 
-    setOpenSnackbar(false);
-  };
-
-  const handleUndoButtonClick = () => {
-    setOpenSnackbar(false);
-  };
   useEffect(() => {
     const selectedData = tagTour
       .filter((item: DataSelectCard) => selectedCards.includes(item.id))
@@ -62,13 +48,6 @@ const AccomType: React.FC = () => {
   }
   return (
     <>
-      <SnackbarNoti
-        open={openSnackbar}
-        onClose={handleCloseSnackbar}
-        message="Please only select a maximum of 4 category"
-        actionButtonLabel="UNDO"
-        onActionButtonClick={handleUndoButtonClick}
-      />
       <BannerContainer className="global-scrollbar">
         <div className="flex items-center justify-center">
           <BannerContent>

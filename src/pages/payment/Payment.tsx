@@ -1,6 +1,6 @@
 import Navbar from "../../components/Navbar/Index";
 import { AiOutlineDown, AiOutlineUp } from "react-icons/ai";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { AppDispatch } from "../../store/redux/store";
 import { useDispatch } from "react-redux";
@@ -9,20 +9,29 @@ import BillingDetail from "./BillingDetail";
 import { getBooking } from "../../store/redux/silce/booking";
 import { formatNumber } from "../../utils/formatNumber";
 import { Fade } from "@mui/material";
+import { DataContext } from "../../store/dataContext/DataContext";
 
 function Payment() {
   const dispatch: AppDispatch = useDispatch();
+  const { saveDateChartChoose, fieldSaveDateChartChoose } =
+    useContext(DataContext);
   const [expandedItems, setExpandedItems] = useState<any>({});
 
   const { booking } = useSelector((state: any) => state.booking);
-
+  const filteredBookings = booking?.filter(
+    (booking: { status: string }) =>
+      booking.status !== "REJECT" &&
+      booking.status !== "PENDING" &&
+      booking.status !== "0"
+  );
   const toggleContentVisibility = (index: number) => {
     const newExpandedItems = { ...expandedItems };
     newExpandedItems[index] = !newExpandedItems[index];
     setExpandedItems(newExpandedItems);
   };
   useEffect(() => {
-    dispatch(getBooking()).then((response) => {
+    const data = { sort_by: "desc" };
+    dispatch(getBooking(data)).then((response) => {
       if (getBooking.fulfilled.match(response)) {
         // toast.success("This is payment!");
       }
@@ -30,48 +39,68 @@ function Payment() {
   }, [dispatch]);
 
   function calculateTotalByDay(
-    bookings: any,
+    bookings: { updated_at: string }[],
     propertyName: string,
     startDate: string,
     endDate: string
   ) {
-    const totalByDay: any = {};
+    const totalByDay: Record<string, any> = {};
 
-    const recentBookings = bookings?.filter(
-      (booking: { updated_at: string }) => {
-        const bookedDate = dayjs(booking.updated_at);
-        return (
-          bookedDate.isAfter(dayjs(startDate).subtract(1, "day"), "day") &&
-          bookedDate.isBefore(dayjs(endDate).add(1, "day"), "day")
-        );
-      }
-    );
-
+    const recentBookings = bookings?.filter((booking) => {
+      const bookedDate = dayjs(booking.updated_at).format("YYYY-MM-DD");
+      const formattedStartDate = dayjs(startDate).format("YYYY-MM-DD");
+      const formattedEndDate = dayjs(endDate).format("YYYY-MM-DD");
+      return bookedDate >= formattedStartDate && bookedDate <= formattedEndDate;
+    });
+    const uniqueTourIdsMap: any = {};
     recentBookings?.forEach((booking: any) => {
-      const dayOfMonth: any = dayjs(booking.updated_at).format("YYYY-MM-DD");
-      const propertyValue: any = parseInt(booking[propertyName] || "0", 10);
-      totalByDay[dayOfMonth] = (totalByDay[dayOfMonth] || 0) + propertyValue;
+      const tourId = booking?.tour_id;
+      if (!uniqueTourIdsMap[tourId]) {
+        uniqueTourIdsMap[tourId] = booking;
+      }
     });
 
-    return totalByDay;
+    const uniqueTourIds = Object.values(uniqueTourIdsMap);
+
+    if (propertyName === "tour_id") {
+      totalByDay[propertyName] = uniqueTourIds;
+      return totalByDay;
+    }
+
+    if (propertyName !== "tour_id") {
+      recentBookings?.forEach((booking: any) => {
+        const dayOfMonth = dayjs(booking.updated_at).format("YYYY-MM-DD");
+        const propertyValue = parseInt(booking[propertyName] || "0", 10);
+        totalByDay[dayOfMonth] = (totalByDay[dayOfMonth] || 0) + propertyValue;
+      });
+      return totalByDay;
+    }
+    console.log(totalByDay);
   }
 
   function calculateWeeks() {
-    const currentDate = dayjs();
-    const currentDayOfWeek = currentDate.day();
+    if (fieldSaveDateChartChoose === "normal") {
+      const currentDate = dayjs();
+      const currentDayOfWeek = currentDate.day();
+      const thisSunday = currentDate.subtract(currentDayOfWeek, "day");
 
-    const thisSunday = currentDate.subtract(currentDayOfWeek, "day");
+      const weeks = Array.from({ length: 7 }, (_, weekIndex) => {
+        const weekStart = thisSunday.subtract(weekIndex, "week");
+        const weekEnd = weekStart.add(6, "day");
+        return {
+          start: weekStart.format("YYYY-MM-DD"),
+          end: weekEnd.format("YYYY-MM-DD"),
+        };
+      });
 
-    const weeks = Array.from({ length: 7 }, (_, weekIndex) => {
-      const weekStart = thisSunday.subtract(weekIndex, "week");
-      const weekEnd = weekStart.add(6, "day");
-      return {
-        start: weekStart.format("YYYY-MM-DD"),
-        end: weekEnd.format("YYYY-MM-DD"),
-      };
-    });
+      return weeks;
+    }
 
-    return weeks;
+    if (fieldSaveDateChartChoose === "filter") {
+      return saveDateChartChoose;
+    }
+
+    return null;
   }
 
   const lableWeeks = calculateWeeks();
@@ -82,7 +111,7 @@ function Payment() {
     originalField: string,
     refundField: string
   ) =>
-    lableWeeks.map((week) => {
+    lableWeeks.map((week: { start: string; end: string }) => {
       const paid = calculateTotalByDay(chart, paidField, week.start, week.end);
       const original = calculateTotalByDay(
         chart,
@@ -96,6 +125,12 @@ function Payment() {
         week.start,
         week.end
       );
+      const tour_id = calculateTotalByDay(
+        chart,
+        "tour_id",
+        week.start,
+        week.end
+      );
 
       const formatLableTime = {
         start: week.start,
@@ -106,10 +141,11 @@ function Payment() {
         paid,
         original,
         refund,
+        tour_id,
       };
     });
   const dataBooking = calculateChartData(
-    booking,
+    filteredBookings,
     "paid_price",
     "original_price",
     "refund_ammount"
@@ -122,16 +158,16 @@ function Payment() {
     return 0;
   };
   const sumBookingInWeek = (
-    dataBookingWeek: any,
-    startWeek: any,
-    endWeek: any
+    dataBookingWeek: { updated_at: string }[],
+    startWeek: string,
+    endWeek: string
   ) => {
-    const recentBookings = dataBookingWeek?.filter((booking: any) => {
-      const bookedDate = dayjs(booking.updated_at);
-      return (
-        bookedDate.isAfter(dayjs(startWeek).subtract(1, "day"), "day") &&
-        bookedDate.isBefore(dayjs(endWeek).add(1, "day"), "day")
-      );
+    const recentBookings = dataBookingWeek?.filter((booking) => {
+      const bookedDate = dayjs(booking.updated_at).format("YYYY-MM-DD");
+      const formattedStartWeek = dayjs(startWeek).format("YYYY-MM-DD");
+      const formattedEndWeek = dayjs(endWeek).format("YYYY-MM-DD");
+
+      return bookedDate >= formattedStartWeek && bookedDate <= formattedEndWeek;
     });
     return recentBookings;
   };
@@ -299,12 +335,12 @@ function Payment() {
                         <div>
                           <hr className="mb-4" />
                           {sumBookingInWeek(
-                            booking,
+                            filteredBookings,
                             dataVoucher?.label?.start,
                             dataVoucher?.label?.end
                           )?.length > 0 ? (
                             sumBookingInWeek(
-                              booking,
+                              filteredBookings,
                               dataVoucher?.label?.start,
                               dataVoucher?.label?.end
                             )?.map((dataBookingInWeek: any, index: number) => {

@@ -11,6 +11,9 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { useContext, useState } from "react";
+import { DataContext } from "../../store/dataContext/DataContext";
+import DatePicker from "react-multi-date-picker";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -30,7 +33,10 @@ interface Booking {
 
 function BillingDetail() {
   const { booking } = useSelector((state: any) => state.booking);
-
+  const { setSaveDateChartChoose, setFieldSaveDateChartChoose } =
+    useContext(DataContext);
+  const [selectedDateRange, setSelectedDateRange] = useState<any>([null, null]);
+  console.log(selectedDateRange);
   function sumField(
     bookings: { [key: string]: string }[],
     field: string
@@ -148,13 +154,38 @@ function BillingDetail() {
     const formattedEnd = dayjs(week.end).format("YYYY-MM-DD");
     return { start: formattedStart, end: formattedEnd };
   });
+  const [saveFormattedLabels, setSaveFormattedLabels] = useState(
+    formattedLabels || []
+  );
 
   const formattedLabelDayMonth = formattedLabels.map((week) => {
     const startFormatted = dayjs(week.start).format("MM/DD");
     const endFormatted = dayjs(week.end).format("MM/DD");
     return `${startFormatted} - ${endFormatted}`;
   });
+  const [saveFormattedLabelDayMonth, setSaveFormattedLabelDayMonth] = useState(
+    formattedLabelDayMonth || []
+  );
 
+  const handleDateChange = (newDateRange: any) => {
+    const formattedDateRange = newDateRange.map((date: string) =>
+      dayjs(date).format("YYYY-MM-DD")
+    );
+    console.log(formattedDateRange);
+    const [start, end] = formattedDateRange;
+    setSelectedDateRange(newDateRange);
+    setSaveFormattedLabels([{ start, end }]);
+    setSaveFormattedLabelDayMonth([formattedDateRange]);
+
+    setSaveDateChartChoose([{ start, end }]);
+    setFieldSaveDateChartChoose("filter");
+  };
+  const handleChartAll = () => {
+    setSaveFormattedLabels([...formattedLabels]);
+    setSaveFormattedLabelDayMonth([...formattedLabelDayMonth]);
+    setFieldSaveDateChartChoose("normal");
+    setSelectedDateRange([null, null]);
+  };
   const dataMonth = {
     labels: labelMonths,
     datasets: [
@@ -215,11 +246,11 @@ function BillingDetail() {
     },
   };
   const dataWeek = {
-    labels: formattedLabelDayMonth,
+    labels: saveFormattedLabelDayMonth,
     datasets: [
       {
         label: "Paid Price",
-        data: formattedLabels.map((day) => {
+        data: saveFormattedLabels.map((day) => {
           return calculateTotalByDay(
             booking,
             "",
@@ -233,7 +264,7 @@ function BillingDetail() {
       },
       {
         label: "Original Price",
-        data: formattedLabels.map((day) =>
+        data: saveFormattedLabels.map((day) =>
           calculateTotalByDay(
             booking,
             "",
@@ -247,7 +278,7 @@ function BillingDetail() {
       },
       {
         label: "Refund Amount",
-        data: formattedLabels.map((day) =>
+        data: saveFormattedLabels.map((day) =>
           calculateTotalByDay(
             booking,
             "",
@@ -285,17 +316,7 @@ function BillingDetail() {
       );
     })
     .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-  console.log(totalPaidWeeks);
-  // console.log(
-  //   calculateTotalByDay(
-  //     booking,
-  //     "",
-  //     "paid_price",
-  //     "chart_week",
-  //     "2023-11-19",
-  //     "2023-11-19"
-  //   )
-  // );
+
   return (
     <div className="my-8">
       <div className="grid grid-cols-12 gap-8">
@@ -331,17 +352,37 @@ function BillingDetail() {
         <div className=" col-span-6">
           <p className=" text-lg font-medium pb-2">Overview</p>
           <div className="p-4 bg-white rounded-lg shadow-custom-card-mui flex flex-col gap-3 pb-9">
+            {selectedDateRange?.every((date: string) => date === null) && (
+              <div>
+                <div className="flex justify-between">
+                  <span className="font-medium"> Paid within 7 weeks</span>
+                  <span>{formatNumber(totalPaidWeeks)}</span>
+                </div>
+                <hr className="mb-2 mt-4" />
+              </div>
+            )}
+
             <div className="flex justify-between">
-              <span className="font-medium">Current Balance</span>
-              <span>{formatNumber(9000000)}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="font-medium"> Paid within 7 weeks</span>
-              <span>{formatNumber(totalPaidWeeks)}</span>
-            </div>{" "}
-            <div className="flex justify-between">
-              <span className="font-medium">Today Deposit</span>
-              <span>{formatNumber(9000000)}</span>
+              <span className="font-medium">Time period statistics</span>
+              <div>
+                <DatePicker
+                  id="filter-date-pick-payment"
+                  value={selectedDateRange}
+                  onChange={handleDateChange}
+                  range
+                  rangeHover
+                >
+                  <button type="button" onClick={handleChartAll}>
+                    Clear
+                  </button>
+                </DatePicker>
+                <label
+                  htmlFor="filter-date-pick-payment"
+                  className="bg-gray-100 py-1.5 text-sm px-2 rounded-md ml-1"
+                >
+                  Open
+                </label>
+              </div>
             </div>
             <Bar options={optionWeeks} data={dataWeek} />
           </div>

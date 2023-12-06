@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar/Index";
 import { DataContext } from "../../store/dataContext/DataContext";
 import { useDispatch } from "react-redux";
@@ -12,7 +12,9 @@ import dayjs from "dayjs";
 import { FaStar } from "react-icons/fa6";
 import LoadingFullScreen from "../../styles/loading/LoadingFullScreen";
 import { fetchTours } from "../../store/redux/silce/tourSlice";
-import { Pagination } from "antd";
+import { Input, Pagination, Select } from "antd";
+
+const { Search } = Input;
 
 function Review() {
   const [activeButton, setActiveButton] = useState(1);
@@ -21,7 +23,6 @@ function Review() {
   React.useContext(DataContext);
   const dispatch: AppDispatch = useDispatch();
   const { review, loading } = useSelector((state: any) => state.review);
-  console.log(review);
 
   function filterReviewsByTourId(review: any, tourId: string) {
     return review?.filter(
@@ -90,28 +91,91 @@ function Review() {
     return content;
   };
   const renderedContentStar = renderComponentStar();
-  console.log(renderedContentStar);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
+  const [keyFilterTour, setKeyFilterTour] = useState("normal");
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const [reloadSearch, setReloadSearch] = useState<any>(null);
   const { refeshTour } = React.useContext(DataContext);
   const { tours } = useSelector((state: any) => state.tour);
   const dataTours = tours?.tours;
+  const [dataTourReviews, setDataTourReviews] = useState(dataTours);
   const countTours = tours?.total_count;
-
-  React.useEffect(() => {
+  console.log(dataTourReviews);
+  useEffect(() => {
     const pagination = { pageSize, currentPage };
     dispatch(fetchTours(pagination));
-  }, [dispatch, refeshTour, currentPage, pageSize]);
-
+  }, [dispatch, refeshTour, currentPage, pageSize, reloadSearch]);
+  useEffect(() => {
+    if (keyFilterTour === "normal") {
+      setDataTourReviews(dataTours);
+    }
+    if (keyFilterTour === "review") {
+      const toursWithReviews = dataTourReviews.filter(
+        (tour: any) => tour.TourReview.length > 0
+      );
+      setDataTourReviews(toursWithReviews);
+    }
+  }, [dataTourReviews, dataTours, keyFilterTour, reloadSearch]);
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
 
   const handlePageSizeChange = (current: number, size: number) => {
-    console.log(current);
     setPageSize(size);
     setCurrentPage(current);
   };
+
+  const handleFilterTour = (value: string) => {
+    if (value === "review") {
+      const pageSizeFil = 1000;
+      const currentPageFil = 1;
+      const pagination = { pageSizeFil, currentPageFil };
+      setPageSize(1000);
+      dispatch(fetchTours(pagination));
+      setKeyFilterTour("review");
+    }
+    if (value?.length === 0 || value === undefined) {
+      setKeyFilterTour("normal");
+    }
+  };
+
+  const searchReviewByNameAndContent = (tours: any[], searchTerm: string) => {
+    if (!Array.isArray(tours) || tours.length === 0) {
+      return [];
+    }
+    const filteredTours = tours.filter((tour) => {
+      console.log(tour);
+      const tourReviews = tour?.TourReview || [];
+      return tourReviews.some(
+        (review: any) =>
+          review?.content?.toLowerCase().includes(searchTerm?.toLowerCase()) ||
+          (review?.user?.full_name &&
+            review?.user?.full_name
+              .toLowerCase()
+              .includes(searchTerm?.toLowerCase()))
+      );
+    });
+
+    return filteredTours;
+  };
+
+  const onSearch = (value: string) => {
+    setSearchTerm(value);
+    if (value.length === 0 || value.length === undefined) {
+      setKeyFilterTour("normal");
+      setReloadSearch((prev: any) => !prev);
+    } else {
+      const filteredReviews = searchReviewByNameAndContent(
+        dataTourReviews,
+        value
+      );
+      setKeyFilterTour("search");
+      setDataTourReviews(filteredReviews);
+    }
+  };
+
   return (
     <>
       {loading ? (
@@ -127,6 +191,25 @@ function Review() {
                   <span className="text-gray-500">
                     When provider have review new, they open here
                   </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Search
+                    type="text"
+                    defaultValue={searchTerm}
+                    placeholder="input search text"
+                    onSearch={onSearch}
+                    style={{ width: 200 }}
+                  />
+                  <Select
+                    defaultValue=""
+                    onChange={handleFilterTour}
+                    style={{ width: 120 }}
+                    allowClear
+                    options={[
+                      { value: "", label: "Choose value" },
+                      { value: "review", label: "Review" },
+                    ]}
+                  />
                 </div>
               </div>
               <div className="mb-6">
@@ -289,14 +372,14 @@ function Review() {
                   </div>
                 </div>
                 <div className="flex flex-col gap-2 shadow-custom-card-mui">
-                  {dataTours?.map((dataManyBook: any, index: number) => (
+                  {dataTourReviews?.map((dataManyBook: any, index: number) => (
                     <div
                       className="bg-white  relative shadow-custom-card-mui rounded-lg flex flex-col"
                       key={index}
                     >
                       <div className="bg-white flex items-center gap-2 p-4 rounded-lg">
                         <img
-                          src={dataManyBook?.tour_images[0]}
+                          src={dataManyBook?.tour_images?.[0]}
                           className="w-12 h-12 rounded-lg"
                           alt="wait"
                         />
@@ -388,7 +471,7 @@ function Review() {
                     </div>
                   ))}
                   <div className="flex justify-center">
-                    {dataTours?.length > 0 && (
+                    {dataTourReviews?.length > 0 && (
                       <Pagination
                         current={currentPage}
                         total={countTours}

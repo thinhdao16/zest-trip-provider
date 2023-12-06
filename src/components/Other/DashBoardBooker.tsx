@@ -7,19 +7,13 @@ import {
   AiOutlineFieldNumber,
   AiOutlineFieldTime,
   AiOutlinePhone,
-  AiOutlineSearch,
   AiOutlineUp,
 } from "react-icons/ai";
 import { useEffect, useState } from "react";
 import { Fade } from "@mui/material";
 import { LuSubtitles } from "react-icons/lu";
 import { GrLocation } from "react-icons/gr";
-import {
-  FaMoneyBill,
-  FaMoneyBills,
-  FaSliders,
-  FaTicket,
-} from "react-icons/fa6";
+import { FaMoneyBill, FaMoneyBills, FaTicket } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 import { getBooking } from "../../store/redux/silce/booking";
 import { AppDispatch } from "../../store/redux/store";
@@ -60,7 +54,8 @@ function DashBoardBooker() {
 
   const { booking } = useSelector((state: any) => state.booking);
   useEffect(() => {
-    dispatch(getBooking());
+    const data = { sort_by: "desc" };
+    dispatch(getBooking(data));
   }, [dispatch]);
   const [expandedItems, setExpandedItems] = useState<any>({});
   const toggleContentVisibility = (index: number) => {

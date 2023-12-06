@@ -8,10 +8,10 @@ function ProviderProcessing() {
         <div className="flex flex-col justify-center text-center items-center">
           <PuffLoader color="green" className="mb-3" />
 
-          <p className=" text-xl font-bold mb-1">Progessing</p>
+          <p className=" text-xl font-bold mb-1">Processing</p>
           <span className="w-52 text-gray-500">
             Thank you for contacting us to cooperate! Wait for us to approve
-            your application. See you soon.In progress...
+            your application. See you soon.In process...
           </span>
           <Link to="/login">
             <button className="flex items-center justify-center mt-4">

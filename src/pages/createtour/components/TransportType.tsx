@@ -10,13 +10,12 @@ import { Box, Card, Grid } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { DataSelectCard, StateTour } from "../types/index.t";
-import { SnackbarNoti } from "./Title/Snackbar";
 import { VehicleTag } from "../../../components/icon/tour/vehicle";
+import { message } from "antd";
 
 const TransportType: React.FC = () => {
   const { currentStep, updateFormValues } = useStepContext();
   const [selectedCards, setSelectedCards] = useState<number[]>([]);
-  const { openSnackbar, setOpenSnackbar } = useStepContext();
   const vehicleTour = useSelector((state: StateTour) => state.tour.vehicleTour);
   const handleCardClick = (data: DataSelectCard) => {
     setSelectedCards((prevSelectedCards) => {
@@ -24,7 +23,7 @@ const TransportType: React.FC = () => {
         prevSelectedCards.length === 4 &&
         !prevSelectedCards.includes(data.id)
       ) {
-        setOpenSnackbar(true);
+        message.warning("Please only select a maximum of 4 transports");
         return prevSelectedCards;
       }
 
@@ -35,20 +34,7 @@ const TransportType: React.FC = () => {
       }
     });
   };
-  const handleCloseSnackbar = (
-    _event: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
 
-    setOpenSnackbar(false);
-  };
-
-  const handleUndoButtonClick = () => {
-    setOpenSnackbar(false);
-  };
   useEffect(() => {
     const selectedData = vehicleTour
       .filter((item: DataSelectCard) => selectedCards.includes(item.id))
@@ -61,13 +47,6 @@ const TransportType: React.FC = () => {
   }
   return (
     <>
-      <SnackbarNoti
-        open={openSnackbar}
-        onClose={handleCloseSnackbar}
-        message="Please only select a maximum of 4 transports"
-        actionButtonLabel="UNDO"
-        onActionButtonClick={handleUndoButtonClick}
-      />
       <BannerContainer className="global-scrollbar">
         <div className="items-center flex justify-center ">
           <BannerContent>

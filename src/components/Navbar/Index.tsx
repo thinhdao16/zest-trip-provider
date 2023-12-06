@@ -1,48 +1,84 @@
-// import { faBars, faBell, faMessage } from "@fortawesome/free-solid-svg-icons";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { AppDispatch } from "../../store/redux/store";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { getWalletMe } from "../../store/redux/silce/authSilce";
+import { useSelector } from "react-redux";
+import { CiWallet } from "react-icons/ci";
+import { formatNumber } from "../../utils/formatNumber";
+import { Link, useNavigate } from "react-router-dom";
+import { Dropdown, Space } from "antd";
+import { IoChevronDown, IoPersonOutline } from "react-icons/io5";
+import { IoIosLogOut } from "react-icons/io";
 
 function Index(): JSX.Element {
-  // const avatar =
-  //   "https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80";
+  const navigation = useNavigate();
+  const dispatch: AppDispatch = useDispatch();
+  const { wallet } = useSelector((state: any) => state.auth);
+  const personalInfo = useSelector((state: any) => state.auth.personalInfo);
 
+  const handleLogOut = () => {
+    localStorage.clear();
+    navigation("/login");
+  };
+  useEffect(() => {
+    dispatch(getWalletMe());
+  }, [dispatch]);
+  const items: any = [
+    {
+      label: (
+        <Link to="/account-settings">
+          <div className="flex items-center gap-1">
+            <IoPersonOutline />
+            Profile
+          </div>
+        </Link>
+      ),
+      key: "0",
+    },
+
+    {
+      type: "divider",
+    },
+    {
+      label: (
+        <div className="flex items-center gap-1">
+          <IoIosLogOut />
+          Log out
+        </div>
+      ),
+      key: "3",
+      onClick: handleLogOut,
+    },
+  ];
   return (
     <>
       <header className="">
-        {/* <div className="shadow-sm">
-          <div className="relative bg-white flex w-full items-center px-5 py-2.5">
-            <div className="flex-1">
-              <p
-                className="block md:hidden cursor-pointer"
-                // onClick={toggle}
-              >
-                <FontAwesomeIcon icon={faBars} />
-              </p>
-            </div>
-            <div className="">
-              <ul className="flex flex-row gap-4 items-center">
-                <li>
-                  <span className="h-9 w-9 cursor-pointer text-gray-600">
-                    <FontAwesomeIcon icon={faMessage} />
-                  </span>
-                </li>
-                <li>
-                  <span className="h-9 w-9 cursor-pointer text-gray-600">
-                    <FontAwesomeIcon icon={faBell} />
-                  </span>
-                </li>
-                <li>
-                  <span>
+        <div className=" ">
+          <div className=" bg-white flex w-full items-center px-8 py-2.5 shadow-custom-card-mui justify-end gap-3">
+            <Link to="/payment/wallet">
+              <div className="flex border border-solid border-gray-300 rounded-md px-2 py-1.5 items-center gap-1">
+                <CiWallet />
+                <span>{formatNumber(parseInt(wallet?.balance))}</span>
+              </div>
+            </Link>
+            <Dropdown menu={{ items }} trigger={["click"]}>
+              <a onClick={(e) => e.preventDefault()} className="flex">
+                <Space>
+                  <div className=" flex items-center gap-1 bg-black py-1.5 px-3 rounded-md text-white">
                     <img
-                      className="rounded-full h-9 w-9 border cursor-pointer"
-                      src={avatar}
+                      className="rounded-full h-6 w-6 border cursor-pointer"
+                      src={personalInfo?.avatar_image_url}
                       alt="Avatar"
                     />
-                  </span>
-                </li>
-              </ul>
-            </div>
+                    <span>{personalInfo?.company_name}</span>
+
+                    <IoChevronDown />
+                  </div>
+                </Space>
+              </a>
+            </Dropdown>
           </div>
-        </div> */}
+        </div>
       </header>
     </>
   );

@@ -9,37 +9,24 @@ const initialState = {
   errorBooking: null as string | null,
 };
 
-export const getBooking = createAsyncThunk("booking/getBooking", async () => {
-  try {
-    const pid = localStorage.getItem("id_provider");
-    const response = await axiosInstance.post(`${BASE_URL}/booking/owned`, {
-      provider_id: pid,
-      select: "300",
-    });
-    if (response.status === 200) {
-      return response.data.data;
+export const getBooking = createAsyncThunk(
+  "booking/getBooking",
+  async (data: any) => {
+    try {
+      const pid = localStorage.getItem("id_provider");
+      const response = await axiosInstance.post(`${BASE_URL}/booking/owned`, {
+        provider_id: pid,
+        select: "3000",
+        ...data,
+      });
+      if (response.status === 200) {
+        return response.data.data;
+      }
+    } catch (error: any) {
+      throw new Error("Failed to fetch other data");
     }
-  } catch (error: any) {
-    // if (error.response && error.response.data && error.response.data.message) {
-    //   const errorMessages = error.response.data.message;
-
-    //   if (Array.isArray(errorMessages)) {
-    //     errorMessages.forEach((errorMessage: string) => {
-    //       console.log(errorMessage);
-    //       message.error(errorMessage);
-    //     });
-    //   } else if (typeof errorMessages === "string") {
-    //     console.log(errorMessages);
-    //     message.error(errorMessages);
-    //   } else {
-    //     message.error("Setup fail!");
-    //   }
-    // } else {
-    //   message.error("Setup fail!");
-    // }
-    throw new Error("Failed to fetch other data");
   }
-});
+);
 
 export const acceptRefund = createAsyncThunk(
   "booking/acceptRefund", // Slice name: "tour"
@@ -150,7 +137,6 @@ export const createRefundForCus = createAsyncThunk(
 export const getBookingDetail = createAsyncThunk(
   "booking/getBookingDetail",
   async (idBookDetail: string) => {
-    console.log(idBookDetail);
     try {
       const response = await axiosInstance.post(`${BASE_URL}/booking/owned`, {
         tour_id: idBookDetail,
@@ -238,6 +224,46 @@ export const blockTour = createAsyncThunk(
       );
       if (response.status === 201) {
         message.success("Block success");
+        return response.data.data;
+      }
+    } catch (error: any) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        const errorMessages = error.response.data.message;
+
+        if (Array.isArray(errorMessages)) {
+          errorMessages.forEach((errorMessage: string) => {
+            console.log(errorMessage);
+            message.error(errorMessage);
+          });
+        } else if (typeof errorMessages === "string") {
+          console.log(errorMessages);
+          message.error(errorMessages);
+        } else {
+          message.error("Setup fail!");
+        }
+      } else {
+        message.error("Setup fail!");
+      }
+      throw new Error("Failed to fetch other data");
+    }
+  }
+);
+export const unBlockTour = createAsyncThunk(
+  "booking/unBlockTour",
+  async (idBookDetail: any) => {
+    try {
+      const response = await axiosInstance.patch(
+        `${BASE_URL}/booking/block-remove/${idBookDetail?.idTour}`,
+        {
+          date: idBookDetail?.dataDate,
+        }
+      );
+      if (response.status === 200) {
+        message.success("Unblock success");
         return response.data.data;
       }
     } catch (error: any) {

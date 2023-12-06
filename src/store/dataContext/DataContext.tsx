@@ -21,6 +21,10 @@ interface AuthContextValue {
   setLoading: any;
   dataTicketCreate: any;
   setDataTicketCreate: any;
+  fieldSaveDateChartChoose: any;
+  setFieldSaveDateChartChoose: any;
+  saveDateChartChoose: any;
+  setSaveDateChartChoose: any;
 }
 
 export const DataContext = createContext<AuthContextValue>(
@@ -40,6 +44,9 @@ export function DataContextProvider({
   const [voucherView, setVoucherView] = useState<any>();
   const [loading, setLoading] = useState<boolean>(false);
   const [dataTicketCreate, setDataTicketCreate] = useState<any>([]);
+  const [saveDateChartChoose, setSaveDateChartChoose] = useState();
+  const [fieldSaveDateChartChoose, setFieldSaveDateChartChoose] =
+    useState("normal");
   return (
     <DataContext.Provider
       value={{
@@ -57,6 +64,10 @@ export function DataContextProvider({
         setVoucherView,
         dataTicketCreate,
         setDataTicketCreate,
+        fieldSaveDateChartChoose,
+        setFieldSaveDateChartChoose,
+        saveDateChartChoose,
+        setSaveDateChartChoose,
       }}
     >
       {children}

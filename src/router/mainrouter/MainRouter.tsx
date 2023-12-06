@@ -16,7 +16,6 @@ import ForgotPassWord from "../../components/forgotPassword/ForgotPassword";
 import Review from "../../pages/review/Review";
 import Booker from "../../pages/booker/Booker";
 import Availability from "../../pages/availability/Availability";
-import DetailBook from "../../pages/booker/many/DetailBook";
 import BookerDetailSingleScreen from "../../pages/booker/single/BookerDetailSingleScreen";
 import Voucher from "../../pages/voucher/Voucher";
 import VoucherNew from "../../pages/voucher/management/voucher-create/VoucherNew";
@@ -28,6 +27,9 @@ import DetailTour from "../../pages/homepage/detail/DetailTour";
 import ProviderProcessing from "../../components/processing/ProviderProcessing";
 import Ticket from "../../pages/ticket/Ticket";
 import DetailTicketTour from "../../pages/ticket/DetailTicketTour";
+import ListBooking from "../../pages/booker/list/ListBooking";
+import Wallet from "../../pages/wallet/Wallet";
+import BookDetail from "../../pages/booker/many/BookDetail";
 
 function MainRouter() {
   const { refeshLogin } = React.useContext(DataContext);
@@ -59,12 +61,16 @@ function MainRouter() {
               <Route path="/listtour" element={<HomePage />} />
               <Route path="/booking">
                 <Route path="" element={<Booker />} />
-                <Route path="many/:index" element={<DetailBook />} />
+                <Route path="many/:index" element={<BookDetail />} />
+                <Route path="all" element={<ListBooking />} />
               </Route>
               <Route path="/voucher" element={<Voucher />}>
                 <Route path="" element={<Voucher />} />
               </Route>
-              <Route path="/payment" element={<Payment />} />
+              <Route path="/payment">
+                <Route path="" element={<Payment />} />
+                <Route path="wallet" element={<Wallet />} />
+              </Route>
               <Route path="/availability" element={<Availability />} />
 
               <Route path="/account-settings" element={<AccountSettings />}>

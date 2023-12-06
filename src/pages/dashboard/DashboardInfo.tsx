@@ -1,9 +1,6 @@
-import { Avatar, Divider, ListItemIcon, Menu, MenuItem } from "@mui/material";
-import { Box } from "@mui/system";
 import React from "react";
-import { AiOutlineDown } from "react-icons/ai";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AppDispatch } from "../../store/redux/store";
 import { useDispatch } from "react-redux";
 import { getAllTours } from "../../store/redux/silce/tourSlice";
@@ -11,12 +8,13 @@ import { getProviderTourBoost } from "../../store/redux/silce/promotion";
 import "dayjs/locale/en";
 import dayjs from "dayjs";
 import LoadingFullScreen from "../../styles/loading/LoadingFullScreen";
-import Logout from "@mui/icons-material/Logout";
 import SliceEmailToName from "../../utils/SliceEmailToName";
+import { Dropdown, Space } from "antd";
+import { IoChevronDown, IoPersonOutline } from "react-icons/io5";
+import { IoIosLogOut } from "react-icons/io";
 function DashboardInfo() {
   const dispatch: AppDispatch = useDispatch();
   const navigation = useNavigate();
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const personalInfo = useSelector((state: any) => state.auth.personalInfo);
   const { allTours } = useSelector((state: any) => state.tour);
   const { providerTourBoost, loadingPromotion } = useSelector(
@@ -24,33 +22,51 @@ function DashboardInfo() {
   );
 
   const email = personalInfo?.email;
-  const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+
   const handleLogOut = () => {
     localStorage.clear();
     navigation("/login");
-    setAnchorEl(null);
   };
-  const handleAccount = () => {
-    setAnchorEl(null);
-    navigation("/account-settings");
-  };
+
   const filteredTours = allTours?.tours?.filter(
     (tour: { id: string; status: string }) => {
       const isDuplicate = providerTourBoost.includes(tour.id);
       return tour.status === "PUBLISHED" && isDuplicate;
     }
   );
+
   React.useEffect(() => {
     dispatch(getAllTours());
     dispatch(getProviderTourBoost());
   }, [dispatch]);
-  console.log(personalInfo);
+
+  const items: any = [
+    {
+      label: (
+        <Link to="/account-settings">
+          <div className="flex items-center gap-1">
+            <IoPersonOutline />
+            Profile
+          </div>
+        </Link>
+      ),
+      key: "0",
+    },
+
+    {
+      type: "divider",
+    },
+    {
+      label: (
+        <div className="flex items-center gap-1">
+          <IoIosLogOut />
+          Log out
+        </div>
+      ),
+      key: "3",
+      onClick: handleLogOut,
+    },
+  ];
   return (
     <>
       {loadingPromotion ? (
@@ -70,7 +86,7 @@ function DashboardInfo() {
                 />
                 <div className="flex flex-col">
                   <span className="font-medium text-lg">
-                    {personalInfo?.full_name || (
+                    {personalInfo?.company_name || (
                       <SliceEmailToName email={email} />
                     )}
                   </span>
@@ -79,69 +95,15 @@ function DashboardInfo() {
                   </div> */}
                 </div>
               </div>
-              <button>
-                <AiOutlineDown
-                  style={{ fontWeight: "800" }}
-                  onClick={handleClick}
-                />
-              </button>
+              <Dropdown menu={{ items }} trigger={["click"]}>
+                <a onClick={(e) => e.preventDefault()} className="flex">
+                  <Space>
+                    <IoChevronDown />
+                  </Space>
+                </a>
+              </Dropdown>
             </div>
 
-            <Box sx={{ flexGrow: 1, textAlign: "right", color: "black" }}>
-              <Menu
-                anchorEl={anchorEl}
-                id="account-menu"
-                open={open}
-                onClose={handleClose}
-                onClick={handleClose}
-                PaperProps={{
-                  elevation: 0,
-                  sx: {
-                    overflow: "visible",
-                    filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-                    mt: 1.5,
-                    "& .MuiAvatar-root": {
-                      width: 32,
-                      height: 32,
-                      ml: -0.5,
-                      mr: 1,
-                    },
-                    "&:before": {
-                      content: '""',
-                      display: "block",
-                      position: "absolute",
-                      top: 0,
-                      right: 14,
-                      width: 10,
-                      height: 10,
-                      bgcolor: "background.paper",
-                      transform: "translateY(-50%) rotate(45deg)",
-                      zIndex: 0,
-                    },
-                  },
-                }}
-                transformOrigin={{ horizontal: "right", vertical: "top" }}
-                anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-              >
-                <MenuItem onClick={handleAccount}>
-                  <Avatar /> Profile
-                </MenuItem>
-
-                <Divider />
-                {/* <MenuItem onClick={handleClose}>
-                  <ListItemIcon>
-                    <PersonAdd fontSize="small" />
-                  </ListItemIcon>
-                  Add another account
-                </MenuItem> */}
-                <MenuItem onClick={handleLogOut}>
-                  <ListItemIcon>
-                    <Logout fontSize="small" />
-                  </ListItemIcon>
-                  Log Out
-                </MenuItem>
-              </Menu>
-            </Box>
             <hr />
           </div>
           {/* <div className="mt-5">

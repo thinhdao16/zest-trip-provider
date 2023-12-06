@@ -227,7 +227,6 @@ function ScreenMain() {
                     onChange={(e) => setStatusTour(e.target.value)}
                     className="rounded-lg p-2 bg-white border border-gray-300  border-solid w-full shadow-custom-card-mui"
                   >
-                    <option value="DRAFT">DRAFT</option>
                     <option value="PUBLISHED">PUBLISHED</option>
                     <option value="HIDDEN">HIDDEN</option>
                   </select>

@@ -142,7 +142,8 @@ function ScreenMain() {
     });
   };
   useEffect(() => {
-    dispatch(getBooking());
+    const data = { sort_by: "desc" };
+    dispatch(getBooking(data));
   }, [dispatch, loadingRes]);
   return (
     <>

@@ -9,10 +9,10 @@ import { Link } from "react-router-dom";
 
 const renderMenuItems = (items: any) => {
   const currentPath = window.location.pathname;
-  return items.map((item: any) =>
-    item.children ? (
-      <Menu.SubMenu key={item.key} title={item.label} icon={item.icon}>
-        {renderMenuItems(item.children)}
+  return items.map((item: any, index: number) =>
+    item.items ? (
+      <Menu.SubMenu key={item.key || index} title={item.label} icon={item.icon}>
+        {renderMenuItems(item.items)}
       </Menu.SubMenu>
     ) : item.type === "divider" ? (
       <Menu.Divider key={item.key} />
@@ -38,7 +38,7 @@ const items = [
     key: "sub1",
     icon: <MailOutlined />,
     label: "Management tour",
-    children: [
+    items: [
       {
         key: "listtour",
         label: "List of tour",
@@ -48,14 +48,14 @@ const items = [
         label: "Create tour",
       },
       {
-        key: "ticket",
+        key: "ticket management",
         label: "Ticket",
-        children: [{ key: "ticket", label: "List" }],
+        items: [{ key: "ticket", label: "List" }],
       },
       {
-        key: "availability",
+        key: "availability management",
         label: "Availability",
-        children: [{ key: "availability", label: "List" }],
+        items: [{ key: "availability", label: "List" }],
       },
     ],
   },
@@ -63,12 +63,15 @@ const items = [
     key: "sub2",
     icon: <AppstoreOutlined />,
     label: "Management booking",
-    children: [
+    items: [
       { key: "review", label: "Review" },
       {
-        key: "booking",
+        key: "booking management",
         label: "Booking",
-        children: [{ key: "booking", label: "List" }],
+        items: [
+          { key: "booking", label: "List" },
+          { key: "booking/all", label: "All" },
+        ],
       },
     ],
   },
@@ -77,12 +80,16 @@ const items = [
     key: "sub4",
     icon: <SettingOutlined />,
     label: "Marketing",
-    children: [{ key: "voucher", label: "Voucher" }],
+    items: [{ key: "voucher", label: "Voucher" }],
   },
   {
-    key: "payment",
-    icon: <AppstoreOutlined />,
-    label: "Payment",
+    key: "financials",
+    icon: <SettingOutlined />,
+    label: "Financials",
+    items: [
+      { key: "payment", label: "Payment" },
+      { key: "payment/wallet", label: "Wallet" },
+    ],
   },
 ];
 

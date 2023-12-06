@@ -539,7 +539,7 @@ const Price: React.FC = () => {
   }, [selectedCountries, formList, quantityDefault, typeDefault]);
 
   React.useEffect(() => {
-    funcUpdateTicketRole(); // Hàm này sẽ được gọi lại khi các dependency thay đổi
+    funcUpdateTicketRole();
   }, [
     selectedCountries,
     selectedRadio,
@@ -549,6 +549,7 @@ const Price: React.FC = () => {
     quantityAdult,
     quantityChildren,
     typeDefault,
+    ageFor,
   ]);
 
   if (currentStep !== 10) {
@@ -622,11 +623,6 @@ const Price: React.FC = () => {
                 />
                 <div className="flex items-center gap-1">
                   <p className="font-medium text-lg">Default Ticket</p>
-                  {formList?.length < 2 && (
-                    <span className="text-xs text-red-500">
-                      * Please Number of People at least 2
-                    </span>
-                  )}
                 </div>
 
                 <div className="grid md:grid-cols-12">
@@ -849,12 +845,6 @@ const Price: React.FC = () => {
                 />
                 <div className="flex items-center gap-1">
                   <p className="font-semibold text-lg">Adults</p>
-                  {formListAdult?.length < 2 &&
-                    selectedRadio?.adults !== "Free - no ticket required" && (
-                      <span className="text-xs text-red-500">
-                        * Please Number of People at least 2
-                      </span>
-                    )}
                 </div>
                 <div className="grid md:grid-cols-12">
                   <div className="col-span-5">
@@ -873,7 +863,7 @@ const Price: React.FC = () => {
                             className="w-20 bg-white border border-gray-300 text-gray-900 font-medium rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5  "
                             defaultValue={ageFor?.adult?.ageEnd}
                             onChange={(e) =>
-                              handleAgeChange(e, "adult", "adultStart")
+                              handleAgeChange(e, "adult", "adultEnd")
                             }
                           >
                             {options}
@@ -1094,12 +1084,6 @@ const Price: React.FC = () => {
                 />
                 <div className="flex items-center gap-1">
                   <p className="font-semibold text-lg">Children</p>
-                  {formListChildren?.length < 2 &&
-                    selectedRadio?.children !== "Free - no ticket required" && (
-                      <span className="text-xs text-red-500">
-                        * Please Number of People at least 2
-                      </span>
-                    )}
                 </div>
 
                 <div className="grid md:grid-cols-12">

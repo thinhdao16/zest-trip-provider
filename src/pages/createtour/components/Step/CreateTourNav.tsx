@@ -57,14 +57,12 @@ function CreateTourNav() {
     for (const item of data) {
       if (
         !item ||
-        item.price_range.length < 2 ||
         isNaN(item.max) ||
         isNaN(item.min) ||
         !item.price_range ||
         !Array.isArray(item.price_range) ||
         typeof item.max !== "number"
       ) {
-        // console.error("Invalid item or price_range structure.");
         return false;
       }
       for (const priceRange of item.price_range) {

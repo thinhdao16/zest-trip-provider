@@ -80,9 +80,6 @@ function Voucher() {
               <div className="mb-6 flex items-center justify-between">
                 <div className="flex flex-col">
                   <h1 className="text-2xl font-semibold ">List of Voucher</h1>
-                  <span className="text-gray-500">
-                    When provider have voucher new, they open here
-                  </span>
                 </div>
                 <div className="flex items-center gap-3">
                   {/* <div className="relative">

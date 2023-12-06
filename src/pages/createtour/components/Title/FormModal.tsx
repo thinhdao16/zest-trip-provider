@@ -1,9 +1,8 @@
 import React, { useMemo, useState } from "react";
-import Box from "@mui/material/Box";
-import Modal from "@mui/material/Modal";
 import { Grid } from "@mui/material";
 import { IoAddCircleOutline } from "react-icons/io5";
 import { FaCircle, FaEnvelopeOpenText } from "react-icons/fa6";
+import { Modal } from "antd";
 
 interface FormModalProps {
   open: boolean;
@@ -11,19 +10,6 @@ interface FormModalProps {
   onSubmit: (boxes: BoxData[], title: string, day: number) => void;
   day: number | undefined;
 }
-
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 800,
-  bgcolor: "background.paper",
-  border: "none",
-  boxShadow: 24,
-  p: 4,
-  borderRadius: "12px",
-};
 
 interface BoxData {
   data: string;
@@ -77,16 +63,8 @@ const FormModal: React.FC<FormModalProps> = ({
 
   return (
     <div>
-      <Modal
-        open={open}
-        onClose={onClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box
-          sx={style}
-          className="flex flex-col gap-5 h-2/3 overflow-auto global-scrollbar"
-        >
+      <Modal open={open} onCancel={onClose} width={800} footer={[]}>
+        <div className="flex flex-col max-h-[60vh] gap-5 overflow-auto global-scrollbar">
           <div className="flex flex-col  gap-1">
             <p className="font-medium text-2xl">Schedule information</p>
             <p>
@@ -193,7 +171,7 @@ const FormModal: React.FC<FormModalProps> = ({
               Add schedule
             </button>
           </div>
-        </Box>
+        </div>
       </Modal>
     </div>
   );

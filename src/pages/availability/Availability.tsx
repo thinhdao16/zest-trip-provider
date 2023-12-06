@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import dayjs from "dayjs";
 import AddAvailability from "./Modal/AddAvailability";
 import EditAvailability from "./Modal/EditAvailability";
-import { AiOutlineDown } from "react-icons/ai";
+import { AiFillFilter, AiOutlineDown } from "react-icons/ai";
 import PersonAdd from "@mui/icons-material/PersonAdd";
 import Settings from "@mui/icons-material/Settings";
 import {
@@ -23,6 +23,8 @@ import { GoDotFill } from "react-icons/go";
 import { Pagination } from "antd";
 import { DataContext } from "../../store/dataContext/DataContext";
 import LoadingFullScreen from "../../styles/loading/LoadingFullScreen";
+import { RiSearchLine } from "react-icons/ri";
+import DatePicker from "react-multi-date-picker";
 
 function Availability() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -34,19 +36,146 @@ function Availability() {
   const countTours = tours?.total_count;
   const [loadings, setLoadings] = useState(null);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
 
-  // const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-  //   setAnchorEl(event.currentTarget);
-  // };
+  const [openField, setOpenField] = useState(false);
+
+  const [updatedDataTours, setUpdatedDataTours] = useState([]);
+  const [updatedDataTourNoChange, setUpdatedDataToursNoChange] = useState([]);
+
+  const [fieldSelectDate, setFieldSelectDate] = useState("normal");
+
+  const [selectedDate, setSelectedDate] = useState<any>(new Date());
+
+  console.log(fieldSelectDate);
+  const open = Boolean(anchorEl);
+  const availabilityIndex = 0;
+
+  const generateDatesForWeekday = (weekday: any, from: any, to: any) => {
+    const formatFrom = dayjs(from).format("YYYY-MM-DD");
+    const formatTo = dayjs(to).format("YYYY-MM-DD");
+    const dates = [];
+    const currentDate = new Date(formatFrom);
+    const toDate = new Date(formatTo);
+    while (currentDate <= toDate) {
+      if (currentDate.getUTCDay() + 1 === weekday) {
+        dates.push(new Date(currentDate).toISOString().split("T")[0]);
+      }
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+
+    return dates;
+  };
+
+  const allDates = dataTours
+    ? dataTours?.flatMap((tour: any) => {
+        const availabilityDates = tour?.TourAvailability?.flatMap(
+          (availability: any) => {
+            const weekdays = availability?.weekdays?.map(
+              (weekday: { day: string }) => weekday.day
+            );
+            return weekdays.flatMap((item: any) =>
+              generateDatesForWeekday(
+                item,
+                availability.validity_date_range_from,
+                availability.validity_date_range_to
+              )
+            );
+          }
+        );
+        return availabilityDates;
+      })
+    : [];
+
+  const allSingleDates = dataTours
+    ? dataTours
+        ?.flatMap((tour: any) =>
+          tour?.TourAvailability?.flatMap((availability: any) =>
+            availability?.special_dates?.map(
+              (specialDate: any) => specialDate.date
+            )
+          )
+        )
+        ?.filter((date: any) => date !== undefined)
+    : [];
+
+  const [dateAvailability, setDateAvailability] = useState([
+    ...allDates,
+    ...allSingleDates,
+  ]);
+
+  const uniqueDates = new Set();
+  const filteredBookingDetails: any[] = [];
+
+  dataTours?.forEach((tour: any) => {
+    const bookings = tour?.Booking;
+    if (bookings && Array.isArray(bookings)) {
+      bookings.forEach((booking: any) => {
+        const bookedDate = dayjs(booking?.booked_date).format("YYYY-MM-DD");
+        if (!uniqueDates.has(bookedDate)) {
+          uniqueDates.add(bookedDate);
+          filteredBookingDetails.push(booking);
+        }
+      });
+    }
+  });
+
+  const book_date_fil = filteredBookingDetails?.map(
+    (data: { booked_date: string }) =>
+      dayjs(data?.booked_date)?.format("YYYY-MM-DD")
+  );
+
+  const handleBookingHave = () => {
+    const commonDates = dateAvailability.filter((date) =>
+      book_date_fil.includes(date)
+    );
+    setDateAvailability(commonDates);
+    setOpenField(true);
+    setFieldSelectDate("booking");
+  };
+  const handleAvailabilityHave = () => {
+    setDateAvailability([...allDates, ...allSingleDates]);
+    setOpenField(false);
+    setFieldSelectDate("normal");
+    setUpdatedDataTours(updatedDataTourNoChange);
+  };
+  console.log(updatedDataTours);
+  const handleAddSingleDate = (_index: number, selectedDate: any) => {
+    const formattedDates = dayjs(selectedDate)?.format("YYYY-MM-DD");
+    setSelectedDate(formattedDates);
+    console.log(formattedDates);
+    if (fieldSelectDate === "normal" && formattedDates.length > 0) {
+      const filterDateTour = updatedDataTourNoChange?.filter((tour: any) => {
+        const availabilityDates = tour?.TourAvailability?.flatMap(
+          (availability: any) => availability.availabilityDate
+        );
+        const specialDates = tour?.TourAvailability?.flatMap(
+          (availability: any) =>
+            availability.special_dates?.map(
+              (specialDate: { date: string }) => specialDate.date
+            ) || []
+        );
+        return (
+          availabilityDates.includes(formattedDates) ||
+          specialDates.includes(formattedDates)
+        );
+      });
+      setUpdatedDataTours(filterDateTour);
+    }
+    if (fieldSelectDate === "booking" && formattedDates.length > 0) {
+      const filterDateTour = updatedDataTourNoChange?.filter((tour: any) => {
+        const bookingDates = tour?.Booking?.flatMap((booking: any) =>
+          dayjs(booking.booked_date)?.format("YYYY-MM-DD")
+        );
+        return bookingDates.includes(formattedDates);
+      });
+      setUpdatedDataTours(filterDateTour);
+    }
+  };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
 
-  useEffect(() => {
-    const pagination = { pageSize, currentPage };
-    dispatch(fetchTours(pagination));
-  }, [currentPage, dispatch, pageSize, loadings, refeshTour]);
   function getDayName(day: number) {
     switch (day) {
       case 1:
@@ -77,6 +206,45 @@ function Availability() {
     setPageSize(size);
     setCurrentPage(current);
   };
+  const handleClearDate = () => {
+    setSelectedDate(undefined);
+    setUpdatedDataTours(updatedDataTourNoChange);
+  };
+  useEffect(() => {
+    const updatedDataTourss = dataTours?.map((tour: any) => {
+      const updatedAvailability = tour?.TourAvailability?.map(
+        (availability: any) => {
+          const weekdays = availability?.weekdays?.map(
+            (weekday: { day: string }) => weekday.day
+          );
+          const generatedDates = weekdays.flatMap((item: any) =>
+            generateDatesForWeekday(
+              item,
+              availability.validity_date_range_from,
+              availability.validity_date_range_to
+            )
+          );
+          return {
+            ...availability,
+            availabilityDate: generatedDates,
+          };
+        }
+      );
+
+      return {
+        ...tour,
+        TourAvailability: updatedAvailability,
+      };
+    });
+    setUpdatedDataTours(updatedDataTourss);
+    setUpdatedDataToursNoChange(updatedDataTourss);
+    setDateAvailability([...allDates, ...allSingleDates]);
+  }, [dataTours]);
+
+  useEffect(() => {
+    const pagination = { pageSize, currentPage };
+    dispatch(fetchTours(pagination));
+  }, [currentPage, dispatch, pageSize, loadings, refeshTour]);
   return (
     <>
       {loading ? (
@@ -96,7 +264,84 @@ function Availability() {
                     When provider have availability new, they open here
                   </span>
                 </div>
-                {/* <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3">
+                  <label
+                    htmlFor="filter-date-pick"
+                    className="bg-gray-300 p-1.5 rounded-md  text-sm "
+                  >
+                    Open
+                  </label>
+                  <DatePicker
+                    className="pb-4 px-4 "
+                    id="filter-date-pick"
+                    value={selectedDate}
+                    numberOfMonths={1}
+                    mapDays={({ date }) => {
+                      const formattedDate = date.format("YYYY-MM-DD");
+                      const formattedDateDisable = dateAvailability?.map(
+                        (disableDate: any) =>
+                          dayjs(disableDate).format("YYYY-MM-DD")
+                      );
+                      const isDisabled =
+                        formattedDateDisable.includes(formattedDate);
+
+                      const formattedBlockedDates =
+                        updatedDataTourNoChange?.flatMap(
+                          (dataTour: any) =>
+                            dataTour?.blocked_dates?.map((date: string) =>
+                              dayjs(date).format("YYYY-MM-DD")
+                            ) || []
+                        );
+
+                      console.log(formattedBlockedDates);
+
+                      const isBlocked = formattedBlockedDates?.includes(
+                        dayjs(formattedDate).format("YYYY-MM-DD")
+                      );
+
+                      const style = {
+                        backgroundColor: isBlocked ? "#ff6384" : "",
+                      };
+                      return {
+                        disabled: !isDisabled,
+                        style: style,
+                      };
+                    }}
+                    onChange={(date: any) =>
+                      handleAddSingleDate(availabilityIndex, date)
+                    }
+                  >
+                    <div className=" flex items-center gap-2">
+                      {!openField && (
+                        <button
+                          className="bg-navy-blue py-1.5 px-2 text-white rounded-md text-sm "
+                          onClick={handleBookingHave}
+                        >
+                          Check booking
+                        </button>
+                      )}
+                      {openField && (
+                        <button
+                          className="bg-navy-blue py-1.5 px-2 text-white rounded-md text-sm "
+                          onClick={handleAvailabilityHave}
+                        >
+                          Check availability
+                        </button>
+                      )}
+                      <button
+                        className="bg-blue-300 p-1.5 rounded-md text-blue-900 text-sm"
+                        onClick={() => setSelectedDate(new Date())}
+                      >
+                        Today
+                      </button>
+                      <button
+                        className="bg-red-300 p-1.5 rounded-md text-red-900 text-sm"
+                        onClick={() => handleClearDate()}
+                      >
+                        Deselect
+                      </button>
+                    </div>
+                  </DatePicker>
                   <div className="relative">
                     <RiSearchLine className="absolute top-2 left-2" />
                     <input
@@ -104,10 +349,10 @@ function Availability() {
                       name=""
                       id=""
                       placeholder="Search"
-                      className="border border-gray-300 pl-8 py-1 w-24 rounded-md"
+                      className="border border-gray-300 pl-8 py-1.5 w-24 rounded-md text-sm bg-white"
                     />
                   </div>
-                  <div>
+                  <div className="bg-white">
                     <button
                       type="button"
                       className="relative border border-gray-300 pl-0 py-1 w-24 rounded-md"
@@ -116,7 +361,7 @@ function Availability() {
                       Filter
                     </button>
                   </div>
-                </div> */}
+                </div>
               </div>
               <div className="container flex flex-col gap-4">
                 <Box sx={{ flexGrow: 1, textAlign: "right", color: "black" }}>
@@ -195,9 +440,9 @@ function Availability() {
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  {dataTours?.length > 0 ? (
-                    Array.isArray(dataTours) &&
-                    dataTours?.map((dataTour: any, index: number) => (
+                  {updatedDataTours?.length > 0 ? (
+                    Array.isArray(updatedDataTours) &&
+                    updatedDataTours?.map((dataTour: any, index: number) => (
                       <>
                         <div
                           key={index}

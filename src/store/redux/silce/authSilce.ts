@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axiosInstance, { BASE_URL } from "../../apiInterceptors";
+import { message } from "antd";
 
 const initialState = {
   isLoggedIn: false,
@@ -10,6 +11,8 @@ const initialState = {
   error: null as string | null,
   commision: [],
   boost: [],
+  wallet: [],
+  listBank: [],
 };
 
 export const getPersonalInfo = createAsyncThunk("auth/getInfo", async () => {
@@ -46,6 +49,55 @@ export const getBoostPrice = createAsyncThunk(
         `${BASE_URL}/global/boost-price`
       );
       return response.data.data;
+    } catch (error) {
+      console.log(error);
+      throw new Error("Failed to fetch other data");
+    }
+  }
+);
+export const getWalletMe = createAsyncThunk("auth/getWalletMe", async () => {
+  try {
+    const idProvider = localStorage.getItem("id_provider");
+    const response = await axiosInstance.get(`${BASE_URL}/user-wallet/me`, {
+      data: {
+        user_id: idProvider,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Failed to fetch other data");
+  }
+});
+
+export const getListBank = createAsyncThunk("auth/getListBank", async () => {
+  try {
+    const response = await axiosInstance.get(`https://api.vietqr.io/v2/banks`);
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Failed to fetch other data");
+  }
+});
+export const postWithDraw = createAsyncThunk(
+  "auth/postWithDraw",
+  async (data: any) => {
+    console.log(data);
+    try {
+      const response = await axiosInstance.post(
+        `${BASE_URL}/user-wallet/withdraw-all`,
+        {
+          bankName: data.bankName,
+          bankAccountNumber: data.bankAccountNumber,
+          bankAccountName: data.bankAccountName,
+        }
+      );
+      console.log(response);
+      if (response.status === 201) {
+        message.success("Withdraw successfully wait admin ");
+      }
+      return response.data;
     } catch (error) {
       console.log(error);
       throw new Error("Failed to fetch other data");
@@ -107,6 +159,44 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(getBoostPrice.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || null;
+      })
+      .addCase(getWalletMe.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getWalletMe.fulfilled, (state, action) => {
+        state.loading = false;
+        state.wallet = action.payload;
+        state.error = null;
+      })
+      .addCase(getWalletMe.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || null;
+      })
+      .addCase(getListBank.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getListBank.fulfilled, (state, action) => {
+        state.loading = false;
+        state.listBank = action.payload;
+        state.error = null;
+      })
+      .addCase(getListBank.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || null;
+      })
+      .addCase(postWithDraw.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(postWithDraw.fulfilled, (state) => {
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(postWithDraw.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || null;
       });
