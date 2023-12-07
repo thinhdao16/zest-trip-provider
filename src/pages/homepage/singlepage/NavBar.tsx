@@ -9,12 +9,13 @@ import {
   editStatusTour,
   editTicketAvailability,
   editTicketTour,
+  postCreateAvailabilityTour,
 } from "../../../store/redux/silce/tourSlice";
 import dayjs from "dayjs";
 import { useContext } from "react";
 import { DataContext } from "../../../store/dataContext/DataContext";
 import { FcFactoryBreakdown } from "react-icons/fc";
-import { Popconfirm } from "antd";
+import { Popconfirm, message } from "antd";
 
 function NavBar() {
   const {
@@ -36,12 +37,19 @@ function NavBar() {
     setScrollNav,
     statusTour,
   } = useEditContext();
+  console.log(availability);
   const tourDetail: any = useSelector(
     (state: StateTour) => state.tour.tourGetDetail
   );
   const { setRefreshTourDetail } = useContext(DataContext);
 
   const dispatch: AppDispatch = useDispatch();
+
+  const itemsWithId = availability?.filter((item: any) => "id" in item);
+
+  const itemsDontWithId = availability?.filter((item: any) => !("id" in item));
+  console.log(itemsDontWithId);
+
   const handleEditContent = () => {
     const dataValue = {
       name: name,
@@ -79,6 +87,7 @@ function NavBar() {
         minimum_booking_quantity: 1,
         from_age: item?.from_age?.toString(),
         to_age: item?.to_age?.toString(),
+        // is_default: false,
       };
       console.log(pricingData);
       if (item.price_range) {
@@ -103,7 +112,7 @@ function NavBar() {
     for (const image of imageSrc) {
       formDataImg.append("tour_images", image?.file);
     }
-    const avaibility_data = availability?.map((availabilityItem: any) => {
+    const avaibility_data = itemsWithId?.map((availabilityItem: any) => {
       return {
         id: availabilityItem?.id,
         name: availabilityItem?.name,
@@ -129,6 +138,39 @@ function NavBar() {
     avaibility_data.forEach((availabilityItem: any) => {
       dispatch(editTicketAvailability(availabilityItem));
     });
+
+    const avaibility_data_create = itemsDontWithId?.map(
+      (availabilityItem: any) => {
+        return {
+          name: availabilityItem?.name,
+          validity_date_range_from: dayjs(
+            availabilityItem?.validity_date_range_from
+          ).format("YYYY-MM-DD"),
+          validity_date_range_to: dayjs(
+            availabilityItem?.validity_date_range_to
+          ).format("YYYY-MM-DD"),
+          tour_id: availabilityItem?.tour_id,
+          special_dates: availabilityItem?.special_dates?.map(
+            (specialItem: any) => ({
+              date: specialItem?.date,
+              timeSlot: specialItem?.timeSlot,
+            })
+          ),
+          weekdays: availabilityItem?.weekdays?.map((weekday: any) => ({
+            day: weekday?.day,
+            timeSlot: weekday?.timeSlot,
+          })),
+        };
+      }
+    );
+    avaibility_data_create.forEach((availabilityItem: any) => {
+      dispatch(postCreateAvailabilityTour(availabilityItem)).then((respone) => {
+        if (postCreateAvailabilityTour.fulfilled.match(respone)) {
+          message.success("Availability");
+        }
+      });
+    });
+
     const allFormImg = { formDataImg, id: tourDetail?.id };
     const allForm = { dataValue, id: tourDetail?.id };
     dispatch(editContentTour(allForm)).then((response: any) => {

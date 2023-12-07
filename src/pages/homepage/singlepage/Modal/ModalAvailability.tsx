@@ -50,16 +50,13 @@ const ModalAvailability = ({
 }) => {
   const [open, setOpen] = useState(false);
   const [dataWeekChoose, setDataWeekChoose] = useState<any>([]);
-
   const handleOpen = () => {
     setOpen(true);
   };
   const handleCloseCancel = () => {
     setOpen(false);
   };
-  const handleCloseUpdate = () => {
-    setOpen(false);
-  };
+
   function getDayName(day: number) {
     switch (day) {
       case 1:
@@ -209,7 +206,7 @@ const ModalAvailability = ({
     const updatedSingleDateItem = { ...updatedSingleDate[singleDateIndex] };
     const updatedDetails = [...updatedSingleDateItem.special_dates];
     if (
-      !updatedDetails.some(
+      !updatedDetails?.some(
         (detail) => detail.date === dayjs(newDate).format("YYYY-MM-DD")
       )
     ) {
@@ -242,27 +239,43 @@ const ModalAvailability = ({
     );
     setAvailability(updatedAvailabilitySpecialDate);
   };
+
   useEffect(() => {
-    if (avaWeekdays && availability) {
-      const updatedDataDay = avaWeekdays.filter((dataItem) => {
-        const dayExists = availability.some((item: any) => {
-          return item.weekdays.some((week: any) => {
-            return week.day === dataItem.day;
-          });
-        });
-        return !dayExists;
+    if (availability) {
+      const updatedDataWeekChoose = avaWeekdays.map((weekDay) => {
+        const matchingAvailability = availability.find((avail: any) =>
+          avail.weekdays?.some((day: any) => day.day === weekDay.day)
+        );
+
+        if (!matchingAvailability) {
+          return {
+            day: weekDay.day,
+            timeSlot: "10:00",
+          };
+        } else if (matchingAvailability.weekdays.length === 1) {
+          const otherDays = avaWeekdays.filter(
+            (day) => day.day !== weekDay.day
+          );
+          return otherDays.map((day) => ({ day: day.day, timeSlot: "10:00" }));
+        }
+
+        return null;
       });
 
-      setDataWeekChoose(updatedDataDay);
-    }
-  }, [avaWeekdays, availability]);
+      const filteredDataWeekChoose = updatedDataWeekChoose
+        .flat()
+        .filter((day) => day !== null);
 
+      setDataWeekChoose(filteredDataWeekChoose);
+    }
+  }, [availability]);
+
+  const handleCloseUpdate = () => {
+    setOpen(false);
+  };
   return (
     <div>
-      <FaRegPenToSquare
-        onClick={handleOpen}
-        className="w-4 h-4 shadow-custom-card-mui absolute top-4 right-4"
-      />
+      <FaRegPenToSquare onClick={handleOpen} className="w-5 h-5" />
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -334,27 +347,40 @@ const ModalAvailability = ({
                               )}
                             </div>
                             <div className="flex flex-wrap gap-3">
-                              {dataWeekChoose?.map(
-                                (day: any, index: number) => (
-                                  <div
-                                    key={index}
-                                    className="flex gap-1 shadow-custom-card-mui bg-gray-300 border border-solid border-gray-300 rounded-md text-sm px-2 py-1 text-gray-500"
-                                    onClick={() => {
-                                      handleAddDetailWeekday(
-                                        availabilityIndex,
-                                        {
-                                          day: day?.day,
-                                          timeSlot: "10:00",
-                                        }
-                                      );
-                                    }}
-                                  >
-                                    <span>
-                                      Add {getDayName(day?.day)} start
-                                    </span>
-                                  </div>
+                              {avaWeekdays
+                                .filter(
+                                  (avaWeekday) =>
+                                    !availabilityItem.weekdays?.some(
+                                      (weekday: any) =>
+                                        weekday.day === avaWeekday.day
+                                    )
                                 )
-                              )}
+                                .map((avaWeekday: any) => {
+                                  return (
+                                    <div
+                                      className="flex items-center gap-1"
+                                      key={avaWeekday.day}
+                                    >
+                                      <div
+                                        className="flex gap-1 shadow-custom-card-mui bg-gray-300 border border-solid border-gray-300 rounded-md text-sm px-2 py-1 text-gray-500"
+                                        onClick={() => {
+                                          handleAddDetailWeekday(
+                                            availabilityIndex,
+                                            {
+                                              day: avaWeekday?.day,
+                                              timeSlot: "10:00",
+                                            }
+                                          );
+                                        }}
+                                      >
+                                        <span>
+                                          Add {getDayName(avaWeekday?.day)}
+                                          start
+                                        </span>
+                                      </div>
+                                    </div>
+                                  );
+                                })}
                             </div>
                           </div>
                           <div className="flex flex-col gap-2">
@@ -424,10 +450,11 @@ const ModalAvailability = ({
                               )
                             )}
                             <div className=" modal-ava-add-single-time flex justify-end ">
-                              <div className="flex items-center  w-44 rounded-lg px-2 bg-gray-300">
+                              <div className="flex items-center  w-44 rounded-lg pl-2 bg-gray-300">
                                 <span className="text-gray-500">
                                   Add single date
                                 </span>
+
                                 <LocalizationProvider
                                   dateAdapter={AdapterDayjs}
                                 >
@@ -468,7 +495,7 @@ const ModalAvailability = ({
 
               <div
                 className="flex gap-5 absolute bottom-0 bg-white w-full justify-center p-4 rounded-b-xl border border-solid border-gray-200"
-                style={{ marginBottom: "-1px    " }}
+                style={{ marginBottom: "-1px" }}
               >
                 <button
                   className="px-6 py-2 bg-gray-300 rounded-lg text-gray-600 font-medium"

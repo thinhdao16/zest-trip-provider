@@ -27,6 +27,7 @@ import axios from "axios";
 import OtpInput from "react-otp-input";
 import register from "../../assets/register.svg";
 import { message } from "antd";
+import emailValidator from "deep-email-validator";
 
 interface FormElements extends HTMLFormControlsCollection {
   email: HTMLInputElement;
@@ -118,6 +119,7 @@ export default function SignUp() {
       clearInterval(interval);
     };
   }, [seconds]);
+
   const handleGetOtp = async () => {
     if (
       !phoneNumber.trim() ||
@@ -126,12 +128,12 @@ export default function SignUp() {
       !password.trim() ||
       !confirmPassword.trim()
     ) {
-      // Nếu rỗng, hiển thị thông báo hoặc thực hiện các hành động khác
       message.warning("please input do not leave empty");
       return;
     } else {
-      setOpenLoading(true);
       try {
+        setOpenLoading(true);
+
         const response = await axios.post(
           `${BASE_URL}/otp/generate/provider`,
           {
@@ -309,8 +311,8 @@ export default function SignUp() {
             <div className="relative flex items-center justify-center h-[100vh] flex-col">
               <div className="flex items-center justify-center flex-col gap-3 ">
                 <div className="flex gap-2 font-medium items-center text-3xl ">
-                  <p>Welcome to</p>
-                  <p className="  text-navy-blue ">Zest Travel</p>
+                  <p className="text-3xl">Welcome to</p>
+                  <p className=" text-3xl text-navy-blue ">Zest Travel</p>
                 </div>
                 <ul className="">
                   <li className="font-base">Exclusive discounts 🎉🎉🎉</li>
@@ -355,13 +357,6 @@ export default function SignUp() {
                 <form
                   onSubmit={(event: React.FormEvent<SignInFormElement>) => {
                     event.preventDefault();
-                    const formElements = event.currentTarget.elements;
-                    const data = {
-                      email: formElements.email.value,
-                      password: formElements.password.value,
-                      persistent: formElements.persistent.checked,
-                    };
-                    alert(JSON.stringify(data, null, 2));
                   }}
                 >
                   <FormControl required>

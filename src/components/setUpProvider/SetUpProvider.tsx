@@ -235,9 +235,9 @@ function SetUpProvider() {
           <Grid item xs={12} sm={5} className="setup-main">
             <div className="relative flex items-center justify-center h-[100vh] flex-col">
               <div className="flex items-center justify-center flex-col gap-3 ">
-                <div className="flex gap-2 font-medium items-center text-3xl ">
-                  <p>Become to</p>
-                  <p className="  text-navy-blue ">Provider</p>
+                <div className="flex gap-2 font-medium items-center  ">
+                  <p className="text-3xl">Become to</p>
+                  <p className=" text-3xl text-navy-blue ">Provider</p>
                 </div>
                 <ul className="">
                   <li className="font-base">Exclusive discounts 🎉🎉🎉</li>

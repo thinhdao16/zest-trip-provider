@@ -58,7 +58,7 @@ export default function ModalBlockBooking({
       >
         <div className=" flex  items-center justify-center">
           <div className="flex flex-col w-96 ">
-            <span className="text-lg   font-semibold">Date Block</span>
+            <span className="text-lg font-semibold">Date Block</span>
 
             {dataDate && dataDate?.length > 0 && (
               <span className="flex flex-wrap ">

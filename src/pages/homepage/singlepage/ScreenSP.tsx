@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { StateTour } from "../../createtour/types/index.t";
 import { LuMoveRight } from "react-icons/lu";
@@ -7,12 +7,23 @@ import ModalAvailability from "./Modal/ModalAvailability";
 import dayjs from "dayjs";
 import { useEditContext } from "./Context/useEditContext";
 import { GoDotFill } from "react-icons/go";
+import AddChildren from "./Modal/AddChilren";
+import AddAvailability from "./Modal/AddAvailability";
+import { StatusAvailabilty } from "../../../styles/status/availability";
+import { Dropdown, Space } from "antd";
+import { CiCircleMore } from "react-icons/ci";
 function ScreenSP() {
   const tourDetail: any = useSelector(
     (state: StateTour) => state.tour.tourGetDetail
   );
   const { ticketPricing, setTicketPricing, availability, setAvailability } =
     useEditContext();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const quantityTicketTrue = ticketPricing?.filter(
+    (ticket: { is_default: boolean }) => ticket.is_default === true
+  );
   const duration = useMemo(() => {
     return tourDetail.duration;
   }, [tourDetail]);
@@ -49,6 +60,40 @@ function ScreenSP() {
         return "Unknown";
     }
   }
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const items: any = [
+    {
+      label: (
+        <div className="flex items-center gap-1">
+          <ModalAvailability
+            dataAvailability={{ availability, setAvailability }}
+          />
+          Edit availability
+        </div>
+      ),
+      key: "0",
+    },
+
+    {
+      type: "divider",
+    },
+    {
+      label: (
+        <div className="flex items-center gap-1">
+          {" "}
+          <AddAvailability
+            dataDetailTour={availability}
+            setAvailability={setAvailability}
+          />{" "}
+          Add availability
+        </div>
+      ),
+      key: "1",
+    },
+  ];
 
   return (
     <div>
@@ -62,6 +107,21 @@ function ScreenSP() {
           </div>
           <div className="flex flex-col col-span-10">
             <div className="bg-white border border-solid border-gray-300  shadow-custom-card-mui rounded-lg flex flex-col gap-4 relative">
+              {quantityTicketTrue?.length < 2 && (
+                <>
+                  <button
+                    className=" absolute top-3 right-8"
+                    onClick={handleOpenModal}
+                  >
+                    Add children
+                  </button>
+                  <AddChildren
+                    openModal={isModalOpen}
+                    setOpenModal={setIsModalOpen}
+                    data={quantityTicketTrue}
+                  />
+                </>
+              )}
               <ModalTicketAdult
                 dataTicket={{ ticketPricing, setTicketPricing, duration }}
               />
@@ -86,6 +146,16 @@ function ScreenSP() {
                           <span className="">{ticket?.PricingType?.name}</span>
                         </span>
                       </div>
+                      {ticket?.is_default === false && (
+                        <>
+                          <span className="text-2xl text-gray-500">•</span>
+                          <div className="flex items-center gap-1">
+                            <span className="text-lg font-medium text-red-700">
+                              Special
+                            </span>
+                          </div>
+                        </>
+                      )}
                     </div>
                     <div className="grid grid-cols-4 gap-4">
                       <div className="flex flex-col">
@@ -166,9 +236,18 @@ function ScreenSP() {
         </div>
         <div className="flex flex-col gap-4 col-span-10 bg-white">
           <div className="bg-white border border-solid border-gray-300  shadow-custom-card-mui rounded-lg flex flex-col gap-4 relative">
-            <ModalAvailability
-              dataAvailability={{ availability, setAvailability }}
-            />
+            <div className="absolute top-4 right-4">
+              <Dropdown menu={{ items }} trigger={["click"]}>
+                <a onClick={(e) => e.preventDefault()} className="flex">
+                  <Space>
+                    <div>
+                      <CiCircleMore className="w-6 h-6" />
+                    </div>
+                  </Space>
+                </a>
+              </Dropdown>
+            </div>
+
             {availability?.map((data: any, index: number) => (
               <React.Fragment key={index}>
                 <div className=" bg-white  p-4 shadow-custom-card-mui">
@@ -200,17 +279,7 @@ function ScreenSP() {
                       <div className="flex flex-col gap-2 ">
                         <span className="font-medium">{data?.name}</span>
                         <div>
-                          <button
-                            type="button"
-                            className={`text-sm p-1 rounded-md flex items-center gap-1 ${
-                              data?.status === "ACTIVE"
-                                ? "bg-navy-blue-opacity-5 text-navy-blue"
-                                : "bg-red-300 text-red-900"
-                            }`}
-                          >
-                            <GoDotFill />
-                            {data?.status}
-                          </button>
+                          <StatusAvailabilty>{data?.status}</StatusAvailabilty>
                         </div>
                       </div>
                     </div>

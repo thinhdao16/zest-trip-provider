@@ -22,7 +22,6 @@ const ModalTicketAdult = ({
 }: {
   dataTicket: { ticketPricing: any; setTicketPricing: any; duration: number };
 }) => {
-  console.log(ticketPricing);
   const [open, setOpen] = useState(false);
   const [reloadNumber, setReloadNumber] = useState(0);
   const handleOpen = () => {

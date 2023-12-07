@@ -14,13 +14,11 @@ function WalletWithraw({
   open: boolean;
   setOpen: any;
 }) {
-  console.log(dataWallet);
   const dispatch: AppDispatch = useDispatch();
   const bank = list_bank?.data;
   const [bankName, setBankName] = useState<any>();
   const [bankAccountNumber, setBankAccountNumber] = useState<any>();
   const [bankAccountName, setBankAccountName] = useState<string>();
-  console.log(bankName);
   const handleCloseModal = () => {
     setOpen(false);
   };

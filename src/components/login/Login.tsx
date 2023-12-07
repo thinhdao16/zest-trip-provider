@@ -32,6 +32,7 @@ import axios from "axios";
 import { BASE_URL } from "../../store/apiInterceptors";
 import { IoPersonOutline } from "react-icons/io5";
 import { message } from "antd";
+import jwtDecode from "jwt-decode";
 
 function Login() {
   const navigate = useNavigate();
@@ -49,7 +50,6 @@ function Login() {
 
   const checkAccessToken = async () => {
     const accessToken = localStorage.getItem("access_token");
-    console.log(accessToken);
     if (accessToken) {
       navigate("/");
     }
@@ -71,8 +71,10 @@ function Login() {
         }
       );
       console.log(response);
+      const deCodeUserId: any = jwtDecode(response.data.data.access_token);
       localStorage.setItem("access_token", response.data.data.access_token);
       localStorage.setItem("refresh_token", response.data.data.refresh_token);
+      localStorage.setItem("user_id", deCodeUserId?.id);
       setRefeshTour((prev) => !prev);
       setRefeshLogin((prev) => !prev);
       message.success("Login successful");
@@ -129,8 +131,8 @@ function Login() {
             <div className="relative flex items-center justify-center h-[100vh] flex-col">
               <div className="flex items-center justify-center flex-col gap-3 ">
                 <div className="flex gap-2 font-medium items-center text-3xl ">
-                  <p>Welcome to</p>
-                  <p className="  text-navy-blue ">Zest Travel</p>
+                  <p className=" text-3xl">Welcome to</p>
+                  <p className="  text-navy-blue text-3xl ">Zest Travel</p>
                 </div>
                 <ul className="">
                   <li className="font-base">Exclusive discounts 🎉🎉🎉</li>
@@ -174,14 +176,8 @@ function Login() {
                 </div>
                 <form
                   onSubmit={(event: React.FormEvent<SignInFormElement>) => {
-                    event.preventDefault();
-                    const formElements = event.currentTarget.elements;
-                    const data = {
-                      email: formElements.email.value,
-                      password: formElements.password.value,
-                      persistent: formElements.persistent.checked,
-                    };
-                    alert(JSON.stringify(data, null, 2));
+                    event?.preventDefault();
+
                     handleSignIn();
                   }}
                 >

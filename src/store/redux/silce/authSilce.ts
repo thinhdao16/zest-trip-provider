@@ -13,6 +13,7 @@ const initialState = {
   boost: [],
   wallet: [],
   listBank: [],
+  walletTransaction: [],
 };
 
 export const getPersonalInfo = createAsyncThunk("auth/getInfo", async () => {
@@ -69,6 +70,23 @@ export const getWalletMe = createAsyncThunk("auth/getWalletMe", async () => {
     throw new Error("Failed to fetch other data");
   }
 });
+
+export const getWalletTransactionMe = createAsyncThunk(
+  "auth/getWalletTransactionMe",
+  async () => {
+    try {
+      const idUser = localStorage.getItem("user_id");
+      const response = await axiosInstance.get(
+        `${BASE_URL}/user-wallet/withdraw/user/${idUser}`,
+        {}
+      );
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      throw new Error("Failed to fetch other data");
+    }
+  }
+);
 
 export const getListBank = createAsyncThunk("auth/getListBank", async () => {
   try {
@@ -197,6 +215,19 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(postWithDraw.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || null;
+      })
+      .addCase(getWalletTransactionMe.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getWalletTransactionMe.fulfilled, (state, action) => {
+        state.loading = false;
+        state.walletTransaction = action.payload;
+        state.error = null;
+      })
+      .addCase(getWalletTransactionMe.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || null;
       });

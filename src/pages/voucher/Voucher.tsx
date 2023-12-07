@@ -183,17 +183,14 @@ function Voucher() {
                                   <div className=" flex items-center justify-center  ">
                                     <div className="flex gap-1">
                                       <span>
-                                        {formatNumber(
-                                          parseInt(dataVoucher?.discount)
-                                        )}
-                                      </span>
-                                      <span>
                                         {dataVoucher?.discount_type ===
                                         "PERCENT"
-                                          ? "%"
+                                          ? `${dataVoucher?.discount} %`
                                           : dataVoucher?.discount_type ===
                                             "AMOUNT"
-                                          ? "VNĐ"
+                                          ? `${formatNumber(
+                                              parseInt(dataVoucher?.discount)
+                                            )}`
                                           : ""}
                                       </span>
                                     </div>

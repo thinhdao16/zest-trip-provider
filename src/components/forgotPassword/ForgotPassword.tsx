@@ -103,8 +103,8 @@ function ForgotPassWord() {
             <div className="relative flex items-center justify-center h-[100vh] flex-col">
               <div className="flex items-center justify-center flex-col gap-3 ">
                 <div className="flex gap-2 font-medium items-center text-3xl ">
-                  <p>Welcome to</p>
-                  <p className="  text-navy-blue ">Zest Travel</p>
+                  <p className="text-3xl">Welcome to</p>
+                  <p className="  text-navy-blue text-3xl">Zest Travel</p>
                 </div>
                 <ul className="">
                   <li className="font-base">Exclusive discounts 🎉🎉🎉</li>

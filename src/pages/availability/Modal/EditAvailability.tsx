@@ -493,6 +493,7 @@ const EditAvailability = (dataAvailability: any) => {
                                 <span className="text-gray-500">
                                   Add single date
                                 </span>
+
                                 <LocalizationProvider
                                   dateAdapter={AdapterDayjs}
                                 >

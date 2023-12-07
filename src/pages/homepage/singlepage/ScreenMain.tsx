@@ -49,7 +49,6 @@ function ScreenMain() {
   const tourDetail: any = useSelector(
     (state: StateTour) => state.tour.tourGetDetail
   );
-  console.log(tourDetail);
   const {
     name,
     setName,

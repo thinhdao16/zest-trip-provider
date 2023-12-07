@@ -104,7 +104,7 @@ const Price: React.FC = () => {
     },
   ];
 
-  const ageDefault = { ageStart: "0", ageEnd: "99+" };
+  const ageDefault = { ageStart: "0", ageEnd: "99" };
   const handleRadioChange = (groupName: string, selectedValue: string) => {
     setSelectedRadio((prevRadio) => ({
       ...prevRadio,
