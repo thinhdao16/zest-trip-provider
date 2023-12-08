@@ -1,11 +1,11 @@
 import React from "react";
-import {
-  AppstoreOutlined,
-  MailOutlined,
-  SettingOutlined,
-} from "@ant-design/icons";
+import { AppstoreOutlined } from "@ant-design/icons";
 import { Menu } from "antd";
 import { Link } from "react-router-dom";
+import { MdManageAccounts } from "react-icons/md";
+import { FaCalendarCheck } from "react-icons/fa6";
+import { SiGooglemarketingplatform } from "react-icons/si";
+import { CiWallet } from "react-icons/ci";
 
 const renderMenuItems = (items: any) => {
   const currentPath = window.location.pathname;
@@ -36,7 +36,7 @@ const items = [
   },
   {
     key: "sub1",
-    icon: <MailOutlined />,
+    icon: <MdManageAccounts />,
     label: "Management tour",
     items: [
       {
@@ -61,7 +61,7 @@ const items = [
   },
   {
     key: "sub2",
-    icon: <AppstoreOutlined />,
+    icon: <FaCalendarCheck />,
     label: "Management booking",
     items: [
       { key: "review", label: "Review" },
@@ -78,13 +78,13 @@ const items = [
   { type: "divider" },
   {
     key: "sub4",
-    icon: <SettingOutlined />,
+    icon: <SiGooglemarketingplatform />,
     label: "Marketing",
     items: [{ key: "voucher", label: "Voucher" }],
   },
   {
     key: "financials",
-    icon: <SettingOutlined />,
+    icon: <CiWallet />,
     label: "Financials",
     items: [
       { key: "payment", label: "Payment" },
