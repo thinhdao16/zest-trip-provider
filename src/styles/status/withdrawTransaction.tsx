@@ -12,6 +12,7 @@ interface StatusColors {
 export function StatusWithDrawTransaction({ children }: ConstructionProps) {
   const statusColors: StatusColors = {
     Reject: " bg-red-300 text-red-900",
+    Pending: " bg-yellow-300 text-yellow-900",
     Accepted: " bg-navy-blue-opacity-5 text-navy-blue",
   };
 
@@ -40,6 +41,9 @@ function normalizeStatus(status: string): string {
 
   if (status === "REJECT") {
     return "Reject";
+  }
+  if (status === "PENDING") {
+    return "Pending";
   }
 
   // Trường hợp mặc định cho các giá trị khác

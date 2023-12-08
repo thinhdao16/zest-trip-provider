@@ -9,7 +9,7 @@ import { formatNumber } from "../../utils/formatNumber";
 import WalletWithraw from "./WalletWithraw";
 import dayjs from "dayjs";
 import { StatusWithDrawTransaction } from "../../styles/status/withdrawTransaction";
-import { Input, Select } from "antd";
+import { Input, Select, message } from "antd";
 
 const { Search } = Input;
 
@@ -19,9 +19,17 @@ function Wallet() {
   const [walletHistories, setWalletHistories] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-
+  console.log(walletTransaction);
+  const filterPending = walletTransaction?.filter(
+    (data: { status: string }) => data?.status === "PENDING"
+  );
+  console.log(filterPending);
   const handleOpenModalWalletWithRaw = () => {
-    setOpenModal(true);
+    if (filterPending?.length > 0) {
+      message.warning("You have transaction wait admin");
+    } else {
+      setOpenModal(true);
+    }
   };
   const handleChangeFilterStatus = (value: string) => {
     if (value === "") {
@@ -55,7 +63,6 @@ function Wallet() {
       setWalletHistories(walletTransaction);
     }
   };
-  console.log(walletTransaction);
   useEffect(() => {
     dispatch(getWalletTransactionMe());
   }, [dispatch]);

@@ -37,6 +37,8 @@ export type EditContextType = {
   setScrollNav: any;
   statusTour: any;
   setStatusTour: any;
+  reload: any;
+  setReload: any;
 };
 
 export const EditContext = createContext<EditContextType | undefined>(
@@ -68,6 +70,7 @@ export const EditContextProvider: React.FC<EditContextProps> = ({
   const [imageSrc, setImageSrc] = useState<any>([]); //up
   const [statusTour, setStatusTour] = useState<any>(""); //up
   const [scrollNav, setScrollNav] = useState<any>("information_basic");
+  const [reload, setReload] = useState<any>(null);
   return (
     <EditContext.Provider
       value={{
@@ -107,6 +110,8 @@ export const EditContextProvider: React.FC<EditContextProps> = ({
         setScrollNav,
         statusTour,
         setStatusTour,
+        reload,
+        setReload,
       }}
     >
       {children}

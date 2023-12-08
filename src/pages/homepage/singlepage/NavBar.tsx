@@ -37,7 +37,6 @@ function NavBar() {
     setScrollNav,
     statusTour,
   } = useEditContext();
-  console.log(availability);
   const tourDetail: any = useSelector(
     (state: StateTour) => state.tour.tourGetDetail
   );
@@ -48,7 +47,6 @@ function NavBar() {
   const itemsWithId = availability?.filter((item: any) => "id" in item);
 
   const itemsDontWithId = availability?.filter((item: any) => !("id" in item));
-  console.log(itemsDontWithId);
 
   const handleEditContent = () => {
     const dataValue = {

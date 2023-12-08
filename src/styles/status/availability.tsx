@@ -13,6 +13,7 @@ export function StatusAvailabilty({ children }: ConstructionProps) {
   const statusColors: StatusColors = {
     Draft: " bg-yellow-300 text-yellow-900",
     Active: " bg-navy-blue-opacity-5 text-navy-blue",
+    Inactive: " bg-red-300 text-red-900",
   };
 
   const normalizedStatus =
@@ -40,6 +41,9 @@ function normalizeStatus(status: string): string {
 
   if (status === "DRAFT") {
     return "Draft";
+  }
+  if (status === "INACTIVE") {
+    return "Inactive";
   }
 
   // Trường hợp mặc định cho các giá trị khác

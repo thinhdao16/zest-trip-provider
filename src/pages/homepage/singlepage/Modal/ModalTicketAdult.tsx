@@ -139,7 +139,7 @@ const ModalTicketAdult = ({
     <div>
       <FaRegPenToSquare
         onClick={handleOpen}
-        className="w-4 h-4 shadow-custom-card-mui absolute top-4 right-4"
+        className="w-4 h-4 shadow-custom-card-mui absolute top-2 right-2"
       />
       <Modal
         aria-labelledby="transition-modal-title"

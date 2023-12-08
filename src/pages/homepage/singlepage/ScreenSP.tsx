@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { StateTour } from "../../createtour/types/index.t";
 import { LuMoveRight } from "react-icons/lu";
@@ -10,9 +10,22 @@ import { GoDotFill } from "react-icons/go";
 import AddChildren from "./Modal/AddChilren";
 import AddAvailability from "./Modal/AddAvailability";
 import { StatusAvailabilty } from "../../../styles/status/availability";
-import { Dropdown, Space } from "antd";
-import { CiCircleMore } from "react-icons/ci";
+import { Button, Dropdown, Popconfirm, Space, message } from "antd";
+import { CiCircleMore, CiTrash } from "react-icons/ci";
+import { Switch } from "antd";
+import { AppDispatch } from "../../../store/redux/store";
+import { useDispatch } from "react-redux";
+import {
+  deleteTicket,
+  editAvailabilityActive,
+  editAvailabilityDeactive,
+} from "../../../store/redux/silce/tourSlice";
+import { DataContext } from "../../../store/dataContext/DataContext";
+import { IoTrash } from "react-icons/io5";
+
 function ScreenSP() {
+  const dispatch: AppDispatch = useDispatch();
+  const { setRefreshTourDetail } = useContext(DataContext);
   const tourDetail: any = useSelector(
     (state: StateTour) => state.tour.tourGetDetail
   );
@@ -24,6 +37,7 @@ function ScreenSP() {
   const quantityTicketTrue = ticketPricing?.filter(
     (ticket: { is_default: boolean }) => ticket.is_default === true
   );
+  console.log(quantityTicketTrue);
   const duration = useMemo(() => {
     return tourDetail.duration;
   }, [tourDetail]);
@@ -32,7 +46,7 @@ function ScreenSP() {
       setTicketPricing(tourDetail.TicketPricing);
     }
     setAvailability(tourDetail?.TourAvailability);
-  }, [tourDetail]);
+  }, [setAvailability, setTicketPricing, tourDetail]);
   function formatDate(dateString: string) {
     const date = new Date(dateString);
     const year = date.getFullYear();
@@ -62,6 +76,37 @@ function ScreenSP() {
   }
   const handleOpenModal = () => {
     setIsModalOpen(true);
+  };
+
+  const handleSwitchChangeStatusAvailability = (
+    checked: boolean,
+    dataIndex: { id: number }
+  ) => {
+    console.log(dataIndex);
+    if (checked === false) {
+      dispatch(editAvailabilityDeactive(dataIndex?.id)).then(
+        (response: any) => {
+          if (editAvailabilityDeactive.fulfilled.match(response)) {
+            setRefreshTourDetail((prev) => !prev);
+          }
+        }
+      );
+    }
+    if (checked === true) {
+      dispatch(editAvailabilityActive(dataIndex?.id)).then((response: any) => {
+        if (editAvailabilityActive.fulfilled.match(response)) {
+          setRefreshTourDetail((prev) => !prev);
+        }
+      });
+    }
+  };
+
+  const handleDeleteTicket = (e: any) => {
+    dispatch(deleteTicket(e)).then((response: any) => {
+      if (deleteTicket.fulfilled.match(response)) {
+        setRefreshTourDetail((prev) => !prev);
+      }
+    });
   };
 
   const items: any = [
@@ -94,7 +139,37 @@ function ScreenSP() {
       key: "1",
     },
   ];
+  const itemsTicket: any = [
+    {
+      label: (
+        <div className="flex items-center gap-1">
+          <ModalAvailability
+            dataAvailability={{ availability, setAvailability }}
+          />
+          Edit availability
+        </div>
+      ),
+      key: "0",
+    },
 
+    {
+      type: "divider",
+    },
+    {
+      label: (
+        <div className="flex items-center gap-1">
+          {" "}
+          <AddAvailability
+            dataDetailTour={availability}
+            setAvailability={setAvailability}
+          />{" "}
+          Add availability
+        </div>
+      ),
+      key: "1",
+    },
+  ];
+  console.log(ticketPricing);
   return (
     <div>
       <div className="mb-4 first-letter" id="ticket">
@@ -106,11 +181,11 @@ function ScreenSP() {
             <span className="font-medium text-lg"> Ticket</span>
           </div>
           <div className="flex flex-col col-span-10">
-            <div className="bg-white border border-solid border-gray-300  shadow-custom-card-mui rounded-lg flex flex-col gap-4 relative">
+            <div className="bg-white border border-solid pr-7 pb-4 pl-4 border-gray-300  shadow-custom-card-mui rounded-lg flex flex-col gap-4 relative">
               {quantityTicketTrue?.length < 2 && (
                 <>
                   <button
-                    className=" absolute top-3 right-8"
+                    className=" absolute top-0 right-8 z-50"
                     onClick={handleOpenModal}
                   >
                     Add children
@@ -122,12 +197,30 @@ function ScreenSP() {
                   />
                 </>
               )}
+
               <ModalTicketAdult
                 dataTicket={{ ticketPricing, setTicketPricing, duration }}
               />
               {ticketPricing?.map((ticket: any, index: number) => (
                 <React.Fragment key={index}>
-                  <div className="flex flex-col gap-4 p-4 rounded-xl shadow-custom-card-mui pr-10">
+                  <div className="flex flex-col gap-4 p-4 rounded-xl bg-main shadow-custom-card-mui pr-10 relative">
+                    {ticket?.is_default === true &&
+                    ticket?.Ticket?.name === "ADULT" ? (
+                      <></>
+                    ) : (
+                      <div className="absolute inset-y-1/3 right-4">
+                        <Popconfirm
+                          title="Delete the task"
+                          description="Are you sure to delete this task?"
+                          onConfirm={() => handleDeleteTicket(ticket?.id)}
+                          okText="Yes"
+                          cancelText="No"
+                        >
+                          <IoTrash className="w-5 h-5 text-red-500" />
+                        </Popconfirm>
+                      </div>
+                    )}
+
                     <div className="flex items-center gap-8">
                       <div className="flex items-center gap-1">
                         <span className="text-lg font-medium">
@@ -181,6 +274,22 @@ function ScreenSP() {
                         <span className="text-gray-500">{ticket?.to_age}</span>
                       </div>
                     </div>
+                    <div>
+                      {ticket?.is_default === false && (
+                        <>
+                          <span className="font-medium mb-1 block">
+                            Apply for
+                          </span>
+                          <div className="flex items-center gap-4">
+                            {ticket?.apply_dates?.map((special: string) => (
+                              <span className="text-gray-500">
+                                {dayjs(special).format("YYYY-MM-DD")}
+                              </span>
+                            ))}
+                          </div>
+                        </>
+                      )}
+                    </div>
                     <div className="w-full flex items-center">
                       <hr
                         className="flex-1 border-gray-300 mr-2"
@@ -205,7 +314,7 @@ function ScreenSP() {
                             index: number
                           ) => (
                             <div
-                              className="flex items-center border border-solid border-gray-300 justify-evenly text-sm  text-gray-500 py-1 rounded-md"
+                              className="flex items-center bg-white border border-solid border-gray-300 justify-evenly text-sm  text-gray-500 py-1 rounded-md"
                               key={index}
                             >
                               <div>{price?.from_amount}</div>
@@ -235,8 +344,8 @@ function ScreenSP() {
           <span className="font-medium text-lg">Avalibility</span>
         </div>
         <div className="flex flex-col gap-4 col-span-10 bg-white">
-          <div className="bg-white border border-solid border-gray-300  shadow-custom-card-mui rounded-lg flex flex-col gap-4 relative">
-            <div className="absolute top-4 right-4">
+          <div className="pr-8 py-4 pl-4 bg-white border border-solid border-gray-300  shadow-custom-card-mui rounded-lg flex flex-col gap-4 relative">
+            <div className="absolute top-2 right-2">
               <Dropdown menu={{ items }} trigger={["click"]}>
                 <a onClick={(e) => e.preventDefault()} className="flex">
                   <Space>
@@ -248,96 +357,116 @@ function ScreenSP() {
               </Dropdown>
             </div>
 
-            {availability?.map((data: any, index: number) => (
-              <React.Fragment key={index}>
-                <div className=" bg-white  p-4 shadow-custom-card-mui">
-                  <div className="grid grid-cols-12 gap-4">
-                    <div className="col-span-2">
-                      <div className="flex flex-col gap-3">
-                        <span className="font-medium">
-                          {data
-                            ? formatDate(data.validity_date_range_from)
-                            : null}
-                        </span>
+            {Array.isArray(availability) &&
+              [...availability]
+                .sort((a, b) => b.id - a.id) // Sort the copied array
+                .map((data, index) => (
+                  <React.Fragment key={index}>
+                    <div className=" bg-main p-4 shadow-custom-card-mui rounded-lg">
+                      <div className="grid grid-cols-12 gap-4 relative">
+                        <div className="absolute right-0 inset-y-1/3">
+                          <Switch
+                            defaultChecked
+                            size="small"
+                            checked={data?.status === "ACTIVE"}
+                            className="bg-white shadow-custom-0"
+                            onChange={(checked) =>
+                              handleSwitchChangeStatusAvailability(
+                                checked,
+                                data
+                              )
+                            }
+                          />
+                        </div>
+                        <div className="col-span-2">
+                          <div className="flex flex-col gap-3">
+                            <span className="font-medium">
+                              {data
+                                ? formatDate(data.validity_date_range_from)
+                                : null}
+                            </span>
 
-                        <span className="font-medium text-gray-600">
-                          {data
-                            ? formatDate(data.validity_date_range_to)
-                            : null}
-                        </span>
-                      </div>
-                    </div>
-                    <div className="col-span-3 flex gap-4 ">
-                      <div
-                        className={`w-w-1 h-auto rounded-full ${
-                          data?.status === "ACTIVE"
-                            ? "bg-gray-300"
-                            : "bg-gray-300"
-                        }`}
-                      ></div>
+                            <span className="font-medium text-gray-600">
+                              {data
+                                ? formatDate(data.validity_date_range_to)
+                                : null}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="col-span-3 flex gap-4 ">
+                          <div
+                            className={`w-w-1 h-auto rounded-full ${
+                              data?.status === "ACTIVE"
+                                ? "bg-gray-300"
+                                : "bg-gray-300"
+                            }`}
+                          ></div>
 
-                      <div className="flex flex-col gap-2 ">
-                        <span className="font-medium">{data?.name}</span>
-                        <div>
-                          <StatusAvailabilty>{data?.status}</StatusAvailabilty>
+                          <div className="flex flex-col gap-2 ">
+                            <span className="font-medium">{data?.name}</span>
+                            <div>
+                              <StatusAvailabilty>
+                                {data?.status}
+                              </StatusAvailabilty>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="col-span-4 flex flex-col gap-4">
+                          <span className="font-medium">Weekdays</span>
+                          <div className="flex flex-wrap gap-3">
+                            {data?.weekdays?.map(
+                              (
+                                weekday: { day: number; timeSlot: string },
+                                index: number
+                              ) => (
+                                <div
+                                  key={index}
+                                  className="flex gap-1 border border-solid bg-white border-gray-300 rounded-md text-sm px-2 py-1 text-gray-500"
+                                >
+                                  <span>{getDayName(weekday?.day)}</span>
+                                  <span>{weekday?.timeSlot}</span>
+                                </div>
+                              )
+                            )}
+                          </div>
+                        </div>
+                        <div className="col-span-3 flex flex-col gap-4">
+                          <span className="font-medium">Special dates</span>
+                          <div className="flex flex-wrap gap-3">
+                            {data?.special_dates?.map(
+                              (
+                                special: { date: any; timeSlot: string },
+                                index: number
+                              ) => (
+                                <div
+                                  key={index}
+                                  className="flex gap-1  border border-solid bg-white border-gray-300 rounded-md text-sm px-2 py-1 text-gray-500"
+                                >
+                                  {special.date &&
+                                  dayjs.isDayjs(special.date) ? (
+                                    <span className="font-medium">
+                                      {special.date.format("DD/MM/YYYY")}:
+                                    </span>
+                                  ) : (
+                                    <span className="font-medium">
+                                      {special.date}:
+                                    </span>
+                                  )}
+
+                                  <span>{special?.timeSlot}</span>
+                                </div>
+                              )
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>
-
-                    <div className="col-span-4 flex flex-col gap-4">
-                      <span className="font-medium">Weekdays</span>
-                      <div className="flex flex-wrap gap-3">
-                        {data?.weekdays?.map(
-                          (
-                            weekday: { day: number; timeSlot: string },
-                            index: number
-                          ) => (
-                            <div
-                              key={index}
-                              className="flex gap-1 border border-solid border-gray-300 rounded-md text-sm px-2 py-1 text-gray-500"
-                            >
-                              <span>{getDayName(weekday?.day)}</span>
-                              <span>{weekday?.timeSlot}</span>
-                            </div>
-                          )
-                        )}
-                      </div>
-                    </div>
-                    <div className="col-span-3 flex flex-col gap-4">
-                      <span className="font-medium">Special dates</span>
-                      <div className="flex flex-wrap gap-3">
-                        {data?.special_dates?.map(
-                          (
-                            special: { date: any; timeSlot: string },
-                            index: number
-                          ) => (
-                            <div
-                              key={index}
-                              className="flex gap-1  border border-solid border-gray-300 rounded-md text-sm px-2 py-1 text-gray-500"
-                            >
-                              {special.date && dayjs.isDayjs(special.date) ? (
-                                <span className="font-medium">
-                                  {special.date.format("DD/MM/YYYY")}:
-                                </span>
-                              ) : (
-                                <span className="font-medium">
-                                  {special.date}:
-                                </span>
-                              )}
-
-                              <span>{special?.timeSlot}</span>
-                            </div>
-                          )
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                {/* {index < availability?.length - 1 && (
+                    {/* {index < availability?.length - 1 && (
                   <hr className="border border-solid" />
                 )} */}
-              </React.Fragment>
-            ))}
+                  </React.Fragment>
+                ))}
           </div>
         </div>
       </div>

@@ -494,6 +494,143 @@ export const getAvailability = createAsyncThunk(
     }
   }
 );
+
+export const editAvailabilityDeactive = createAsyncThunk(
+  "tour/editAvailabilityDeactive",
+  async (requestDataAvai: any) => {
+    try {
+      const response = await axiosInstance.patch(
+        `${BASE_URL}/availability/deactivate/${requestDataAvai}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response.status === 200) {
+        message.success("Deactive successfully!"); // Thông báo tạo Availability thành công
+        return response.data;
+      } else {
+        message.error("Deactive fail!"); // Thông báo lỗi khi tạo Availability
+        throw new Error("Failed to create Availability");
+      }
+    } catch (error: any) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        const errorMessages = error.response.data.message;
+
+        if (Array.isArray(errorMessages)) {
+          errorMessages.forEach((errorMessage: string) => {
+            console.log(errorMessage);
+            message.error(errorMessage);
+          });
+        } else if (typeof errorMessages === "string") {
+          console.log(errorMessages);
+          message.error(errorMessages);
+        } else {
+          message.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
+        }
+      } else {
+        message.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
+      }
+      throw new Error("Failed to fetch other data");
+    }
+  }
+);
+export const editAvailabilityActive = createAsyncThunk(
+  "tour/editAvailabilityActive",
+  async (requestDataAvai: any) => {
+    try {
+      const response = await axiosInstance.patch(
+        `${BASE_URL}/availability/activate/${requestDataAvai}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response.status === 200) {
+        message.success("Active successfully!"); // Thông báo tạo Availability thành công
+        return response.data;
+      } else {
+        message.error("Active fail!"); // Thông báo lỗi khi tạo Availability
+        throw new Error("Failed to create Availability");
+      }
+    } catch (error: any) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        const errorMessages = error.response.data.message;
+
+        if (Array.isArray(errorMessages)) {
+          errorMessages.forEach((errorMessage: string) => {
+            console.log(errorMessage);
+            message.error(errorMessage);
+          });
+        } else if (typeof errorMessages === "string") {
+          console.log(errorMessages);
+          message.error(errorMessages);
+        } else {
+          message.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
+        }
+      } else {
+        message.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
+      }
+      throw new Error("Failed to fetch other data");
+    }
+  }
+);
+
+export const deleteTicket = createAsyncThunk(
+  "tour/deleteTicket",
+  async (requestDataAvai: any) => {
+    try {
+      const response = await axiosInstance.delete(
+        `${BASE_URL}/pricing/${requestDataAvai}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response.status === 200) {
+        message.success("Delete ticket successfully!"); // Thông báo tạo Availability thành công
+        return response.data;
+      } else {
+        message.error("Delete ticket fail!"); // Thông báo lỗi khi tạo Availability
+        throw new Error("Failed to create Availability");
+      }
+    } catch (error: any) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        const errorMessages = error.response.data.message;
+
+        if (Array.isArray(errorMessages)) {
+          errorMessages.forEach((errorMessage: string) => {
+            console.log(errorMessage);
+            message.error(errorMessage);
+          });
+        } else if (typeof errorMessages === "string") {
+          console.log(errorMessages);
+          message.error(errorMessages);
+        } else {
+          message.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
+        }
+      } else {
+        message.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
+      }
+      throw new Error("Failed to fetch other data");
+    }
+  }
+);
 const tourSlice = createSlice({
   name: "tour",
   initialState,

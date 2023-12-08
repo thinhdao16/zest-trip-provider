@@ -24,7 +24,7 @@ export default {
         "blue-grotto": "#189AB4",
         "blue-green": "#75E6DA",
         "baby-blue": "#D4F1F4",
-        main: "#fafafa",
+        main: "#f5f5f5",
         "navy-blue-opacity-5": "rgba(5, 68, 94, 0.4)",
         "navy-blue-opacity-1": "rgba(5, 68, 94, 0.1)",
 
