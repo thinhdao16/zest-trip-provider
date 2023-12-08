@@ -437,12 +437,18 @@ const Capacity: React.FC = () => {
               </div>
             </div>
             <div>
-              <p className="font-medium mb-1">
+              <p className="font-medium mb-1 flex items-center">
                 Book Before (calculated from the tour start time)
+                {bookBefore < 1 && (
+                  <span className="text-xs text-red-500 font-normal">
+                    * Book Before greater than 1
+                  </span>
+                )}
               </p>
               <div className="  relative ">
                 <FaRegCalendarCheck className="absolute top-4 left-2" />
                 <input
+                  min={1}
                   className="w-1/2 border rounded-lg px-8 py-3 border-gray-400 shadow-custom-card-mui focus:outline-none hover:border-navy-blue focus:border-navy-blue"
                   placeholder="New availability"
                   value={bookBefore}
@@ -456,8 +462,13 @@ const Capacity: React.FC = () => {
               </div>
             </div>
             <div>
-              <p className="font-medium mb-1">
-                Refund Before (calculated from the tour start time)
+              <p className="font-medium mb-1 flex item-center">
+                Refund Before (calculated from the tour start time){" "}
+                {refundBefore < 1 && (
+                  <span className="text-xs text-red-500 font-normal">
+                    * Refund Before greater than 1
+                  </span>
+                )}
               </p>
               <div className="  relative ">
                 <RiRefund2Line className="absolute top-4 left-2" />

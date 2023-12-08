@@ -272,15 +272,6 @@ export const PersonalInfo = ({
           handlePersonalInfo(e, "address_country")
         }
       />
-      <Input
-        labels="Address name"
-        placeholder="55, kho min street"
-        icon={<FaRegAddressCard className="text-blue-700" />}
-        value={userInfo.address_name}
-        onChange={(e: FormEvent<HTMLInputElement>) =>
-          handlePersonalInfo(e, "address_name")
-        }
-      />
 
       <div style={{ width: "450px" }}>
         <p className="font-medium mb-1 flex gap-1">
@@ -371,6 +362,15 @@ export const PersonalInfo = ({
           </Select>
         </FormControl>
       </div>
+      <Input
+        labels="Address name"
+        placeholder="55, kho min street"
+        icon={<FaRegAddressCard className="text-blue-700" />}
+        value={userInfo.address_name}
+        onChange={(e: FormEvent<HTMLInputElement>) =>
+          handlePersonalInfo(e, "address_name")
+        }
+      />
       <div style={{ width: "450px" }}>
         <p className="font-medium mb-1 flex gap-1">
           Service type

@@ -4,7 +4,7 @@ import { AppDispatch } from "../../store/redux/store";
 import { useContext, useEffect, useState } from "react";
 import { fetchTours } from "../../store/redux/silce/tourSlice";
 import { useSelector } from "react-redux";
-import { Pagination, Select } from "antd";
+import { Input, Pagination, Select } from "antd";
 import { DataContext } from "../../store/dataContext/DataContext";
 import LoadingFullScreen from "../../styles/loading/LoadingFullScreen";
 import TruncatedText from "../../utils/TruncatedText";
@@ -13,6 +13,8 @@ import { Link } from "react-router-dom";
 import { TbLock } from "react-icons/tb";
 import { CiCircleCheck } from "react-icons/ci";
 import { FiLoader } from "react-icons/fi";
+
+const { Search } = Input;
 
 function Ticket() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -103,7 +105,15 @@ function Ticket() {
                     When provider have ticket new, they open here
                   </span>
                 </div>
-                <div>
+                <div className="flex items-center gap-3">
+                  <Search
+                    type="text"
+                    // defaultValue={searchTerm}
+                    placeholder="input search text"
+                    // onSearch={handleSearch}
+                    style={{ width: 200 }}
+                    // onChange={(e) => setSearchTerm(e.target.value)}
+                  />
                   <Select
                     defaultValue=""
                     onChange={handleFilterTour}

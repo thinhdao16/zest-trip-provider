@@ -9,9 +9,12 @@ import { fetchTours } from "../../store/redux/silce/tourSlice";
 import { AppDispatch } from "../../store/redux/store";
 import { StatusBooking } from "../../styles/status/booking";
 import LoadingFullScreen from "../../styles/loading/LoadingFullScreen";
-import { Pagination, Select } from "antd";
+import { Input, Pagination, Select } from "antd";
 import { formatNumber } from "../../utils/formatNumber";
 import { FaAngleDoubleDown, FaAngleDoubleUp } from "react-icons/fa";
+
+const { Search } = Input;
+
 function Booker() {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -103,7 +106,15 @@ function Booker() {
                     When provider have booking new, they open here
                   </span>
                 </div>
-                <div>
+                <div className="flex items-center gap-3">
+                  <Search
+                    type="text"
+                    // defaultValue={searchTerm}
+                    placeholder="input search text"
+                    // onSearch={handleSearch}
+                    style={{ width: 200 }}
+                    // onChange={(e) => setSearchTerm(e.target.value)}
+                  />
                   <Select
                     defaultValue=""
                     onChange={handleFilterTour}

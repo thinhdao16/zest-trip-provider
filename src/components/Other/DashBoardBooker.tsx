@@ -9,7 +9,7 @@ import {
   AiOutlinePhone,
   AiOutlineUp,
 } from "react-icons/ai";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Fade } from "@mui/material";
 import { LuSubtitles } from "react-icons/lu";
 import { GrLocation } from "react-icons/gr";
@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getBooking } from "../../store/redux/silce/booking";
 import { AppDispatch } from "../../store/redux/store";
 import { StatusBooking } from "../../styles/status/booking";
+import { DataContext } from "../../store/dataContext/DataContext";
 
 interface Ticket {
   ticket_type_id: number;
@@ -50,13 +51,20 @@ interface Booking {
   // Các trường khác nếu có
 }
 function DashBoardBooker() {
+  const { refeshLogin } = useContext(DataContext);
   const dispatch: AppDispatch = useDispatch();
 
   const { booking } = useSelector((state: any) => state.booking);
+  const filteredBookings = booking?.filter(
+    (booking: { status: string }) =>
+      booking.status !== "REJECT" &&
+      booking.status !== "PENDING" &&
+      booking.status !== "0"
+  );
   useEffect(() => {
     const data = { sort_by: "desc" };
     dispatch(getBooking(data));
-  }, [dispatch]);
+  }, [dispatch, refeshLogin]);
   const [expandedItems, setExpandedItems] = useState<any>({});
   const toggleContentVisibility = (index: number) => {
     const newExpandedItems = { ...expandedItems };
@@ -68,14 +76,16 @@ function DashBoardBooker() {
       <p className="text-xl font-medium text-black">Booking history</p>
       <div className="flex flex-col gap-3 bg-white shadow-custom-card-mui rounded-lg p-4">
         <div className="flex justify-between">
-          <span className="text-gray-500">{booking?.length} Booking</span>
+          <span className="text-gray-500">
+            {filteredBookings?.length} Booking
+          </span>
           {/* <div className="flex gap-5">
             <AiOutlineSearch />
             <FaSliders />
           </div> */}
         </div>
         <div className="flex flex-col gap-2">
-          {booking?.map((item: Booking, index: number) => {
+          {filteredBookings?.map((item: Booking, index: number) => {
             return (
               <div key={index} className="py-2 relative">
                 <div className="absolute top-0 right-2 ">

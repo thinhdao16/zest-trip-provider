@@ -43,10 +43,21 @@ function Login() {
   const [openLoading, setOpenLoading] = useState(false);
 
   const [isEmailMatch, setIsEmailMatch] = useState(true);
+  const [isPasswordValid, setIsPasswordValid] = useState(true);
 
   useEffect(() => {
     checkAccessToken();
   }, [refeshLogin]);
+
+  const handlePasswordChange = (e: any) => {
+    const newPassword = e.target.value;
+    setPassword(newPassword);
+    if (newPassword.length >= 8) {
+      setIsPasswordValid(true);
+    } else {
+      setIsPasswordValid(false);
+    }
+  };
 
   const checkAccessToken = async () => {
     const accessToken = localStorage.getItem("access_token");
@@ -75,10 +86,10 @@ function Login() {
       localStorage.setItem("access_token", response.data.data.access_token);
       localStorage.setItem("refresh_token", response.data.data.refresh_token);
       localStorage.setItem("user_id", deCodeUserId?.id);
+      message.success("Login successful");
+      navigate("/");
       setRefeshTour((prev) => !prev);
       setRefeshLogin((prev) => !prev);
-      message.success("Login successful");
-      navigate("/listtour");
       setOpenLoading(false);
     } catch (error: any) {
       console.error(error);
@@ -211,7 +222,13 @@ function Login() {
                       required
                       value={password}
                       type="password"
-                      onChange={(e) => setPassword(e.target.value)}
+                      error={!isPasswordValid}
+                      helperText={
+                        isPasswordValid
+                          ? ""
+                          : " Password must be at least 8 characters long."
+                      }
+                      onChange={handlePasswordChange}
                       onKeyPress={(e) => {
                         if (e.key === "Enter") {
                           e.preventDefault(); // Ngăn chặn sự kiện mặc định khi nhấn Enter

@@ -32,12 +32,13 @@ import Wallet from "../../pages/wallet/Wallet";
 import BookDetail from "../../pages/booker/many/BookDetail";
 
 function MainRouter() {
-  const { refeshLogin } = React.useContext(DataContext);
+  const { refeshLogin, setRefeshTour } = React.useContext(DataContext);
   const [checkAccessToken, setCheckAccessToken] = React.useState("");
   React.useEffect(() => {
     const accessToken: any = localStorage.getItem("access_token");
     setCheckAccessToken(accessToken);
-  }, [refeshLogin]);
+    setRefeshTour((prev) => !prev);
+  }, [refeshLogin, setRefeshTour]);
   return (
     <BrowserRouter>
       <Routes>

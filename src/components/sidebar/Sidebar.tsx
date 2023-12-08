@@ -27,6 +27,7 @@ function Sidebar({ ...props }) {
             setRefeshLogin((prev) => !prev);
             navigation("/provider-processing");
           }
+          setRefeshLogin((prev) => !prev);
         }
         if (getPersonalInfo.rejected.match(action)) {
           localStorage.clear();

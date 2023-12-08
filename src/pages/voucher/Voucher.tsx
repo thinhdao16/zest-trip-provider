@@ -15,6 +15,9 @@ import dayjs from "dayjs";
 import { formatNumber } from "../../utils/formatNumber";
 import { DataContext } from "../../store/dataContext/DataContext";
 import LoadingFullScreen from "../../styles/loading/LoadingFullScreen";
+import { Input, Select } from "antd";
+
+const { Search } = Input;
 
 function Voucher() {
   const dispatch: AppDispatch = useDispatch();
@@ -82,25 +85,27 @@ function Voucher() {
                   <h1 className="text-2xl font-semibold ">List of Voucher</h1>
                 </div>
                 <div className="flex items-center gap-3">
-                  {/* <div className="relative">
-                    <RiSearchLine className="absolute top-2 left-2" />
-                    <input
-                      type="text"
-                      name=""
-                      id=""
-                      placeholder="Search"
-                      className="border border-gray-300 pl-8 py-1 w-24 rounded-md"
+                  <Search
+                    type="text"
+                    // defaultValue={searchTerm}
+                    placeholder="input search text"
+                    // onSearch={handleSearch}
+                    style={{ width: 200 }}
+                    // onChange={(e) => setSearchTerm(e.target.value)}
+                  />
+                  <div>
+                    <Select
+                      defaultValue=""
+                      // onChange={handleChangeFilterStatus}
+                      style={{ width: 120 }}
+                      allowClear
+                      options={[
+                        { value: "", label: "Filter" },
+                        { value: "ACCEPTED", label: "Accepted" },
+                        { value: "REJECT", label: "Reject" },
+                      ]}
                     />
                   </div>
-                  <div>
-                    <button
-                      type="button"
-                      className="relative bg-white shadow-custom-card-mui border border-gray-300 pl-0 py-1 w-24 rounded-md"
-                    >
-                      <AiFillFilter className="absolute top-2 left-2" />
-                      Filter
-                    </button>
-                  </div> */}
                   <div>
                     <Link to="/voucher-create">
                       <button
