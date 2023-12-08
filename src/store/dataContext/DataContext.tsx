@@ -25,6 +25,8 @@ interface AuthContextValue {
   setFieldSaveDateChartChoose: any;
   saveDateChartChoose: any;
   setSaveDateChartChoose: any;
+  reload: any;
+  setReload: any;
 }
 
 export const DataContext = createContext<AuthContextValue>(
@@ -47,6 +49,7 @@ export function DataContextProvider({
   const [saveDateChartChoose, setSaveDateChartChoose] = useState();
   const [fieldSaveDateChartChoose, setFieldSaveDateChartChoose] =
     useState("normal");
+  const [reload, setReload] = useState(null);
   return (
     <DataContext.Provider
       value={{
@@ -68,6 +71,8 @@ export function DataContextProvider({
         setFieldSaveDateChartChoose,
         saveDateChartChoose,
         setSaveDateChartChoose,
+        reload,
+        setReload,
       }}
     >
       {children}

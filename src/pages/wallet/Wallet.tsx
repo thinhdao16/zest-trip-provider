@@ -2,7 +2,7 @@ import Navbar from "../../components/Navbar/Index";
 import logo from "../../../src/assets/File-logo-Zest-Travel.svg";
 import { AppDispatch } from "../../store/redux/store";
 import { useDispatch } from "react-redux";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { getWalletTransactionMe } from "../../store/redux/silce/authSilce";
 import { useSelector } from "react-redux";
 import { formatNumber } from "../../utils/formatNumber";
@@ -10,16 +10,17 @@ import WalletWithraw from "./WalletWithraw";
 import dayjs from "dayjs";
 import { StatusWithDrawTransaction } from "../../styles/status/withdrawTransaction";
 import { Input, Select, message } from "antd";
+import { DataContext } from "../../store/dataContext/DataContext";
 
 const { Search } = Input;
 
 function Wallet() {
   const dispatch: AppDispatch = useDispatch();
+  const { reload } = useContext(DataContext);
   const { wallet, walletTransaction } = useSelector((state: any) => state.auth);
   const [walletHistories, setWalletHistories] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  console.log(walletTransaction);
   const filterPending = walletTransaction?.filter(
     (data: { status: string }) => data?.status === "PENDING"
   );
@@ -65,10 +66,10 @@ function Wallet() {
   };
   useEffect(() => {
     dispatch(getWalletTransactionMe());
-  }, [dispatch]);
+  }, [dispatch, reload]);
   useEffect(() => {
     setWalletHistories(walletTransaction);
-  }, [walletTransaction]);
+  }, [walletTransaction, reload]);
   return (
     <div>
       <Navbar />

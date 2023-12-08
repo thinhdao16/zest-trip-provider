@@ -27,7 +27,6 @@ import axios from "axios";
 import OtpInput from "react-otp-input";
 import register from "../../assets/register.svg";
 import { message } from "antd";
-import emailValidator from "deep-email-validator";
 
 interface FormElements extends HTMLFormControlsCollection {
   email: HTMLInputElement;

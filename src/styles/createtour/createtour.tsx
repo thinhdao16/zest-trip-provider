@@ -3,7 +3,7 @@ import { styled } from "@mui/material/styles";
 import { Colors } from "./theme/theme";
 
 export const BannerContainer = styled(Box)(({ theme }) => ({
-  background: "#fafafa",
+  background: "#f5f5f5",
   justifyContent: "center",
   width: "100%",
   height: "82vh",

@@ -137,10 +137,11 @@ const ModalTicketAdult = ({
   };
   return (
     <div>
-      <FaRegPenToSquare
-        onClick={handleOpen}
-        className="w-4 h-4 shadow-custom-card-mui absolute top-2 right-2"
-      />
+      <div className="flex items-center gap-1" onClick={handleOpen}>
+        <FaRegPenToSquare className="w-4 h-4 shadow-custom-card-mui" /> Edit
+        tickets
+      </div>
+
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import { Modal, Backdrop, Fade } from "@mui/material";
 import { Box } from "@mui/system";
 import { HiOutlineDocumentAdd } from "react-icons/hi";
@@ -8,11 +8,7 @@ import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
 import dayjs from "dayjs";
 import { FaCheck, FaRegClock, FaRegTrashCan } from "react-icons/fa6";
 import { GoLocation } from "react-icons/go";
-import { useDispatch } from "react-redux";
 
-import { message } from "antd";
-import { AppDispatch } from "../../../../store/redux/store";
-import { postCreateAvailabilityTour } from "../../../../store/redux/silce/tourSlice";
 import { useParams } from "react-router-dom";
 
 const style = {
@@ -38,7 +34,6 @@ function AddAvailability({
   setAvailability: any;
 }) {
   const { index } = useParams();
-  const dispatch: AppDispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);

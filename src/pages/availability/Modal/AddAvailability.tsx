@@ -444,7 +444,10 @@ function AddAvailability({
 
   return (
     <div>
-      <HiOutlineDocumentAdd className="w-5 h-5" onClick={handleOpen} />
+      <button className="flex items-center gap-1">
+        <HiOutlineDocumentAdd className="w-4 h-4" onClick={handleOpen} />
+        Add availability
+      </button>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"

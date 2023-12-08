@@ -632,7 +632,7 @@ function TicketSpecial() {
   const dataDisableDateAdult = disableDateAdult();
   const dataDisableDateChildren = disableDateChildren();
   return (
-    <div className="global-scrollbar">
+    <div className="max-h-[68vh] overflow-auto global-scrollbar">
       <div className="flex items-center justify-center">
         <div className="py-5">
           <div className="hidden">

@@ -21,15 +21,8 @@ const typeDefault = {
   role: "ADULT",
   type: "DEFAULT",
 };
-function AddChildren({
-  openModal,
-  setOpenModal,
-  data,
-}: {
-  openModal: any;
-  setOpenModal: any;
-  data: any;
-}) {
+function AddChildren({ data }: { data: any }) {
+  const [openModal, setOpenModal] = useState(false);
   const { index } = useParams();
   const dispatch: AppDispatch = useDispatch();
   const { commision } = useSelector(
@@ -572,16 +565,23 @@ function AddChildren({
       }
     });
   };
+  const handleOpenModal = () => {
+    setOpenModal(true);
+  };
   return (
     <>
+      <button className="" onClick={handleOpenModal}>
+        Add children
+      </button>
       <Modal
-        title="Basic Modal"
+        className="top-10"
+        title="Add children"
         open={openModal}
-        onCancel={handleCloseModal}
+        onCancel={() => handleCloseModal()}
         width={1200}
         onOk={handleUpdateTicket}
       >
-        <div className="max-h-[65vh] global-scrollbar overflow-auto ">
+        <div className="max-h-[68vh] global-scrollbar overflow-auto ">
           <div className="flex items-center justify-center">
             <div className="py-5">
               <div className="hidden"></div>

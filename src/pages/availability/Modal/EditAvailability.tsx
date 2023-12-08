@@ -310,10 +310,11 @@ const EditAvailability = (dataAvailability: any) => {
 
   return (
     <div>
-      <FaRegPenToSquare
-        onClick={handleOpen}
-        className="w-5 h-5 shadow-custom-card-mui"
-      />
+      <button className="flex items-center gap-1" onClick={handleOpen}>
+        <FaRegPenToSquare className="w-4 h-4 shadow-custom-card-mui" /> Edit
+        Availability
+      </button>
+
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"

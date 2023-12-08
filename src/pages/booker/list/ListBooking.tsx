@@ -16,8 +16,10 @@ function ListBooking() {
   const dispatch: AppDispatch = useDispatch();
 
   const { booking } = useSelector((state: any) => state.booking);
+  const bookingDontReject = booking?.filter(
+    (booking: any) => booking?.status !== "REJECT"
+  );
   const { tours } = useSelector((state: any) => state.tour);
-  console.log(booking);
   const [selectDate, setSelectDate] = useState("");
 
   const [status, setStatus] = useState("");
@@ -71,7 +73,7 @@ function ListBooking() {
     dispatch(getBooking(filGetBooking));
   };
 
-  const filteredBookings = booking.filter((bookingItem: any) =>
+  const filteredBookings = bookingDontReject.filter((bookingItem: any) =>
     // Áp dụng logic tìm kiếm dựa trên các trường bạn muốn
     bookingItem.booker_email.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -146,7 +148,6 @@ function ListBooking() {
                     { value: "", label: "Filter" },
                     { value: "PENDING", label: "Pending" },
                     { value: "ACCEPTED", label: "Accepted" },
-                    { value: "REJECT", label: "Reject" },
                     { value: "REFUNDED", label: "Refund" },
                     {
                       value: "USER_REQUEST_REFUND",
@@ -205,7 +206,7 @@ function ListBooking() {
                     <AiOutlineUp />
                   </div>
                 )}
-                <div className=" grid grid-cols-5 p-4 ">
+                <div className=" grid grid-cols-5 px-4 py-6 ">
                   <div className="">{booking?.booker_email}</div>
                   <div className="">
                     {dayjs(booking?.booked_date).format("YYYY-MM-DD")}

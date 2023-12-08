@@ -2,14 +2,14 @@ import dayjs from "dayjs";
 import Navbar from "../../components/Navbar/Index";
 import { AiFillEye } from "react-icons/ai";
 import { Link } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { DataContext } from "../../store/dataContext/DataContext";
 import { fetchTours } from "../../store/redux/silce/tourSlice";
 import { AppDispatch } from "../../store/redux/store";
 import { StatusBooking } from "../../styles/status/booking";
 import LoadingFullScreen from "../../styles/loading/LoadingFullScreen";
-import { Pagination } from "antd";
+import { Pagination, Select } from "antd";
 import { formatNumber } from "../../utils/formatNumber";
 import { FaAngleDoubleDown, FaAngleDoubleUp } from "react-icons/fa";
 function Booker() {
@@ -18,16 +18,42 @@ function Booker() {
 
   const [visibleItems, setVisibleItems] = useState(3);
   const [showAll, setShowAll] = useState(false);
+  const [keyFilterTour, setKeyFilterTour] = useState("normal");
 
   const { refeshTour } = React.useContext(DataContext);
   const dispatch: AppDispatch = useDispatch();
   const { tours, loading } = useSelector((state: any) => state.tour);
-  console.log(tours);
 
   const dataTours = tours?.tours;
   const countTours = tours?.total_count;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const dataTourBookingDontReject =
+    dataTours?.map((tour: any) => ({
+      ...tour,
+      Booking:
+        tour?.Booking?.filter(
+          (booking: { status: string }) => booking?.status !== "REJECT"
+        ) ?? [],
+    })) ?? [];
+  const [dataTourBookings, setDataTourBookings] = useState(dataTours);
+  console.log(dataTourBookings);
+  useEffect(() => {
+    if (keyFilterTour === "normal") {
+      setDataTourBookings(dataTourBookingDontReject);
+    } else {
+      const filteredTours =
+        dataTours?.map((tour: any) => ({
+          ...tour,
+          Booking:
+            tour?.Booking?.filter(
+              (booking: { status: string }) => booking?.status === keyFilterTour
+            ) ?? [],
+        })) ?? [];
+      setDataTourBookings(filteredTours);
+    }
+  }, [dataTours, keyFilterTour]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const pagination = { pageSize, currentPage };
     dispatch(fetchTours(pagination));
   }, [dispatch, refeshTour, currentPage, pageSize]);
@@ -49,6 +75,18 @@ function Booker() {
     setVisibleItems(3);
     setShowAll(false);
   };
+  const handleFilterTour = (value: string) => {
+    if (value?.length === 0 || value === undefined) {
+      setKeyFilterTour("normal");
+    } else {
+      const pageSizeFil = 1000;
+      const currentPageFil = 1;
+      const pagination = { pageSizeFil, currentPageFil };
+      setPageSize(1000);
+      dispatch(fetchTours(pagination));
+      setKeyFilterTour(value);
+    }
+  };
   return (
     <>
       {loading ? (
@@ -65,27 +103,25 @@ function Booker() {
                     When provider have booking new, they open here
                   </span>
                 </div>
-                {/* <div className="flex items-center gap-3">
-                  <div className="relative">
-                    <RiSearchLine className="absolute top-2 left-2" />
-                    <input
-                      type="text"
-                      name=""
-                      id=""
-                      placeholder="Search"
-                      className="border border-gray-300 pl-8 py-1 w-24 rounded-md"
-                    />
-                  </div>
-                  <div>
-                    <button
-                      type="button"
-                      className="relative border border-gray-300 pl-0 py-1 w-24 rounded-md"
-                    >
-                      <AiFillFilter className="absolute top-2 left-2" />
-                      Filter
-                    </button>
-                  </div>
-                </div> */}
+                <div>
+                  <Select
+                    defaultValue=""
+                    onChange={handleFilterTour}
+                    style={{ width: 120 }}
+                    allowClear
+                    options={[
+                      { value: "", label: "Choose value" },
+                      { value: "PENDING", label: "Pending" },
+                      { value: "ACCEPTED", label: "Accepted" },
+                      { value: "REFUNDED", label: "Refund" },
+                      {
+                        value: "USER_REQUEST_REFUND",
+                        label: "User request refund",
+                      },
+                      { value: "PROVIDER_REFUNDED", label: "Provider refund" },
+                    ]}
+                  />
+                </div>
               </div>
               <div className="flex flex-col gap-4">
                 <div className="bg-white p-3 rounded-lg shadow-custom-card-mui">
@@ -109,9 +145,9 @@ function Booker() {
                   </div>
                 </div>
                 <div className="flex flex-col gap-2 shadow-custom-card-mui">
-                  {dataTours?.length > 0 &&
-                    Array.isArray(dataTours) &&
-                    [...dataTours]
+                  {dataTourBookings?.length > 0 &&
+                    Array.isArray(dataTourBookings) &&
+                    [...dataTourBookings]
                       .sort((a, b) => {
                         return (
                           new Date(b?.updated_at).getTime() -
@@ -129,7 +165,7 @@ function Booker() {
                           >
                             <div className="bg-white flex items-center gap-2 p-4 rounded-lg">
                               <img
-                                src={dataManyBook?.tour_images[0]}
+                                src={dataManyBook?.tour_images?.[0]}
                                 className="w-12 h-12 rounded-lg"
                                 alt="wait"
                               />
@@ -285,7 +321,7 @@ function Booker() {
                       ))}
 
                   <div className="flex justify-center">
-                    {dataTours?.length > 0 && (
+                    {dataTourBookings?.length > 0 && (
                       <Pagination
                         current={currentPage}
                         total={countTours}

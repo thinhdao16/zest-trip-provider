@@ -4,18 +4,7 @@ import { AppDispatch } from "../../store/redux/store";
 import { useContext, useEffect, useState } from "react";
 import { fetchTours } from "../../store/redux/silce/tourSlice";
 import { useSelector } from "react-redux";
-import PersonAdd from "@mui/icons-material/PersonAdd";
-import Settings from "@mui/icons-material/Settings";
-import {
-  Menu,
-  MenuItem,
-  Avatar,
-  Divider,
-  ListItemIcon,
-  Box,
-} from "@mui/material";
-import React from "react";
-import { Pagination } from "antd";
+import { Pagination, Select } from "antd";
 import { DataContext } from "../../store/dataContext/DataContext";
 import LoadingFullScreen from "../../styles/loading/LoadingFullScreen";
 import TruncatedText from "../../utils/TruncatedText";
@@ -34,12 +23,6 @@ function Ticket() {
   const dataTours = tours?.tours;
   console.log(dataTours);
   const countTours = tours?.total_count;
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
   useEffect(() => {
     const pagination = { pageSize, currentPage };
@@ -86,6 +69,23 @@ function Ticket() {
     }
   };
 
+  const handleFilterTour = (value: string) => {
+    console.log(value);
+    // if (value === "" || value === undefined) {
+    //   setUpdatedDataTours(updatedDataTourNoChange);
+    // } else {
+    //   const filteredTours = updatedDataTourNoChange?.map((tour: any) => {
+    //     return {
+    //       ...tour,
+    //       TourAvailability: tour?.TourAvailability?.filter(
+    //         (availability: any) => availability.status === value
+    //       ),
+    //     };
+    //   });
+    //   setUpdatedDataTours(filteredTours);
+    // }
+  };
+
   return (
     <>
       {loading ? (
@@ -103,63 +103,21 @@ function Ticket() {
                     When provider have ticket new, they open here
                   </span>
                 </div>
+                <div>
+                  <Select
+                    defaultValue=""
+                    onChange={handleFilterTour}
+                    style={{ width: 120 }}
+                    allowClear
+                    options={[
+                      { value: "", label: "Choose value" },
+                      { value: "normal", label: "Normal" },
+                      { value: "special", label: "Special" },
+                    ]}
+                  />
+                </div>
               </div>
               <div className="container flex flex-col gap-4">
-                <Box sx={{ flexGrow: 1, textAlign: "right", color: "black" }}>
-                  <Menu
-                    anchorEl={anchorEl}
-                    id="account-menu"
-                    open={open}
-                    onClose={handleClose}
-                    onClick={handleClose}
-                    PaperProps={{
-                      elevation: 0,
-                      sx: {
-                        overflow: "visible",
-                        filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-                        mt: 1.5,
-                        "& .MuiAvatar-root": {
-                          width: 32,
-                          height: 32,
-                          ml: -0.5,
-                          mr: 1,
-                        },
-                        "&:before": {
-                          content: '""',
-                          display: "block",
-                          position: "absolute",
-                          top: 0,
-                          right: 14,
-                          width: 10,
-                          height: 10,
-                          bgcolor: "background.paper",
-                          transform: "translateY(-50%) rotate(45deg)",
-                          zIndex: 0,
-                        },
-                      },
-                    }}
-                    transformOrigin={{ horizontal: "right", vertical: "top" }}
-                    anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-                  >
-                    <MenuItem onClick={handleClose}>
-                      <Avatar /> Profile
-                    </MenuItem>
-
-                    <Divider />
-                    <MenuItem onClick={handleClose}>
-                      <ListItemIcon>
-                        <PersonAdd fontSize="small" />
-                      </ListItemIcon>
-                      Add another account
-                    </MenuItem>
-                    <MenuItem onClick={handleClose}>
-                      <ListItemIcon>
-                        <Settings fontSize="small" />
-                      </ListItemIcon>
-                      Settings
-                    </MenuItem>
-                  </Menu>
-                </Box>
                 <div className="bg-white p-3 rounded-lg shadow-custom-card-mui">
                   <div className="grid grid-cols-12 gap-3">
                     <div className="col-span-6">

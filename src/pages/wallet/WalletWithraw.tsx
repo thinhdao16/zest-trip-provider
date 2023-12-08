@@ -1,9 +1,11 @@
-import { Button, Input, Modal, Select } from "antd";
+import { Button, Input, Modal, Popconfirm, Select, message } from "antd";
 import list_bank from "./ListBank.json";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { AppDispatch } from "../../store/redux/store";
 import { useDispatch } from "react-redux";
 import { postWithDraw } from "../../store/redux/silce/authSilce";
+import { formatNumber } from "../../utils/formatNumber";
+import { DataContext } from "../../store/dataContext/DataContext";
 
 function WalletWithraw({
   dataWallet,
@@ -15,6 +17,7 @@ function WalletWithraw({
   setOpen: any;
 }) {
   const dispatch: AppDispatch = useDispatch();
+  const { setReload } = useContext(DataContext);
   const bank = list_bank?.data;
   const [bankName, setBankName] = useState<any>();
   const [bankAccountNumber, setBankAccountNumber] = useState<any>();
@@ -22,17 +25,33 @@ function WalletWithraw({
   const handleCloseModal = () => {
     setOpen(false);
   };
-
+  console.log(dataWallet);
   const handleChange = (value: string) => {
     setBankName(value);
   };
+  console.log(bankAccountNumber);
   const handleWithDraww = () => {
-    const data = {
-      bankName: bankName?.label.toString(),
-      bankAccountNumber: bankAccountNumber.toString(),
-      bankAccountName: bankAccountName,
-    };
-    dispatch(postWithDraw(data));
+    if (
+      bankName === undefined ||
+      bankAccountNumber === 0 ||
+      Number.isNaN(bankAccountNumber) ||
+      bankAccountName?.length === 0 ||
+      bankAccountName === undefined
+    ) {
+      message.error("cannot be left blank");
+    } else {
+      const data = {
+        bankName: bankName?.label?.toString(),
+        bankAccountNumber: bankAccountNumber?.toString(),
+        bankAccountName: bankAccountName,
+      };
+      dispatch(postWithDraw(data)).then((response) => {
+        if (postWithDraw.fulfilled.match(response)) {
+          setOpen(false);
+          setReload((prev: any) => !prev);
+        }
+      });
+    }
   };
   const options = [
     // eslint-disable-next-line no-unsafe-optional-chaining
@@ -53,21 +72,6 @@ function WalletWithraw({
       onCancel={handleCloseModal}
     >
       <div className="flex flex-col gap-2">
-        <div className="">
-          <span className="font-medium">Bank account number</span>
-          <Input
-            type="number"
-            defaultValue={bankAccountNumber}
-            onChange={(e) => setBankAccountNumber(parseInt(e.target.value))}
-          />
-        </div>
-        <div>
-          <span className="font-medium">Recipient's full name</span>
-          <Input
-            defaultValue={bankAccountName}
-            onChange={(e) => setBankAccountName(e.target.value)}
-          />
-        </div>
         <div>
           <span className="font-medium">Choose a bank</span>
           <Select
@@ -96,11 +100,39 @@ function WalletWithraw({
             optionLabelProp="label"
           />
         </div>
+        <div className="">
+          <span className="font-medium">Bank account number</span>
+          <Input
+            type="number"
+            defaultValue={bankAccountNumber}
+            onChange={(e) => setBankAccountNumber(parseInt(e.target.value))}
+          />
+        </div>
+        <div>
+          <span className="font-medium">Recipient's full name</span>
+          <Input
+            defaultValue={bankAccountName}
+            onChange={(e) => setBankAccountName(e.target.value)}
+          />
+        </div>
+        <div>
+          <span className="font-medium">Amount of money</span>
+          <div className="border border-solid border-gray-300 py-1.5 px-3 rounded-md bg-main">
+            {formatNumber(parseInt(dataWallet?.balance))}
+          </div>
+        </div>
       </div>
-
-      <Button className="block" onClick={handleWithDraww}>
-        cancel
-      </Button>
+      <Popconfirm
+        title="Withdraw Bank"
+        description="Are you sure to withdraw ?"
+        onConfirm={handleWithDraww}
+        okText="Yes"
+        cancelText="No"
+      >
+        <Button className="block mt-4 bg-navy-blue text-white hover:bg-white">
+          Withdraw All
+        </Button>
+      </Popconfirm>
     </Modal>
   );
 }

@@ -2,52 +2,43 @@ import { useDispatch } from "react-redux";
 import Navbar from "../../components/Navbar/Index";
 import { AppDispatch } from "../../store/redux/store";
 import { useContext, useEffect, useState } from "react";
-import { fetchTours } from "../../store/redux/silce/tourSlice";
+import {
+  editAvailabilityActive,
+  editAvailabilityDeactive,
+  fetchTours,
+} from "../../store/redux/silce/tourSlice";
 import { useSelector } from "react-redux";
 import dayjs from "dayjs";
 import AddAvailability from "./Modal/AddAvailability";
 import EditAvailability from "./Modal/EditAvailability";
-import { AiFillFilter, AiOutlineDown } from "react-icons/ai";
-import PersonAdd from "@mui/icons-material/PersonAdd";
-import Settings from "@mui/icons-material/Settings";
-import {
-  Menu,
-  MenuItem,
-  Avatar,
-  Divider,
-  ListItemIcon,
-  Box,
-} from "@mui/material";
-import React from "react";
-import { GoDotFill } from "react-icons/go";
-import { Pagination } from "antd";
+import { AiOutlineDown } from "react-icons/ai";
+import { Dropdown, Pagination, Menu, Switch, Select } from "antd";
 import { DataContext } from "../../store/dataContext/DataContext";
 import LoadingFullScreen from "../../styles/loading/LoadingFullScreen";
 import { RiSearchLine } from "react-icons/ri";
 import DatePicker from "react-multi-date-picker";
+import { CiCircleMore } from "react-icons/ci";
+import { StatusAvailabilty } from "../../styles/status/availability";
 
 function Availability() {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const dispatch: AppDispatch = useDispatch();
   const { tours, loading } = useSelector((state: any) => state.tour);
-  const { refeshTour } = useContext(DataContext);
+  const { refeshTour, setRefeshTour } = useContext(DataContext);
   const dataTours = tours?.tours;
   const countTours = tours?.total_count;
   const [loadings, setLoadings] = useState(null);
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const [openField, setOpenField] = useState(false);
 
-  const [updatedDataTours, setUpdatedDataTours] = useState([]);
+  const [updatedDataTours, setUpdatedDataTours] = useState<any>([]);
   const [updatedDataTourNoChange, setUpdatedDataToursNoChange] = useState([]);
 
   const [fieldSelectDate, setFieldSelectDate] = useState("normal");
 
   const [selectedDate, setSelectedDate] = useState<any>(new Date());
 
-  console.log(fieldSelectDate);
-  const open = Boolean(anchorEl);
   const availabilityIndex = 0;
 
   const generateDatesForWeekday = (weekday: any, from: any, to: any) => {
@@ -138,11 +129,9 @@ function Availability() {
     setFieldSelectDate("normal");
     setUpdatedDataTours(updatedDataTourNoChange);
   };
-  console.log(updatedDataTours);
   const handleAddSingleDate = (_index: number, selectedDate: any) => {
     const formattedDates = dayjs(selectedDate)?.format("YYYY-MM-DD");
     setSelectedDate(formattedDates);
-    console.log(formattedDates);
     if (fieldSelectDate === "normal" && formattedDates.length > 0) {
       const filterDateTour = updatedDataTourNoChange?.filter((tour: any) => {
         const availabilityDates = tour?.TourAvailability?.flatMap(
@@ -170,10 +159,6 @@ function Availability() {
       });
       setUpdatedDataTours(filterDateTour);
     }
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
   };
 
   function getDayName(day: number) {
@@ -210,6 +195,24 @@ function Availability() {
     setSelectedDate(undefined);
     setUpdatedDataTours(updatedDataTourNoChange);
   };
+
+  const handleFilterTour = (value: string) => {
+    console.log(value);
+    if (value === "" || value === undefined) {
+      setUpdatedDataTours(updatedDataTourNoChange);
+    } else {
+      const filteredTours = updatedDataTourNoChange?.map((tour: any) => {
+        return {
+          ...tour,
+          TourAvailability: tour?.TourAvailability?.filter(
+            (availability: any) => availability.status === value
+          ),
+        };
+      });
+      setUpdatedDataTours(filteredTours);
+    }
+  };
+
   useEffect(() => {
     const updatedDataTourss = dataTours?.map((tour: any) => {
       const updatedAvailability = tour?.TourAvailability?.map(
@@ -245,6 +248,26 @@ function Availability() {
     const pagination = { pageSize, currentPage };
     dispatch(fetchTours(pagination));
   }, [currentPage, dispatch, pageSize, loadings, refeshTour]);
+  const handleSwitchChangeStatusAvailability = (
+    checked: boolean,
+    dataIndex: number
+  ) => {
+    console.log(dataIndex);
+    if (checked === false) {
+      dispatch(editAvailabilityDeactive(dataIndex)).then((response: any) => {
+        if (editAvailabilityDeactive.fulfilled.match(response)) {
+          setRefeshTour((prev) => !prev);
+        }
+      });
+    }
+    if (checked === true) {
+      dispatch(editAvailabilityActive(dataIndex)).then((response: any) => {
+        if (editAvailabilityActive.fulfilled.match(response)) {
+          setRefeshTour((prev) => !prev);
+        }
+      });
+    }
+  };
   return (
     <>
       {loading ? (
@@ -352,19 +375,21 @@ function Availability() {
                       className="border border-gray-300 pl-8 py-1.5 w-24 rounded-md text-sm bg-white"
                     />
                   </div>
-                  <div className="bg-white">
-                    <button
-                      type="button"
-                      className="relative border border-gray-300 pl-0 py-1 w-24 rounded-md"
-                    >
-                      <AiFillFilter className="absolute top-2 left-2" />
-                      Filter
-                    </button>
-                  </div>
+                  <Select
+                    defaultValue=""
+                    onChange={handleFilterTour}
+                    style={{ width: 120 }}
+                    allowClear
+                    options={[
+                      { value: "", label: "Choose value" },
+                      { value: "ACTIVE", label: "Active" },
+                      { value: "INACTIVE", label: "Inactive" },
+                    ]}
+                  />
                 </div>
               </div>
               <div className="container flex flex-col gap-4">
-                <Box sx={{ flexGrow: 1, textAlign: "right", color: "black" }}>
+                {/* <Box sx={{ flexGrow: 1, textAlign: "right", color: "black" }}>
                   <Menu
                     anchorEl={anchorEl}
                     id="account-menu"
@@ -418,10 +443,10 @@ function Availability() {
                       Settings
                     </MenuItem>
                   </Menu>
-                </Box>
+                </Box> */}
                 <div className="bg-white p-3 rounded-lg shadow-custom-card-mui">
                   <div className="grid grid-cols-12 gap-3">
-                    <div className="col-span-3">
+                    <div className="col-span-2">
                       <span className="font-medium">Title</span>
                     </div>
                     <div className="col-span-2">
@@ -435,6 +460,9 @@ function Availability() {
                     </div>
                     <div className="col-span-1">
                       <span className="font-medium"> Status</span>
+                    </div>
+                    <div className="col-span-1 text-center">
+                      <span className="font-medium"> Action</span>
                     </div>
                   </div>
                 </div>
@@ -467,13 +495,29 @@ function Availability() {
                           </div>
                           <hr className="mb-2" />
                           <div className="absolute top-2 right-2 flex gap-2">
-                            <EditAvailability
-                              dataAvailability={dataTour?.TourAvailability}
-                            />
-                            <AddAvailability
-                              dataDetailTour={dataTour}
-                              setLoading={setLoadings}
-                            />
+                            <Dropdown
+                              overlay={
+                                <Menu>
+                                  {/* Add menu items for editing and adding availability */}
+                                  <Menu.Item key="edit">
+                                    <EditAvailability
+                                      dataAvailability={
+                                        dataTour?.TourAvailability
+                                      }
+                                    />
+                                  </Menu.Item>
+                                  <Menu.Item key="add">
+                                    <AddAvailability
+                                      dataDetailTour={dataTour}
+                                      setLoading={setLoadings}
+                                    />
+                                  </Menu.Item>
+                                </Menu>
+                              }
+                              trigger={["click"]}
+                            >
+                              <CiCircleMore className="w-5 h-5" />
+                            </Dropdown>
                             {/* <AiOutlineDown
                               style={{ fontWeight: "800" }}
                               onClick={handleClick}
@@ -483,6 +527,7 @@ function Availability() {
                             dataTour?.TourAvailability?.map(
                               (
                                 _availability: {
+                                  id: number;
                                   name: string;
                                   status: string;
                                   validity_date_range_from: string;
@@ -500,7 +545,7 @@ function Availability() {
                                   key={index}
                                 >
                                   <div className="grid grid-cols-12 gap-3 ">
-                                    <div className="col-span-3 flex items-center ">
+                                    <div className="col-span-2 flex items-center ">
                                       <div className="">
                                         <span className="font-medium">
                                           {_availability?.name}
@@ -561,19 +606,25 @@ function Availability() {
                                       </div>
                                     </div>
                                     <div className="col-span-1 flex items-center">
-                                      <div>
-                                        <button
-                                          type="button"
-                                          className={`text-sm flex gap-1 items-center p-1 rounded-md ${
-                                            _availability?.status === "ACTIVE"
-                                              ? "bg-navy-blue-opacity-5 text-navy-blue"
-                                              : "bg-red-300 text-red-900"
-                                          }`}
-                                        >
-                                          <GoDotFill />
-                                          {_availability?.status}
-                                        </button>
-                                      </div>
+                                      <StatusAvailabilty>
+                                        {_availability?.status}
+                                      </StatusAvailabilty>
+                                    </div>
+                                    <div className="col-span-1 flex items-center justify-center">
+                                      <Switch
+                                        defaultChecked
+                                        size="small"
+                                        checked={
+                                          _availability?.status === "ACTIVE"
+                                        }
+                                        className="bg-white shadow-custom-1"
+                                        onChange={(checked) =>
+                                          handleSwitchChangeStatusAvailability(
+                                            checked,
+                                            _availability?.id
+                                          )
+                                        }
+                                      />
                                     </div>
                                   </div>
 

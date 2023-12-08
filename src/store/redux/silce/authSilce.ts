@@ -118,6 +118,7 @@ export const postWithDraw = createAsyncThunk(
       return response.data;
     } catch (error) {
       console.log(error);
+      message.error("Fail withdraw");
       throw new Error("Failed to fetch other data");
     }
   }

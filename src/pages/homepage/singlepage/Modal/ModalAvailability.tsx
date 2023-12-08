@@ -49,7 +49,8 @@ const ModalAvailability = ({
   dataAvailability: { availability: any; setAvailability: any };
 }) => {
   const [open, setOpen] = useState(false);
-  const [dataWeekChoose, setDataWeekChoose] = useState<any>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [, setDataWeekChoose] = useState<any>([]);
   const handleOpen = () => {
     setOpen(true);
   };
