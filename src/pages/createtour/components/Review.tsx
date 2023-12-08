@@ -241,14 +241,14 @@ const Review: React.FC = () => {
               <Grid item xs={12} sm={6}>
                 <div className="flex flex-col gap-4">
                   <div className="flex flex-col gap-3">
-                    <p className="font-medium text-2xl border-l border-gray-300 border-solid bg-white shadow-custom-card-mui p-2 rounded-lg ">
+                    <p className=" font-medium text-2xl border-l border-gray-300 border-solid bg-white shadow-custom-card-mui p-2 rounded-lg ">
                       {formValues?.[8]?.Title?.[0]}
                     </p>
-                    <div className="block ext-2xl border-l border-gray-300 border-solid bg-white shadow-custom-card-mui p-2 rounded-lg  ">
-                      <p>{formValues?.[8]?.Title?.[1]}</p>
+                    <div className="block border-l border-gray-300 border-solid bg-white shadow-custom-card-mui p-2 rounded-lg  ">
+                      <p className="">{formValues?.[8]?.Title?.[1]}</p>
                     </div>
                     <div className="grid grid-cols-2 gap-8">
-                      <div className="flex items-center border-l border-solid border-gray-300 bg-white rounded-lg p-2 shadow-custom-card-mui">
+                      <div className="flex items-baseline border-l border-solid border-gray-300 bg-white rounded-lg p-2 shadow-custom-card-mui">
                         <AiOutlineFieldTime className="mr-2 " />
                         <div>
                           <p className="font-medium mb-1 text-lg">Day</p>
@@ -257,7 +257,7 @@ const Review: React.FC = () => {
                           </p>
                         </div>
                       </div>
-                      <div className="flex items-center border-l border-solid border-gray-300 bg-white rounded-lg p-2 shadow-custom-card-mui">
+                      <div className="flex items-baseline border-l border-solid border-gray-300 bg-white rounded-lg p-2 shadow-custom-card-mui">
                         <AiOutlineFieldTime className="mr-2 " />
                         <div>
                           <p className="font-medium mb-1 text-lg">Night</p>
@@ -268,7 +268,7 @@ const Review: React.FC = () => {
                       </div>
                     </div>
 
-                    <div className="flex items-center  border-l border-solid border-gray-300 bg-white rounded-lg p-2 shadow-custom-card-mui">
+                    <div className="flex items-baseline  border-l border-solid border-gray-300 bg-white rounded-lg p-2 shadow-custom-card-mui">
                       <FaLocationDot className="mr-2" />
                       <div className="block">
                         <p className="font-medium mb-1 text-lg"> Location</p>
@@ -282,7 +282,7 @@ const Review: React.FC = () => {
                       </div>
                     </div>
 
-                    <div className="flex items-center  border-l border-solid border-gray-300 bg-white rounded-lg p-2 shadow-custom-card-mui">
+                    <div className="flex items-baseline  border-l border-solid border-gray-300 bg-white rounded-lg p-2 shadow-custom-card-mui">
                       <FaLocationDot className="mr-2" />
                       <div className="block">
                         <p className="font-medium mb-1 text-lg"> Departure</p>
@@ -326,7 +326,7 @@ const Review: React.FC = () => {
                   <hr />
 
                   <div className="">
-                    <div className="flex items-center mb-3 border-l border-solid border-gray-300 bg-white rounded-lg p-2 shadow-custom-card-mui">
+                    <div className="flex items-start mb-3 border-l border-solid border-gray-300 bg-white rounded-lg p-2 shadow-custom-card-mui">
                       <AiOutlineSelect className="mr-2 w-7 h-7" />
                       <div className="block">
                         <p className="font-medium mb-1 text-lg">Tour type</p>
