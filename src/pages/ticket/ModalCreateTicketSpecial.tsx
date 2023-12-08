@@ -1,10 +1,14 @@
-import React, { useState } from "react";
-import Button from "@mui/material/Button";
+import React, { useContext, useState } from "react";
 import List from "@mui/material/List";
 import TicketSpecial from "./TicketSpecial";
-import { ButtonCreateTicketSpecial } from "./ButtonCreateTicketSpecial";
-import { Modal } from "antd";
+import { Modal, message } from "antd";
 import AvailabilityForCreateTicketSpecial from "./AvailabilityForCreateTicketSpecial";
+import { postCreateTicketTour } from "../../store/redux/silce/tourSlice";
+import { useParams } from "react-router-dom";
+import { AppDispatch } from "../../store/redux/store";
+import { useDispatch } from "react-redux";
+import { DataContext } from "../../store/dataContext/DataContext";
+import dayjs from "dayjs";
 
 export default function ModalCreateTicketSpecial() {
   const [open, setOpen] = useState<any>(false);
@@ -15,6 +19,48 @@ export default function ModalCreateTicketSpecial() {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const { index } = useParams();
+  const dispatch: AppDispatch = useDispatch();
+  const { dataTicketCreate } = useContext(DataContext);
+  const handleCreateTicketSpecial = () => {
+    const pricing_data = dataTicketCreate?.map((item: any) => {
+      const pricingData: any = {
+        ticket_type: item?.role,
+        pricing_type: item?.type,
+        maximum_ticket_count: parseInt(item?.max),
+        minimum_ticket_count: 1,
+        from_age: item?.ageStart?.toString(),
+        to_age: item?.ageEnd?.toString(),
+        is_default: false,
+        apply_dates: item?.apply_dates?.map((item: string) =>
+          dayjs(item)?.format("YYYY-MM-DD")
+        ),
+      };
+
+      if (item.price_range) {
+        pricingData.price_range = item.price_range.map((formItem: any) => ({
+          from_amount: parseInt(formItem?.numberOfPeople),
+          to_amount: parseInt(formItem?.numberOfPeopleAfter),
+          price: parseInt(formItem?.retailPrice),
+        }));
+      }
+      return pricingData;
+    });
+    localStorage.setItem("dataResTicket", pricing_data);
+    const data = {
+      tour_id: index,
+      pricing_data,
+    };
+    dispatch(postCreateTicketTour(data)).then((data) => {
+      if (postCreateTicketTour.fulfilled.match(data)) {
+        console.log("create ticket success");
+        message.success("Create ticket success");
+      } else {
+        console.log("ticket create failed");
+      }
+    });
   };
   return (
     <React.Fragment>
@@ -30,12 +76,9 @@ export default function ModalCreateTicketSpecial() {
         open={open}
         onCancel={() => handleClose()}
         width={1450}
-        // onOk={handleUpdateTicket}
+        onOk={handleCreateTicketSpecial}
       >
         <List>
-          <Button autoFocus color="inherit" onClick={handleClose}>
-            <ButtonCreateTicketSpecial />
-          </Button>
           <div className="flex items-start gap-8">
             <AvailabilityForCreateTicketSpecial />
             <TicketSpecial />

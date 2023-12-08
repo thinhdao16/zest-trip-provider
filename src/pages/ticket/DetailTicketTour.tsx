@@ -19,7 +19,6 @@ function DetailTicketTour() {
   const dispatch: AppDispatch = useDispatch();
   const { index } = useParams<{ index: string }>();
   const { loadingCreateTour } = useSelector((state: any) => state.tour);
-  console.log(loadingCreateTour);
   const tourDetail: any = useSelector((state: any) => state.tour.tourGetDetail);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [filterTickets, setFilterTickets] = useState(tourDetail);

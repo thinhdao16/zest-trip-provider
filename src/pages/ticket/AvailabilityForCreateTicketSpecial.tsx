@@ -126,7 +126,7 @@ function AvailabilityForCreateTicketSpecial() {
     <div>
       <Calendar
         value={valueSelectCalendar}
-        className=" px-4 relative pt-8 h-80  calendar-book-detail"
+        className=" px-4 relative pt-8 pb-2  calendar-ticket-detail"
         multiple
         numberOfMonths={1}
         mapDays={({ date }) => {

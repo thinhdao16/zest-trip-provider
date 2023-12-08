@@ -31,7 +31,10 @@ function TicketSpecial() {
     (state: { auth: { commision: number } }) => state.auth
   );
   const tourDetail: any = useSelector((state: any) => state.tour.tourGetDetail);
-
+  const quantityTicketTrue = tourDetail?.TicketPricing?.filter(
+    (ticket: { is_default: boolean }) => ticket.is_default === true
+  );
+  console.log(quantityTicketTrue);
   const { setDataTicketCreate } = useContext(DataContext);
 
   const [selectedCountries, setSelectedCountries]: any = useState([]);
@@ -821,12 +824,14 @@ function TicketSpecial() {
                   </div>
                 </div>
               </div>
-              <button
-                className="font-medium text-lg text-navy-blue hover hover:text-black"
-                onClick={() => handleCountryChange()}
-              >
-                + Add type ticket{" "}
-              </button>
+              {quantityTicketTrue?.length > 1 && (
+                <button
+                  className="font-medium text-lg text-navy-blue hover hover:text-black"
+                  onClick={() => handleCountryChange()}
+                >
+                  + Add type ticket{" "}
+                </button>
+              )}
             </div>
           )}
           {selectedCountries.includes("Adults") &&

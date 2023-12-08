@@ -11,7 +11,6 @@ export const ButtonCreateTicketSpecial = () => {
   const { index } = useParams();
   const dispatch: AppDispatch = useDispatch();
   const { dataTicketCreate } = useContext(DataContext);
-  console.log(dataTicketCreate);
   const handleCreateTicketSpecial = () => {
     const pricing_data = dataTicketCreate?.map((item: any) => {
       const pricingData: any = {
