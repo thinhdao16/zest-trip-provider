@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { StateTour } from "../../createtour/types/index.t";
 import { LuMoveRight } from "react-icons/lu";
