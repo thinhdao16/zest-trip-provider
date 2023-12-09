@@ -31,7 +31,6 @@ function Sidebar({ ...props }) {
         }
         if (getPersonalInfo.rejected.match(action)) {
           localStorage.clear();
-          console.log(action.payload);
           setRefeshLogin((prev) => !prev);
           navigation("/login");
         }

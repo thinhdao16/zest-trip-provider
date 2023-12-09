@@ -6,7 +6,7 @@ export default {
       boxShadow: {
         //https://getcssscan.com/css-box-shadow-examples
         "custom-card-mui":
-          "0 0 2px 0 rgba(145, 158, 171, 0.08), 0 12px 24px -4px rgba(145, 158, 171, 0.08) ",
+          "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
         "custom-0": "rgba(149, 157, 165, 0.2) 0px 8px 24px",
         "custom-1": "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
         "custom-7":
@@ -32,6 +32,7 @@ export default {
         "green-tag-opa": "#f1f5e5",
         // Thêm nhiều màu sắc khác nếu cần
       },
+
       width: { "w-1": "1px", "w-2": "2px" },
       height: { "h-1": "1px", "h-2": "2px" },
       scrollbarWidth: {

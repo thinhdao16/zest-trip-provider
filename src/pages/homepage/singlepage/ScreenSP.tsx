@@ -151,7 +151,7 @@ function ScreenSP() {
                   overlay={
                     <Menu>
                       {/* Add menu items for editing and adding availability */}
-                      <Menu.Item key="add-children">
+                      <Menu.Item key="addchildren">
                         {quantityTicketTrue?.length < 2 && (
                           <>
                             <AddChildren data={quantityTicketTrue} />

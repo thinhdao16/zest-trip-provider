@@ -33,7 +33,7 @@ function NavBar() {
     quantity: parseInt(createquantity),
     apply_condition: {
       // type: createApplyCondition?.type,
-      // value: createApplyCondition?.value,
+      // expired_start: "2023-12-15",
       minimum_price: createApplyCondition?.value,
     },
     expired_date: createExpiredDate,

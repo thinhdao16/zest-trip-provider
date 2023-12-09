@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { HomeIcon } from "../../assets/component/logo-zest";
-
+import "./sidebar.css";
 interface SidebarLogoProps {
   icon: IconDefinition;
   text: string;
@@ -19,7 +19,7 @@ function SidebarLogo({ text, toggle }: SidebarLogoProps) {
 
   return (
     <div className="relative flex flex-row font-semibokld text-3xl md:items-center md:mx-auto text-navy-blue mb-5 p-4 justify-between">
-      <Link to="/" className="flex items-center">
+      <Link to="/" className="flex items-center font-family-sidebar-header">
         <HomeIcon className="w-14 h-14" />
         {text}
       </Link>

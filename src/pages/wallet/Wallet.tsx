@@ -131,7 +131,7 @@ function Wallet() {
               />
             </div>
           </div>
-          <div className="p-3 bg-white rounded-md shadow-custom-card-mui my-4">
+          <div className="p-3 bg-navy-blue text-white rounded-md shadow-custom-card-mui my-4">
             <div className="grid grid-cols-5">
               <div>
                 <span className="font-medium">Date</span>

@@ -135,7 +135,7 @@ function Booker() {
                 </div>
               </div>
               <div className="flex flex-col gap-4">
-                <div className="bg-white p-3 rounded-lg shadow-custom-card-mui">
+                <div className="bg-navy-blue text-white p-3 rounded-lg shadow-custom-card-mui">
                   <div className="grid grid-cols-5 gap-3">
                     <div className="col-span-1">
                       <span className="font-medium">Booker</span>

@@ -128,7 +128,7 @@ function Ticket() {
                 </div>
               </div>
               <div className="container flex flex-col gap-4">
-                <div className="bg-white p-3 rounded-lg shadow-custom-card-mui">
+                <div className="bg-navy-blue text-white p-3 rounded-lg shadow-custom-card-mui">
                   <div className="grid grid-cols-12 gap-3">
                     <div className="col-span-6">
                       <span className="font-medium">Info</span>

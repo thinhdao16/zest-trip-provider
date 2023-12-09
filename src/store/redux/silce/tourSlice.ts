@@ -58,7 +58,6 @@ export const getTours = createAsyncThunk("tour/getTours", async () => {
     }
   } catch (error) {
     console.log(error);
-    // message.error("Failed to fetch tours!");
     throw new Error("Failed to fetch tours");
   }
 });

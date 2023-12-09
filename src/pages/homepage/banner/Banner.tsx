@@ -245,7 +245,7 @@ export default function Banner() {
                     .map((data: any, index: number) => (
                       <div key={index}>
                         <Link to={`/${data?.id}`} key={data?.id}>
-                          <div className="bg-white shadow-custom-card-mui grid grid-cols-12 p-4 gap-3 ">
+                          <div className="bg-white shadow-custom-card-mui grid grid-cols-12 p-4 gap-3  rounded-lg">
                             <div className="col-span-1">
                               <img
                                 style={{

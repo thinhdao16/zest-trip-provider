@@ -159,7 +159,7 @@ function ListBooking() {
               </div>
             </div>
           </div>
-          <div className="grid grid-cols-5 px-4 py-2 rounded-lg shadow-custom-card-mui bg-white mb-4">
+          <div className="grid grid-cols-5 p-3 rounded-lg shadow-custom-card-mui bg-navy-blue text-white mb-4">
             <div className=" font-medium">Booker</div>
             <div className=" font-medium">Book time</div>
             <div className=" font-medium">Original price</div>

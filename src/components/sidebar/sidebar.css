@@ -80,3 +80,6 @@ button.link {
 #menu .link:hover {
   @apply text-slate-700;
 }
+.font-family-sidebar-header {
+  font-family: Georgia, serif;
+}

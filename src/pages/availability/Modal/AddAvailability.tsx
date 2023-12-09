@@ -444,8 +444,8 @@ function AddAvailability({
 
   return (
     <div>
-      <button className="flex items-center gap-1">
-        <HiOutlineDocumentAdd className="w-4 h-4" onClick={handleOpen} />
+      <button className="flex items-center gap-1" onClick={handleOpen}>
+        <HiOutlineDocumentAdd className="w-4 h-4" />
         Add availability
       </button>
       <Modal
