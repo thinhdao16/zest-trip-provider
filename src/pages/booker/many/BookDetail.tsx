@@ -36,7 +36,6 @@ function BookDetail() {
   const [selectedStatus, setSelectedStatus] = useState("");
   const [dateChoose, setDateChoose] = useState<any>([]);
   const [openField, setOpenField] = useState(false);
-  console.log(dateChoose);
   const [fieldBlock, setFieldBlock] = useState("normal");
   const [fieldCancel, setFieldCancel] = useState("normal");
   const [fieldBlockTour, setFieldBlockTour] = useState("normal");
@@ -48,6 +47,9 @@ function BookDetail() {
   const [openModalBlock, setOpenModalBlock] = useState(false);
 
   const [valueSelectCalendar, setValueSelectCalendar] = useState<any>();
+
+  const [dateBookDontAvai, setDateBookDontAvai] = useState<any>([]);
+
   const uniqueDates = new Set();
 
   const filteredBookingDetails: any = [];
@@ -132,16 +134,27 @@ function BookDetail() {
       )
     )
     ?.filter((date: any) => date !== undefined);
+
+  const bookedDates =
+    bookingDetail?.map((book: { booked_date: string }) =>
+      dayjs(book.booked_date).format("YYYY-MM-DD")
+    ) || [];
+  const availableBookedDates = bookedDates?.filter(
+    (bookedDate: any) => !availabilityDates?.includes(bookedDate)
+  );
+  console.log(availableBookedDates);
   const [dateAvailability, setDateAvailability] = useState([
     ...allDates,
     ...allSingleDates,
     ...availabilityDates,
   ]);
+
   const handleBookingHave = () => {
     const commonDates = dateAvailability.filter((date) =>
       book_date_fil.includes(date)
     );
-    setDateAvailability(commonDates);
+    setDateBookDontAvai(availableBookedDates);
+    setDateAvailability([...commonDates, ...availableBookedDates]);
     setOpenField(true);
     setFieldBlock("normal");
   };
@@ -300,6 +313,7 @@ function BookDetail() {
     setValueSelectCalendar(new Date());
     setFieldBlock("normal");
   };
+
   return (
     <>
       <Navbar />
@@ -509,7 +523,7 @@ function BookDetail() {
                       <span className="font-medium">Time slot</span>
                     </div>
 
-                    <div className="col-span-4">
+                    <div className="col-span-4 max-h-12  overflow-auto global-scrollbar">
                       {dateChoose?.length === 0 ? (
                         <span>
                           {dateChoose?.length === 0 && (
@@ -636,9 +650,17 @@ function BookDetail() {
                     const isBlocked = formattedBlockedDates?.includes(
                       dayjs(formattedDate).format("YYYY-MM-DD")
                     );
+
+                    const dateDont = dateBookDontAvai?.includes(formattedDate);
+
                     const style = {
-                      backgroundColor: isBlocked ? "#ff6384" : "",
+                      backgroundColor: isBlocked
+                        ? "#ff6384"
+                        : dateDont
+                        ? "#ffc148"
+                        : "",
                     };
+
                     return {
                       disabled: !isDisabled,
                       style: style,

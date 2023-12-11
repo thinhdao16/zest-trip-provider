@@ -157,7 +157,8 @@ const LocationStart: React.FC = () => {
     }
   };
   const handleAddlocation = () => {
-    console.log("object");
+    setValueDate("");
+    setAddress("");
     setAddValueLocation(false);
   };
   return (
@@ -205,7 +206,7 @@ const LocationStart: React.FC = () => {
                     value={address}
                     onChange={handleChange}
                     onSelect={handleSelect}
-                    searchOptions={{ types: ["address"] }} // Thêm các tùy chọn để chỉ định loại địa chỉ cần tìm kiếm
+                    searchOptions={{ types: ["address"] }}
                   >
                     {({
                       getInputProps,

@@ -389,61 +389,6 @@ function Availability() {
                 </div>
               </div>
               <div className="container flex flex-col gap-4">
-                {/* <Box sx={{ flexGrow: 1, textAlign: "right", color: "black" }}>
-                  <Menu
-                    anchorEl={anchorEl}
-                    id="account-menu"
-                    open={open}
-                    onClose={handleClose}
-                    onClick={handleClose}
-                    PaperProps={{
-                      elevation: 0,
-                      sx: {
-                        overflow: "visible",
-                        filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-                        mt: 1.5,
-                        "& .MuiAvatar-root": {
-                          width: 32,
-                          height: 32,
-                          ml: -0.5,
-                          mr: 1,
-                        },
-                        "&:before": {
-                          content: '""',
-                          display: "block",
-                          position: "absolute",
-                          top: 0,
-                          right: 14,
-                          width: 10,
-                          height: 10,
-                          bgcolor: "background.paper",
-                          transform: "translateY(-50%) rotate(45deg)",
-                          zIndex: 0,
-                        },
-                      },
-                    }}
-                    transformOrigin={{ horizontal: "right", vertical: "top" }}
-                    anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-                  >
-                    <MenuItem onClick={handleClose}>
-                      <Avatar /> Profile
-                    </MenuItem>
-
-                    <Divider />
-                    <MenuItem onClick={handleClose}>
-                      <ListItemIcon>
-                        <PersonAdd fontSize="small" />
-                      </ListItemIcon>
-                      Add another account
-                    </MenuItem>
-                    <MenuItem onClick={handleClose}>
-                      <ListItemIcon>
-                        <Settings fontSize="small" />
-                      </ListItemIcon>
-                      Settings
-                    </MenuItem>
-                  </Menu>
-                </Box> */}
                 <div className="bg-navy-blue text-white p-3 rounded-lg shadow-custom-card-mui">
                   <div className="grid grid-cols-12 gap-3">
                     <div className="col-span-2">
@@ -518,10 +463,6 @@ function Availability() {
                             >
                               <CiCircleMore className="w-5 h-5" />
                             </Dropdown>
-                            {/* <AiOutlineDown
-                              style={{ fontWeight: "800" }}
-                              onClick={handleClick}
-                            /> */}
                           </div>
                           {dataTour?.TourAvailability?.length > 0 ? (
                             dataTour?.TourAvailability?.map(

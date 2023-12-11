@@ -1,45 +1,51 @@
 import { Link, useParams } from "react-router-dom";
 import dayjs from "dayjs";
-import { AiFillFilter } from "react-icons/ai";
 import { useDispatch } from "react-redux";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Menu, MenuItem, Rating } from "@mui/material";
-import { IoHomeOutline } from "react-icons/io5";
+import { Rating } from "@mui/material";
+import { IoHomeOutline, IoTrash } from "react-icons/io5";
 import { AppDispatch } from "../../store/redux/store";
 import { getBookingDetail } from "../../store/redux/silce/booking";
-import { fetchTourDetail } from "../../store/redux/silce/tourSlice";
+import {
+  deleteTicket,
+  fetchTourDetail,
+} from "../../store/redux/silce/tourSlice";
 import { StatusTour } from "../../styles/status/tour";
 import TruncatedText from "../../utils/TruncatedText";
 import { LuMoveRight } from "react-icons/lu";
 import ModalCreateTicketSpecial from "./ModalCreateTicketSpecial";
 import LoadingFullScreen from "../../styles/loading/LoadingFullScreen";
+import AddChildren from "./AddChilren";
+import { Dropdown, Popconfirm, Select, MenuProps } from "antd";
+import { DataContext } from "../../store/dataContext/DataContext";
+import ModalTicketAdult from "./ModalTicketAdult";
+import { formatNumber } from "../../utils/formatNumber";
+import { CiCircleMore } from "react-icons/ci";
+
+const { Option } = Select;
 
 function DetailTicketTour() {
   const dispatch: AppDispatch = useDispatch();
   const { index } = useParams<{ index: string }>();
+  const { refreshTourDetail, setRefreshTourDetail } = useContext(DataContext);
+
   const { loadingCreateTour } = useSelector((state: any) => state.tour);
   const tourDetail: any = useSelector((state: any) => state.tour.tourGetDetail);
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [filterTickets, setFilterTickets] = useState(tourDetail);
-  const [selectedStatus, setSelectedStatus] = useState();
-  const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const quantityTicketTrue = tourDetail?.TicketPricing?.filter(
+    (ticket: { is_default: boolean }) => ticket.is_default === true
+  );
+  const [filterTickets, setFilterTickets] = useState<any>(tourDetail);
+  const [selectedStatus, setSelectedStatus] = useState("");
+
   const handleStatusClick = (status: any) => {
+    console.log(status);
     setSelectedStatus(status);
-    setAnchorEl(null);
   };
 
   useEffect(() => {
     const filtered = tourDetail?.TicketPricing?.filter((ticket: any) =>
-      selectedStatus === undefined
-        ? true
-        : ticket?.is_default === selectedStatus
+      selectedStatus === "" ? true : ticket?.is_default === selectedStatus
     );
     setFilterTickets(filtered);
   }, [selectedStatus, tourDetail?.TicketPricing]);
@@ -49,9 +55,38 @@ function DetailTicketTour() {
       dispatch(getBookingDetail(index));
       dispatch(fetchTourDetail(index));
     }
-  }, [dispatch, index, loadingCreateTour]);
+  }, [dispatch, index, loadingCreateTour, refreshTourDetail]);
 
-  // Chuyển kết quả từ Map thành mảng các booking objects duy nhất
+  const handleDeleteTicket = (e: any) => {
+    dispatch(deleteTicket(e)).then((response: any) => {
+      if (deleteTicket.fulfilled.match(response)) {
+        setRefreshTourDetail((prev) => !prev);
+      }
+    });
+  };
+  const items: MenuProps["items"] = [
+    {
+      key: "1",
+      label: (
+        <ModalTicketAdult
+          dataTicket={{
+            filterTickets,
+          }}
+        />
+      ),
+    },
+    {
+      key: "2",
+      label: <ModalCreateTicketSpecial />,
+    },
+    {
+      key: "3",
+      label: quantityTicketTrue?.length < 2 && (
+        <AddChildren data={quantityTicketTrue} />
+      ),
+    },
+  ];
+
   return (
     <>
       {loadingCreateTour ? (
@@ -129,47 +164,25 @@ function DetailTicketTour() {
                 </div>
               </div>
               <div className="col-span-4">
-                <div className="text-end flex flex-col justify-end items-end">
-                  <div className="mb-2 flex items-center gap-1">
-                    <button
-                      type="button"
-                      className="relative border border-gray-300 pl-0 py-1 w-24 rounded-md bg-white"
-                      onClick={handleClick}
-                    >
-                      <AiFillFilter className="absolute top-2 left-2" />
-                      Filter
-                    </button>
-                    <div>
-                      <Menu
-                        id="basic-menu"
-                        anchorEl={anchorEl}
-                        open={open}
-                        onClose={handleClose}
-                        MenuListProps={{
-                          "aria-labelledby": "basic-button",
-                        }}
-                      >
-                        <MenuItem onClick={() => handleStatusClick(undefined)}>
-                          All
-                        </MenuItem>
-                        <MenuItem onClick={() => handleStatusClick(true)}>
-                          Normal
-                        </MenuItem>
-                        <MenuItem onClick={() => handleStatusClick(false)}>
-                          Sepcial
-                        </MenuItem>
-                      </Menu>
-                    </div>
-                  </div>
+                <div className="text-end flex gap-4  justify-end items-end">
+                  <Select
+                    className="shadow-custom-card-mui rounded-md"
+                    style={{ width: 120 }}
+                    defaultValue="" // Set your default value if needed
+                    onChange={(value) => handleStatusClick(value)}
+                  >
+                    <Option value="">Filter</Option>
+                    <Option value={true}>Normal</Option>
+                    <Option value={false}>Special</Option>
+                  </Select>
                   <div className="flex items-center gap-2">
-                    <div>
-                      {/* <Link to={`/ticket/create/${index}`}>
-                  <button className="bg-navy-blue text-white py-1 px-2 rounded-lg">
-                    Add special ticket
-                  </button>
-                </Link> */}
-                      <ModalCreateTicketSpecial />
-                    </div>
+                    <Dropdown menu={{ items }}>
+                      <a onClick={(e) => e.preventDefault()}>
+                        <button className="px-4 py-1 border border-gray-300 shadow-custom-card-mui bg-white rounded-md flex items-center gap-2">
+                          <CiCircleMore /> Action
+                        </button>
+                      </a>
+                    </Dropdown>
                   </div>
                 </div>
               </div>
@@ -195,7 +208,25 @@ function DetailTicketTour() {
                       )
                       ?.map((ticket: any, index: number) => (
                         <React.Fragment key={index}>
-                          <div className="flex flex-col gap-4 p-4 rounded-xl shadow-custom-card-mui pr-10 bg-white border border-solid border-gray-300 ">
+                          <div className="flex flex-col gap-4 p-4 rounded-xl shadow-custom-card-mui pr-10 bg-white border border-solid border-gray-300 relative ">
+                            {ticket?.is_default === true &&
+                            ticket?.Ticket?.name === "ADULT" ? (
+                              <></>
+                            ) : (
+                              <div className="absolute inset-y-1/3 right-4">
+                                <Popconfirm
+                                  title="Delete the task"
+                                  description="Are you sure to delete this task?"
+                                  onConfirm={() =>
+                                    handleDeleteTicket(ticket?.id)
+                                  }
+                                  okText="Yes"
+                                  cancelText="No"
+                                >
+                                  <IoTrash className="w-5 h-5 text-red-500" />
+                                </Popconfirm>
+                              </div>
+                            )}
                             <div className="flex items-center gap-8">
                               <div className="flex items-center gap-1">
                                 <span className="text-lg font-medium">
@@ -309,7 +340,7 @@ function DetailTicketTour() {
                                       <div>{price?.from_amount}</div>
                                       <LuMoveRight />
                                       <div>{price?.to_amount}</div>
-                                      <div>vnđ {price?.price}</div>
+                                      <div> {formatNumber(price?.price)}</div>
                                     </div>
                                   )
                                 )}

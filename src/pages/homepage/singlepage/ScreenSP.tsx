@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { StateTour } from "../../createtour/types/index.t";
 import { LuMoveRight } from "react-icons/lu";
@@ -9,7 +9,7 @@ import { useEditContext } from "./Context/useEditContext";
 import AddChildren from "./Modal/AddChilren";
 import AddAvailability from "./Modal/AddAvailability";
 import { StatusAvailabilty } from "../../../styles/status/availability";
-import { Dropdown, Menu, Popconfirm, Space } from "antd";
+import { Popconfirm } from "antd";
 import { CiCircleMore } from "react-icons/ci";
 import { Switch } from "antd";
 import { AppDispatch } from "../../../store/redux/store";
@@ -31,6 +31,25 @@ function ScreenSP() {
   const { ticketPricing, setTicketPricing, availability, setAvailability } =
     useEditContext();
 
+  const [openActionTicket, setOpenActionTicket] = useState(false);
+  const [openActionAvailability, setOpenActionAvailability] = useState(false);
+
+  const handleOpenActionTicket = () => {
+    if (openActionTicket === true) {
+      setOpenActionTicket(false);
+    }
+    if (openActionTicket === false) {
+      setOpenActionTicket(true);
+    }
+  };
+  const handleOpenActionAvailability = () => {
+    if (openActionAvailability === true) {
+      setOpenActionAvailability(false);
+    }
+    if (openActionAvailability === false) {
+      setOpenActionAvailability(true);
+    }
+  };
   const quantityTicketTrue = ticketPricing?.filter(
     (ticket: { is_default: boolean }) => ticket.is_default === true
   );
@@ -102,38 +121,6 @@ function ScreenSP() {
     });
   };
 
-  const items: any = [
-    {
-      label: (
-        <div className="flex items-center gap-1">
-          <ModalAvailability
-            dataAvailability={{ availability, setAvailability }}
-          />
-          Edit availability
-        </div>
-      ),
-      key: "0",
-    },
-
-    {
-      type: "divider",
-    },
-    {
-      label: (
-        <div className="flex items-center gap-1">
-          {" "}
-          <AddAvailability
-            dataDetailTour={availability}
-            setAvailability={setAvailability}
-          />{" "}
-          Add availability
-        </div>
-      ),
-      key: "1",
-    },
-  ];
-
-  console.log(ticketPricing);
   return (
     <div>
       <div className="mb-4 first-letter" id="ticket">
@@ -146,33 +133,27 @@ function ScreenSP() {
           </div>
           <div className="flex flex-col col-span-10">
             <div className="bg-white border border-solid pr-7 p-4 border-gray-300  shadow-custom-card-mui rounded-lg flex flex-col gap-4 relative">
-              <div className="absolute top-2 right-2">
-                <Dropdown
-                  overlay={
-                    <Menu>
-                      {/* Add menu items for editing and adding availability */}
-                      <Menu.Item key="addchildren">
-                        {quantityTicketTrue?.length < 2 && (
-                          <>
-                            <AddChildren data={quantityTicketTrue} />
-                          </>
-                        )}
-                      </Menu.Item>
-                      <Menu.Item key="edit">
-                        <ModalTicketAdult
-                          dataTicket={{
-                            ticketPricing,
-                            setTicketPricing,
-                            duration,
-                          }}
-                        />
-                      </Menu.Item>
-                    </Menu>
-                  }
-                  trigger={["click"]}
-                >
-                  <CiCircleMore className="w-6 h-6" />
-                </Dropdown>
+              <div className="absolute top-2 right-2 z-50 flex justify-end flex-col items-end">
+                <CiCircleMore
+                  className="w-5 h-5"
+                  onClick={handleOpenActionTicket}
+                />
+                {openActionTicket && (
+                  <div className=" bg-white p-3 rounded-lg shadow-custom-1 flex flex-col gap-2 mt-2">
+                    <ModalTicketAdult
+                      dataTicket={{
+                        ticketPricing,
+                        setTicketPricing,
+                        duration,
+                      }}
+                    />
+                    {quantityTicketTrue?.length < 2 && (
+                      <>
+                        <AddChildren data={quantityTicketTrue} />
+                      </>
+                    )}
+                  </div>
+                )}
               </div>
 
               {ticketPricing?.map((ticket: any, index: number) => (
@@ -319,21 +300,31 @@ function ScreenSP() {
         </div>
         <div className="flex flex-col gap-4 col-span-10 bg-white">
           <div className="pr-8 py-4 pl-4 bg-white border border-solid border-gray-300  shadow-custom-card-mui rounded-lg flex flex-col gap-4 relative">
-            <div className="absolute top-2 right-2">
-              <Dropdown menu={{ items }} trigger={["click"]}>
-                <a onClick={(e) => e.preventDefault()} className="flex">
-                  <Space>
-                    <div>
-                      <CiCircleMore className="w-6 h-6" />
-                    </div>
-                  </Space>
-                </a>
-              </Dropdown>
+            <div className=" absolute top-2 right-2 z-50 flex justify-end flex-col items-end">
+              <CiCircleMore
+                className="w-5 h-5"
+                onClick={handleOpenActionAvailability}
+              />
+              {openActionAvailability && (
+                <div className=" bg-white p-3 rounded-lg shadow-custom-1 flex flex-col gap-2 mt-2">
+                  <ModalAvailability
+                    dataAvailability={{
+                      availability,
+                      setAvailability,
+                      tourDetail,
+                    }}
+                  />
+                  <AddAvailability
+                    dataDetailTour={availability}
+                    setAvailability={setAvailability}
+                  />{" "}
+                </div>
+              )}
             </div>
 
             {Array.isArray(availability) &&
               [...availability]
-                .sort((a, b) => b.id - a.id) // Sort the copied array
+                .sort((a, b) => b.id - a.id)
                 .map((data, index) => (
                   <React.Fragment key={index}>
                     <div className=" bg-main p-4 shadow-custom-card-mui rounded-lg">

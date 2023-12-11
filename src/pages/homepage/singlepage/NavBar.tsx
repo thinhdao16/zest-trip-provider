@@ -36,19 +36,20 @@ function NavBar() {
     availability,
     setScrollNav,
     statusTour,
+    departure,
   } = useEditContext();
   const tourDetail: any = useSelector(
     (state: StateTour) => state.tour.tourGetDetail
   );
   const { setRefreshTourDetail } = useContext(DataContext);
-
+  console.log(tourVehicle?.map((acc: { id: number }) => acc?.id));
   const dispatch: AppDispatch = useDispatch();
 
   const itemsWithId = availability?.filter((item: any) => "id" in item);
 
   const itemsDontWithId = availability?.filter((item: any) => !("id" in item));
 
-  const handleEditContent = () => {
+  const handleEditContent = async () => {
     const dataValue = {
       name: name,
       description: description,
@@ -63,6 +64,10 @@ function NavBar() {
       address_province: addressPro,
       address_country: addressCountry,
       tour_images: tourImages,
+      location: departure?.map((dataDeparture: any) => ({
+        deparute: dataDeparture?.deparute,
+        time: dataDeparture?.time,
+      })),
       TourSchedule: schedule?.map((data: any) => ({
         title: `${data?.title}`,
         description: data?.description,
@@ -79,9 +84,7 @@ function NavBar() {
         ticket_type: item?.Ticket?.name,
         pricing_type: item?.PricingType?.name,
         maximum_ticket_count: parseInt(item?.maximum_ticket_count),
-        // minimum_ticket_count: parseInt(item?.minimum_booking_quantity),
         minimum_ticket_count: 1,
-        // minimum_booking_quantity: parseInt(item?.minimum_booking_quantity),
         minimum_booking_quantity: 1,
         from_age: item?.from_age?.toString(),
         to_age: item?.to_age?.toString(),
@@ -133,41 +136,54 @@ function NavBar() {
         })),
       };
     });
-    avaibility_data.forEach((availabilityItem: any) => {
-      dispatch(editTicketAvailability(availabilityItem));
-    });
-
-    const avaibility_data_create = itemsDontWithId?.map(
+    const editAvailabilityPromises = avaibility_data.map(
       (availabilityItem: any) => {
-        return {
-          name: availabilityItem?.name,
-          validity_date_range_from: dayjs(
-            availabilityItem?.validity_date_range_from
-          ).format("YYYY-MM-DD"),
-          validity_date_range_to: dayjs(
-            availabilityItem?.validity_date_range_to
-          ).format("YYYY-MM-DD"),
-          tour_id: availabilityItem?.tour_id,
-          special_dates: availabilityItem?.special_dates?.map(
-            (specialItem: any) => ({
-              date: specialItem?.date,
-              timeSlot: specialItem?.timeSlot,
-            })
-          ),
-          weekdays: availabilityItem?.weekdays?.map((weekday: any) => ({
-            day: weekday?.day,
-            timeSlot: weekday?.timeSlot,
-          })),
-        };
+        return dispatch(editTicketAvailability(availabilityItem));
       }
     );
-    avaibility_data_create.forEach((availabilityItem: any) => {
-      dispatch(postCreateAvailabilityTour(availabilityItem)).then((respone) => {
-        if (postCreateAvailabilityTour.fulfilled.match(respone)) {
-          message.success("Availability");
+    try {
+      // Đợi tất cả các promises từ việc chỉnh sửa Availability hoàn thành
+      await Promise.all(editAvailabilityPromises);
+
+      const avaibility_data_create = itemsDontWithId?.map(
+        (availabilityItem: any) => {
+          return {
+            name: availabilityItem?.name,
+            validity_date_range_from: dayjs(
+              availabilityItem?.validity_date_range_from
+            ).format("YYYY-MM-DD"),
+            validity_date_range_to: dayjs(
+              availabilityItem?.validity_date_range_to
+            ).format("YYYY-MM-DD"),
+            tour_id: availabilityItem?.tour_id,
+            special_dates: availabilityItem?.special_dates?.map(
+              (specialItem: any) => ({
+                date: specialItem?.date,
+                timeSlot: specialItem?.timeSlot,
+              })
+            ),
+            weekdays: availabilityItem?.weekdays?.map((weekday: any) => ({
+              day: weekday?.day,
+              timeSlot: weekday?.timeSlot,
+            })),
+          };
         }
+      );
+      avaibility_data_create.forEach((availabilityItem: any) => {
+        dispatch(postCreateAvailabilityTour(availabilityItem)).then(
+          (respone) => {
+            if (postCreateAvailabilityTour.fulfilled.match(respone)) {
+              message.success("Availability");
+            }
+          }
+        );
       });
-    });
+      message.success("Tour updated successfully");
+    } catch (error) {
+      // Xử lý lỗi nếu có
+      console.error("Error editing Availability:", error);
+      message.error("An error occurred while editing Availability");
+    }
 
     const allFormImg = { formDataImg, id: tourDetail?.id };
     const allForm = { dataValue, id: tourDetail?.id };

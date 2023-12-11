@@ -9,6 +9,7 @@ import { AppDispatch } from "../../store/redux/store";
 import { useDispatch } from "react-redux";
 import { DataContext } from "../../store/dataContext/DataContext";
 import dayjs from "dayjs";
+import { MdFolderSpecial } from "react-icons/md";
 
 export default function ModalCreateTicketSpecial() {
   const [open, setOpen] = useState<any>(false);
@@ -64,15 +65,13 @@ export default function ModalCreateTicketSpecial() {
   };
   return (
     <React.Fragment>
-      <button
-        className="bg-navy-blue text-white py-1 px-2 rounded-lg"
-        onClick={handleClickOpen}
-      >
+      <button className="flex items-center gap-1" onClick={handleClickOpen}>
+        <MdFolderSpecial />
         Add special ticket
       </button>
       <Modal
         className="top-10"
-        title="Add children"
+        title="Ticket pricing"
         open={open}
         onCancel={() => handleClose()}
         width={1450}

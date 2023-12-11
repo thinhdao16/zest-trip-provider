@@ -24,12 +24,16 @@ function Wallet() {
   const filterPending = walletTransaction?.filter(
     (data: { status: string }) => data?.status === "PENDING"
   );
-  console.log(filterPending);
+  console.log(wallet);
   const handleOpenModalWalletWithRaw = () => {
     if (filterPending?.length > 0) {
       message.warning("You have transaction wait admin");
     } else {
-      setOpenModal(true);
+      if (parseInt(wallet?.balance) < 500000) {
+        message.warning("Plase withdraw went you grater than 500,000đ");
+      } else {
+        setOpenModal(true);
+      }
     }
   };
   const handleChangeFilterStatus = (value: string) => {

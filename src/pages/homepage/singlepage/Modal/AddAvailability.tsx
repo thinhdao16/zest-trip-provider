@@ -35,7 +35,10 @@ function AddAvailability({
 }) {
   const { index } = useParams();
   const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
+  const handleOpen = () => {
+    console.log("first");
+    setOpen(true);
+  };
   const handleClose = () => setOpen(false);
   const [capacity, setCapacity] = useState("");
   const [startingTimeSingle, setStartingTimeSingle] = useState<any>([]);
@@ -389,7 +392,6 @@ function AddAvailability({
     DateTo: startingTimes.DateTo,
     Title: capacity,
   };
-  console.log(formattedStartingTimes?.Tue?.length);
 
   const handleAddAvailability = () => {
     const existingData = [...dataDetailTour];
@@ -484,7 +486,10 @@ function AddAvailability({
 
   return (
     <div>
-      <HiOutlineDocumentAdd className="w-5 h-5" onClick={handleOpen} />
+      <div className="flex items-center gap-1" onClick={() => handleOpen()}>
+        <HiOutlineDocumentAdd className="w-5 h-5" />
+        Add availability
+      </div>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"

@@ -34,7 +34,6 @@ function TicketSpecial() {
   const quantityTicketTrue = tourDetail?.TicketPricing?.filter(
     (ticket: { is_default: boolean }) => ticket.is_default === true
   );
-  console.log(quantityTicketTrue);
   const { setDataTicketCreate } = useContext(DataContext);
 
   const [selectedCountries, setSelectedCountries]: any = useState([]);
@@ -713,11 +712,6 @@ function TicketSpecial() {
                 />
                 <div className="flex items-center gap-1">
                   <p className="font-medium text-lg">Default Ticket</p>
-                  {formList?.length < 2 && (
-                    <span className="text-xs text-red-500">
-                      * Please Number of People at least 2
-                    </span>
-                  )}
                 </div>
 
                 <div className="grid md:grid-cols-12">
@@ -974,12 +968,6 @@ function TicketSpecial() {
                 />
                 <div className="flex items-center gap-1">
                   <p className="font-semibold text-lg">Adults</p>
-                  {formListAdult?.length < 2 &&
-                    selectedRadio?.adults !== "Free - no ticket required" && (
-                      <span className="text-xs text-red-500">
-                        * Please Number of People at least 2
-                      </span>
-                    )}
                 </div>
                 <div className="grid md:grid-cols-12">
                   <div className="col-span-5">
@@ -1219,12 +1207,6 @@ function TicketSpecial() {
                 />
                 <div className="flex items-center gap-1">
                   <p className="font-semibold text-lg">Children</p>
-                  {formListChildren?.length < 2 &&
-                    selectedRadio?.children !== "Free - no ticket required" && (
-                      <span className="text-xs text-red-500">
-                        * Please Number of People at least 2
-                      </span>
-                    )}
                 </div>
 
                 <div className="grid md:grid-cols-12">

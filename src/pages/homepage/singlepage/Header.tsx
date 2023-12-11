@@ -14,7 +14,7 @@ export default function Header() {
   return (
     <div className="h-[12.8vh] ">
       <Box sx={{ flexGrow: 1, width: "100vw" }}>
-        <div className=" py-6 px-4 bg-navy-blue text-white">
+        <div className=" py-6 px-4 bg-white">
           <div className="flex justify-between items-center ">
             <div
               onClick={goBack}

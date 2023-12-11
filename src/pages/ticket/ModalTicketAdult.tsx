@@ -1,6 +1,6 @@
 import { Backdrop, Fade, Modal } from "@mui/material";
 import { Box } from "@mui/system";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaRegPenToSquare } from "react-icons/fa6";
 import { FcEmptyTrash } from "react-icons/fc";
 
@@ -18,12 +18,21 @@ const style = {
 };
 
 const ModalTicketAdult = ({
-  dataTicket: { ticketPricing, setTicketPricing },
+  dataTicket: { filterTickets },
 }: {
-  dataTicket: { ticketPricing: any; setTicketPricing: any; duration: number };
+  dataTicket: { filterTickets: any };
 }) => {
+  const [ticketData, setTicketData] = useState(filterTickets);
+  useEffect(() => {
+    setTicketData(filterTickets);
+  }, [filterTickets]);
+  console.log(ticketData);
   const [open, setOpen] = useState(false);
   const [reloadNumber, setReloadNumber] = useState(0);
+  if (!Array.isArray(ticketData)) {
+    console.error("filterTickets is not an array");
+    return null;
+  }
   const handleOpen = () => {
     setOpen(true);
   };
@@ -34,15 +43,15 @@ const ModalTicketAdult = ({
     setOpen(false);
   };
   const updateScript = (index: any, newTitle: any, field: string) => {
-    const updatedSchedule = [...ticketPricing];
+    const updatedSchedule = [...ticketData];
     updatedSchedule[index] = {
       ...updatedSchedule[index],
       [field]: newTitle,
     };
-    setTicketPricing(updatedSchedule);
+    setTicketData(updatedSchedule);
   };
   const updateType = (index: any, newTitle: any, field: string) => {
-    const updatedSchedule = [...ticketPricing];
+    const updatedSchedule = [...ticketData];
     updatedSchedule[index] = {
       ...updatedSchedule[index],
       [field]: {
@@ -50,7 +59,7 @@ const ModalTicketAdult = ({
         name: newTitle,
       },
     };
-    setTicketPricing(updatedSchedule);
+    setTicketData(updatedSchedule);
   };
   const handleUpdatePrice = (
     price: number,
@@ -63,51 +72,49 @@ const ModalTicketAdult = ({
     from = isNaN(from) ? 0 : from;
     to = isNaN(to) ? 0 : to;
 
-    const updatedPrice = ticketPricing?.map(
-      (ticketItem: any, sIndex: number) => {
-        if (sIndex !== scheduleIndex) {
-          return ticketItem;
-        } else {
-          return {
-            ...ticketItem,
-            price_range: ticketItem?.price_range?.map(
-              (detailItem: any, dIndex: number) => {
-                if (dIndex === detailIndex) {
-                  const updatedDetailItem = {
-                    ...detailItem,
-                    price: price,
-                    from_amount: from,
-                    to_amount: to,
-                  };
-                  return updatedDetailItem;
-                } else if (dIndex === detailIndex + 1) {
-                  const updatedDetailItem = {
-                    ...detailItem,
-                    from_amount: to >= 0 ? to + 1 : 0,
-                  };
-                  return updatedDetailItem;
-                }
-                return detailItem;
+    const updatedPrice = ticketData?.map((ticketItem: any, sIndex: number) => {
+      if (sIndex !== scheduleIndex) {
+        return ticketItem;
+      } else {
+        return {
+          ...ticketItem,
+          price_range: ticketItem?.price_range?.map(
+            (detailItem: any, dIndex: number) => {
+              if (dIndex === detailIndex) {
+                const updatedDetailItem = {
+                  ...detailItem,
+                  price: price,
+                  from_amount: from,
+                  to_amount: to,
+                };
+                return updatedDetailItem;
+              } else if (dIndex === detailIndex + 1) {
+                const updatedDetailItem = {
+                  ...detailItem,
+                  from_amount: to >= 0 ? to + 1 : 0,
+                };
+                return updatedDetailItem;
               }
-            ),
-          };
-        }
+              return detailItem;
+            }
+          ),
+        };
       }
-    );
+    });
     console.log(updatedPrice);
     setReloadNumber(reloadNumber + 1);
 
-    setTicketPricing(updatedPrice);
+    setTicketData(updatedPrice);
   };
   const handleAddDetail = (ticketIndex: any, newDetail: any) => {
-    const updatedTicket = [...ticketPricing];
+    const updatedTicket = [...ticketData];
     const updatedTicketItem = { ...updatedTicket[ticketIndex] };
     const updatedDetails = [...updatedTicketItem.price_range];
     updatedDetails.push(newDetail);
     updatedTicketItem.price_range = updatedDetails;
     updatedTicket[ticketIndex] = updatedTicketItem;
 
-    setTicketPricing(updatedTicket);
+    setTicketData(updatedTicket);
   };
   function getMaxToAmount(ticket: any) {
     let maxToAmount = 0;
@@ -121,7 +128,7 @@ const ModalTicketAdult = ({
     return maxToAmount;
   }
   const handleDeleteDetail = (ticketIndex: any, detailIndex: any) => {
-    const updatedTicket = ticketPricing?.map((ticketItem: any, sIndex: any) => {
+    const updatedTicket = ticketData?.map((ticketItem: any, sIndex: any) => {
       if (sIndex !== ticketIndex) {
         return ticketItem;
       } else {
@@ -133,7 +140,7 @@ const ModalTicketAdult = ({
         };
       }
     });
-    setTicketPricing(updatedTicket);
+    setTicketData(updatedTicket);
   };
   return (
     <div>
@@ -167,7 +174,7 @@ const ModalTicketAdult = ({
               </div>
               <div className="p-4">
                 <div className="flex flex-col gap-4 min-h-[20vh] max-h-[80vh] overflow-auto global-scrollbar py-16 p-4">
-                  {ticketPricing?.map((ticket: any, ticketIndex: number) => (
+                  {ticketData?.map((ticket: any, ticketIndex: number) => (
                     <div key={ticketIndex} className="flex flex-col">
                       <div className="flex gap-3">
                         <div className="flex flex-col gap-1">

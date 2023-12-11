@@ -27,6 +27,7 @@ function ModalVehicle({
     setTourVehicle: any;
   };
 }) {
+  console.log(tourVehicle);
   const vehicleTour = useSelector((state: StateTour) => state.tour.vehicleTour);
   const [open, setOpen] = useState(false);
   const [dataVehicle, setDataVehicle] = useState<any>([]);

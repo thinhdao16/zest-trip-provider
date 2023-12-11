@@ -69,6 +69,48 @@ const DurationCheckIn: React.FC = () => {
     updatedNestedDataArray.splice(index, 1);
     setNestedDataArray(updatedNestedDataArray);
   };
+
+  const handleUpdateSchedule = (
+    nestedIndex: number,
+    boxIndex: number,
+    newData: BoxData
+  ) => {
+    setNestedDataArray((prevData) =>
+      prevData.map((nestedData, index) =>
+        index === nestedIndex
+          ? {
+              ...nestedData,
+              boxes: nestedData.boxes.map((box, bIndex) =>
+                bIndex === boxIndex ? newData : box
+              ),
+            }
+          : nestedData
+      )
+    );
+  };
+
+  const handleAddBoxForDay = (nestedIndex: number) => {
+    const newBox: BoxData = {
+      data: "Desctiption",
+      fromTime: "00:00",
+      toTime: "00:00",
+    };
+
+    setNestedDataArray((prevData) =>
+      prevData.map((nestedData, index) =>
+        index === nestedIndex
+          ? { ...nestedData, boxes: [...nestedData.boxes, newBox] }
+          : nestedData
+      )
+    );
+  };
+
+  const handleDeleteBox = (nestedIndex: number, boxIndex: number) => {
+    const updatedNestedDataArray = [...nestedDataArray];
+    updatedNestedDataArray[nestedIndex].boxes.splice(boxIndex, 1);
+    setNestedDataArray(updatedNestedDataArray);
+  };
+
   React.useEffect(() => {
     updateFormValues(4, {
       DurationCheckIn: [dataDuration, nestedDataArray],
@@ -196,13 +238,65 @@ const DurationCheckIn: React.FC = () => {
                                   <FaCircle className="absolute inset-y-1/3 w-2" />
                                   <div className="pl-5 pr-7">
                                     <div className="flex font-medium text-gray-700">
-                                      <p>{box?.toTime}</p> -{" "}
-                                      <p>{box?.fromTime}</p>
+                                      <input
+                                        type="time"
+                                        value={box?.fromTime}
+                                        onChange={(e) =>
+                                          handleUpdateSchedule(
+                                            index,
+                                            boxIndex,
+                                            {
+                                              ...box,
+                                              fromTime: e.target.value,
+                                            }
+                                          )
+                                        }
+                                      />
+                                      -{" "}
+                                      <input
+                                        type="time"
+                                        value={box?.toTime}
+                                        onChange={(e) =>
+                                          handleUpdateSchedule(
+                                            index,
+                                            boxIndex,
+                                            {
+                                              ...box,
+                                              toTime: e.target.value,
+                                            }
+                                          )
+                                        }
+                                      />
+                                      <button
+                                        className="text-red-500 ml-4"
+                                        onClick={() =>
+                                          handleDeleteBox(index, boxIndex)
+                                        }
+                                      >
+                                        <FaTrashCan />
+                                      </button>
                                     </div>
-                                    <p className="font-normal">{box?.data}</p>
+                                    <textarea
+                                      className="w-[35vw] overflow-auto global-scrollbar min-h-10 max-h-96"
+                                      value={box?.data}
+                                      onChange={(e) =>
+                                        handleUpdateSchedule(index, boxIndex, {
+                                          ...box,
+                                          data: e.target.value,
+                                        })
+                                      }
+                                    />
                                   </div>
                                 </div>
                               ))}
+                              <div className="mt-3 text-end pr-4">
+                                <button
+                                  className="font-medium p-2 bg-white border border-navy-blue text-navy-blue rounded-lg"
+                                  onClick={() => handleAddBoxForDay(index)} // Thêm Box cho ngày
+                                >
+                                  Add detail
+                                </button>
+                              </div>
                             </div>
                           </div>
                         </div>

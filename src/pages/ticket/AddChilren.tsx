@@ -1,17 +1,18 @@
-import { useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 
-import { FaRegTrashCan } from "react-icons/fa6";
+import { FaChildren, FaRegTrashCan } from "react-icons/fa6";
 import { GoLocation } from "react-icons/go";
 import { IoMdClose } from "react-icons/io";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { AppDispatch } from "../../../../store/redux/store";
-import { getCommistionRate } from "../../../../store/redux/silce/authSilce";
-import { formatNumberInput } from "../../../../utils/formatNumberInput";
+
 import { Modal, message } from "antd";
-import { postCreateTicketTour } from "../../../../store/redux/silce/tourSlice";
-import { HiOutlineDocumentAdd } from "react-icons/hi";
+import { AppDispatch } from "../../store/redux/store";
+import { getCommistionRate } from "../../store/redux/silce/authSilce";
+import { postCreateTicketTour } from "../../store/redux/silce/tourSlice";
+import { formatNumberInput } from "../../utils/formatNumberInput";
+import { DataContext } from "../../store/dataContext/DataContext";
 
 const radioItems = [
   "Standard",
@@ -23,6 +24,8 @@ const typeDefault = {
   type: "DEFAULT",
 };
 function AddChildren({ data }: { data: any }) {
+  const { setRefreshTourDetail } = useContext(DataContext);
+
   const [openModal, setOpenModal] = useState(false);
   const { index } = useParams();
   const dispatch: AppDispatch = useDispatch();
@@ -35,13 +38,11 @@ function AddChildren({ data }: { data: any }) {
   );
 
   //   const { setDataTicketCreate } = useContext(DataContext);
-  console.log(dataTicketAdult);
   const [selectedCountries, setSelectedCountries]: any = useState([
     "Children",
     "Adults",
   ]);
   const [dataTicket, setDataTicket]: any = useState([]);
-  console.log(dataTicket);
   const [selectedRadio, setSelectedRadio] = useState({
     children: radioItems[0],
     adults: radioItems[0],
@@ -562,6 +563,7 @@ function AddChildren({ data }: { data: any }) {
     };
     dispatch(postCreateTicketTour(dataUpdateTicket)).then((response) => {
       if (postCreateTicketTour.fulfilled.match(response)) {
+        setRefreshTourDetail((prev) => !prev);
         message.success("Create ticket successfully");
       }
     });
@@ -572,7 +574,7 @@ function AddChildren({ data }: { data: any }) {
   return (
     <>
       <button className="flex items-center gap-1" onClick={handleOpenModal}>
-        <HiOutlineDocumentAdd className="w-5 h-5" />
+        <FaChildren className="w-5 h-5" />
         Add children
       </button>
       <Modal

@@ -44,10 +44,15 @@ const avaWeekdays = [
   },
 ];
 const ModalAvailability = ({
-  dataAvailability: { availability, setAvailability },
+  dataAvailability: { availability, setAvailability, tourDetail },
 }: {
-  dataAvailability: { availability: any; setAvailability: any };
+  dataAvailability: {
+    availability: any;
+    setAvailability: any;
+    tourDetail: any;
+  };
 }) => {
+  console.log(availability);
   const [open, setOpen] = useState(false);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [, setDataWeekChoose] = useState<any>([]);
@@ -241,6 +246,89 @@ const ModalAvailability = ({
     setAvailability(updatedAvailabilitySpecialDate);
   };
 
+  // Hàm kiểm tra ngày có nằm trong khoảng bất kỳ trong TourAvailability hay không
+  const shouldDisableDateInRanges = (date: any) => {
+    const disableDate = availability;
+
+    if (disableDate) {
+      for (const range of disableDate) {
+        const disabledStartDate = dayjs(range?.validity_date_range_from).format(
+          "YYYY-MM-DD"
+        );
+        const disabledEndDate = dayjs(range?.validity_date_range_to).format(
+          "YYYY-MM-DD"
+        );
+        const formattedDate = date.format("YYYY-MM-DD");
+
+        if (
+          (formattedDate >= disabledStartDate &&
+            formattedDate <= disabledEndDate) ||
+          (formattedDate >= disabledEndDate &&
+            formattedDate <= disabledStartDate)
+        ) {
+          return true; // Ngày nằm trong khoảng, trả về true (disable)
+        }
+      }
+    }
+
+    // Ngày không nằm trong bất kỳ khoảng nào, trả về false (mở ra)
+    return false;
+  };
+
+  // Hàm kiểm tra ngày có bị disable theo chỉ số currentIndex trong TourAvailability hay không
+  const shouldDisableDateByIndex = (currentIndex: number) => (date: any) => {
+    const disableDate = availability;
+    console.log(disableDate);
+    if (disableDate && currentIndex >= 0 && currentIndex < disableDate.length) {
+      const range = disableDate[currentIndex];
+      const disabledStartDate = dayjs(range?.validity_date_range_from).format(
+        "YYYY-MM-DD"
+      );
+      const disabledEndDate = dayjs(range?.validity_date_range_to).format(
+        "YYYY-MM-DD"
+      );
+      const formattedDate = date.format("YYYY-MM-DD");
+      if (
+        formattedDate >= disabledStartDate &&
+        formattedDate <= disabledEndDate
+      ) {
+        return false;
+      }
+    }
+
+    // Ngày không nằm trong khoảng, trả về true (mở ra)
+    return true;
+  };
+
+  // Hàm tổng cộng điều kiện từ cả hai hàm
+  const shouldDisableDateCombined = (currentIndex: number) => (date: any) => {
+    return (
+      shouldDisableDateInRanges(date) &&
+      shouldDisableDateByIndex(currentIndex)(date)
+    );
+  };
+
+  const handleDateChange = (
+    newDate: any,
+    availabilityIndex: any,
+    field: string
+  ) => {
+    const selectedDate = dayjs(newDate);
+    const updatedAvailabilitySpecialDate = availability?.map(
+      (availabilityItem: any, sIndex: any) => {
+        if (sIndex !== availabilityIndex) {
+          return availabilityItem;
+        } else {
+          return {
+            ...availabilityItem,
+            [field]: dayjs(selectedDate).format("YYYY-MM-DD"),
+          };
+        }
+      }
+    );
+    setAvailability(updatedAvailabilitySpecialDate);
+  };
+
   useEffect(() => {
     if (availability) {
       const updatedDataWeekChoose = avaWeekdays.map((weekDay) => {
@@ -274,9 +362,14 @@ const ModalAvailability = ({
   const handleCloseUpdate = () => {
     setOpen(false);
   };
+  const tomorrow = dayjs().add(tourDetail?.book_before, "day");
+
   return (
     <div>
-      <FaRegPenToSquare onClick={handleOpen} className="w-5 h-5" />
+      <div className="flex items-center gap-1" onClick={handleOpen}>
+        <FaRegPenToSquare className="w-5 h-5" />
+        Edit Availability
+      </div>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -309,6 +402,81 @@ const ModalAvailability = ({
                           key={availabilityIndex}
                           className="flex flex-col gap-3"
                         >
+                          <p className="font-medium">Valid of this season</p>
+                          <div className="grid grid-cols-2 gap-4 ">
+                            <div className="flex gap-1 items-center">
+                              <span>From</span>
+                              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                <DemoContainer
+                                  components={[
+                                    "DatePicker",
+                                    "DateTimePicker",
+                                    "DateRangePicker",
+                                  ]}
+                                >
+                                  <DemoItem>
+                                    <DatePicker
+                                      shouldDisableDate={shouldDisableDateCombined(
+                                        availabilityIndex
+                                      )}
+                                      value={
+                                        availabilityItem?.validity_date_range_from
+                                          ? dayjs(
+                                              availabilityItem?.validity_date_range_from
+                                            )
+                                          : null
+                                      }
+                                      minDate={tomorrow}
+                                      onChange={(e) =>
+                                        handleDateChange(
+                                          e,
+                                          availabilityIndex,
+                                          "validity_date_range_from"
+                                        )
+                                      }
+                                    />
+                                  </DemoItem>
+                                </DemoContainer>
+                              </LocalizationProvider>
+                            </div>
+                            <div className="flex gap-1 items-center">
+                              <span>to</span>
+                              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                <DemoContainer
+                                  components={[
+                                    "DatePicker",
+                                    "DateTimePicker",
+                                    "DateRangePicker",
+                                  ]}
+                                >
+                                  <DemoItem>
+                                    <DatePicker
+                                      shouldDisableDate={shouldDisableDateCombined(
+                                        availabilityIndex
+                                      )}
+                                      value={
+                                        availabilityItem?.validity_date_range_to
+                                          ? dayjs(
+                                              availabilityItem?.validity_date_range_to
+                                            )
+                                          : null
+                                      }
+                                      minDate={dayjs(
+                                        availabilityItem?.validity_date_range_from
+                                      )}
+                                      onChange={(e) =>
+                                        handleDateChange(
+                                          e,
+                                          availabilityIndex,
+                                          "validity_date_range_to"
+                                        )
+                                      }
+                                    />
+                                  </DemoItem>
+                                </DemoContainer>
+                              </LocalizationProvider>
+                            </div>
+                          </div>
                           <div className="flex flex-col gap-2">
                             <span className="font-medium">Weekdays</span>
                             <div className="flex flex-wrap gap-3">

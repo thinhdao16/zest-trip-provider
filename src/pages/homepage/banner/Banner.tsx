@@ -19,6 +19,10 @@ import LoadingFullScreen from "../../../styles/loading/LoadingFullScreen";
 import { StatusTour } from "../../../styles/status/tour";
 import { VehicleTag } from "../../../components/icon/tour/vehicle";
 import { Pagination, Slider } from "antd";
+import { Select } from "antd";
+
+const { Option } = Select;
+
 export default function Banner() {
   const { refeshTour } = React.useContext(DataContext);
   const dispatch: AppDispatch = useDispatch();
@@ -182,9 +186,6 @@ export default function Banner() {
                           <MenuItem onClick={() => handleStatusClick("HIDDEN")}>
                             Hidden
                           </MenuItem>
-                          {/* <MenuItem onClick={() => handleStatusClick("DRAFT")}>
-                            Draft
-                          </MenuItem> */}
                         </Menu>
                       </div>
                     </div>
@@ -243,7 +244,16 @@ export default function Banner() {
                       );
                     })
                     .map((data: any, index: number) => (
-                      <div key={index}>
+                      <div key={index} className="relative">
+                        <div>
+                          <Option key={index} value={data?.id}>
+                            <Link to={`/${data?.id}`}>
+                              <span>abc</span>
+                              <p>{data?.name}</p>
+                            </Link>
+                          </Option>
+                        </div>
+
                         <Link to={`/${data?.id}`} key={data?.id}>
                           <div className="bg-white shadow-custom-card-mui grid grid-cols-12 p-4 gap-3  rounded-lg">
                             <div className="col-span-1">

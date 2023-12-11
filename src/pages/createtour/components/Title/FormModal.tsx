@@ -3,6 +3,7 @@ import { Grid } from "@mui/material";
 import { IoAddCircleOutline } from "react-icons/io5";
 import { FaCircle, FaEnvelopeOpenText } from "react-icons/fa6";
 import { Modal } from "antd";
+import { CiTrash } from "react-icons/ci";
 
 interface FormModalProps {
   open: boolean;
@@ -29,6 +30,7 @@ const FormModal: React.FC<FormModalProps> = ({
   const [title, setTitle] = useState("");
   const dayModal = useMemo(() => (day !== undefined ? day : 0), [day]);
   const [formEntries, setFormEntries] = useState<BoxData[]>([]);
+  console.log(formEntries);
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFormData(event.target.value);
   };
@@ -60,7 +62,18 @@ const FormModal: React.FC<FormModalProps> = ({
     setToTime("00:00");
     onClose();
   };
-
+  const handleDeleteEntry = (indexToDelete: number) => {
+    setFormEntries((prevEntries) =>
+      prevEntries.filter((_entry, index) => index !== indexToDelete)
+    );
+  };
+  const handleUpdateEntry = (indexToUpdate: number, newData: BoxData) => {
+    setFormEntries((prevEntries) =>
+      prevEntries.map((entry, index) =>
+        index === indexToUpdate ? newData : entry
+      )
+    );
+  };
   return (
     <div>
       <Modal open={open} onCancel={onClose} width={800} footer={[]}>
@@ -88,7 +101,12 @@ const FormModal: React.FC<FormModalProps> = ({
                 />
               </div>
               <div className="flex flex-col col-span-6">
-                <span className="font-medium mb-1">Title:</span>
+                <span className="font-medium mb-1 flex">
+                  Title:
+                  {title.length === 0 && (
+                    <span className="text-red-500">*</span>
+                  )}
+                </span>
                 <input
                   defaultValue={title}
                   onChange={(e) => setTitle(e.target.value)}
@@ -124,6 +142,9 @@ const FormModal: React.FC<FormModalProps> = ({
             <Grid item xs={10} sm={5}>
               <p style={{ fontWeight: 500, marginBottom: "5px" }}>
                 Description:
+                {formData.length === 0 && (
+                  <span className="text-red-500">*</span>
+                )}
               </p>
               <div className="relative">
                 <FaEnvelopeOpenText className="absolute top-3 left-2" />
@@ -136,8 +157,18 @@ const FormModal: React.FC<FormModalProps> = ({
               </div>
             </Grid>
             <Grid item xs={2} sm={2}>
-              <p style={{ fontWeight: 500, marginBottom: "5px" }}>Add more:</p>
-              <IoAddCircleOutline className="mt-3" onClick={handleAddBox} />
+              <p style={{ fontWeight: 500, marginBottom: "5px" }}>
+                Add Schedule
+              </p>
+              <div className="flex items-start gap-1">
+                <IoAddCircleOutline
+                  className=" w-8 h-8"
+                  onClick={handleAddBox}
+                />
+                {formEntries.length === 0 && (
+                  <span className="text-red-500">*</span>
+                )}
+              </div>
             </Grid>
           </Grid>
 
@@ -146,15 +177,49 @@ const FormModal: React.FC<FormModalProps> = ({
             style={{ overflowWrap: "break-word" }}
           >
             {formEntries.map((boxData, index) => (
-              <div key={index} className="relative max-w-full ">
+              <div key={index} className="relative max-w-full">
                 <FaCircle className="absolute inset-y-1/3 w-2" />
                 <div className="ml-6">
-                  <div className="flex gap-2">
-                    <p className="font-medium">{boxData?.fromTime}</p>
+                  <div className="flex gap-2 items-center">
+                    <p className="font-medium">
+                      <input
+                        type="time"
+                        value={boxData.fromTime}
+                        onChange={(e) =>
+                          handleUpdateEntry(index, {
+                            ...boxData,
+                            fromTime: e.target.value,
+                          })
+                        }
+                      />
+                    </p>
                     <p className="font-medium">-</p>
-                    <p className="font-medium ">{boxData?.toTime}</p>
+                    <p className="font-medium ">
+                      <input
+                        type="time"
+                        value={boxData.toTime}
+                        onChange={(e) =>
+                          handleUpdateEntry(index, {
+                            ...boxData,
+                            toTime: e.target.value,
+                          })
+                        }
+                      />
+                    </p>
+                    <CiTrash
+                      className="ml-4 text-red-500"
+                      onClick={() => handleDeleteEntry(index)}
+                    />
                   </div>
-                  <p>{boxData?.data}</p>
+                  <input
+                    value={boxData.data}
+                    onChange={(e) =>
+                      handleUpdateEntry(index, {
+                        ...boxData,
+                        data: e.target.value,
+                      })
+                    }
+                  />
                 </div>
               </div>
             ))}
@@ -166,7 +231,11 @@ const FormModal: React.FC<FormModalProps> = ({
                 formEntries.length === 0 ? "cursor-not-allowed" : ""
               } hover:border-navy-blue hover:bg-white hover:text-navy-blue hover:border`}
               onClick={handleSubmit}
-              disabled={formEntries.length === 0}
+              disabled={
+                formEntries.length === 0 &&
+                title.length === 0 &&
+                formData.length === 0
+              }
             >
               Add schedule
             </button>

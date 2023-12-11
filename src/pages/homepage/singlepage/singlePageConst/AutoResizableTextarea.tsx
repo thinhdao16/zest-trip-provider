@@ -43,7 +43,7 @@ function AutoResizableTextarea({
 
   return (
     <textarea
-      className="border border-gray-300 rounded-lg py-2 px-8 w-full global-scrollbar"
+      className="border border-gray-300 rounded-lg py-2 px-8 w-full global-scrollbar shadow-custom-card-mui"
       value={text}
       onChange={handleChange}
       onInput={handleInput}
