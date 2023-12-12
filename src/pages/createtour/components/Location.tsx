@@ -385,7 +385,7 @@ const Location: React.FC = () => {
               >
                 <GoogleMapReact
                   bootstrapURLKeys={{
-                    key: "AIzaSyDKm7Jq04yAY0uFMM2GrcDDY-39lEez9e4",
+                    key: "AIzaSyC56vS8LJX2V0Kz19p3MZ1BWdQ122rjMdI",
                   }}
                   center={defaultProps.center}
                   defaultZoom={defaultProps.zoom}
