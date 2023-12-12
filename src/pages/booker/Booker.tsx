@@ -123,7 +123,6 @@ function Booker() {
                     allowClear
                     options={[
                       { value: "", label: "Choose value" },
-                      { value: "PENDING", label: "Pending" },
                       { value: "ACCEPTED", label: "Accepted" },
                       { value: "REFUNDED", label: "Refund" },
                       {
