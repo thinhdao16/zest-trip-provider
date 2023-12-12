@@ -318,16 +318,16 @@ function Availability() {
 
                       console.log(formattedBlockedDates);
 
-                      const isBlocked = formattedBlockedDates?.includes(
-                        dayjs(formattedDate).format("YYYY-MM-DD")
-                      );
+                      // const isBlocked = formattedBlockedDates?.includes(
+                      //   dayjs(formattedDate).format("YYYY-MM-DD")
+                      // );
 
-                      const style = {
-                        backgroundColor: isBlocked ? "#ff6384" : "",
-                      };
+                      // const style = {
+                      //   backgroundColor: isBlocked ? "#ff6384" : "",
+                      // };
                       return {
                         disabled: !isDisabled,
-                        style: style,
+                        // style: style,
                       };
                     }}
                     onChange={(date: any) =>
