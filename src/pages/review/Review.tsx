@@ -372,16 +372,16 @@ function Review() {
                     </div>
                   </div>
                 </div>
-                <div className="flex flex-col gap-2 shadow-custom-card-mui">
+                <div className="flex flex-col gap-3 ">
                   {dataTourReviews?.map((dataManyBook: any, index: number) => (
                     <div
                       className="bg-white  relative shadow-custom-card-mui rounded-lg flex flex-col"
                       key={index}
                     >
-                      <div className="bg-white flex items-center gap-2 p-4 rounded-lg">
+                      <div className=" flex items-center gap-2 p-4 rounded-t-lg bg-neutral-200">
                         <img
                           src={dataManyBook?.tour_images?.[0]}
-                          className="w-12 h-12 rounded-lg"
+                          className="w-12 h-12 rounded-lg object-cover"
                           alt="wait"
                         />
                         <div className="flex flex-col">

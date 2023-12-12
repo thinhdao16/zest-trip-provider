@@ -238,7 +238,10 @@ function BookDetail() {
 
   const uniqueBookings = Array.from(uniqueDatesMap.values());
   const handleUnClock = () => {
+    setValueSelectCalendar(undefined);
+
     setDateAvailability(tourDetail?.blocked_dates);
+
     setFieldBlock("unBlock");
   };
   const handleContinueUnBlock = () => {

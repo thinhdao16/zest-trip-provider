@@ -11,20 +11,23 @@ import { StatusBooking } from "../../../styles/status/booking";
 import { Fade } from "@mui/material";
 import { getTours } from "../../../store/redux/silce/tourSlice";
 import { DatePicker, DatePickerProps, Select } from "antd";
+import { Link } from "react-router-dom";
+import { IoEyeOutline } from "react-icons/io5";
 
 function ListBooking() {
   const dispatch: AppDispatch = useDispatch();
 
   const { booking } = useSelector((state: any) => state.booking);
   const bookingDontReject = booking?.filter(
-    (booking: any) => booking?.status !== "REJECT"
+    (booking: any) =>
+      booking?.status !== "REJECT" && booking?.status !== "PENDING"
   );
   const { tours } = useSelector((state: any) => state.tour);
   const [selectDate, setSelectDate] = useState("");
 
   const [status, setStatus] = useState("");
   const [sortBy] = useState("desc");
-
+  const [orderBy] = useState("updated_at");
   const [searchTerm, setSearchTerm] = useState("");
 
   const [expandedItems, setExpandedItems] = useState<any>({});
@@ -74,7 +77,6 @@ function ListBooking() {
   };
 
   const filteredBookings = bookingDontReject.filter((bookingItem: any) =>
-    // Áp dụng logic tìm kiếm dựa trên các trường bạn muốn
     bookingItem.booker_email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -91,6 +93,7 @@ function ListBooking() {
   useEffect(() => {
     const filGetBooking = {
       sort_by: sortBy,
+      order_by: orderBy,
     };
     dispatch(getBooking(filGetBooking));
     dispatch(getTours());
@@ -169,6 +172,7 @@ function ListBooking() {
           {filteredBookings?.map(
             (
               booking: {
+                id: string;
                 booker_email: string;
                 booked_date: string;
                 time_slot: string;
@@ -182,12 +186,13 @@ function ListBooking() {
                   address_ward: string;
                   address_district: string;
                   address_province: string;
+                  id: string;
                 };
               },
               indexBooking: number
             ) => (
               <div
-                className="rounded-lg shadow-custom-card-mui bg-white mb-2 relative"
+                className="rounded-lg shadow-custom-card-mui bg-white mb-3 relative"
                 key={indexBooking}
               >
                 {!expandedItems[indexBooking] ? (
@@ -206,6 +211,11 @@ function ListBooking() {
                     <AiOutlineUp />
                   </div>
                 )}
+                <button type="button" className="absolute top-4 right-4">
+                  <Link to={`/booking/${booking?.id}`}>
+                    <IoEyeOutline />
+                  </Link>
+                </button>
                 <div className=" grid grid-cols-5 px-4 py-6 ">
                   <div className="">{booking?.booker_email}</div>
                   <div className="">
@@ -228,14 +238,26 @@ function ListBooking() {
                   <Fade in={expandedItems[indexBooking]} timeout={700}>
                     <div>
                       <hr />
-                      <div className="p-4 flex items-center">
+                      <div className="p-4 flex items-center gap-2 relative bg-neutral-200">
+                        <button
+                          type="button"
+                          className=" absolute top-4 right-4"
+                        >
+                          <Link
+                            to={`/booking/many/${booking?.BookingOnTour?.id}`}
+                          >
+                            <IoEyeOutline />
+                          </Link>
+                        </button>
                         <img
                           src={booking?.BookingOnTour?.tour_images[0]}
                           alt="dont find"
                           className="w-12 h-12 object-cover rounded-md"
                         />
                         <div>
-                          <div>{booking?.BookingOnTour?.name}</div>
+                          <div className="font-medium">
+                            {booking?.BookingOnTour?.name}
+                          </div>
 
                           <div>
                             {booking?.BookingOnTour?.address_name},{" "}

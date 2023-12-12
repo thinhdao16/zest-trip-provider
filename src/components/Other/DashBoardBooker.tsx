@@ -1,4 +1,8 @@
-import { IoAirplaneOutline, IoLocationOutline } from "react-icons/io5";
+import {
+  IoAirplaneOutline,
+  IoEyeOutline,
+  IoLocationOutline,
+} from "react-icons/io5";
 import dayjs from "dayjs";
 import {
   AiFillIdcard,
@@ -19,6 +23,7 @@ import { getBooking } from "../../store/redux/silce/booking";
 import { AppDispatch } from "../../store/redux/store";
 import { StatusBooking } from "../../styles/status/booking";
 import { DataContext } from "../../store/dataContext/DataContext";
+import { Link } from "react-router-dom";
 
 interface Ticket {
   ticket_type_id: number;
@@ -29,6 +34,7 @@ interface Ticket {
 }
 
 interface Booking {
+  id: string;
   status: string;
   booker_name: string;
   booker_email: string;
@@ -38,6 +44,7 @@ interface Booking {
   paid_price: number;
   booked_date: string;
   BookingOnTour: {
+    id: string;
     tour_images: string[];
     address_province: string;
     address_country: string;
@@ -55,14 +62,31 @@ function DashBoardBooker() {
   const dispatch: AppDispatch = useDispatch();
 
   const { booking } = useSelector((state: any) => state.booking);
-  const filteredBookings = booking?.filter(
-    (booking: { status: string }) =>
-      booking.status !== "REJECT" &&
-      booking.status !== "PENDING" &&
-      booking.status !== "0"
-  );
+  function filterRecentAndValidBookings(bookings: any) {
+    const currentDate: any = new Date();
+
+    const validBookings = bookings.filter((booking: any) => {
+      return (
+        booking.status !== "REJECT" &&
+        booking.status !== "PENDING" &&
+        booking.status !== "0"
+      );
+    });
+    const recentAndValidBookings = validBookings.filter((booking: any) => {
+      const updatedDate: any = new Date(booking.updated_at);
+      const timeDifference = currentDate - updatedDate;
+      const daysDifference = timeDifference / (1000 * 60 * 60 * 24);
+
+      return daysDifference <= 7;
+    });
+
+    return recentAndValidBookings;
+  }
+
+  const filteredBookings = filterRecentAndValidBookings(booking);
+
   useEffect(() => {
-    const data = { sort_by: "desc" };
+    const data = { order_by: "updated_at", sort_by: "desc" };
     dispatch(getBooking(data));
   }, [dispatch, refeshLogin]);
   const [expandedItems, setExpandedItems] = useState<any>({});
@@ -73,16 +97,12 @@ function DashBoardBooker() {
   };
   return (
     <div className="mt-3 flex flex-col gap-4 ">
-      <p className="text-xl font-medium text-black">Booking history</p>
+      <p className="text-xl font-medium text-black">Booking history weekdays</p>
       <div className="flex flex-col gap-3 bg-white shadow-custom-card-mui rounded-lg p-4">
         <div className="flex justify-between">
           <span className="text-gray-500">
             {filteredBookings?.length} Booking
           </span>
-          {/* <div className="flex gap-5">
-            <AiOutlineSearch />
-            <FaSliders />
-          </div> */}
         </div>
         <div className="flex flex-col gap-2">
           {filteredBookings?.map((item: Booking, index: number) => {
@@ -116,7 +136,7 @@ function DashBoardBooker() {
                       <img
                         src={item?.BookingOnTour?.tour_images[0]}
                         alt="image"
-                        className="rounded-lg h-16 w-16"
+                        className="rounded-lg h-16 w-16 object-cover"
                       />
                     </div>
                     <div className="col-span-3 flex justify-center">
@@ -156,7 +176,7 @@ function DashBoardBooker() {
                         )
                       )}
                     </div>
-                    <div className="col-span-2 flex justify-end">
+                    <div className="col-span-2 flex justify-between">
                       <div className="flex items-center gap-1">
                         <span className="font-medium text-black">
                           {item?.paid_price}
@@ -165,11 +185,24 @@ function DashBoardBooker() {
                           P/D
                         </span>
                       </div>
+                      <button type="button">
+                        <Link to={`/booking/${item?.id}`}>
+                          <IoEyeOutline />
+                        </Link>
+                      </button>
                     </div>
                   </div>
                   {expandedItems[index] && (
                     <Fade in={expandedItems[index]} timeout={700}>
-                      <div className="rounded-b-lg bg-gray-200 p-4 flex flex-col gap-1">
+                      <div className="rounded-b-lg bg-gray-200 p-4 flex flex-col gap-1 relative">
+                        <button
+                          type="button"
+                          className=" absolute top-4 right-4"
+                        >
+                          <Link to={`/booking/many/${item?.BookingOnTour?.id}`}>
+                            <IoEyeOutline />
+                          </Link>
+                        </button>
                         <div className="flex items-start gap-3">
                           <div className="flex items-center gap-1">
                             <FaTicket />
@@ -179,7 +212,7 @@ function DashBoardBooker() {
                             {item?.TicketOnBooking?.map(
                               (_ticket, index: number) => {
                                 return (
-                                  <div key={index} className="flex gap-3">
+                                  <div key={index} className="flex gap-3 ">
                                     <div className="flex gap-1 items-center">
                                       <FaMoneyBills />
                                       <span className="font-medium text-gray-600">
@@ -242,7 +275,7 @@ function DashBoardBooker() {
                             {item?.BookingOnTour?.address_name},{" "}
                             {item?.BookingOnTour?.address_ward},
                             {item?.BookingOnTour?.address_name},
-                            {item?.BookingOnTour?.address_province}
+                            {item?.BookingOnTour?.address_province},
                             {item?.BookingOnTour?.address_country}
                           </span>
                         </div>

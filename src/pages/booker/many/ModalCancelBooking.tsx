@@ -22,7 +22,7 @@ export default function ModalCancelBooking({
   const dispatch: AppDispatch = useDispatch();
   const [openConfirm, setOpenConfirm] = React.useState(false);
   const { setLoading } = React.useContext(DataContext);
-
+  console.log(openConfirm);
   const handleClose = () => {
     setOpenMoal(false);
   };
@@ -34,10 +34,13 @@ export default function ModalCancelBooking({
     };
     dispatch(cancelTour(data)).then((response) => {
       if (cancelTour.fulfilled.match(response)) {
+        setOpenConfirm(false);
         setLoading((prev: any) => !prev);
         setOpenMoal(false);
       }
       if (cancelTour.rejected.match(response)) {
+        setOpenConfirm(false);
+
         setLoading((prev: any) => !prev);
         setOpenMoal(false);
       }

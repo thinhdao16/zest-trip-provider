@@ -412,7 +412,7 @@ function Availability() {
                   </div>
                 </div>
 
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-3">
                   {updatedDataTours?.length > 0 ? (
                     Array.isArray(updatedDataTours) &&
                     updatedDataTours?.map((dataTour: any, index: number) => (
@@ -421,10 +421,10 @@ function Availability() {
                           key={index}
                           className="shadow-custom-card-mui bg-white rounded-lg relative"
                         >
-                          <div className="bg-white flex items-center gap-2 p-4 rounded-t-lg">
+                          <div className=" flex items-center gap-2 p-4 rounded-t-lg bg-neutral-200">
                             <img
                               src={dataTour?.tour_images[0]}
-                              className="w-12 h-12 rounded-lg"
+                              className="w-12 h-12 rounded-lg object-cover"
                               alt="wait"
                             />
                             <div className="flex flex-col">

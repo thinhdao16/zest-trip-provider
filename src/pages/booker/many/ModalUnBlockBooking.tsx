@@ -31,10 +31,14 @@ export default function ModalUnBlockBooking({
     };
     dispatch(unBlockTour(data)).then((response) => {
       if (unBlockTour.fulfilled.match(response)) {
+        setOpenConfirm(false);
+
         setLoading((prev: any) => !prev);
         setOpenMoal(false);
       }
       if (unBlockTour.rejected.match(response)) {
+        setOpenConfirm(false);
+
         setLoading((prev: any) => !prev);
         setOpenMoal(false);
       }

@@ -1,6 +1,5 @@
 import dayjs from "dayjs";
 import Navbar from "../../components/Navbar/Index";
-import { AiFillEye } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,6 +11,7 @@ import LoadingFullScreen from "../../styles/loading/LoadingFullScreen";
 import { Input, Pagination, Select } from "antd";
 import { formatNumber } from "../../utils/formatNumber";
 import { FaAngleDoubleDown, FaAngleDoubleUp } from "react-icons/fa";
+import { IoEyeOutline } from "react-icons/io5";
 
 const { Search } = Input;
 
@@ -35,7 +35,8 @@ function Booker() {
       ...tour,
       Booking:
         tour?.Booking?.filter(
-          (booking: { status: string }) => booking?.status !== "REJECT"
+          (booking: { status: string }) =>
+            booking?.status !== "REJECT" && booking?.status !== "PENDING"
         ) ?? [],
     })) ?? [];
   const [dataTourBookings, setDataTourBookings] = useState(dataTours);
@@ -155,7 +156,7 @@ function Booker() {
                     </div>
                   </div>
                 </div>
-                <div className="flex flex-col gap-2 shadow-custom-card-mui">
+                <div className="flex flex-col gap-3">
                   {dataTourBookings?.length > 0 &&
                     Array.isArray(dataTourBookings) &&
                     [...dataTourBookings]
@@ -174,7 +175,7 @@ function Booker() {
                             to={`/booking/many/${dataManyBook?.id}`}
                             key={dataManyBook?.id}
                           >
-                            <div className="bg-white flex items-center gap-2 p-4 rounded-lg">
+                            <div className="bg-neutral-200 flex items-center gap-2 p-4 rounded-t-lg">
                               <img
                                 src={dataManyBook?.tour_images?.[0]}
                                 className="w-12 h-12 rounded-lg"
@@ -198,14 +199,14 @@ function Booker() {
                               to={`/booking/many/${dataManyBook?.id}`}
                               key={dataManyBook?.id}
                             >
-                              <AiFillEye className="absolute top-2 right-2 w-5 h-5" />
+                              <IoEyeOutline className="absolute top-2 right-2 w-5 h-5" />
                             </Link>
                           ) : (
                             <Link
                               to={`/booking/many/${dataManyBook?.id}`}
                               key={dataManyBook?.id}
                             >
-                              <AiFillEye className="absolute top-2 right-2 w-5 h-5" />
+                              <IoEyeOutline className="absolute top-2 right-2 w-5 h-5" />
                             </Link>
                           )}
 
@@ -219,7 +220,7 @@ function Booker() {
                                         to={`/booking/${dataBook?.id}`}
                                         key={dataBook?.id}
                                       >
-                                        <AiFillEye className="absolute top-2 right-2 w-5 h-5" />
+                                        <IoEyeOutline className="absolute top-2 right-2 w-5 h-5" />
                                         <div className="grid grid-cols-5 gap-2">
                                           <div className="col-span-1">
                                             <div className="flex flex-col ">

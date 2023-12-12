@@ -182,7 +182,7 @@ function Voucher() {
                   </div>
                 </div>
 
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-3">
                   {filterVouchers?.length > 0 ? (
                     Array.isArray(filterVouchers) &&
                     filterVouchers?.map((dataVoucher: any, index: number) => (

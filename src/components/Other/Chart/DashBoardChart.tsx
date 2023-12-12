@@ -105,42 +105,6 @@ function DashboardChart() {
   return (
     <>
       <main className="h-full">
-        {/* Main Content */}
-        {/* <div className="grid grid-cols-3 gap-6 mb-4">
-          <div className="bg-white p-4 rounded-xl shadow-custom-card-mui">
-            <div className="flex items-center gap-4">
-              <div className="bg-navy-blue p-2 rounded-full">
-                <RiMoneyDollarCircleLine className=" text-white w-5 h-5" />
-              </div>
-              <div>
-                <p className="font-medium">2432</p>
-                <span className="text-gray-500">Number of Sales</span>
-              </div>
-            </div>
-          </div>
-          <div className="bg-white p-4 rounded-xl shadow-custom-card-mui">
-            <div className="flex items-center gap-4">
-              <div className="bg-navy-blue p-2 rounded-full">
-                <RiMoneyDollarCircleLine className=" text-white w-5 h-5" />
-              </div>
-              <div>
-                <p className="font-medium">2432</p>
-                <span className="text-gray-500">Number of Sales</span>
-              </div>
-            </div>
-          </div>{" "}
-          <div className="bg-white p-4 rounded-xl shadow-custom-card-mui">
-            <div className="flex items-center gap-4">
-              <div className="bg-navy-blue p-2 rounded-full">
-                <RiMoneyDollarCircleLine className=" text-white w-5 h-5" />
-              </div>
-              <div>
-                <p className="font-medium">2432</p>
-                <span className="text-gray-500">Number of Sales</span>
-              </div>
-            </div>
-          </div>
-        </div> */}
         <div className="text-xl font-medium check mb-4">Revenue analytics</div>
         <div className="grid grid-cols-5 gap-4">
           <div className="col-span-4">
@@ -168,37 +132,6 @@ function DashboardChart() {
               />
             </div>
           </div>
-          {/* <div className="col-span-1">
-            <div className="">
-              <div className="bg-white shadow-custom-card-mui rounded-t-xl p-6 pb-12 pt-6">
-                <div className="flex gap-3 items-end justify-between">
-                  <div className="flex flex-col gap-1">
-                    <span className="font-medium text-2xl">
-                      {totalPayments}
-                    </span>
-                    <p className="font-medium text-sm">Booking on today</p>
-                  </div>
-                  <div>
-                    <RiMoneyDollarCircleLine className="w-10 h-10 text-navy-blue" />
-                  </div>
-                </div>
-              </div>
-              <hr className=" h-h-2" />
-              <div className="bg-white shadow-custom-card-mui rounded-b-xl p-6 pb-14 pt-6">
-                <div className="flex gap-3 items-end justify-between">
-                  <div className="flex flex-col gap-1">
-                    <span className="font-medium text-2xl">
-                      {totalPersonPayments}
-                    </span>
-                    <p className="font-medium text-sm">Booker on today</p>
-                  </div>
-                  <div>
-                    <IoMdPerson className="w-10 h-10 text-navy-blue" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div> */}
         </div>
       </main>
     </>

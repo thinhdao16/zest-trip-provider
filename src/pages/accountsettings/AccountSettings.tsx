@@ -1,42 +1,38 @@
-import React from "react";
-import { BannerContent } from "../../styles/global/StyleGlobal";
-import { TitlePage } from "../../components/titlepage/TitlePage";
-import { Box, Grid } from "@mui/material";
-import { CardList } from "../../components/card/CardList";
-import { AiOutlineProfile } from "react-icons/ai";
+import React, { useState } from "react";
+import Navbar from "../../components/Navbar/Index";
+import { useSelector } from "react-redux";
 
 function AccountSettings() {
+  const personalInfo = useSelector((state: any) => state.auth.personalInfo);
+  const [address_district, setAddress_district] = useState();
+  console.log(personalInfo);
   return (
     <React.Fragment>
       {/* <BannerContainer> */}
-      <BannerContent>
-        <div>
-          <TitlePage
-            title="Account"
-            titleList="thinh dao"
-            rest="daothinh1105@gmail.com"
-          />
-          <Box
-            justifyContent="center"
-            alignItems="center"
-            gap={2}
-            marginBottom={3}
-            marginTop={8}
-          >
-            <Grid container spacing={5}>
-              <Grid item xs={12} sm={4}>
-                <CardList
-                  icon={<AiOutlineProfile />}
-                  title="Infomation personal"
-                  description="cung cap thong tin lien he cho chung toi co the lie he voi ban"
-                  to="/account-settings/personal-info"
-                />
-              </Grid>
-            </Grid>
-          </Box>
+      <Navbar />
+
+      <main className="h-full bg-main overflow-auto global-scrollbar rounded-lg ">
+        <div className="container mx-auto px-28 py-8 flex flex-col justify-center w-2/3">
+          <div className="mb-6 flex items-center justify-center ">
+            <div className="flex flex-col">
+              <h1 className="text-2xl font-semibold ">Update Profile</h1>
+              <span className="text-gray-500">
+                When provider have booking new, they open here
+              </span>
+            </div>
+          </div>
+          <div className="text-center">
+            <div className="grid-cols-12 grid gap-2">
+              <div className="col-span-3 text-end">
+                <span className="font-medium">Company name</span>
+              </div>
+              <div className="col-span-9">
+                <input className="w-full p-2 rounded-md shadow-custom-card-mui border border-gray-300" />
+              </div>
+            </div>
+          </div>
         </div>
-      </BannerContent>
-      {/* </BannerContainer> */}
+      </main>
     </React.Fragment>
   );
 }

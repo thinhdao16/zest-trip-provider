@@ -217,7 +217,7 @@ function Payment() {
           </div>
           <div className="text-lg font-medium pb-2"> Payment history</div>
           <div className="container flex flex-col gap-4">
-            <div className="bg-white p-3 rounded-lg shadow-custom-card-mui">
+            <div className="bg-navy-blue text-white p-3 rounded-lg shadow-custom-card-mui ">
               <div className="grid grid-cols-5 gap-3">
                 <div className="">
                   <span className="font-medium">Date</span>
@@ -237,7 +237,7 @@ function Payment() {
               </div>
             </div>
 
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-3">
               {dataBooking?.length > 0 ? (
                 Array.isArray(dataBooking) &&
                 dataBooking?.map((dataVoucher, index) => (

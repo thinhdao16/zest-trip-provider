@@ -43,7 +43,7 @@ function MainRouter() {
   return (
     <BrowserRouter>
       <Routes>
-        {checkAccessToken === null ? (
+        {checkAccessToken == null ? (
           <>
             <Route path="*" element={<Navigate to="/login" />} />
             <Route path="/login" element={<Login />} />

@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,10 +14,11 @@ import { FaRegTrashCan } from "react-icons/fa6";
 import { DragDropContext } from "react-beautiful-dnd";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import LoadingModal from "../../../styles/loading/LoadingModal";
+import { MdChevronLeft } from "react-icons/md";
 
 function ScreenMain() {
   const dispatch: AppDispatch = useDispatch();
-
+  const navigate = useNavigate();
   const { booking, loadingBooking } = useSelector(
     (state: any) => state.booking
   );
@@ -105,7 +106,7 @@ function ScreenMain() {
     const updatedImages = selectedImages.filter((image) => image.id !== id);
     setSelectedImages(updatedImages);
   };
-  console.log(filteredData);
+
   const handleMore = () => {
     if (moreRefund === false) {
       setMoreRefund(true);
@@ -147,6 +148,9 @@ function ScreenMain() {
     const data = { sort_by: "desc" };
     dispatch(getBooking(data));
   }, [dispatch, loadingRes]);
+  const handleGoBack = () => {
+    navigate(-1); // Sử dụng số âm để navigate về trang trước đó
+  };
   return (
     <>
       {loadingBooking ? (
@@ -154,9 +158,16 @@ function ScreenMain() {
       ) : (
         <div className="  bg-main rounded-xl p-8 h-full overflow-y-auto global-scrollbar ">
           <div className="">
+            <button
+              type="button"
+              className="text-2xl font-medium flex items-center "
+              onClick={handleGoBack}
+            >
+              <MdChevronLeft /> Back
+            </button>
             <div className="  pb-7 flex flex-col justify-center items-center">
               <div className="mb-5">
-                <p className=" text-xl font-medium">Booking Detail</p>
+                <p className=" text-2xl font-medium">Booking Detail</p>
               </div>
               <div className="border border-solid border-gray-300 rounded-lg shadow-custom-card-mui w-1/2 bg-white">
                 <div className=" p-6 relative">

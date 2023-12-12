@@ -20,22 +20,25 @@ export default function ModalBlockBooking({
   const { index } = useParams();
   const dispatch: AppDispatch = useDispatch();
   const [openConfirm, setOpenConfirm] = React.useState(false);
+  console.log(openConfirm);
   const { setLoading } = React.useContext(DataContext);
-
   const handleClose = () => {
     setOpenMoal(false);
   };
   const handleCancelTour = () => {
     const data = {
       idTour: index,
-      dataDate: dataDate?.dateDate,
+      dataDate: dataDate,
     };
     dispatch(blockTour(data)).then((response) => {
       if (blockTour.fulfilled.match(response)) {
+        setOpenConfirm(false);
         setLoading((prev: any) => !prev);
         setOpenMoal(false);
       }
       if (blockTour.rejected.match(response)) {
+        setOpenConfirm(false);
+
         setLoading((prev: any) => !prev);
         setOpenMoal(false);
       }
