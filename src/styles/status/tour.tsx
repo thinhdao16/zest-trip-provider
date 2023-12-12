@@ -1,12 +1,15 @@
-import { ReactNode } from "react";
+import React from "react";
+import { Select } from "antd";
 import { GoDotFill } from "react-icons/go";
 
+const { Option } = Select;
+
 interface ConstructionProps {
-  children: ReactNode | ReactNode[];
+  children: React.ReactNode | React.ReactNode[];
 }
 
 interface StatusColors {
-  [key: string]: string; // Thêm index signature vào đây
+  [key: string]: string;
 }
 
 export function StatusTour({ children }: ConstructionProps) {
@@ -33,7 +36,29 @@ export function StatusTour({ children }: ConstructionProps) {
   );
 }
 
-// Hàm xử lý trường hợp cụ thể cho USER_REQUEST_REFUND
+interface StatusSelectProps {
+  defaultValue?: string;
+  onChange?: (value: string) => void;
+}
+
+export function StatusSelect({ defaultValue, onChange }: StatusSelectProps) {
+  const options = ["PUBLISHED", "DRAFT", "HIDDEN"];
+
+  return (
+    <Select
+      defaultValue={defaultValue}
+      onChange={onChange}
+      style={{ width: 150 }}
+    >
+      {options.map((option) => (
+        <Option key={option} value={option}>
+          <StatusTour>{option}</StatusTour>
+        </Option>
+      ))}
+    </Select>
+  );
+}
+
 function normalizeStatus(status: string): string {
   if (status === "PUBLISHED") {
     return "Published";
@@ -45,6 +70,5 @@ function normalizeStatus(status: string): string {
     return "Hidden";
   }
 
-  // Trường hợp mặc định cho các giá trị khác
   return status;
 }

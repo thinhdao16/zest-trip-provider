@@ -1,11 +1,10 @@
 import { useDispatch } from "react-redux";
 import Navbar from "../../components/Navbar/Index";
 import { AppDispatch } from "../../store/redux/store";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { fetchTours } from "../../store/redux/silce/tourSlice";
 import { useSelector } from "react-redux";
 import { Input, Pagination, Select } from "antd";
-import { DataContext } from "../../store/dataContext/DataContext";
 import LoadingFullScreen from "../../styles/loading/LoadingFullScreen";
 import TruncatedText from "../../utils/TruncatedText";
 import { StatusTour } from "../../styles/status/tour";
@@ -21,31 +20,120 @@ function Ticket() {
   const [pageSize, setPageSize] = useState(10);
   const dispatch: AppDispatch = useDispatch();
   const { tours, loading } = useSelector((state: any) => state.tour);
-  const { refeshTour } = useContext(DataContext);
-  const dataTours = tours?.tours;
-  console.log(dataTours);
-  const countTours = tours?.total_count;
 
+  const [keyFilterTour, setKeyFilterTour] = useState("normal");
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const [reloadSearch, setReloadSearch] = useState<any>(null);
+  const dataTours = tours?.tours;
+  const [dataTourTickets, setDataTourTickets] = useState(dataTours);
+  const countTours = tours?.total_count;
+  console.log(dataTourTickets);
   useEffect(() => {
     const pagination = { pageSize, currentPage };
     dispatch(fetchTours(pagination));
-  }, [currentPage, dispatch, pageSize, refeshTour]);
-
+  }, [dispatch, currentPage, pageSize, reloadSearch]);
+  useEffect(() => {
+    if (keyFilterTour === "normal") {
+      setDataTourTickets(dataTours);
+    }
+    if (keyFilterTour === "ticket") {
+      const toursWithtickets = dataTourTickets.filter((tour: any) =>
+        tour.TicketPricing?.some((pricing: any) => pricing.is_default === false)
+      );
+      console.log("Ticket");
+      setDataTourTickets(toursWithtickets);
+    }
+  }, [dataTours, keyFilterTour, reloadSearch]);
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
 
   const handlePageSizeChange = (current: number, size: number) => {
-    console.log(current);
     setPageSize(size);
     setCurrentPage(current);
   };
+
+  const handleFilterTour = (value: string) => {
+    console.log(value);
+    if (value === "ticket") {
+      const pageSizeFil = 1000;
+      const currentPageFil = 1;
+      const pagination = { pageSizeFil, currentPageFil };
+      setPageSize(1000);
+      dispatch(fetchTours(pagination));
+      setKeyFilterTour("ticket");
+    }
+    if (value?.length === 0 || value === undefined) {
+      setKeyFilterTour("normal");
+    }
+  };
+
+  function searchTicketPricing(tours: any, searchTerm: any) {
+    // Kiểm tra nếu tours không phải là mảng hoặc mảng rỗng
+    if (!Array.isArray(tours) || tours.length === 0) {
+      return [];
+    }
+
+    // Mảng chứa kết quả sau khi tìm kiếm
+    const searchResults = [];
+
+    for (const tour of tours) {
+      // Kiểm tra nếu tên tour chứa từ khóa tìm kiếm
+      if (tour.name.toLowerCase().includes(searchTerm.toLowerCase())) {
+        // Thêm tour vào danh sách kết quả (nếu chưa có)
+        searchResults.push({
+          ...tour,
+          is_default: true, // Đặt is_default là true để đại diện cho thông tin tour chính
+          TicketPricing: [], // Không có thông tin TicketPricing vì đây là tìm kiếm theo tên
+        });
+      } else {
+        // Lọc danh sách TicketPricing cho mỗi tour
+        const filteredTicketPricing = tour.TicketPricing.filter(
+          (ticketPricing: any) => {
+            return (
+              ticketPricing.from_price.includes(searchTerm) ||
+              ticketPricing.to_price.includes(searchTerm)
+            );
+          }
+        );
+
+        // Nếu có, thêm tour vào danh sách kết quả (nếu chưa có)
+        if (!filteredTicketPricing.some((tp: any) => tp.is_default)) {
+          filteredTicketPricing.push({
+            is_default: true, // Đặt is_default là true để đại diện cho thông tin tour chính
+          });
+        }
+
+        // Thêm kết quả tìm kiếm cho tour hiện tại vào mảng chứa kết quả
+        searchResults.push({
+          ...tour,
+          TicketPricing: filteredTicketPricing,
+        });
+      }
+    }
+
+    return searchResults;
+  }
+
+  const onSearch = (value: string) => {
+    setSearchTerm(value);
+    if (value.length === 0 || value.length === undefined) {
+      setKeyFilterTour("normal");
+      setReloadSearch((prev: any) => !prev);
+    } else {
+      const filteredReviews = searchTicketPricing(dataTourTickets, value);
+      setKeyFilterTour("search");
+      setDataTourTickets(filteredReviews);
+    }
+  };
+
   const countTickets = (bookings: any, field: string) => {
     let count = 0;
     if (field === "adult") {
-      const tickets = bookings.TicketPricing.map((pricing: any) => pricing);
+      const tickets = bookings?.TicketPricing.map((pricing: any) => pricing);
       tickets.forEach((ticket: any) => {
-        if (ticket.is_default === true && ticket.Ticket.name === "ADULT") {
+        if (ticket?.is_default === true && ticket?.Ticket?.name === "ADULT") {
           count++;
         }
       });
@@ -54,7 +142,10 @@ function Ticket() {
     if (field === "children") {
       const tickets = bookings.TicketPricing.map((pricing: any) => pricing);
       tickets.forEach((ticket: any) => {
-        if (ticket.is_default === true && ticket.Ticket.name === "CHILDREN") {
+        if (
+          ticket?.is_default === true &&
+          ticket?.Ticket?.name === "CHILDREN"
+        ) {
           count++;
         }
       });
@@ -69,23 +160,6 @@ function Ticket() {
       });
       return count;
     }
-  };
-
-  const handleFilterTour = (value: string) => {
-    console.log(value);
-    // if (value === "" || value === undefined) {
-    //   setUpdatedDataTours(updatedDataTourNoChange);
-    // } else {
-    //   const filteredTours = updatedDataTourNoChange?.map((tour: any) => {
-    //     return {
-    //       ...tour,
-    //       TourAvailability: tour?.TourAvailability?.filter(
-    //         (availability: any) => availability.status === value
-    //       ),
-    //     };
-    //   });
-    //   setUpdatedDataTours(filteredTours);
-    // }
   };
 
   return (
@@ -107,12 +181,12 @@ function Ticket() {
                 </div>
                 <div className="flex items-center gap-3">
                   <Search
+                    allowClear
                     type="text"
-                    // defaultValue={searchTerm}
+                    defaultValue={searchTerm}
                     placeholder="input search text"
-                    // onSearch={handleSearch}
+                    onSearch={onSearch}
                     style={{ width: 200 }}
-                    // onChange={(e) => setSearchTerm(e.target.value)}
                   />
                   <Select
                     defaultValue=""
@@ -121,8 +195,7 @@ function Ticket() {
                     allowClear
                     options={[
                       { value: "", label: "Choose value" },
-                      { value: "normal", label: "Normal" },
-                      { value: "special", label: "Special" },
+                      { value: "ticket", label: "Special" },
                     ]}
                   />
                 </div>
@@ -146,9 +219,9 @@ function Ticket() {
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  {dataTours?.length > 0 ? (
-                    Array.isArray(dataTours) &&
-                    dataTours?.map((dataTour: any, index: number) => (
+                  {dataTourTickets?.length > 0 ? (
+                    Array.isArray(dataTourTickets) &&
+                    dataTourTickets?.map((dataTour: any, index: number) => (
                       <>
                         <div
                           key={index}

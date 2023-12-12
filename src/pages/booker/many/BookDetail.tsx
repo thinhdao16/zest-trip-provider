@@ -4,14 +4,13 @@ import { GiPriceTag } from "react-icons/gi";
 import { MdCreateNewFolder } from "react-icons/md";
 import dayjs from "dayjs";
 import { HiOutlineDotsVertical } from "react-icons/hi";
-import { AiFillFilter } from "react-icons/ai";
 import { AppDispatch } from "../../../store/redux/store";
 import { useDispatch } from "react-redux";
 import { useContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { getBookingDetail } from "../../../store/redux/silce/booking";
 import { StatusBooking } from "../../../styles/status/booking";
-import { Menu, MenuItem, Rating } from "@mui/material";
+import { Rating } from "@mui/material";
 import { formatNumber } from "../../../utils/formatNumber";
 import { StatusTour } from "../../../styles/status/tour";
 import { fetchTourDetail } from "../../../store/redux/silce/tourSlice";
@@ -20,19 +19,22 @@ import TruncatedText from "../../../utils/TruncatedText";
 import { Calendar } from "react-multi-date-picker";
 import ModalCancelBooking from "./ModalCancelBooking";
 import ModalBlockBooking from "./ModalBlockBooking";
-import { Tooltip, message } from "antd";
+import { Select, Tooltip, message } from "antd";
 import ModalUnBlockBooking from "./ModalUnBlockBooking";
 import Navbar from "../../../components/Navbar/Index";
 import { TiLockOpenOutline } from "react-icons/ti";
 import { DataContext } from "../../../store/dataContext/DataContext";
+import { GoDotFill } from "react-icons/go";
 function BookDetail() {
   const dispatch: AppDispatch = useDispatch();
   const { index } = useParams<{ index: string }>();
   const { loading } = useContext(DataContext);
   const { bookingDetail } = useSelector((detail: any) => detail?.booking);
+  const bookingDontReject = bookingDetail?.filter(
+    (booking: any) => booking?.status !== "REJECT"
+  );
   const tourDetail: any = useSelector((state: any) => state.tour.tourGetDetail);
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [filteredBookings, setFilteredBookings] = useState(bookingDetail);
+  const [filteredBookings, setFilteredBookings] = useState(bookingDontReject);
   const [selectedStatus, setSelectedStatus] = useState("");
   const [dateChoose, setDateChoose] = useState<any>([]);
   const [openField, setOpenField] = useState(false);
@@ -53,7 +55,7 @@ function BookDetail() {
   const uniqueDates = new Set();
 
   const filteredBookingDetails: any = [];
-  bookingDetail?.forEach((booking: any) => {
+  bookingDontReject?.forEach((booking: any) => {
     const bookedDate = dayjs(booking?.booked_date).format("YYYY-MM-DD");
 
     if (!uniqueDates.has(bookedDate)) {
@@ -65,17 +67,9 @@ function BookDetail() {
     (data: { booked_date: string }) =>
       dayjs(data?.booked_date)?.format("YYYY-MM-DD")
   );
-  const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
   const handleStatusClick = (status: any) => {
     setSelectedStatus(status);
-    setAnchorEl(null);
   };
 
   const generateDatesForWeekday = (weekday: any, from: any, to: any) => {
@@ -95,7 +89,7 @@ function BookDetail() {
     return dates;
   };
 
-  const allDates = bookingDetail?.flatMap((tour: any) => {
+  const allDates = bookingDontReject?.flatMap((tour: any) => {
     const availabilityDates = tour?.BookingOnTour?.TourAvailability?.flatMap(
       (availability: any) => {
         const weekdays = availability?.weekdays?.map(
@@ -127,7 +121,7 @@ function BookDetail() {
       })
     : [];
 
-  const allSingleDates = bookingDetail
+  const allSingleDates = bookingDontReject
     ?.flatMap((tour: any) =>
       tour?.BookingOnTour?.TourAvailability?.flatMap((availability: any) =>
         availability?.special_dates?.map((specialDate: any) => specialDate.date)
@@ -136,7 +130,7 @@ function BookDetail() {
     ?.filter((date: any) => date !== undefined);
 
   const bookedDates =
-    bookingDetail?.map((book: { booked_date: string }) =>
+    bookingDontReject?.map((book: { booked_date: string }) =>
       dayjs(book.booked_date).format("YYYY-MM-DD")
     ) || [];
   const availableBookedDates = bookedDates?.filter(
@@ -164,7 +158,7 @@ function BookDetail() {
     setFieldBlock("normal");
   };
   useEffect(() => {
-    let filtered = bookingDetail?.filter((booking: any) =>
+    let filtered = bookingDontReject?.filter((booking: any) =>
       selectedStatus === "" ? true : booking.status === selectedStatus
     );
 
@@ -336,7 +330,7 @@ function BookDetail() {
               </Link>
             </div>
           </div>
-          <div className="grid grid-cols-12">
+          <div className="grid grid-cols-12 p-4">
             <div className="col-span-8">
               <div className="flex items-center gap-4 bg-white  p-4 shadow-custom-card-mui rounded-lg relative">
                 <div className="absolute top-2 right-2">
@@ -392,55 +386,23 @@ function BookDetail() {
             <div className="col-span-4">
               <div className="text-end flex flex-col justify-end items-end">
                 <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    className="relative border border-gray-300 pl-0 py-1 w-24 rounded-md bg-white"
-                    onClick={handleClick}
-                  >
-                    <AiFillFilter className="absolute top-2 left-2" />
-                    {selectedStatus === "" ? (
-                      <span>Filter</span>
-                    ) : (
-                      <span className="text-xs">{selectedStatus}</span>
-                    )}
-                  </button>
-                  <div>
-                    <Menu
-                      id="basic-menu"
-                      anchorEl={anchorEl}
-                      open={open}
-                      onClose={handleClose}
-                      MenuListProps={{
-                        "aria-labelledby": "basic-button",
-                      }}
-                    >
-                      <MenuItem onClick={() => handleStatusClick("")}>
-                        All
-                      </MenuItem>
-                      <MenuItem onClick={() => handleStatusClick("PENDING")}>
-                        Pending
-                      </MenuItem>
-                      <MenuItem onClick={() => handleStatusClick("REJECT")}>
-                        Reject
-                      </MenuItem>
-                      <MenuItem
-                        onClick={() => handleStatusClick("USER_REQUEST_REFUND")}
-                      >
-                        User resquest refund
-                      </MenuItem>
-                      <MenuItem onClick={() => handleStatusClick("ACCEPTED")}>
-                        Accept
-                      </MenuItem>
-                      <MenuItem
-                        onClick={() => handleStatusClick("PROVIDER_REFUND")}
-                      >
-                        Provider_refund
-                      </MenuItem>
-                      <MenuItem onClick={() => handleStatusClick("REFUNDED")}>
-                        Refunded
-                      </MenuItem>
-                    </Menu>
-                  </div>
+                  <Select
+                    defaultValue="Filter"
+                    onChange={handleStatusClick}
+                    style={{ width: 120 }}
+                    allowClear
+                    options={[
+                      { value: "", label: "Filter" },
+                      { value: "PENDING", label: "Pending" },
+                      { value: "ACCEPTED", label: "Accepted" },
+                      { value: "REFUNDED", label: "Refund" },
+                      {
+                        value: "USER_REQUEST_REFUND",
+                        label: "User request refund",
+                      },
+                      { value: "PROVIDER_REFUNDED", label: "Provider refund" },
+                    ]}
+                  />
                 </div>
               </div>
             </div>
@@ -628,7 +590,7 @@ function BookDetail() {
                   />
                 </div>
               </div>
-              <div className="col-span-7 ">
+              <div className="col-span-7 flex ">
                 <Calendar
                   value={valueSelectCalendar}
                   className=" px-4 relative pt-8 h-80  calendar-book-detail"
@@ -754,6 +716,29 @@ function BookDetail() {
                     </div>
                   </div>
                 </Calendar>
+                <div className="h-80 bg-white shadow-custom-card-mui rounded-lg pl-4 py-4 pr-2 flex flex-col gap-4 justify-center">
+                  <div className="flex items-center ">
+                    <GoDotFill
+                      className="w-5 h-5"
+                      style={{ color: "#ff6384" }}
+                    />
+                    <span className="text-sm">Blocked date</span>
+                  </div>
+                  <div className="flex items-start ">
+                    <GoDotFill
+                      className="w-5 h-5"
+                      style={{ color: "#ffc148" }}
+                    />
+                    <span className="text-sm">Orphan date</span>
+                  </div>
+                  <div className="flex items-start ">
+                    <GoDotFill
+                      className="w-5 h-5"
+                      style={{ color: "#0074d9" }}
+                    />
+                    <span className="text-sm">Pick date</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

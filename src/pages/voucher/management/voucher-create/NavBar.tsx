@@ -25,21 +25,7 @@ function NavBar() {
     createTourId,
   } = useVoucherContext();
   const dispatch: AppDispatch = useDispatch();
-  const dataValueCreate = {
-    name: createName,
-    description: createDescription,
-    discount: parseInt(createDiscount),
-    discount_type: createDiscountType,
-    quantity: parseInt(createquantity),
-    apply_condition: {
-      // type: createApplyCondition?.type,
-      // expired_start: "2023-12-15",
-      minimum_price: createApplyCondition?.value,
-    },
-    expired_date: createExpiredDate,
-    tour_id: createTourId,
-  };
-  console.log(dataValueCreate);
+
   const handleCreateVoucher = () => {
     let tourIdPayload = {};
 

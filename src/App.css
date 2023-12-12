@@ -400,11 +400,12 @@ li .ant-menu-submenu-selected .ant-menu-title-content {
   color: #05445e !important;
 }
 #selectDateSingle {
-  border: 1px solid gray;
+  border: 1px solid gray !important;
   border-radius: 8px;
   padding: 20px;
   width: 500px;
   flex-warp: warp;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px !important;
 }
 
 #filter-date-pick {
@@ -414,17 +415,17 @@ li .ant-menu-submenu-selected .ant-menu-title-content {
 }
 #filter-date-pick-payment {
   border: none;
-  padding: 15px;
+  padding: 8px;
   width: 230px;
   position: relative;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px !important;
 }
 #filter-date-pick-payment::focus {
   border: none !important;
   box-shadow: none;
 }
 .calendar-book-detail {
-  box-shadow: 0 0 2px 0 rgba(145, 158, 171, 0.08),
-    0 12px 24px -4px rgba(145, 158, 171, 0.08) !important;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px !important;
 }
 .calendar-book-detail .rmdp-day {
   margin: 0px !important;

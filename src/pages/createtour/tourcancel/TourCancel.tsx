@@ -1,7 +1,7 @@
 import { Menu, MenuItem, Rating, Skeleton } from "@mui/material";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -12,15 +12,14 @@ import { DataContext } from "../../../store/dataContext/DataContext";
 import { AiFillEdit, AiFillFilter } from "react-icons/ai";
 import { FaMobile } from "react-icons/fa6";
 import { LuMoreHorizontal } from "react-icons/lu";
-import { TourTag } from "../../../components/icon/tour/tag";
 import Navbar from "../../../components/Navbar/Index";
 import { RiSearchLine } from "react-icons/ri";
 import LoadingFullScreen from "../../../styles/loading/LoadingFullScreen";
 import { StatusTour } from "../../../styles/status/tour";
-import { VehicleTag } from "../../../components/icon/tour/vehicle";
 import { Pagination, Slider } from "antd";
+import dayjs from "dayjs";
 
-export default function Banner() {
+export default function TourCancel() {
   const { refeshTour } = React.useContext(DataContext);
   const dispatch: AppDispatch = useDispatch();
   const { tours, loading } = useSelector((state: any) => state.tour);
@@ -37,9 +36,13 @@ export default function Banner() {
   const [selectedStatus, setSelectedStatus] = useState("");
 
   const [filterTour, setFilterTour] = useState(dataTours);
-
+  console.log(filterTour);
   const open = Boolean(anchorEl);
-
+  const toursWithBlockedDates = useMemo(() => {
+    return filterTour?.filter(
+      (tour: any) => tour?.blocked_dates && tour?.blocked_dates?.length > 0
+    );
+  }, [filterTour]);
   useEffect(() => {
     const pagination = { pageSize, currentPage };
     dispatch(fetchTours(pagination));
@@ -136,9 +139,11 @@ export default function Banner() {
             <div className="container mx-auto py-4 px-8">
               <div className="mb-6 flex items-center justify-between">
                 <div className="flex flex-col">
-                  <h1 className="text-2xl font-semibold ">List of Tour</h1>
+                  <h1 className="text-2xl font-semibold ">
+                    List of Tour Block
+                  </h1>
                   <span className="text-gray-500">
-                    When provider have availability new, they open here
+                    When provider have block new, they open here
                   </span>
                 </div>
                 <div className="flex flex-col justify-end gap-2">
@@ -232,9 +237,9 @@ export default function Banner() {
               </div>
 
               <div className="flex flex-col gap-4">
-                {filterTour?.length > 0 ? (
-                  Array.isArray(filterTour) &&
-                  [...filterTour]
+                {toursWithBlockedDates?.length > 0 ? (
+                  Array.isArray(toursWithBlockedDates) &&
+                  [...toursWithBlockedDates]
                     .sort((a, b) => {
                       return (
                         new Date(b?.updated_at).getTime() -
@@ -254,7 +259,7 @@ export default function Banner() {
                             onChange={handleChangeStatus}
                           />
                         </div> */}
-                        <Link to={`/${data?.id}`}>
+                        <Link to={`/booking/many/${data?.id}`} key={data?.id}>
                           <div className="bg-white shadow-custom-card-mui grid grid-cols-12 p-4 gap-3  rounded-lg">
                             <div className="col-span-1">
                               <Link to={`/${data?.id}`} key={data?.id}>
@@ -272,73 +277,42 @@ export default function Banner() {
                             </div>
 
                             <div className="col-span-9 grid gap-2  content-between">
-                              <Link to={`/${data?.id}`} key={data?.id}>
-                                <div>
-                                  <p className="font-medium ">{data.name}</p>
-                                </div>
-                                <Rating
-                                  name="half-rating-read"
-                                  value={data?.rate}
-                                  precision={0.5}
-                                  readOnly
-                                />
-                              </Link>
-                              <Link to={`/${data?.id}`} key={data?.id}>
-                                <div className="flex items-center flex-wrap gap-3 text-sm">
-                                  {data?.tag_id?.map(
-                                    (
-                                      dataTag: { name: string },
-                                      index: string
-                                    ) => (
-                                      <button
-                                        key={index}
-                                        className=" border px-1 rounded-md shadow-custom-card-mui text-navy-blue hover:text-black   flex items-center gap-1"
-                                      >
-                                        <TourTag
-                                          field={dataTag?.name}
-                                          style="w-4 h-4"
-                                        />
-                                        <p>{dataTag?.name}</p>
-                                      </button>
-                                    )
-                                  )}
-                                  <span className="w-0.5 h-5 bg-gray-300 rounded-full"></span>
-                                  {data?.vehicle_id?.map(
-                                    (
-                                      dataVehicle: { name: string },
-                                      index: string
-                                    ) => (
-                                      <button
-                                        key={index}
-                                        className=" border px-1 rounded-md shadow-custom-card-mui text-navy-blue hover:text-black  flex items-center gap-1"
-                                      >
-                                        <VehicleTag
-                                          field={dataVehicle?.name}
-                                          style="w-4 h-4"
-                                        />
-                                        <p>{dataVehicle?.name}</p>
-                                      </button>
-                                    )
-                                  )}
-                                </div>
-                              </Link>
+                              <div>
+                                <p className="font-medium ">{data.name}</p>
+                              </div>
+                              <Rating
+                                name="half-rating-read"
+                                value={data?.rate}
+                                precision={0.5}
+                                readOnly
+                              />
+                              <div className="flex items-center flex-wrap gap-3 text-sm">
+                                {data?.blocked_dates?.map(
+                                  (blockdate: string, index: number) => (
+                                    <button
+                                      key={index}
+                                      className=" border px-1 rounded-md shadow-custom-card-mui text-navy-blue hover:text-black  flex items-center gap-1"
+                                    >
+                                      <p>
+                                        {dayjs(blockdate).format("YYYY-MM-DD")}
+                                      </p>
+                                    </button>
+                                  )
+                                )}
+                              </div>
                             </div>
                             <div className="col-span-2">
                               <div className="flex gap-2 justify-between">
-                                <Link to={`/${data?.id}`} key={data?.id}>
-                                  <div>
-                                    <StatusTour>{data?.status}</StatusTour>
-                                  </div>
-                                </Link>
+                                <div>
+                                  <StatusTour>{data?.status}</StatusTour>
+                                </div>
 
                                 <div className="flex flex-col gap-3 ">
                                   <button>
                                     <LuMoreHorizontal />
                                   </button>
                                   <button>
-                                    <Link to={`/${data?.id}`} key={data?.id}>
-                                      <AiFillEdit />
-                                    </Link>
+                                    <AiFillEdit />
                                   </button>
                                   <button>
                                     <FaMobile />

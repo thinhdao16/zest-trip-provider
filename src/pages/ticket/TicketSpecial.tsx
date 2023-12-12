@@ -14,6 +14,9 @@ import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { DataContext } from "../../store/dataContext/DataContext";
 import { getCommistionRate } from "../../store/redux/silce/authSilce";
+import { Select } from "antd";
+
+const { Option } = Select;
 
 const radioItems = [
   "Standard",
@@ -24,6 +27,12 @@ const typeDefault = {
   role: "ADULT",
   type: "DEFAULT",
 };
+
+const typeDefaultChildrenSpecial = {
+  role: "CHILDREN",
+  type: "DEFAULT",
+};
+
 function TicketSpecial() {
   const { index } = useParams();
   const dispatch: AppDispatch = useDispatch();
@@ -51,6 +60,17 @@ function TicketSpecial() {
       payoutPerPerson: 0,
     },
   ]);
+
+  const [formListSpecialChildren, setFormListSpecialChildren] = useState([
+    {
+      id: 0,
+      numberOfPeople: 0,
+      numberOfPeopleAfter: 2,
+      retailPrice: 0,
+      payoutPerPerson: 0,
+    },
+  ]);
+
   const [formListChildren, setFormListChildren] = useState([
     {
       id: 0,
@@ -120,13 +140,14 @@ function TicketSpecial() {
       [groupName]: selectedValue,
     }));
   };
-  const handleCountryChange = () => {
-    // const selectedCountryCode = event.target.value;
-    // if (!selectedCountries.includes(selectedCountryCode)) {
-    //   setSelectedCountries([...selectedCountries, selectedCountryCode]);
-    // }
-    const type = ["Children", "Adults"];
-    setSelectedCountries(type);
+  const handleCountryChange = (field: string) => {
+    if (field === "") {
+      const type = ["Children", "Adults"];
+      setSelectedCountries(type);
+    }
+    if (field === "add_special_children") {
+      setSelectedCountries(field);
+    }
   };
   const funcUpdateTicketRole = () => {
     const updatedAgeFor = { ...ageFor };
@@ -267,18 +288,21 @@ function TicketSpecial() {
     }
   };
   const handleDeleteCountry = (countryCode: any) => {
-    // const updatedSelectedCountries = selectedCountries.filter(
-    //   (code: any) => code !== countryCode
-    // );
     console.log(countryCode);
     setSelectedCountries([]);
   };
-
+  console.log(dataTicket);
   //select age
   const [quantityDefault, setQuantityDefault] = useState({
     max: 2,
     min: 1,
   });
+
+  const [quantityChildrenSpecial, setQuantityChildrenSpecial] = useState({
+    max: 2,
+    min: 1,
+  });
+
   const [quantityAdult, setQuantityAdult] = useState({
     max: 2,
     min: 1,
@@ -289,6 +313,11 @@ function TicketSpecial() {
   });
   //select date
   const [selectDateDefault, setSelectDateDefault] = useState([]);
+  const [
+    selectDateDefaultChildrenSpecial,
+    setSelectDateDefaultChildrenSpecial,
+  ] = useState([]);
+
   const [selectDateAdult, setSelectDateAdult] = useState([]);
   const [selectDateChildren, setSelectDateChildren] = useState([]);
 
@@ -296,6 +325,12 @@ function TicketSpecial() {
     const value = parseInt(e.target.value);
     if (type === "default") {
       setQuantityDefault((prev) => ({
+        ...prev,
+        [field]: value,
+      }));
+    }
+    if (type === "childrenSpecial") {
+      setQuantityChildrenSpecial((prev) => ({
         ...prev,
         [field]: value,
       }));
@@ -327,9 +362,16 @@ function TicketSpecial() {
   // Hàm thêm một form mới
   const addNewForm = (field: string) => {
     const prevForm = formList[formList.length - 1];
+    const prevFormSpecialChildren =
+      formListSpecialChildren[formListSpecialChildren.length - 1];
+
     const prevFormChildren = formListChildren[formListChildren.length - 1];
     const prevFrormAdult = formListAdult[formListAdult.length - 1];
     const newNumberPeople = prevForm ? prevForm.numberOfPeopleAfter + 1 : 0;
+    const newNumberPeopleSpecialChildren = prevFormSpecialChildren
+      ? prevFormSpecialChildren.numberOfPeopleAfter + 1
+      : 0;
+
     const newNumberPeopleChildren = prevFormChildren
       ? prevFormChildren.numberOfPeopleAfter + 1
       : 0;
@@ -346,6 +388,18 @@ function TicketSpecial() {
       };
       setFormList([...formList, newForm]);
     }
+
+    if (field === "childrenSpecial") {
+      const newForm = {
+        id: formListSpecialChildren.length,
+        numberOfPeople: newNumberPeopleSpecialChildren,
+        numberOfPeopleAfter: newNumberPeopleSpecialChildren,
+        retailPrice: 0,
+        payoutPerPerson: 0,
+      };
+      setFormListSpecialChildren([...formListSpecialChildren, newForm]);
+    }
+
     if (field === "children") {
       const newFormChildren = {
         id: formListChildren.length,
@@ -393,6 +447,32 @@ function TicketSpecial() {
       });
       setFormList(updatedFormList);
     }
+
+    if (field === "childrenSpecial") {
+      const updatedFormList = formListSpecialChildren.map((form, index) => {
+        if (form.id === id) {
+          const updatedForm = {
+            ...form,
+            numberOfPeopleAfter:
+              newNumberOfPeople >= form.numberOfPeople
+                ? newNumberOfPeople
+                : form.numberOfPeople,
+            payoutPerPerson: form.retailPrice * commision,
+          };
+          return updatedForm;
+        } else if (index === id + 1) {
+          const updatedForm = {
+            ...form,
+            numberOfPeople: newNumberOfPeople >= 0 ? newNumberOfPeople + 1 : 0,
+            numberOfPeopleAfter: newNumberOfPeople,
+          };
+          return updatedForm;
+        }
+        return form;
+      });
+      setFormListSpecialChildren(updatedFormList);
+    }
+
     if (field === "adult") {
       const updatedFormListAdult = formListAdult.map((form, index) => {
         if (form.id === id) {
@@ -457,6 +537,19 @@ function TicketSpecial() {
       });
       setFormList(updatedFormList);
     }
+    if (field === "childrenSpecial") {
+      const updatedFormList: any = formListSpecialChildren.map((form) => {
+        if (form.id === id) {
+          return {
+            ...form,
+            retailPrice: newRetailPrice,
+            payoutPerPerson: (newRetailPrice * 70) / 100,
+          };
+        }
+        return form;
+      });
+      setFormListSpecialChildren(updatedFormList);
+    }
     if (field === "adult") {
       const updatedFormList: any = formListAdult.map((form) => {
         if (form.id === id) {
@@ -489,6 +582,12 @@ function TicketSpecial() {
     if (field === "") {
       const updatedFormList = formList.filter((form) => form.id !== id);
       setFormList(updatedFormList);
+    }
+    if (field === "childrenSpecial") {
+      const updatedFormList = formListSpecialChildren.filter(
+        (form) => form.id !== id
+      );
+      setFormListSpecialChildren(updatedFormList);
     }
     if (field === "adult") {
       const updatedFormList = formListAdult.filter((form) => form.id !== id);
@@ -560,6 +659,26 @@ function TicketSpecial() {
     typeDefault,
     selectDateDefault,
   ]);
+
+  useEffect(() => {
+    if (selectedCountries.includes("add_special_children")) {
+      const convertArray = {
+        price_range: formListSpecialChildren,
+        ...quantityChildrenSpecial,
+        ...typeDefaultChildrenSpecial,
+        ...ageDefault,
+        apply_dates: selectDateDefaultChildrenSpecial,
+      };
+      setDataTicket([convertArray]);
+    }
+  }, [
+    selectedCountries,
+    formListSpecialChildren,
+    quantityChildrenSpecial,
+    typeDefaultChildrenSpecial,
+    selectDateDefaultChildrenSpecial,
+  ]);
+
   useEffect(() => {
     funcUpdateTicketRole();
   }, [
@@ -601,6 +720,9 @@ function TicketSpecial() {
     if (field === "default") {
       setSelectDateDefault(formatDate);
     }
+    if (field === "childrenSpecial") {
+      setSelectDateDefaultChildrenSpecial(formatDate);
+    }
     if (field === "adult") {
       setSelectDateAdult(formatDate);
     }
@@ -634,12 +756,200 @@ function TicketSpecial() {
   const dataDisableDateAdult = disableDateAdult();
   const dataDisableDateChildren = disableDateChildren();
   return (
-    <div className="max-h-[68vh] overflow-auto global-scrollbar">
+    <div className="max-h-[68vh] overflow-auto global-scrollbar w-[80vw] pr-4">
       <div className="flex items-center justify-center">
         <div className="py-5">
           <div className="hidden">
             <ButtonCreateTicketSpecial />
           </div>
+          {selectedCountries.includes("add_special_children") && (
+            <div className="mt-3 flex flex-col items-start gap-4">
+              <div className="flex items-center gap-8">
+                <div className="">
+                  <p className="font-medium mb-1">
+                    Minimum ticket count children
+                  </p>
+                  <div className=" relative ">
+                    <p className="absolute top-4 left-2">
+                      <GoLocation />
+                    </p>
+                    <input
+                      disabled
+                      className="w-28 border rounded-lg pr-1 pl-8 py-3 border-gray-400 shadow-custom-card-mui focus:outline-none hover:border-navy-blue focus:border-navy-blue"
+                      type="number"
+                      value={quantityChildrenSpecial.min}
+                      onChange={(e) =>
+                        handleInputChange(e, "min", "childrenSpecial")
+                      }
+                    />
+                  </div>
+                </div>
+                <div className="">
+                  <div className="mb-1 flex flex-col">
+                    <span className="font-medium">
+                      Maximum ticket count children
+                    </span>
+                    {formListSpecialChildren[formListSpecialChildren.length - 1]
+                      ?.numberOfPeopleAfter > quantityChildrenSpecial?.max && (
+                      <span className="text-red-500 text-sm">
+                        Max greater than or equal max number of people
+                      </span>
+                    )}
+                  </div>
+
+                  <div className=" relative ">
+                    <p className="absolute top-4 left-2">
+                      <GoLocation />
+                    </p>
+                    <input
+                      className="w-28 border rounded-lg pr-1 pl-8 py-3 border-gray-400 shadow-custom-card-mui focus:outline-none hover:border-navy-blue focus:border-navy-blue"
+                      type="number"
+                      value={quantityChildrenSpecial.max}
+                      onChange={(e) =>
+                        handleInputChange(e, "max", "childrenSpecial")
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="flex flex-col w-full">
+                {" "}
+                <div className="flex flex-col mt-2">
+                  <span className="font-medium mb-1">Date special</span>
+                  <div className="bg-white">
+                    <DatePicker
+                      multiple
+                      id="selectDateSingle"
+                      mapDays={({ date }) => {
+                        const formattedDate = date.format("YYYY-MM-DD");
+                        const isDisabled =
+                          dataDisableDateChildren.includes(formattedDate);
+                        const dayClasses = isDisabled
+                          ? "text-gray-500 bg-gray-200 cursor-not-allowed"
+                          : "hover:bg-blue-500 hover:text-white cursor-pointer";
+
+                        return { className: dayClasses, disabled: isDisabled };
+                      }}
+                      onChange={(e) => handleDateChange(e, "childrenSpecial")}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="p-4 rounded-lg bg-white relative border border-gray-400 border-solid shadow-custom-card-mui">
+                <FaRegTrashCan
+                  className="absolute , top-0, right-3 text-red-500 "
+                  onClick={() => handleDeleteCountry("")}
+                />
+                <div className="flex items-center gap-1">
+                  <p className="font-medium text-lg">Default Ticket</p>
+                </div>
+
+                <div className="grid md:grid-cols-12">
+                  <div className="col-span-3"></div>
+                  <div className="col-span-9">
+                    {" "}
+                    <div>
+                      {formListSpecialChildren.map((form) => (
+                        <div
+                          key={form.id}
+                          className="grid grid-cols-4 gap-4 md:grid-cols-4 mb-2"
+                        >
+                          <div>
+                            <div className="font-medium h-4 mb-2">
+                              Number of People
+                            </div>
+                            <div className="flex items-center">
+                              <p className="font-medium">
+                                {form.numberOfPeople}
+                              </p>
+                              <p>-</p>
+                              <input
+                                type="number"
+                                id="first_name"
+                                className="w-20 bg-white border border-gray-300 text-gray-900 text-base font-medium rounded-md p-2"
+                                defaultValue={form.numberOfPeopleAfter}
+                                required
+                                onChange={(e) =>
+                                  handleNumberOfPeopleChange(
+                                    e,
+                                    form.id,
+                                    "childrenSpecial"
+                                  )
+                                }
+                              />
+                            </div>
+                          </div>
+
+                          <div>
+                            <p className="font-medium h-4 mb-2">Retail price</p>
+                            <input
+                              type="text"
+                              id="retailPriceChildren"
+                              className="w-20 bg-white border border-gray-300 text-gray-900 text-base font-medium rounded-md py-2 pl-2"
+                              value={formatNumberWithCommas(form?.retailPrice)}
+                              onChange={(e) => {
+                                const newValue = e.target.value.replace(
+                                  /,/g,
+                                  ""
+                                );
+                                handleRetailPriceChange(
+                                  { target: { value: newValue } },
+                                  form.id,
+                                  "childrenSpecial"
+                                );
+                              }}
+                            />
+                            {form.retailPrice <= 50000 && (
+                              <span className="text-red-500 text-xs block">
+                                Greater than 50,000
+                              </span>
+                            )}
+                          </div>
+                          <div>
+                            <p className="font-medium h-4 mb-2">Commission</p>
+                            <p className="font-medium">{commision * 100}%</p>
+                          </div>
+                          <div>
+                            <div className="font-medium h-4 mb-2">
+                              Payout per person
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <input
+                                className="p-2 w-20 bg-slate-200 rounded-md"
+                                value={formatNumberInput(form.payoutPerPerson)}
+                                disabled
+                              />
+                              <div className="flex items-center gap-2">
+                                <p className="font-medium">VND</p>
+                                {form.id !== 0 ? (
+                                  <button
+                                    className="font-medium text-red-600 hover:text-red-800 text-xl mb-1"
+                                    onClick={() => removeForm(form.id, "")}
+                                  >
+                                    <IoMdClose />
+                                  </button>
+                                ) : (
+                                  <div className="font-medium text-white  text-xl ">
+                                    <IoMdClose />
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                      <button
+                        className=" text-base font-semibold bg-white p-0 mt-2 focus:outline-none hover:border-none hover:p-0 hover:m border-none text-navy-blue hover:text-black"
+                        onClick={() => addNewForm("childrenSpecial")}
+                      >
+                        Set up price tiers
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
           {selectedCountries.length === 0 && (
             <div className="mt-3 flex flex-col items-start gap-4">
               <div className="flex items-center gap-8">
@@ -819,12 +1129,28 @@ function TicketSpecial() {
                 </div>
               </div>
               {quantityTicketTrue?.length > 1 && (
-                <button
-                  className="font-medium text-lg text-navy-blue hover hover:text-black"
-                  onClick={() => handleCountryChange()}
-                >
-                  + Add type ticket{" "}
-                </button>
+                <>
+                  <Select style={{ width: 250 }}>
+                    <Option>
+                      <button
+                        className="font-medium text-lg text-navy-blue hover hover:text-black"
+                        onClick={() => handleCountryChange("")}
+                      >
+                        + Add type ticket more{" "}
+                      </button>
+                    </Option>
+                    <Option>
+                      <button
+                        className="font-medium text-lg text-navy-blue hover hover:text-black"
+                        onClick={() =>
+                          handleCountryChange("add_special_children")
+                        }
+                      >
+                        + Add type ticket children{" "}
+                      </button>
+                    </Option>
+                  </Select>
+                </>
               )}
             </div>
           )}

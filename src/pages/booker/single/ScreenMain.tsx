@@ -123,6 +123,7 @@ function ScreenMain() {
     };
     dispatch(acceptRefund(data)).then((response) => {
       if (acceptRefund.fulfilled.match(response)) {
+        setMoreRefund(false);
         setLoadingRes((prev: any) => !prev);
       }
     });
@@ -137,6 +138,7 @@ function ScreenMain() {
     };
     dispatch(createRefundForCus(data)).then((response) => {
       if (createRefundForCus.fulfilled.match(response)) {
+        setMoreRefund(false);
         setLoadingRes((prev: any) => !prev);
       }
     });

@@ -194,6 +194,7 @@ function Review() {
                 </div>
                 <div className="flex items-center gap-2">
                   <Search
+                    allowClear
                     type="text"
                     defaultValue={searchTerm}
                     placeholder="input search text"

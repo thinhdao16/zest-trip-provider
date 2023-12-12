@@ -26,10 +26,17 @@ function Voucher() {
   const { setVoucherView } = useContext(DataContext);
 
   const [scrollPosition, setScrollPosition] = useState<number>(0);
+
+  const [selectedDiscountType, setSelectedDiscountType] = useState("");
+
   console.log(scrollPosition);
   const { voucher, loadingProvider } = useSelector(
     (state: any) => state.provider
   );
+  console.log(voucher);
+  const [filterVouchers, setFilterVouchers] = useState(voucher);
+
+  const [searchTerm, setSearchTerm] = useState("");
 
   const toggleContentVisibility = (index: any) => {
     const newExpandedItems = { ...expandedItems };
@@ -43,9 +50,38 @@ function Voucher() {
       navigate(`/voucher-view`);
     }
   };
+
+  const handleChangeDiscountType = (value: string) => {
+    setSelectedDiscountType(value);
+    filterVouchersList(searchTerm, value);
+  };
+
+  const handleSearch = (value: string) => {
+    setSearchTerm(value);
+    filterVouchersList(value, selectedDiscountType);
+  };
+
+  const filterVouchersList = (search: string, discountType: string) => {
+    const filteredVouchers = voucher.filter((v: any) => {
+      const matchDiscountType =
+        !discountType || v.discount_type === discountType;
+      const matchSearch =
+        v.name.toLowerCase().includes(search.toLowerCase()) ||
+        v.description.toLowerCase().includes(search.toLowerCase());
+
+      return matchDiscountType && matchSearch;
+    });
+
+    setFilterVouchers(filteredVouchers);
+  };
+
   useEffect(() => {
     dispatch(getVoucher());
   }, [dispatch]);
+
+  useEffect(() => {
+    setFilterVouchers(voucher);
+  }, [voucher]);
 
   useEffect(() => {
     const handleWheel = () => {
@@ -86,23 +122,22 @@ function Voucher() {
                 </div>
                 <div className="flex items-center gap-3">
                   <Search
+                    allowClear
                     type="text"
-                    // defaultValue={searchTerm}
-                    placeholder="input search text"
-                    // onSearch={handleSearch}
+                    placeholder="Input search text"
+                    onSearch={handleSearch}
                     style={{ width: 200 }}
-                    // onChange={(e) => setSearchTerm(e.target.value)}
                   />
                   <div>
                     <Select
-                      defaultValue=""
-                      // onChange={handleChangeFilterStatus}
+                      defaultValue={selectedDiscountType}
+                      onChange={handleChangeDiscountType}
                       style={{ width: 120 }}
                       allowClear
                       options={[
-                        { value: "", label: "Filter" },
-                        { value: "ACCEPTED", label: "Accepted" },
-                        { value: "REJECT", label: "Reject" },
+                        { value: "", label: "All Discount Types" },
+                        { value: "PERCENT", label: "Percent" },
+                        { value: "AMOUNT", label: "Amount" },
                       ]}
                     />
                   </div>
@@ -148,9 +183,9 @@ function Voucher() {
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  {voucher?.length > 0 ? (
-                    Array.isArray(voucher) &&
-                    voucher?.map((dataVoucher: any, index: number) => (
+                  {filterVouchers?.length > 0 ? (
+                    Array.isArray(filterVouchers) &&
+                    filterVouchers?.map((dataVoucher: any, index: number) => (
                       <>
                         <div
                           key={index}

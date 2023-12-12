@@ -21,6 +21,7 @@ import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
 } from "react-places-autocomplete";
+import { FaTrash } from "react-icons/fa6";
 
 const LocationStart: React.FC = () => {
   const { currentStep, updateFormValues, formValues } = useStepContext();
@@ -31,7 +32,6 @@ const LocationStart: React.FC = () => {
   const [openLoading, setOpenLoading] = useState(false);
   const [valueRecommend, setValueRecommend] = useState<any>(null);
   const [valueDate, setValueDate] = useState("");
-
   const [addValueLocation, setAddValueLocation] = useState(true);
 
   const [lat, setLat] = useState(
@@ -77,7 +77,7 @@ const LocationStart: React.FC = () => {
     updateFormValues(9, {
       LocationStart: departure,
     });
-  }, [valueDate, valueRecommend, lat, lng]);
+  }, [valueDate, valueRecommend, lat, lng, departure]);
 
   useEffect(() => {
     setLat(parseFloat(valueRecommend?.lat || "10.8422931"));
@@ -105,6 +105,22 @@ const LocationStart: React.FC = () => {
     }
 
     setOpenSnackbar(false);
+  };
+
+  const handleInputChange = (index: number, field: string, value: string) => {
+    setDeparture((prevDeparture: any) => {
+      const updatedDeparture = [...prevDeparture];
+      updatedDeparture[index][field] = value;
+      return updatedDeparture;
+    });
+  };
+
+  const handleDeleteDeparture = (index: number) => {
+    setDeparture((prevDeparture: any) => {
+      const updatedDeparture = [...prevDeparture];
+      updatedDeparture.splice(index, 1);
+      return updatedDeparture;
+    });
   };
 
   const defaultProps = {
@@ -232,7 +248,6 @@ const LocationStart: React.FC = () => {
                               <div
                                 {...getSuggestionItemProps(suggestion, {
                                   className,
-                                  // style,
                                 })}
                                 className=" px-4 py-3"
                               >
@@ -264,17 +279,34 @@ const LocationStart: React.FC = () => {
             <div className="flex flex-col gap-2 mt-5">
               {departure?.length > 0 &&
                 departure?.map((departureScreen: any, index: number) => (
-                  <div
-                    key={index}
-                    className="bg-white rounded-lg p-2 shadow-custom-card-mui "
-                  >
-                    <span className="font-medium mr-1">
-                      {departureScreen?.time}
-                    </span>
-
-                    <span>
-                      {departureScreen?.addressLocationStart?.address}
-                    </span>
+                  <div key={index} className="flex items-center gap-2">
+                    <div className="bg-white rounded-lg p-2 shadow-custom-card-mui flex items-center gap-3">
+                      <input
+                        className="border-b border-gray-300 focus:outline-none focus:border-black hover:border-black"
+                        type="time"
+                        value={departureScreen?.time}
+                        onChange={(e) =>
+                          handleInputChange(index, "time", e.target.value)
+                        }
+                      />
+                      <input
+                        className="w-96 border-b border-gray-300 focus:outline-none focus:border-black hover:border-black"
+                        type="text"
+                        value={departureScreen?.addressLocationStart?.address}
+                        onChange={(e) =>
+                          handleInputChange(index, "addressLocationStart", {
+                            ...departureScreen.addressLocationStart,
+                            address: e.target.value,
+                          })
+                        }
+                      />
+                    </div>
+                    <button
+                      className=" text-red-700"
+                      onClick={() => handleDeleteDeparture(index)}
+                    >
+                      <FaTrash />
+                    </button>
                   </div>
                 ))}
             </div>
@@ -288,211 +320,6 @@ const LocationStart: React.FC = () => {
                 Add more departure
               </button>
             )}
-            {/* <BannerMapContainer>
-              <div className="text-black flex flex-col gap-3 ">
-                <div>
-                  <p className="font-medium mb-1">Country Name</p>
-                  <div className="relative">
-                    <GoLocation className="absolute top-4 left-2" />
-
-                    <div className="bg-white w-full shadow-custom-card-mui rounded-lg py-3 pl-8 focus:outline-1 focus:outline-navy-blue hover:border-navy-blue  border border-gray-400 ">
-                      Việt Nam
-                    </div>
-                  </div>
-                </div>
-                <div>
-                  <p className="font-medium mb-1">Address Name</p>
-                  <div className="relative">
-                    <GoLocation className="absolute top-4 left-2" />
-                    <input
-                      value={addressNameStart || ""}
-                      onChange={(e) => setAddressNameStart(e.target.value)}
-                      className="w-full shadow-custom-card-mui rounded-lg py-3 pl-8 focus:outline-1 focus:outline-navy-blue hover:border-navy-blue  border border-gray-400 "
-                      name="address"
-                      placeholder="Address"
-                      type="text"
-                      autoComplete="address-line1"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <p className="font-medium mb-1 flex gap-1">
-                    Address province
-                    {selectedDataProStart === undefined && (
-                      <ElementCheckInput />
-                    )}
-                  </p>
-                  <FormControl
-                    fullWidth
-                    className="relative bg-white shadow-custom-card-mui"
-                  >
-                    <FaStaylinked className="absolute top-4 left-3" />
-                    <Select
-                      className=""
-                      style={{
-                        borderRadius: "8px",
-                        height: "50px",
-                        paddingLeft: "20px",
-                      }}
-                      displayEmpty
-                      inputProps={{ "aria-label": "Without label" }}
-                      value={selectedDataProStart?.full_name || ""}
-                      onChange={(e) => {
-                        const selectedFullname = e.target.value;
-                        const selectedData = addressProvinceStart.find(
-                          (data: any) => data.full_name === selectedFullname
-                        );
-                        setSelectedDataProStart(selectedData);
-                        handleSelectLocation(
-                          selectedData,
-                          "address_province",
-                          "locationStart"
-                        );
-                      }}
-                    >
-                      <MenuItem value="">
-                        <em>Please choose type</em>
-                      </MenuItem>
-                      {addressProvinceStart?.map((data: any) => (
-                        <MenuItem key={data?.code} value={data?.full_name}>
-                          {data?.full_name}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </div>
-                <div>
-                  <p className="font-medium mb-1 flex gap-1">
-                    Address district
-                    {selectedDataDisStart === undefined && (
-                      <ElementCheckInput />
-                    )}
-                  </p>
-                  <FormControl
-                    fullWidth
-                    className="relative bg-white shadow-custom-card-mui"
-                  >
-                    <FaStaylinked className="absolute top-4 left-3" />
-                    <Select
-                      style={{
-                        borderRadius: "8px",
-                        height: "50px",
-                        paddingLeft: "20px",
-                      }}
-                      displayEmpty
-                      inputProps={{ "aria-label": "Without label" }}
-                      value={selectedDataDisStart?.full_name || ""}
-                      onChange={(e) => {
-                        const selectedFullname = e.target.value;
-                        const selectedData = addressDistrictStart.find(
-                          (data: any) => data.full_name === selectedFullname
-                        );
-                        setSelectedDataDisStart(selectedData);
-                        handleSelectLocation(
-                          selectedData,
-                          "address_district",
-                          "locationStart"
-                        );
-                      }}
-                    >
-                      {addressDistrictStart &&
-                      addressDistrictStart.length > 0 ? (
-                        addressDistrictStart.map((data: any) => (
-                          <MenuItem key={data.code} value={data?.full_name}>
-                            {data.full_name}
-                          </MenuItem>
-                        ))
-                      ) : (
-                        <MenuItem value="">
-                          <em>Please choose address province</em>
-                        </MenuItem>
-                      )}
-                    </Select>
-                  </FormControl>
-                </div>
-                <div>
-                  <p className="font-medium mb-1 flex gap-1">
-                    Address ward
-                    {selectedDataWardStart === undefined && (
-                      <ElementCheckInput />
-                    )}
-                  </p>
-                  <FormControl
-                    fullWidth
-                    className="relative bg-white shadow-custom-card-mui"
-                  >
-                    <FaStaylinked className="absolute top-4 left-3" />
-                    <Select
-                      style={{
-                        borderRadius: "8px",
-                        height: "50px",
-                        paddingLeft: "20px",
-                      }}
-                      displayEmpty
-                      inputProps={{ "aria-label": "Without label" }}
-                      value={selectedDataWardStart?.full_name || ""}
-                      onChange={(e) => {
-                        const selectedFullname = e.target.value;
-                        const selectedData = addressWardStart.find(
-                          (data: any) => data.full_name === selectedFullname
-                        );
-                        setSelectedDataWardStart(selectedData);
-                        handleSelectLocation(
-                          selectedData,
-                          "address_ward",
-                          "locationStart"
-                        );
-                      }}
-                    >
-                      {addressWardStart && addressWardStart.length > 0 ? (
-                        addressWardStart.map((data: any) => (
-                          <MenuItem key={data.code} value={data?.full_name}>
-                            {data.full_name}
-                          </MenuItem>
-                        ))
-                      ) : (
-                        <MenuItem value="">
-                          <em>Please choose address ward</em>
-                        </MenuItem>
-                      )}
-                    </Select>
-                  </FormControl>
-                </div>
-                <div className="">
-                  <p className="font-medium mb-1 flex items-center gap-1">
-                    Location
-                    {!checkLocation && <ElementCheckInput />}
-                  </p>
-                  {dataManyLocationStart?.length === 0 ? (
-                    <div className="bg-white shadow-custom-card-mui p-3 rounded-lg text-red-500">
-                      Please handle search find location
-                    </div>
-                  ) : (
-                    <>
-                      <div className="flex flex-col gap-2">
-                        {dataManyLocationStart?.map(
-                          (dataLocationStart: {
-                            addressLocationStart: string;
-                          }) => (
-                            <div className="bg-white shadow-custom-card-mui p-3 rounded-lg ">
-                              {dataLocationStart?.addressLocationStart}
-                            </div>
-                          )
-                        )}
-                      </div>
-                    </>
-                  )}
-                  <div className="text-center mt-4">
-                    <button
-                      className="bg-white text-center rounded-md p-1 border border-solid border-navy-blue text-navy-blue"
-                      onClick={handleAddMoreDeparture}
-                    >
-                      Add departure
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </BannerMapContainer> */}
           </BannerContent>
         </div>
       </BannerContainer>

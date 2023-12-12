@@ -257,7 +257,7 @@ const EditAvailability = (dataAvailability: any) => {
           availabilityItem?.validity_date_range_to
         ).format("YYYY-MM-DD"),
         tour_id: availabilityItem?.tour_id,
-        special_dates: availabilityItem?.special_dates?.map(
+        specialDates: availabilityItem?.special_dates?.map(
           (specialItem: any) => ({
             date: specialItem?.date,
             timeSlot: specialItem?.timeSlot,

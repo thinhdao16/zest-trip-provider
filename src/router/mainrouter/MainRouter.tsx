@@ -30,6 +30,7 @@ import DetailTicketTour from "../../pages/ticket/DetailTicketTour";
 import ListBooking from "../../pages/booker/list/ListBooking";
 import Wallet from "../../pages/wallet/Wallet";
 import BookDetail from "../../pages/booker/many/BookDetail";
+import TourCancel from "../../pages/createtour/tourcancel/TourCancel";
 
 function MainRouter() {
   const { refeshLogin, setRefeshTour } = React.useContext(DataContext);
@@ -59,7 +60,10 @@ function MainRouter() {
             <Route path="/" element={<AuthLayout />}>
               <Route path="/" element={<Dashboard />} />
               <Route path="/review" element={<Review />} />
-              <Route path="/listtour" element={<HomePage />} />
+              <Route path="/listtour">
+                <Route path="" element={<HomePage />} />
+                <Route path="cancel" element={<TourCancel />} />
+              </Route>
               <Route path="/booking">
                 <Route path="" element={<Booker />} />
                 <Route path=":index" element={<BookerDetailSingleScreen />} />
