@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import Navbar from "../../components/Navbar/Index";
 import { useSelector } from "react-redux";
 
 function AccountSettings() {
   const personalInfo = useSelector((state: any) => state.auth.personalInfo);
-  const [address_district, setAddress_district] = useState();
   console.log(personalInfo);
   return (
     <React.Fragment>
