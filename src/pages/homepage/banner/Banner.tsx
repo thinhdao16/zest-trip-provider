@@ -272,73 +272,65 @@ export default function Banner() {
                             </div>
 
                             <div className="col-span-9 grid gap-2  content-between">
-                              <Link to={`/${data?.id}`} key={data?.id}>
-                                <div>
-                                  <p className="font-medium ">{data.name}</p>
-                                </div>
-                                <Rating
-                                  name="half-rating-read"
-                                  value={data?.rate}
-                                  precision={0.5}
-                                  readOnly
-                                />
-                              </Link>
-                              <Link to={`/${data?.id}`} key={data?.id}>
-                                <div className="flex items-center flex-wrap gap-3 text-sm">
-                                  {data?.tag_id?.map(
-                                    (
-                                      dataTag: { name: string },
-                                      index: string
-                                    ) => (
-                                      <button
-                                        key={index}
-                                        className=" border px-1 rounded-md shadow-custom-card-mui text-navy-blue hover:text-black   flex items-center gap-1"
-                                      >
-                                        <TourTag
-                                          field={dataTag?.name}
-                                          style="w-4 h-4"
-                                        />
-                                        <p>{dataTag?.name}</p>
-                                      </button>
-                                    )
-                                  )}
-                                  <span className="w-0.5 h-5 bg-gray-300 rounded-full"></span>
-                                  {data?.vehicle_id?.map(
-                                    (
-                                      dataVehicle: { name: string },
-                                      index: string
-                                    ) => (
-                                      <button
-                                        key={index}
-                                        className=" border px-1 rounded-md shadow-custom-card-mui text-navy-blue hover:text-black  flex items-center gap-1"
-                                      >
-                                        <VehicleTag
-                                          field={dataVehicle?.name}
-                                          style="w-4 h-4"
-                                        />
-                                        <p>{dataVehicle?.name}</p>
-                                      </button>
-                                    )
-                                  )}
-                                </div>
-                              </Link>
+                              <div>
+                                <p className="font-medium ">{data.name}</p>
+                              </div>
+                              <Rating
+                                name="half-rating-read"
+                                value={data?.rate}
+                                precision={0.5}
+                                readOnly
+                              />
+                              <div className="flex items-center flex-wrap gap-3 text-sm">
+                                {data?.tag_id?.map(
+                                  (
+                                    dataTag: { name: string },
+                                    index: string
+                                  ) => (
+                                    <button
+                                      key={index}
+                                      className=" border px-1 rounded-md shadow-custom-card-mui text-navy-blue hover:text-black   flex items-center gap-1"
+                                    >
+                                      <TourTag
+                                        field={dataTag?.name}
+                                        style="w-4 h-4"
+                                      />
+                                      <p>{dataTag?.name}</p>
+                                    </button>
+                                  )
+                                )}
+                                <span className="w-0.5 h-5 bg-gray-300 rounded-full"></span>
+                                {data?.vehicle_id?.map(
+                                  (
+                                    dataVehicle: { name: string },
+                                    index: string
+                                  ) => (
+                                    <button
+                                      key={index}
+                                      className=" border px-1 rounded-md shadow-custom-card-mui text-navy-blue hover:text-black  flex items-center gap-1"
+                                    >
+                                      <VehicleTag
+                                        field={dataVehicle?.name}
+                                        style="w-4 h-4"
+                                      />
+                                      <p>{dataVehicle?.name}</p>
+                                    </button>
+                                  )
+                                )}
+                              </div>
                             </div>
                             <div className="col-span-2">
                               <div className="flex gap-2 justify-between">
-                                <Link to={`/${data?.id}`} key={data?.id}>
-                                  <div>
-                                    <StatusTour>{data?.status}</StatusTour>
-                                  </div>
-                                </Link>
+                                <div>
+                                  <StatusTour>{data?.status}</StatusTour>
+                                </div>
 
                                 <div className="flex flex-col gap-3 ">
                                   <button>
                                     <LuMoreHorizontal />
                                   </button>
                                   <button>
-                                    <Link to={`/${data?.id}`} key={data?.id}>
-                                      <AiFillEdit />
-                                    </Link>
+                                    <AiFillEdit />
                                   </button>
                                   <button>
                                     <FaMobile />

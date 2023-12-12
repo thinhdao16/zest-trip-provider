@@ -146,7 +146,7 @@ function Payment() {
     });
   const dataBooking = calculateChartData(
     filteredBookings,
-    "paid_price",
+    "provider_receive",
     "original_price",
     "refund_ammount"
   );
@@ -226,7 +226,7 @@ function Payment() {
                   <span className="font-medium">Paid original</span>
                 </div>
                 <div className="">
-                  <span className="font-medium">Paid price</span>
+                  <span className="font-medium">Provider received</span>
                 </div>
                 <div className="">
                   <span className="font-medium">Refund amount</span>
@@ -371,7 +371,7 @@ function Payment() {
                                     <div>
                                       <span>
                                         {formatNumber(
-                                          dataBookingInWeek?.paid_price
+                                          dataBookingInWeek?.provider_receive
                                         )}
                                       </span>
                                     </div>

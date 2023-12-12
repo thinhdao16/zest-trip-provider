@@ -115,14 +115,14 @@ function DashboardChart() {
                   labels: labelWeeks,
                   series: [
                     {
-                      name: "Paid price",
+                      name: "Provider recieve",
                       type: "area",
                       fill: "gradient",
                       data: labelWeeks.map((day) =>
                         calculateTotalByDay(
                           dataBooking,
                           day,
-                          "paid_price",
+                          "provider_receive",
                           "chart_day"
                         )
                       ),

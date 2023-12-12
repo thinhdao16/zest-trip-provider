@@ -33,6 +33,12 @@ interface Booking {
 
 function BillingDetail() {
   const { booking } = useSelector((state: any) => state.booking);
+  const filteredBookings = booking?.filter(
+    (booking: { status: string }) =>
+      booking.status !== "REJECT" &&
+      booking.status !== "PENDING" &&
+      booking.status !== "0"
+  );
   const { setSaveDateChartChoose, setFieldSaveDateChartChoose } =
     useContext(DataContext);
   const [selectedDateRange, setSelectedDateRange] = useState<any>([null, null]);
@@ -47,9 +53,10 @@ function BillingDetail() {
   }
 
   // Sử dụng hàm sumField
-  const resultPaidPrice = sumField(booking, "paid_price");
-  const resultOriginalPrice = sumField(booking, "original_price");
-  const resultRefundAmount = sumField(booking, "refund_ammount");
+  const resultPaidPrice = sumField(filteredBookings, "paid_price");
+  const resultOriginalPrice = sumField(filteredBookings, "original_price");
+  const resultRefundAmount = sumField(filteredBookings, "refund_ammount");
+  const resultProviderRecieve = sumField(filteredBookings, "provider_receive");
 
   function calculateTotalByDay(
     bookings: Booking[],
@@ -190,12 +197,12 @@ function BillingDetail() {
     labels: labelMonths,
     datasets: [
       {
-        label: "Paid Price",
+        label: "Provider recevied",
         data: labelMonths.map((day) =>
           calculateTotalByDay(
-            booking,
+            filteredBookings,
             day,
-            "paid_price",
+            "provider_receive",
             "chart_month",
             "0",
             "0"
@@ -207,7 +214,7 @@ function BillingDetail() {
         label: "Original Price",
         data: labelMonths.map((day) =>
           calculateTotalByDay(
-            booking,
+            filteredBookings,
             day,
             "original_price",
             "chart_month",
@@ -221,7 +228,7 @@ function BillingDetail() {
         label: "Refund Amount",
         data: labelMonths.map((day) =>
           calculateTotalByDay(
-            booking,
+            filteredBookings,
             day,
             "refund_ammount",
             "chart_month",
@@ -249,12 +256,12 @@ function BillingDetail() {
     labels: saveFormattedLabelDayMonth,
     datasets: [
       {
-        label: "Paid Price",
+        label: "Provider received",
         data: saveFormattedLabels.map((day) => {
           return calculateTotalByDay(
-            booking,
+            filteredBookings,
             "",
-            "paid_price",
+            "provider_receive",
             "chart_week",
             day?.start,
             day?.end
@@ -266,7 +273,7 @@ function BillingDetail() {
         label: "Original Price",
         data: saveFormattedLabels.map((day) =>
           calculateTotalByDay(
-            booking,
+            filteredBookings,
             "",
             "original_price",
             "chart_week",
@@ -280,7 +287,7 @@ function BillingDetail() {
         label: "Refund Amount",
         data: saveFormattedLabels.map((day) =>
           calculateTotalByDay(
-            booking,
+            filteredBookings,
             "",
             "refund_ammount",
             "chart_week",
@@ -307,7 +314,7 @@ function BillingDetail() {
   const totalPaidWeeks = formattedLabels
     .map((day) => {
       return calculateTotalByDay(
-        booking,
+        filteredBookings,
         "",
         "paid_price",
         "chart_week",
@@ -339,9 +346,7 @@ function BillingDetail() {
               </div>
               <div>
                 <span className="font-medium block">Recive amount paid</span>
-                <span className="">
-                  {formatNumber((resultPaidPrice * 70) / 100)}
-                </span>
+                <span className="">{formatNumber(resultProviderRecieve)}</span>
               </div>
             </div>
             <div className="mt-4">

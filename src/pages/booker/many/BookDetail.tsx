@@ -471,24 +471,13 @@ function BookDetail() {
                       </span>
                     </div>
                   </div>
-                  <div className="grid grid-cols-6 gap-4">
-                    <div className="col-span-2">
-                      <span className="font-medium">Provider receive</span>
-                    </div>
-                    <div className="col-span-4">
-                      <span>
-                        {formatNumber(
-                          calculateTotalRefundAmount(filteredBookings)
-                        )}
-                      </span>
-                    </div>
-                  </div>
+
                   <div className="grid grid-cols-6 gap-4">
                     <div className="col-span-2">
                       <span className="font-medium">Time slot</span>
                     </div>
 
-                    <div className="col-span-4 max-h-12  overflow-auto global-scrollbar">
+                    <div className="col-span-4 h-12  overflow-auto global-scrollbar">
                       {dateChoose?.length === 0 ? (
                         <span>
                           {dateChoose?.length === 0 && (
