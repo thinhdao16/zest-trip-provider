@@ -129,10 +129,10 @@ function Review() {
 
   const handleFilterTour = (value: string) => {
     if (value === "review") {
-      const pageSizeFil = 1000;
+      const pageSizeFil = 100;
       const currentPageFil = 1;
       const pagination = { pageSizeFil, currentPageFil };
-      setPageSize(1000);
+      setPageSize(100);
       dispatch(fetchTours(pagination));
       setKeyFilterTour("review");
     }

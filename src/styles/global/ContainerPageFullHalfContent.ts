@@ -9,11 +9,11 @@ export const ContainerPageFullHalfContent = styled(Box)(() => ({
   position: "relative",
   "&::-webkit-scrollbar-track": {
     boxShadow: "inset 0 0 6px rgba(0, 0, 0, 0.3)",
-    backgroundColor: "rgba(5, 68, 94, 0.03)",
+    backgroundColor: "rgba(5, 68, 94, 0.04)",
   },
   "&::-webkit-scrollbar": {
     width: "5px",
-    backgroundColor: "rgba(5, 68, 94, 0.03)",
+    backgroundColor: "rgba(5, 68, 94, 0.04)",
     scrollbarWidth: "2px",
   },
   "&::-webkit-scrollbar-thumb": {

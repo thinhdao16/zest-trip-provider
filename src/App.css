@@ -396,7 +396,7 @@ li .ant-menu-submenu-selected .ant-menu-title-content {
   color: #05445e !important;
 }
 .ant-menu-item-selected {
-  background: rgba(5, 68, 94, 0.1) !important;
+  background: rgba(5, 68, 94, 0.04) !important;
   color: #05445e !important;
 }
 #selectDateSingle {

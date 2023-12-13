@@ -48,7 +48,7 @@ export const getTours = createAsyncThunk("tour/getTours", async () => {
   try {
     const response = await axiosInstance.get(`${BASE_URL}/tour/provider`, {
       params: {
-        limit: "5000",
+        limit: "1000",
       },
     });
     if (response.status === 200) {
@@ -66,7 +66,7 @@ export const getAllTours = createAsyncThunk("tour/getAllTours", async () => {
   try {
     const response = await axiosInstance.get(`${BASE_URL}/tour/provider`, {
       params: {
-        limit: "5000",
+        limit: "1000",
       },
     });
     if (response.status === 200) {

@@ -83,10 +83,10 @@ function Booker() {
     if (value?.length === 0 || value === undefined) {
       setKeyFilterTour("normal");
     } else {
-      const pageSizeFil = 1000;
+      const pageSizeFil = 100;
       const currentPageFil = 1;
       const pagination = { pageSizeFil, currentPageFil };
-      setPageSize(1000);
+      setPageSize(100);
       dispatch(fetchTours(pagination));
       setKeyFilterTour(value);
     }
