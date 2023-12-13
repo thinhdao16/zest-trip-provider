@@ -151,11 +151,13 @@ function BookDetail() {
     setDateAvailability([...commonDates, ...availableBookedDates]);
     setOpenField(true);
     setFieldBlock("normal");
+    message.info("This is the booking");
   };
   const handleAvailabilityHave = () => {
     setDateAvailability([...allDates, ...allSingleDates, ...availabilityDates]);
     setOpenField(false);
     setFieldBlock("normal");
+    message.info("This is the availability");
   };
   useEffect(() => {
     let filtered = bookingDontReject?.filter((booking: any) =>

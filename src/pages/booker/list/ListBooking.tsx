@@ -286,7 +286,7 @@ function ListBooking() {
                   <Fade in={expandedItems[indexBooking]} timeout={700}>
                     <div>
                       <hr />
-                      <div className="p-4 flex items-center gap-2 relative bg-neutral-200">
+                      <div className="p-4 flex items-center gap-2 relative bg-stone-200">
                         <button
                           type="button"
                           className=" absolute top-2 right-2"

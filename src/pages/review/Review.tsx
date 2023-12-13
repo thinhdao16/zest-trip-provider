@@ -378,7 +378,7 @@ function Review() {
                       className="bg-white  relative shadow-custom-card-mui rounded-lg flex flex-col"
                       key={index}
                     >
-                      <div className=" flex items-center gap-2 p-4 rounded-t-lg bg-neutral-200">
+                      <div className=" flex items-center gap-2 p-4 rounded-t-lg bg-stone-200">
                         <img
                           src={dataManyBook?.tour_images?.[0]}
                           className="w-12 h-12 rounded-lg object-cover"

@@ -10,7 +10,7 @@ import { useStepContext } from "../context/ui/useStepContext";
 import React, { ReactNode, useEffect, useState } from "react";
 import { GoLocation } from "react-icons/go";
 import { BASE_URL } from "../../../store/apiInterceptors";
-import { FormControl, MenuItem, Select } from "@mui/material";
+import { Autocomplete, TextField } from "@mui/material";
 import { FaStaylinked } from "react-icons/fa6";
 import { ElementCheckInput } from "../../../utils/ElementCheckInput";
 import GoogleMapReact from "google-map-react";
@@ -220,14 +220,42 @@ const Location: React.FC = () => {
                     <ElementCheckInput />
                   )}
                 </p>
-
-                <FormControl
+                <Autocomplete
+                  value={formValues[3]?.Location?.address_province}
+                  className="relative bg-white shadow-custom-card-mui rounded-lg"
+                  disablePortal
+                  options={addressProvince}
+                  getOptionLabel={(option: { full_name: string }) =>
+                    option?.full_name
+                  }
                   fullWidth
-                  className="relative bg-white shadow-custom-card-mui"
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      InputProps={{
+                        ...params?.InputProps,
+                        startAdornment: (
+                          <FaStaylinked className=" top-4 left-3" />
+                        ),
+                      }}
+                      className="m-4"
+                    />
+                  )}
+                  onChange={(_event, newValue) => {
+                    setSelectedData(newValue);
+                    handleSelectLocation(
+                      newValue,
+                      "address_province",
+                      "location"
+                    );
+                  }}
+                />
+                {/* <FormControl
+                  fullWidth
+                  className="relative bg-white shadow-custom-card-mui rounded-lg"
                 >
                   <FaStaylinked className="absolute top-4 left-3 " />
                   <Select
-                    // className="bg-white"
                     style={{
                       borderRadius: "8px",
                       height: "50px",
@@ -260,7 +288,7 @@ const Location: React.FC = () => {
                       </MenuItem>
                     ))}
                   </Select>
-                </FormControl>
+                </FormControl> */}
               </div>
               <div>
                 <p className="font-medium mb-1 flex items-center gap-1">
@@ -269,9 +297,9 @@ const Location: React.FC = () => {
                     <ElementCheckInput />
                   )}
                 </p>
-                <FormControl
+                {/* <FormControl
                   fullWidth
-                  className="relative bg-white shadow-custom-card-mui"
+                  className="relative bg-white shadow-custom-card-mui rounded-lg"
                 >
                   <FaStaylinked className="absolute top-4 left-3" />
                   <Select
@@ -309,7 +337,26 @@ const Location: React.FC = () => {
                       </MenuItem>
                     )}
                   </Select>
-                </FormControl>
+                </FormControl> */}
+                <Autocomplete
+                  value={formValues[3]?.Location?.address_district}
+                  className="relative bg-white shadow-custom-card-mui rounded-lg"
+                  disablePortal
+                  id="combo-box-demo"
+                  options={addressDistrict}
+                  getOptionLabel={(option: { full_name: string }) =>
+                    option?.full_name
+                  }
+                  renderInput={(params) => <TextField {...params} />}
+                  onChange={(_event, newValue) => {
+                    setSelectedData(newValue);
+                    handleSelectLocation(
+                      newValue,
+                      "address_district",
+                      "location"
+                    );
+                  }}
+                />
               </div>
               <div>
                 <p className="font-medium mb-1 flex items-center gap-1">
@@ -318,9 +365,9 @@ const Location: React.FC = () => {
                     <ElementCheckInput />
                   )}
                 </p>
-                <FormControl
+                {/* <FormControl
                   fullWidth
-                  className="relative bg-white shadow-custom-card-mui"
+                  className="relative bg-white shadow-custom-card-mui rounded-lg"
                 >
                   <FaStaylinked className="absolute top-4 left-3" />
                   <Select
@@ -358,7 +405,38 @@ const Location: React.FC = () => {
                       </MenuItem>
                     )}
                   </Select>
-                </FormControl>
+                </FormControl> */}
+
+                <Autocomplete
+                  value={formValues[3]?.Location?.address_ward}
+                  className="relative bg-white shadow-custom-card-mui rounded-lg"
+                  disablePortal
+                  options={addressWard}
+                  getOptionLabel={(option: { full_name: string }) =>
+                    option?.full_name
+                  }
+                  fullWidth
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      InputProps={{
+                        ...params?.InputProps,
+                        startAdornment: (
+                          <FaStaylinked className=" top-4 left-3" />
+                        ),
+                      }}
+                      className="m-4"
+                    />
+                  )}
+                  onChange={(_event, newValue) => {
+                    setSelectedData(newValue);
+                    handleSelectLocation(
+                      selectedData,
+                      "address_ward",
+                      "location"
+                    );
+                  }}
+                />
               </div>{" "}
               <div>
                 <p className="font-medium mb-1 flex items-center gap-1">
@@ -384,17 +462,13 @@ const Location: React.FC = () => {
                 style={{ height: "400px", width: "500px", marginTop: "10px" }}
               >
                 <GoogleMapReact
-                  bootstrapURLKeys={{
-                    key: "AIzaSyD19YzOwwuIgnIpwkTLnJ9KzHPHtolBP40",
-                  }}
+                  // bootstrapURLKeys={{
+                  //   key: "AIzaSyDRohqsJ3uY_bpfD9VGClxbXHp73_dhgq0",
+                  // }}
                   center={defaultProps.center}
                   defaultZoom={defaultProps.zoom}
                 >
-                  <AnyReactComponent
-                    // lat={defaultProps.center.lat}
-                    // lng={defaultProps.center.lng}
-                    text={<RedMarker />}
-                  />
+                  <AnyReactComponent text={<RedMarker />} />
                 </GoogleMapReact>
               </div>
             </div>

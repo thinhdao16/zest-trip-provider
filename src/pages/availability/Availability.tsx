@@ -276,7 +276,7 @@ function Availability() {
         <>
           <Navbar />
 
-          <main className="h-full bg-main overflow-auto global-scrollbar rounded-lg">
+          <main className="h-full bg-main overflow-auto global-scrollbar rounded-2xl m-4">
             <div className="container mx-auto py-4 px-8">
               <div className="mb-6 flex items-center justify-between">
                 <div className="flex flex-col">
@@ -421,7 +421,7 @@ function Availability() {
                           key={index}
                           className="shadow-custom-card-mui bg-white rounded-lg relative"
                         >
-                          <div className=" flex items-center gap-2 p-4 rounded-t-lg bg-neutral-200">
+                          <div className=" flex items-center gap-2 p-4 rounded-t-lg bg-stone-200">
                             <img
                               src={dataTour?.tour_images[0]}
                               className="w-12 h-12 rounded-lg object-cover"

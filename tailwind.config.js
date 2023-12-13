@@ -27,9 +27,11 @@ export default {
         "blue-grotto": "#189AB4",
         "blue-green": "#75E6DA",
         "baby-blue": "#D4F1F4",
-        main: "#f5f5f5",
+        main: "rgba(5, 68, 94, 0.03)",
         "navy-blue-opacity-5": "rgba(5, 68, 94, 0.4)",
         "navy-blue-opacity-1": "rgba(5, 68, 94, 0.1)",
+        "navy-blue-opacity-2": "rgba(5, 68, 94, 0.2)",
+        "navy-blue-opacity-3": "rgba(5, 68, 94, 0.3)",
 
         "green-tag": "#96af51",
         "green-tag-opa": "#f1f5e5",

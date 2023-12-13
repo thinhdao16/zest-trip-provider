@@ -104,7 +104,7 @@ const StepRenderer: React.FC = () => {
             </Grid>
           )}
           {!isLastStep && (
-            <Grid item xs={12} sm={10} className="h-full p-4">
+            <Grid item xs={12} sm={10} className="h-full">
               <animated.div style={springProps} className="animate-container">
                 {StepsToRender}
               </animated.div>

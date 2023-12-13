@@ -98,7 +98,7 @@ function Booker() {
       ) : (
         <>
           <Navbar />
-          <main className="h-full bg-main overflow-auto global-scrollbar rounded-lg">
+          <main className="h-full bg-main overflow-auto global-scrollbar rounded-lg mt-2">
             <div className="container mx-auto px-8 py-4">
               <div className="mb-6 flex items-center justify-between">
                 <div className="flex flex-col">
@@ -174,7 +174,7 @@ function Booker() {
                             to={`/booking/many/${dataManyBook?.id}`}
                             key={dataManyBook?.id}
                           >
-                            <div className="bg-neutral-200 flex items-center gap-2 p-4 rounded-t-lg">
+                            <div className="bg-stone-200 flex items-center gap-2 p-4 rounded-t-lg">
                               <img
                                 src={dataManyBook?.tour_images?.[0]}
                                 className="w-12 h-12 rounded-lg"

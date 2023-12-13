@@ -17,6 +17,8 @@ import {
   updateVoucherMapTour,
 } from "../../../../store/redux/silce/providerSlice";
 import { useMemo } from "react";
+import { message } from "antd";
+import { useNavigate } from "react-router-dom";
 function NavBar() {
   const {
     createNameEdit,
@@ -35,7 +37,7 @@ function NavBar() {
     return parse;
   }, []);
   console.log(voucherView);
-
+  const navigate = useNavigate();
   const handleCreateVoucher = () => {
     let tourIdPayload = {};
 
@@ -61,7 +63,12 @@ function NavBar() {
       ...tourIdPayload,
     };
     dispatch(updateVoucher(dataValueCreate));
-    dispatch(updateVoucherMapTour(dataUpdateMapTour));
+    dispatch(updateVoucherMapTour(dataUpdateMapTour)).then((response) => {
+      if (updateVoucherMapTour.fulfilled.match(response)) {
+        message.success("Add tour successfully");
+        navigate("/voucher");
+      }
+    });
   };
 
   return (
@@ -71,17 +78,13 @@ function NavBar() {
           <div className="h-[75vh] overflow-auto scrollbar-none gap-10 flex flex-col pt-2">
             <div
               className={`flex items-center font-medium pl-1 gap-7 relative  ${
-                createNameEdit.length === 0
-                  ? "text-gray-500"
-                  : "text-navy-blue"
+                createNameEdit.length === 0 ? "text-gray-500" : "text-navy-blue"
               }`}
               // onClick={() => scrollToElement("information_basic")}
             >
               <div
                 className={`w-1.5 h-7 rounded-full ${
-                  createNameEdit.length === 0
-                    ? "bg-gray-500"
-                    : "bg-navy-blue"
+                  createNameEdit.length === 0 ? "bg-gray-500" : "bg-navy-blue"
                 }`}
               ></div>
               <MdTitle
@@ -263,9 +266,7 @@ function NavBar() {
             >
               <div
                 className={`w-1.5 h-7 rounded-full ${
-                  createTourIdEdit.length === 0
-                    ? "bg-gray-500"
-                    : "bg-navy-blue"
+                  createTourIdEdit.length === 0 ? "bg-gray-500" : "bg-navy-blue"
                 }`}
               ></div>
               <LuConstruction

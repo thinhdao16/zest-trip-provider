@@ -385,7 +385,7 @@ function CreateTourNav() {
                   currentStep === item.id
                     ? "bg-white text-navy-blue"
                     : currentStep < item.id
-                    ? "bg-white text-gray-400"
+                    ? "bg-white text-navy-blue-opacity-5"
                     : " bg-white text-navy-blue "
                 }`}
               >

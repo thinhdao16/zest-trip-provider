@@ -3,10 +3,10 @@ import { styled } from "@mui/material/styles";
 import { Colors } from "./theme/theme";
 
 export const BannerContainer = styled(Box)(({ theme }) => ({
-  background: "#f5f5f5",
+  background: "rgba(5, 68, 94, 0.03)",
   justifyContent: "center",
   width: "100%",
-  height: "82vh",
+  height: "86.5vh",
   overflow: "auto",
   padding: "0px 0px",
   // marginTop: "30px",
@@ -191,7 +191,7 @@ export const BannerMapContainer = styled(Box)(({ theme }) => ({
     left: 0,
     width: "100%",
     height: "100%",
-    background: "rgba(0,0,0,0.25)",
+    // background: "rgba(0,0,0,0.25)",
     zIndex: -1,
     opacity: 0.1,
   },

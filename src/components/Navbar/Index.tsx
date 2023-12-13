@@ -54,7 +54,7 @@ function Index(): JSX.Element {
     <>
       <header className="">
         <div className=" ">
-          <div className=" bg-white flex w-full items-center px-8 py-2.5 shadow-custom-card-mui justify-end gap-3">
+          <div className=" bg-white flex w-full items-center px-8 py-2.5  justify-end gap-3">
             <Link to="/payment/wallet">
               <div className="flex border border-solid border-gray-300 rounded-md px-2 py-1.5 items-center gap-1">
                 <CiWallet />

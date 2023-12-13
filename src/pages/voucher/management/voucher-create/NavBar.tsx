@@ -13,6 +13,7 @@ import { LuConstruction } from "react-icons/lu";
 import { AppDispatch } from "../../../../store/redux/store";
 import { useDispatch } from "react-redux";
 import { createVoucher } from "../../../../store/redux/silce/providerSlice";
+import { useNavigate } from "react-router-dom";
 function NavBar() {
   const {
     createName,
@@ -25,7 +26,7 @@ function NavBar() {
     createTourId,
   } = useVoucherContext();
   const dispatch: AppDispatch = useDispatch();
-
+  const navigate = useNavigate();
   const handleCreateVoucher = () => {
     let tourIdPayload = {};
 
@@ -45,7 +46,11 @@ function NavBar() {
 
       ...tourIdPayload,
     };
-    dispatch(createVoucher(dataValueCreate));
+    dispatch(createVoucher(dataValueCreate)).then((response) => {
+      if (createVoucher.fulfilled.match(response)) {
+        navigate("/voucher");
+      }
+    });
   };
 
   return (
