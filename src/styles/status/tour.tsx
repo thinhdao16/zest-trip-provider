@@ -1,18 +1,21 @@
-import React from "react";
-import { Select } from "antd";
+import { useContext } from "react";
+import { Popover, Select, message } from "antd";
 import { GoDotFill } from "react-icons/go";
+import { AppDispatch } from "../../store/redux/store";
+import { useDispatch } from "react-redux";
+import { editStatusTour } from "../../store/redux/silce/tourSlice";
+import { MdKeyboardArrowDown } from "react-icons/md";
+import { DataContext } from "../../store/dataContext/DataContext";
 
 const { Option } = Select;
-
-interface ConstructionProps {
-  children: React.ReactNode | React.ReactNode[];
-}
 
 interface StatusColors {
   [key: string]: string;
 }
 
-export function StatusTour({ children }: ConstructionProps) {
+export function StatusTour({ children, idtour }: any) {
+  const { setReloadStatus } = useContext(DataContext);
+  const dispatch: AppDispatch = useDispatch();
   const statusColors: StatusColors = {
     Draft: "bg-yellow-300 text-yellow-900",
     Published: "bg-navy-blue-opacity-5 text-navy-blue",
@@ -25,14 +28,54 @@ export function StatusTour({ children }: ConstructionProps) {
     typeof children === "string"
       ? statusColors[normalizedStatus]
       : "bg-gray-300";
+  const handleChangeStatus = async (field: string) => {
+    try {
+      dispatch(
+        editStatusTour({
+          tour_id: idtour,
+          status: field,
+        })
+      ).unwrap();
+      message.success(`${field} status tour successfully`);
+      setReloadStatus((prev: any) => prev + 1);
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
+  };
 
   return (
-    <div
-      className={`flex items-center gap-1 p-1 rounded-lg text-sm ${statusColorClass}`}
+    <Popover
+      content={
+        <div className=" text-center gap-2">
+          {children === "PUBLISHED" && (
+            <button
+              className="bg-red-300 text-red-900 py-1 px-3 rounded-md"
+              onClick={() => handleChangeStatus("HIDDEN")}
+            >
+              Hidden
+            </button>
+          )}
+          {children === "HIDDEN" && (
+            <button
+              className="bg-navy-blue-opacity-5 p-1 text-navy-blue rounded-md"
+              onClick={() => handleChangeStatus("PUBLISHED")}
+            >
+              Published
+            </button>
+          )}
+        </div>
+      }
+      title="Change satus"
+      trigger="click"
     >
-      <GoDotFill />
-      {normalizedStatus}
-    </div>
+      <button
+        className={`flex items-center gap-1 p-1 rounded-lg text-sm ${statusColorClass}`}
+      >
+        <GoDotFill />
+        {normalizedStatus}
+        <MdKeyboardArrowDown />
+      </button>
+    </Popover>
   );
 }
 

@@ -9,9 +9,7 @@ import { fetchTours, getTours } from "../../../store/redux/silce/tourSlice";
 import { AppDispatch } from "../../../store/redux/store";
 
 import { DataContext } from "../../../store/dataContext/DataContext";
-import { AiFillEdit, AiFillFilter } from "react-icons/ai";
-import { FaMobile } from "react-icons/fa6";
-import { LuMoreHorizontal } from "react-icons/lu";
+import { AiFillFilter } from "react-icons/ai";
 import { TourTag } from "../../../components/icon/tour/tag";
 import Navbar from "../../../components/Navbar/Index";
 import { RiSearchLine } from "react-icons/ri";
@@ -19,14 +17,15 @@ import LoadingFullScreen from "../../../styles/loading/LoadingFullScreen";
 import { StatusTour } from "../../../styles/status/tour";
 import { VehicleTag } from "../../../components/icon/tour/vehicle";
 import { Pagination, Slider } from "antd";
+import { IoEyeOutline } from "react-icons/io5";
 
 export default function Banner() {
-  const { refeshTour } = React.useContext(DataContext);
+  const { refeshTour, reloadStatus } = React.useContext(DataContext);
+  console.log(reloadStatus);
   const dispatch: AppDispatch = useDispatch();
   const { tours, loading } = useSelector((state: any) => state.tour);
   const dataTours = tours?.tours;
   const countTours = tours?.total_count;
-  console.log(dataTours);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [searchValue, setSearchValue] = useState("");
@@ -43,7 +42,11 @@ export default function Banner() {
   useEffect(() => {
     const pagination = { pageSize, currentPage };
     dispatch(fetchTours(pagination));
-  }, [dispatch, refeshTour, currentPage, pageSize]);
+  }, [dispatch, refeshTour, currentPage, pageSize, reloadStatus]);
+  useEffect(() => {
+    // Code xử lý sau khi reloadStatus thay đổi
+    console.log("reloadStatus changed:", reloadStatus);
+  }, [reloadStatus]);
   useEffect(() => {
     const filtered = dataTours?.filter((booking: any) => {
       const ticketPricings = booking?.TicketPricing;
@@ -243,19 +246,10 @@ export default function Banner() {
                     })
                     .map((data: any, index: number) => (
                       <div key={index} className="relative">
-                        {/* <div className="absolute top-0 right-0">
-                          <Select style={{ width: 200 }}>
-                            <Option key={index} value={data?.status}>
-                              <p>{data?.status}</p>
-                            </Option>
-                          </Select>
-                          <StatusSelect
-                            defaultValue={data?.status}
-                            onChange={handleChangeStatus}
-                          />
-                        </div> */}
-                        <Link to={`/${data?.id}`}>
-                          <div className="bg-white shadow-custom-card-mui grid grid-cols-12 p-4 gap-3  rounded-lg">
+                        <div className="bg-white shadow-custom-card-mui grid grid-cols-12 p-4 gap-3  rounded-lg relative">
+                          <Link to={`/${data?.id}`}>
+                            <IoEyeOutline className="absolute top-2 right-2" />
+
                             <div className="col-span-1">
                               <Link to={`/${data?.id}`} key={data?.id}>
                                 <img
@@ -270,8 +264,9 @@ export default function Banner() {
                                 />
                               </Link>
                             </div>
-
-                            <div className="col-span-9 grid gap-2  content-between">
+                          </Link>
+                          <div className="col-span-9 grid gap-2  content-between">
+                            <Link to={`/${data?.id}`}>
                               <div>
                                 <p className="font-medium ">{data.name}</p>
                               </div>
@@ -318,28 +313,21 @@ export default function Banner() {
                                   )
                                 )}
                               </div>
-                            </div>
-                            <div className="col-span-2">
-                              <div className="flex gap-2 justify-between">
-                                <div>
-                                  <StatusTour>{data?.status}</StatusTour>
-                                </div>
+                            </Link>
+                          </div>
 
-                                <div className="flex flex-col gap-3 ">
-                                  <button>
-                                    <LuMoreHorizontal />
-                                  </button>
-                                  <button>
-                                    <AiFillEdit />
-                                  </button>
-                                  <button>
-                                    <FaMobile />
-                                  </button>
-                                </div>
+                          <div className="col-span-2">
+                            <div className="flex gap-2 justify-between">
+                              <div>
+                                <button type="button">
+                                  <StatusTour idtour={data?.id}>
+                                    {data?.status}
+                                  </StatusTour>
+                                </button>
                               </div>
                             </div>
                           </div>
-                        </Link>
+                        </div>
                       </div>
                     ))
                 ) : (

@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import Navbar from "../../components/Navbar/Index";
 import { AppDispatch } from "../../store/redux/store";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { fetchTours } from "../../store/redux/silce/tourSlice";
 import { useSelector } from "react-redux";
 import { Input, Pagination, Select } from "antd";
@@ -12,10 +12,12 @@ import { Link } from "react-router-dom";
 import { TbLock } from "react-icons/tb";
 import { CiCircleCheck } from "react-icons/ci";
 import { FiLoader } from "react-icons/fi";
+import { DataContext } from "../../store/dataContext/DataContext";
 
 const { Search } = Input;
 
 function Ticket() {
+  const { reloadStatus } = useContext(DataContext);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const dispatch: AppDispatch = useDispatch();
@@ -32,7 +34,11 @@ function Ticket() {
   useEffect(() => {
     const pagination = { pageSize, currentPage };
     dispatch(fetchTours(pagination));
-  }, [dispatch, currentPage, pageSize, reloadSearch]);
+  }, [dispatch, currentPage, pageSize, reloadSearch, reloadStatus]);
+  useEffect(() => {
+    // Code xử lý sau khi reloadStatus thay đổi
+    console.log("reloadStatus changed:", reloadStatus);
+  }, [reloadStatus]);
   useEffect(() => {
     if (keyFilterTour === "normal") {
       setDataTourTickets(dataTours);
@@ -231,7 +237,9 @@ function Ticket() {
                             <div className="bg-white gap-2 p-4 rounded-lg grid grid-cols-12">
                               <div className="flex items-center col-span-6 gap-4 relative">
                                 <div className="absolute right-0">
-                                  <StatusTour>{dataTour?.status}</StatusTour>
+                                  <StatusTour idtour={dataTour?.id}>
+                                    {dataTour?.status}
+                                  </StatusTour>
                                 </div>
                                 <img
                                   src={dataTour?.tour_images[0]}

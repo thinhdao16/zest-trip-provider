@@ -142,9 +142,7 @@ function NavBar() {
       }
     );
     try {
-      // Đợi tất cả các promises từ việc chỉnh sửa Availability hoàn thành
       await Promise.all(editAvailabilityPromises);
-
       const avaibility_data_create = itemsDontWithId?.map(
         (availabilityItem: any) => {
           return {
@@ -181,7 +179,6 @@ function NavBar() {
       });
       message.success("Tour updated successfully");
     } catch (error) {
-      // Xử lý lỗi nếu có
       console.error("Error editing Availability:", error);
       message.error("An error occurred while editing Availability");
     }

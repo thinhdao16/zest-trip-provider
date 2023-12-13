@@ -28,7 +28,7 @@ import { GoDotFill } from "react-icons/go";
 function BookDetail() {
   const dispatch: AppDispatch = useDispatch();
   const { index } = useParams<{ index: string }>();
-  const { loading } = useContext(DataContext);
+  const { loading, reloadStatus } = useContext(DataContext);
   const { bookingDetail } = useSelector((detail: any) => detail?.booking);
   const bookingDontReject = bookingDetail?.filter(
     (booking: any) => booking?.status !== "REJECT"
@@ -178,8 +178,12 @@ function BookDetail() {
       dispatch(getBookingDetail(index));
       dispatch(fetchTourDetail(index));
     }
-  }, [dispatch, index, loading]);
-
+  }, [dispatch, index, loading, reloadStatus]);
+  useEffect(() => {
+    // Code xử lý sau khi reloadStatus thay đổi
+    console.log("reloadStatus changed:", reloadStatus);
+  }, [reloadStatus]);
+  console.log(reloadStatus);
   const availabilityIndex = 0;
 
   const handleAddSingleDate = (_index: number, selectedDate: any) => {
@@ -339,7 +343,9 @@ function BookDetail() {
             <div className="col-span-8">
               <div className="flex items-center gap-4 bg-white  p-4 shadow-custom-card-mui rounded-lg relative">
                 <div className="absolute top-2 right-2">
-                  <StatusTour>{tourDetail?.status}</StatusTour>
+                  <StatusTour idtour={tourDetail?.id}>
+                    {tourDetail?.status}
+                  </StatusTour>
                 </div>
                 <div className="">
                   <img

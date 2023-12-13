@@ -1,0 +1,7 @@
+/* Thêm kiểu tùy chỉnh để giới hạn kích thước của bản đồ */
+.leaflet-container {
+  height: 400px; /* Đặt chiều cao mong muốn */
+  width: 600px; /* Đặt chiều rộng mong muốn */
+  margin-top: 10px;
+  z-index: 1;
+}

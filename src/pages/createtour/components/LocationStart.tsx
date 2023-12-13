@@ -5,7 +5,7 @@ import {
   CreateTitleNullDes,
 } from "../../../styles/createtour/createtour";
 import { useStepContext } from "../context/ui/useStepContext";
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Backdrop,
   Button,
@@ -14,7 +14,6 @@ import {
   Snackbar,
 } from "@mui/material";
 
-import GoogleMapReact from "google-map-react";
 import { IoMdClose } from "react-icons/io";
 
 import PlacesAutocomplete, {
@@ -22,6 +21,17 @@ import PlacesAutocomplete, {
   getLatLng,
 } from "react-places-autocomplete";
 import { FaTrash } from "react-icons/fa6";
+
+import { MapContainer, TileLayer, Marker } from "react-leaflet";
+import MarkerClusterGroup from "react-leaflet-cluster";
+import { DivIconOptions, Icon, divIcon, point } from "leaflet";
+import "leaflet/dist/leaflet.css";
+import iconLocation from "../placeholder.png";
+import "./style.css";
+const customIcon = new Icon({
+  iconUrl: iconLocation,
+  iconSize: [38, 38],
+});
 
 const LocationStart: React.FC = () => {
   const { currentStep, updateFormValues, formValues } = useStepContext();
@@ -92,10 +102,6 @@ const LocationStart: React.FC = () => {
     setValueDate(e.target.value);
   };
 
-  const AnyReactComponent = ({ text }: { text: ReactNode }) => (
-    <div>{text}</div>
-  );
-
   const handleCloseSnackbar = (
     _event: React.SyntheticEvent | Event,
     reason?: string
@@ -128,9 +134,19 @@ const LocationStart: React.FC = () => {
       lat: lat,
       lng: lng,
     },
-    zoom: 15,
+    zoom: 18,
   };
-  const RedMarker = () => <div style={{ color: "red" }}>📍</div>;
+  console.log(defaultProps);
+
+  const createClusterCustomIcon = function (cluster: any) {
+    const divIconOptions: DivIconOptions = {
+      html: `<span class="cluster-icon">${cluster.getChildCount()}</span>`,
+      className: "custom-marker-cluster",
+      iconSize: point(33, 33, true),
+    };
+    return divIcon(divIconOptions);
+  };
+
   const action = (
     <React.Fragment>
       <Button color="secondary" size="small" onClick={handleCloseSnackbar}>
@@ -262,19 +278,33 @@ const LocationStart: React.FC = () => {
                 </div>
               </div>
 
-              <GoogleMapReact
-                bootstrapURLKeys={{
-                  key: "AIzaSyD19YzOwwuIgnIpwkTLnJ9KzHPHtolBP40",
-                }}
-                center={defaultProps.center}
-                defaultZoom={defaultProps.zoom}
+              <MapContainer
+                center={[defaultProps?.center?.lat, defaultProps?.center?.lng]}
+                zoom={defaultProps?.zoom}
               >
-                <AnyReactComponent
-                  // lat={defaultProps.center.lat}
-                  // lng={defaultProps.center.lng}
-                  text={<RedMarker />}
+                <TileLayer
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-              </GoogleMapReact>
+
+                <MarkerClusterGroup
+                  chunkedLoading
+                  iconCreateFunction={createClusterCustomIcon}
+                >
+                  {/* {markers.map((marker, index) => ( */}
+                  <Marker
+                    // key={index}
+                    position={[
+                      defaultProps?.center?.lat,
+                      defaultProps?.center?.lng,
+                    ]}
+                    icon={customIcon}
+                  >
+                    {/* <Popup>{marker.popUp}</Popup> */}
+                  </Marker>
+                  {/* ))} */}
+                </MarkerClusterGroup>
+              </MapContainer>
             </div>
             <div className="flex flex-col gap-2 mt-5">
               {departure?.length > 0 &&

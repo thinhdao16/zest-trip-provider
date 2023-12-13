@@ -28,10 +28,12 @@ const { Option } = Select;
 function DetailTicketTour() {
   const dispatch: AppDispatch = useDispatch();
   const { index } = useParams<{ index: string }>();
-  const { refreshTourDetail, setRefreshTourDetail } = useContext(DataContext);
+  const { refreshTourDetail, setRefreshTourDetail, reloadStatus } =
+    useContext(DataContext);
 
   const { loadingCreateTour } = useSelector((state: any) => state.tour);
   const tourDetail: any = useSelector((state: any) => state.tour.tourGetDetail);
+  console.log(tourDetail);
   const quantityTicketTrue = tourDetail?.TicketPricing?.filter(
     (ticket: { is_default: boolean }) => ticket.is_default === true
   );
@@ -55,7 +57,11 @@ function DetailTicketTour() {
       dispatch(getBookingDetail(index));
       dispatch(fetchTourDetail(index));
     }
-  }, [dispatch, index, loadingCreateTour, refreshTourDetail]);
+  }, [dispatch, index, loadingCreateTour, refreshTourDetail, reloadStatus]);
+  useEffect(() => {
+    // Code xử lý sau khi reloadStatus thay đổi
+    console.log("reloadStatus changed:", reloadStatus);
+  }, [reloadStatus]);
 
   const handleDeleteTicket = (e: any) => {
     dispatch(deleteTicket(e)).then((response: any) => {
@@ -113,7 +119,12 @@ function DetailTicketTour() {
             </div>
             <div className=" p-4 grid grid-cols-12 items-center">
               <div className="col-span-8">
-                <div className="flex items-center gap-4 bg-white  p-4 shadow-custom-card-mui rounded-lg">
+                <div className="flex items-center gap-4 bg-white  p-4 shadow-custom-card-mui rounded-lg relative">
+                  <div className="absolute top-2 right-2">
+                    <StatusTour idtour={tourDetail?.id}>
+                      {tourDetail?.status}
+                    </StatusTour>
+                  </div>
                   <div className="">
                     <img
                       src={tourDetail?.tour_images?.[0]}
@@ -127,9 +138,6 @@ function DetailTicketTour() {
                         <span className="font-medium text-lg">
                           {tourDetail?.name}
                         </span>
-                        <div>
-                          <StatusTour>{tourDetail?.status}</StatusTour>
-                        </div>
                       </div>
 
                       <span>

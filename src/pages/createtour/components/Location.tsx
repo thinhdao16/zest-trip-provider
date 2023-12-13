@@ -7,13 +7,23 @@ import {
   CreateTitleNullDes,
 } from "../../../styles/createtour/createtour";
 import { useStepContext } from "../context/ui/useStepContext";
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { GoLocation } from "react-icons/go";
 import { BASE_URL } from "../../../store/apiInterceptors";
 import { Autocomplete, TextField } from "@mui/material";
 import { FaStaylinked } from "react-icons/fa6";
 import { ElementCheckInput } from "../../../utils/ElementCheckInput";
-import GoogleMapReact from "google-map-react";
+
+import { MapContainer, TileLayer, Marker } from "react-leaflet";
+import MarkerClusterGroup from "react-leaflet-cluster";
+import { DivIconOptions, Icon, divIcon, point } from "leaflet";
+import "leaflet/dist/leaflet.css";
+import iconLocation from "../placeholder.png";
+import "./style.css";
+const customIcon = new Icon({
+  iconUrl: iconLocation,
+  iconSize: [38, 38],
+});
 
 const Location: React.FC = () => {
   const { currentStep, updateFormValues, formValues } = useStepContext();
@@ -77,16 +87,16 @@ const Location: React.FC = () => {
     });
   }, [addressName, addPro, addWard, addDis, selectedData]);
 
-  const apiKey = "AIzaSyD19YzOwwuIgnIpwkTLnJ9KzHPHtolBP40";
+  const apiKey = "AIzaSyDKm7Jq04yAY0uFMM2GrcDDY-39lEez9e4";
   useEffect(() => {
     const fetchData = async () => {
       try {
         if (inputCompleted) {
           const addressSearch = `${addressName}, ${addWard?.full_name}, ${addDis?.full_name}, ${addPro?.full_name}, Việt Nam`;
           const response = await axios.get(
-            `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
+            `https://maps.googleapis.com/maps/api/geocode/json?key=${apiKey}&address=${encodeURIComponent(
               addressSearch
-            )}&key=${apiKey}`
+            )}&sensor=flase`
           );
           console.log(response);
           // Check if there is a valid result in the response
@@ -167,28 +177,28 @@ const Location: React.FC = () => {
     // Lưu trạng thái khi input đã nhập xong và thoát khỏi focus
   };
 
-  const AnyReactComponent = ({
-    // lat,
-    // lng,
-    text,
-  }: {
-    // lat: number;
-    // lng: number;
-    text: ReactNode;
-  }) => <div>{text}</div>;
+  ElementCheckInput;
 
   const defaultProps = {
     center: {
       lat: lat,
       lng: lng,
     },
-    zoom: 13,
+    zoom: 18,
   };
-  const RedMarker = () => <div style={{ color: "red" }}>📍</div>;
-
+  console.log(defaultProps);
   if (currentStep !== 6) {
     return null;
   }
+
+  const createClusterCustomIcon = function (cluster: any) {
+    const divIconOptions: DivIconOptions = {
+      html: `<span class="cluster-icon">${cluster.getChildCount()}</span>`,
+      className: "custom-marker-cluster",
+      iconSize: point(33, 33, true),
+    };
+    return divIcon(divIconOptions);
+  };
 
   return (
     <BannerContainer className="global-scrollbar">
@@ -343,7 +353,7 @@ const Location: React.FC = () => {
                   className="relative bg-white shadow-custom-card-mui rounded-lg"
                   disablePortal
                   id="combo-box-demo"
-                  options={addressDistrict}
+                  options={addressDistrict || []}
                   getOptionLabel={(option: { full_name: string }) =>
                     option?.full_name
                   }
@@ -411,7 +421,7 @@ const Location: React.FC = () => {
                   value={formValues[3]?.Location?.address_ward}
                   className="relative bg-white shadow-custom-card-mui rounded-lg"
                   disablePortal
-                  options={addressWard}
+                  options={addressWard || []}
                   getOptionLabel={(option: { full_name: string }) =>
                     option?.full_name
                   }
@@ -458,18 +468,35 @@ const Location: React.FC = () => {
                   />
                 </div>
               </div>
-              <div
-                style={{ height: "400px", width: "500px", marginTop: "10px" }}
-              >
-                <GoogleMapReact
-                  // bootstrapURLKeys={{
-                  //   key: "AIzaSyDRohqsJ3uY_bpfD9VGClxbXHp73_dhgq0",
-                  // }}
-                  center={defaultProps.center}
-                  defaultZoom={defaultProps.zoom}
+              <div className="bg-white">
+                <MapContainer
+                  center={[
+                    defaultProps?.center?.lat,
+                    defaultProps?.center?.lng,
+                  ]}
+                  zoom={defaultProps?.zoom}
                 >
-                  <AnyReactComponent text={<RedMarker />} />
-                </GoogleMapReact>
+                  <TileLayer
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  />
+
+                  <MarkerClusterGroup
+                    chunkedLoading
+                    iconCreateFunction={createClusterCustomIcon}
+                  >
+                    {/* {markers.map((marker, index) => ( */}
+                    <Marker
+                      // key={index}
+                      position={[
+                        defaultProps?.center?.lat,
+                        defaultProps?.center?.lng,
+                      ]}
+                      icon={customIcon}
+                    ></Marker>
+                    {/* ))} */}
+                  </MarkerClusterGroup>
+                </MapContainer>
               </div>
             </div>
           </BannerMapContainer>

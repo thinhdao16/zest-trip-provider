@@ -9,9 +9,7 @@ import { fetchTours, getTours } from "../../../store/redux/silce/tourSlice";
 import { AppDispatch } from "../../../store/redux/store";
 
 import { DataContext } from "../../../store/dataContext/DataContext";
-import { AiFillEdit, AiFillFilter } from "react-icons/ai";
-import { FaMobile } from "react-icons/fa6";
-import { LuMoreHorizontal } from "react-icons/lu";
+import { AiFillFilter } from "react-icons/ai";
 import Navbar from "../../../components/Navbar/Index";
 import { RiSearchLine } from "react-icons/ri";
 import LoadingFullScreen from "../../../styles/loading/LoadingFullScreen";
@@ -20,7 +18,7 @@ import { Pagination, Slider } from "antd";
 import dayjs from "dayjs";
 
 export default function TourCancel() {
-  const { refeshTour } = React.useContext(DataContext);
+  const { refeshTour, reloadStatus } = React.useContext(DataContext);
   const dispatch: AppDispatch = useDispatch();
   const { tours, loading } = useSelector((state: any) => state.tour);
   const dataTours = tours?.tours;
@@ -46,7 +44,11 @@ export default function TourCancel() {
   useEffect(() => {
     const pagination = { pageSize, currentPage };
     dispatch(fetchTours(pagination));
-  }, [dispatch, refeshTour, currentPage, pageSize]);
+  }, [dispatch, refeshTour, currentPage, pageSize, reloadStatus]);
+  useEffect(() => {
+    // Code xử lý sau khi reloadStatus thay đổi
+    console.log("reloadStatus changed:", reloadStatus);
+  }, [reloadStatus]);
   useEffect(() => {
     const filtered = dataTours?.filter((booking: any) => {
       const ticketPricings = booking?.TicketPricing;
@@ -304,19 +306,9 @@ export default function TourCancel() {
                             <div className="col-span-2">
                               <div className="flex gap-2 justify-between">
                                 <div>
-                                  <StatusTour>{data?.status}</StatusTour>
-                                </div>
-
-                                <div className="flex flex-col gap-3 ">
-                                  <button>
-                                    <LuMoreHorizontal />
-                                  </button>
-                                  <button>
-                                    <AiFillEdit />
-                                  </button>
-                                  <button>
-                                    <FaMobile />
-                                  </button>
+                                  <StatusTour idtour={data?.id}>
+                                    {data?.status}
+                                  </StatusTour>
                                 </div>
                               </div>
                             </div>

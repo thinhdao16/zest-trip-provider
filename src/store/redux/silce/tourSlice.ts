@@ -392,6 +392,50 @@ export const editTicketTour = createAsyncThunk(
     }
   }
 );
+export const editTicketTourId = createAsyncThunk(
+  "tour/editTicketTour", // Slice name: "tour"
+  async (requestDataTicket: any) => {
+    try {
+      const response = await axiosInstance.put(
+        `${BASE_URL}/pricing/update/${requestDataTicket?.id}`,
+        requestDataTicket,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response.status === 200) {
+        return response.data;
+      } else {
+        throw new Error("Failed to create ticket");
+      }
+    } catch (error: any) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        const errorMessages = error.response.data.message;
+
+        if (Array.isArray(errorMessages)) {
+          errorMessages.forEach((errorMessage: string) => {
+            console.log(errorMessage);
+            message.error(errorMessage);
+          });
+        } else if (typeof errorMessages === "string") {
+          console.log(errorMessages);
+          message.error(errorMessages);
+        } else {
+          message.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
+        }
+      } else {
+        message.error("Setup fail!"); // Thông báo đăng nhập thất bại mặc định
+      }
+      throw new Error("Failed to fetch other data");
+    }
+  }
+);
 export const editTicketAvailability = createAsyncThunk(
   "tour/editTicketAvailability", // Slice name: "tour"
   async (requestDataAvai: any) => {
