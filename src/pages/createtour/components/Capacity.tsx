@@ -543,7 +543,7 @@ const Capacity: React.FC = () => {
                   startingTimeCheckBox?.Sat?.length === 0 &&
                   startingTimeCheckBox?.Sun?.length === 0 && (
                     <span className="text-xs text-red-500">
-                      * Choose at least 1
+                      * Choose at least 1 or Choose at least 1 special dates
                     </span>
                   )}
               </div>

@@ -38,7 +38,7 @@ function CreateTourNav() {
     formValues,
     chooseStep,
   } = useStepContext();
-
+  console.log(formValues);
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
   const { setRefeshTour } = useContext(DataContext);
@@ -74,7 +74,6 @@ function CreateTourNav() {
 
     return true;
   }
-  console.log(formValues);
   const isMaxValid = checkMaxForPriceRanges(formValues[6]?.ticket);
   const allDefaultTicketsHavePositivePrice = useMemo(() => {
     return formValues[6]?.ticket?.every((ticket: any) => {
@@ -300,14 +299,24 @@ function CreateTourNav() {
         formValues[3].Location.address_district?.full_name?.length > 0 &&
         formValues[3].Location.address_ward?.full_name?.length > 0
       ) {
-        classSkip = "yes"; // Nếu điều kiện thỏa mãn, thì set thành "yes"
+        classSkip = "yes";
       }
     }
     if (currentStep === 7) {
-      if (formValues[9]?.LocationStart?.length > 0) {
-        classSkip = "yes"; // Nếu điều kiện thỏa mãn, thì set thành "yes"
+      const locationStart = formValues[9]?.LocationStart;
+      if (locationStart?.length > 0) {
+        const hasNonEmptyElement = locationStart.some((item: any) => {
+          return (
+            item.addressLocationStart?.address?.length > 0 &&
+            item.time.length > 0
+          );
+        });
+        if (hasNonEmptyElement) {
+          classSkip = "yes";
+        }
       }
     }
+
     if (currentStep === 8) {
       if (
         formValues[4]?.DurationCheckIn[1]?.length >=
@@ -336,7 +345,8 @@ function CreateTourNav() {
           capacities.Thu.length > 0 ||
           capacities.Fri.length > 0 ||
           capacities.Sat.length > 0 ||
-          capacities.Sun.length > 0) &&
+          capacities.Sun.length > 0 ||
+          capacities?.SingleTime?.length > 0) &&
         capacities.DateFrom.length > 0 &&
         capacities.DateTo.length > 0 &&
         capacities.Title.length > 0

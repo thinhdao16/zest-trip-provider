@@ -6,39 +6,27 @@ import {
 } from "../../../styles/createtour/createtour";
 import { useStepContext } from "../context/ui/useStepContext";
 import React, { useEffect, useState } from "react";
-import {
-  Backdrop,
-  Button,
-  CircularProgress,
-  IconButton,
-  Snackbar,
-} from "@mui/material";
+import { Backdrop, CircularProgress } from "@mui/material";
 
-import { IoMdClose } from "react-icons/io";
-
-import PlacesAutocomplete, {
-  geocodeByAddress,
-  getLatLng,
-} from "react-places-autocomplete";
 import { FaTrash } from "react-icons/fa6";
 
-import { MapContainer, TileLayer, Marker } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, useMap } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import { DivIconOptions, Icon, divIcon, point } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import iconLocation from "../placeholder.png";
 import "./style.css";
+import axios from "axios";
+import { message } from "antd";
 const customIcon = new Icon({
   iconUrl: iconLocation,
   iconSize: [38, 38],
 });
 
 const LocationStart: React.FC = () => {
-  const { currentStep, updateFormValues, formValues } = useStepContext();
-  console.log(formValues);
+  const { currentStep, updateFormValues } = useStepContext();
+  // console.log(formValues);
   //location start
-
-  const [openSnackbar, setOpenSnackbar] = React.useState(false);
   const [openLoading, setOpenLoading] = useState(false);
   const [valueRecommend, setValueRecommend] = useState<any>(null);
   const [valueDate, setValueDate] = useState("");
@@ -51,10 +39,15 @@ const LocationStart: React.FC = () => {
     parseFloat(valueRecommend?.lng || "106.8061656")
   );
 
-  const [departure, setDeparture] = useState<any>([]);
+  const [departure, setDeparture] = useState<any>(
+    [] || ["10.8422931", "106.8061656"]
+  );
+  const [searchQuery, setSearchQuery] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const debounceDelay = 300; // Thời gian trì hoãn (milliseconds)
+  let debounceTimer: any;
 
-  console.log(departure);
-  const [address, setAddress] = useState("");
   useEffect(() => {
     if (addValueLocation) {
       setDeparture((prevData: any) => {
@@ -93,24 +86,104 @@ const LocationStart: React.FC = () => {
     setLat(parseFloat(valueRecommend?.lat || "10.8422931"));
     setLng(parseFloat(valueRecommend?.lng || "106.8061656"));
   }, [valueRecommend]);
+  useEffect(() => {
+    // Update lat, lng when valueRecommend changes
+    setLat(parseFloat(valueRecommend?.lat || "10.8422931"));
+    setLng(parseFloat(valueRecommend?.lng || "106.8061656"));
+  }, [valueRecommend]);
+
+  useEffect(() => {
+    const debounceSearch = () => {
+      if (searchQuery.length > 5) {
+        setLoading(true);
+        const nominatimUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+          searchQuery
+        )}`;
+
+        fetch(nominatimUrl)
+          .then((response) => response.json())
+          .then((data) => {
+            setSuggestions(data);
+            setLoading(false);
+          })
+          .catch((error) => {
+            console.error("Lỗi khi thực hiện yêu cầu Nominatim:", error);
+            setLoading(false);
+          });
+      } else {
+        setSuggestions([]);
+      }
+    };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    debounceTimer = setTimeout(debounceSearch, debounceDelay);
+
+    return () => clearTimeout(debounceTimer);
+  }, [searchQuery]);
+  useEffect(() => {
+    const handleKeyDown = (event: any) => {
+      if (event.key === "Escape") {
+        setSuggestions([]);
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
+  const handleCancelSuggest = () => {
+    setSuggestions([]);
+  };
+
+  const handleInputChanges = async (event: any) => {
+    const addressSearch = event.target.value;
+    setSearchQuery(addressSearch);
+  };
+
+  const handleKeyPress = async (event: any) => {
+    if (event.key === "Enter") {
+      if (searchQuery?.length > 0) {
+        const response = await axios.get(
+          `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+            searchQuery
+          )}`
+        );
+        if (response.data && response.data.length > 0) {
+          const lat = response.data[0].lat;
+          const lng = response.data[0].lon;
+          setValueRecommend({
+            address: searchQuery,
+            lat,
+            lng,
+          });
+        } else {
+          setValueRecommend({
+            address: searchQuery,
+          });
+        }
+      } else {
+        message.warning("Please input departure");
+      }
+    }
+  };
+
+  const handleSuggestionSelect = (selectedSuggestion: any) => {
+    const { lat, lon, display_name } = selectedSuggestion;
+    setValueRecommend({
+      address: display_name,
+      lat,
+      lng: lon,
+      status: "success",
+    });
+  };
+
   if (currentStep !== 7) {
     return null;
   }
 
   const handleTimeChange = (e: any) => {
-    console.log(e.target.value);
     setValueDate(e.target.value);
-  };
-
-  const handleCloseSnackbar = (
-    _event: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    setOpenSnackbar(false);
   };
 
   const handleInputChange = (index: number, field: string, value: string) => {
@@ -136,7 +209,6 @@ const LocationStart: React.FC = () => {
     },
     zoom: 18,
   };
-  console.log(defaultProps);
 
   const createClusterCustomIcon = function (cluster: any) {
     const divIconOptions: DivIconOptions = {
@@ -147,52 +219,18 @@ const LocationStart: React.FC = () => {
     return divIcon(divIconOptions);
   };
 
-  const action = (
-    <React.Fragment>
-      <Button color="secondary" size="small" onClick={handleCloseSnackbar}>
-        UNDO
-      </Button>
-      <IconButton
-        size="small"
-        aria-label="close"
-        color="inherit"
-        onClick={handleCloseSnackbar}
-      >
-        <IoMdClose fontSize="small" />
-      </IconButton>
-    </React.Fragment>
-  );
-  const handleChange = (newAddress: any) => {
-    setAddress(newAddress);
-  };
-
-  const handleSelect = async (newAddress: any) => {
-    try {
-      const results = await geocodeByAddress(newAddress);
-      const latLng = await getLatLng(results[0]);
-
-      const { lat, lng } = latLng;
-
-      console.log("Success", latLng);
-      setValueRecommend({
-        address: newAddress,
-        lat,
-        lng,
-        status: "success",
-      });
-    } catch (error) {
-      console.error("Error", error);
-      setValueRecommend({
-        address: newAddress,
-        status: "error",
-      });
-    }
-  };
   const handleAddlocation = () => {
     setValueDate("");
-    setAddress("");
     setAddValueLocation(false);
+    setSearchQuery("");
   };
+
+  const MapComponent = () => {
+    const map = useMap();
+    map.setView([lat, lng]);
+    return null;
+  };
+
   return (
     <>
       <Backdrop
@@ -203,7 +241,10 @@ const LocationStart: React.FC = () => {
         <CircularProgress color="inherit" />
       </Backdrop>
       <BannerContainer className="global-scrollbar">
-        <div className="flex flex-col items-center justify-center">
+        <div
+          className="flex flex-col items-center justify-center"
+          onClick={handleCancelSuggest}
+        >
           <BannerContent>
             <CreateTitleNullDes variant="h6">
               Where departure point for trip to tour?
@@ -211,13 +252,6 @@ const LocationStart: React.FC = () => {
             <CreateDescription>
               This is the location where your tour departs.
             </CreateDescription>
-            <Snackbar
-              open={openSnackbar}
-              autoHideDuration={6000}
-              onClose={handleCloseSnackbar}
-              message="Address not found yet, please enter another address"
-              action={action}
-            />
 
             <div
               style={{ height: "400px", width: "600px" }}
@@ -233,55 +267,35 @@ const LocationStart: React.FC = () => {
                       onChange={handleTimeChange}
                     />
                   </div>
-
-                  <PlacesAutocomplete
-                    value={address}
-                    onChange={handleChange}
-                    onSelect={handleSelect}
-                    searchOptions={{ types: ["address"] }}
-                  >
-                    {({
-                      getInputProps,
-                      suggestions,
-                      getSuggestionItemProps,
-                      loading,
-                    }) => (
-                      <div className="">
-                        <input
-                          {...getInputProps({
-                            placeholder: "Search Places ...",
-                            className: "location-search-input",
-                          })}
-                          className=" w-full rounded-xl p-4 focus:outline-none focus:rounded-b-none focus:border-b focus:border-solid focus:border-gray-300"
-                        />
-                        <div className="autocomplete-dropdown-container bg-white max-h-56 overflow-auto global-scrollbar rounded-b-xl ">
-                          {loading && <div>Loading...</div>}
-                          {suggestions.map((suggestion: any) => {
-                            const className = suggestion.active
-                              ? "suggestion-item--active"
-                              : "suggestion-item";
-                            return (
-                              <div
-                                {...getSuggestionItemProps(suggestion, {
-                                  className,
-                                })}
-                                className=" px-4 py-3"
-                              >
-                                <span>{suggestion.description}</span>
-                              </div>
-                            );
-                          })}
-                        </div>
+                  <div>
+                    <div className="">
+                      <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={handleInputChanges}
+                        onKeyDown={handleKeyPress}
+                        className="w-full rounded-xl p-4 focus:outline-none focus:rounded-b-none focus:border-b focus:border-solid focus:border-gray-300"
+                      />
+                      <div className="autocomplete-dropdown-container bg-white max-h-56 overflow-auto global-scrollbar rounded-b-xl ">
+                        {loading && <div>Loading...</div>}
+                        {suggestions.map((suggestion: any, index) => {
+                          return (
+                            <div
+                              key={index}
+                              onClick={() => handleSuggestionSelect(suggestion)}
+                              className=" px-4 py-3"
+                            >
+                              <span>{suggestion.display_name}</span>
+                            </div>
+                          );
+                        })}
                       </div>
-                    )}
-                  </PlacesAutocomplete>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              <MapContainer
-                center={[defaultProps?.center?.lat, defaultProps?.center?.lng]}
-                zoom={defaultProps?.zoom}
-              >
+              <MapContainer center={[lat, lng]} zoom={8}>
                 <TileLayer
                   attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -291,19 +305,31 @@ const LocationStart: React.FC = () => {
                   chunkedLoading
                   iconCreateFunction={createClusterCustomIcon}
                 >
-                  {/* {markers.map((marker, index) => ( */}
-                  <Marker
-                    // key={index}
-                    position={[
-                      defaultProps?.center?.lat,
-                      defaultProps?.center?.lng,
-                    ]}
-                    icon={customIcon}
-                  >
-                    {/* <Popup>{marker.popUp}</Popup> */}
-                  </Marker>
-                  {/* ))} */}
+                  {departure?.[0]?.addressLocationStart !== null ? (
+                    <>
+                      {departure?.map((coordinate: any) => (
+                        <Marker
+                          position={[
+                            coordinate?.addressLocationStart?.lat,
+                            coordinate?.addressLocationStart?.lng,
+                          ]}
+                          icon={customIcon}
+                        ></Marker>
+                      ))}
+                    </>
+                  ) : (
+                    <Marker
+                      position={[
+                        defaultProps?.center?.lat,
+                        defaultProps?.center?.lng,
+                      ]}
+                      icon={customIcon}
+                    >
+                      đâs
+                    </Marker>
+                  )}
                 </MarkerClusterGroup>
+                <MapComponent />
               </MapContainer>
             </div>
             <div className="flex flex-col gap-2 mt-5">

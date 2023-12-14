@@ -4,4 +4,5 @@
   width: 600px; /* Đặt chiều rộng mong muốn */
   margin-top: 10px;
   z-index: 1;
+  object-fit: cover;
 }

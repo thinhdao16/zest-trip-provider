@@ -169,13 +169,13 @@ const ModalTicketAdult = ({
                 <div className="flex flex-col gap-4 min-h-[20vh] max-h-[80vh] overflow-auto global-scrollbar py-16 p-4">
                   {ticketPricing?.map((ticket: any, ticketIndex: number) => (
                     <div key={ticketIndex} className="flex flex-col">
-                      <div className="flex gap-3">
+                      <div className="flex gap-3 items-start">
                         <div className="flex flex-col gap-1">
                           <span className="font-medium">Ticket name</span>
                           <input
                             type="text"
                             disabled
-                            className="px-2 py-1 border border-gray-300 rounded-lg"
+                            className="px-2 py-1 border border-gray-300 rounded-md"
                             value={ticket?.Ticket?.name}
                             onChange={(e) =>
                               updateType(ticketIndex, e.target.value, "Ticket")
@@ -187,7 +187,7 @@ const ModalTicketAdult = ({
                           <input
                             disabled
                             type="text"
-                            className="px-2 py-1 border border-gray-300 rounded-lg"
+                            className="px-2 py-1 border border-gray-300 rounded-md"
                             value={ticket?.PricingType?.name}
                             onChange={(e) =>
                               updateType(
@@ -198,6 +198,13 @@ const ModalTicketAdult = ({
                             }
                           />
                         </div>
+                        {ticket?.is_default === false && (
+                          <>
+                            <span className="text-lg font-medium text-red-700">
+                              Special
+                            </span>
+                          </>
+                        )}
                       </div>
                       <div className="flex gap-3">
                         <div className="flex flex-col gap-1">
@@ -215,7 +222,7 @@ const ModalTicketAdult = ({
                           <input
                             type="text"
                             placeholder="max"
-                            className="px-2 py-1 border border-gray-300 rounded-lg"
+                            className="px-2 py-1 border border-gray-300 rounded-md"
                             value={ticket?.maximum_ticket_count}
                             onChange={(e) =>
                               updateScript(
@@ -232,7 +239,7 @@ const ModalTicketAdult = ({
                             disabled
                             type="text"
                             placeholder="min"
-                            className="px-2 py-1 border border-gray-300 rounded-lg"
+                            className="px-2 py-1 border border-gray-300 rounded-md"
                             value={ticket?.minimum_booking_quantity}
                             onChange={(e) =>
                               updateScript(
@@ -256,7 +263,7 @@ const ModalTicketAdult = ({
                                 type="text"
                                 placeholder="min"
                                 disabled
-                                className="px-2 py-1 border border-gray-300 rounded-lg w-20"
+                                className="px-2 py-1 border border-gray-300 rounded-md w-20"
                                 value={price?.from_amount}
                                 onChange={(e) =>
                                   handleUpdatePrice(
@@ -282,7 +289,7 @@ const ModalTicketAdult = ({
                               <input
                                 type="text"
                                 placeholder="min"
-                                className="px-2 py-1 border border-gray-300 rounded-lg"
+                                className="px-2 py-1 border border-gray-300 rounded-md"
                                 value={price.to_amount || ""}
                                 onChange={(e) => {
                                   const toAmount = parseInt(e.target.value, 10);
@@ -314,7 +321,7 @@ const ModalTicketAdult = ({
                               <input
                                 type="text"
                                 placeholder="min"
-                                className="px-2 py-1 border border-gray-300 rounded-lg"
+                                className="px-2 py-1 border border-gray-300 rounded-md"
                                 value={price?.price}
                                 onChange={(e) =>
                                   handleUpdatePrice(
@@ -338,7 +345,7 @@ const ModalTicketAdult = ({
                       )}
                       <div className="flex justify-end mt-3">
                         <button
-                          className="bg-black px-2 py-1 text-white rounded-lg"
+                          className="bg-black px-2 py-1 text-white rounded-md"
                           onClick={() => {
                             const maxToAmount = getMaxToAmount(ticket);
                             handleAddDetail(ticketIndex, {
@@ -351,6 +358,7 @@ const ModalTicketAdult = ({
                           Add Price
                         </button>
                       </div>
+                      <hr className="bg-black mt-4" />
                     </div>
                   ))}
                 </div>
@@ -361,13 +369,13 @@ const ModalTicketAdult = ({
                 style={{ marginBottom: "-1px    " }}
               >
                 <button
-                  className="px-6 py-2 bg-gray-300 rounded-lg text-gray-600 font-medium"
+                  className="px-6 py-2 bg-gray-300 rounded-md text-gray-600 font-medium"
                   onClick={handleCloseCancel}
                 >
                   Cancel
                 </button>
                 <button
-                  className="px-6 py-2 bg-navy-blue rounded-lg text-white font-medium"
+                  className="px-6 py-2 bg-navy-blue rounded-md text-white font-medium"
                   onClick={handleCloseUpdate}
                 >
                   Update

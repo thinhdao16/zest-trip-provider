@@ -8,7 +8,7 @@ import {
   editContentTour,
   editStatusTour,
   editTicketAvailability,
-  editTicketTour,
+  editTicketTourId,
   postCreateAvailabilityTour,
 } from "../../../store/redux/silce/tourSlice";
 import dayjs from "dayjs";
@@ -81,6 +81,7 @@ function NavBar() {
 
     const pricing_data = ticketPricing?.map((item: any) => {
       const pricingData: any = {
+        id: item?.id,
         ticket_type: item?.Ticket?.name,
         pricing_type: item?.PricingType?.name,
         maximum_ticket_count: parseInt(item?.maximum_ticket_count),
@@ -88,9 +89,9 @@ function NavBar() {
         minimum_booking_quantity: 1,
         from_age: item?.from_age?.toString(),
         to_age: item?.to_age?.toString(),
-        // is_default: false,
+        is_default: item?.is_default,
+        apply_dates: item?.apply_dates,
       };
-      console.log(pricingData);
       if (item.price_range) {
         pricingData.price_range = item.price_range.map((formItem: any) => ({
           from_amount: parseInt(formItem.from_amount),
@@ -101,10 +102,7 @@ function NavBar() {
 
       return pricingData;
     });
-    const dataUpdateTicket = {
-      tour_id: tourDetail?.id,
-      pricing_data,
-    };
+
     const dataUpdateStatus = {
       tour_id: tourDetail?.id,
       status: statusTour,
@@ -190,7 +188,13 @@ function NavBar() {
         setRefreshTourDetail((prev) => !prev);
       }
     });
-    dispatch(editTicketTour(dataUpdateTicket));
+    pricing_data?.map((pricingData: any) =>
+      dispatch(editTicketTourId(pricingData)).then((ticket) => {
+        if (editTicketTourId.fulfilled.match(ticket)) {
+          setRefreshTourDetail((prev) => !prev);
+        }
+      })
+    );
     dispatch(editStatusTour(dataUpdateStatus));
     if (imageSrc?.length > 0) {
       dispatch(addTourImage(allFormImg));

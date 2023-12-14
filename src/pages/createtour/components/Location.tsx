@@ -15,15 +15,8 @@ import { FaStaylinked } from "react-icons/fa6";
 import { ElementCheckInput } from "../../../utils/ElementCheckInput";
 
 import { MapContainer, TileLayer, Marker } from "react-leaflet";
-import MarkerClusterGroup from "react-leaflet-cluster";
-import { DivIconOptions, Icon, divIcon, point } from "leaflet";
 import "leaflet/dist/leaflet.css";
-import iconLocation from "../placeholder.png";
 import "./style.css";
-const customIcon = new Icon({
-  iconUrl: iconLocation,
-  iconSize: [38, 38],
-});
 
 const Location: React.FC = () => {
   const { currentStep, updateFormValues, formValues } = useStepContext();
@@ -57,10 +50,13 @@ const Location: React.FC = () => {
   const [lat, setLat] = useState(
     parseFloat(coordinates?.latitude || "10.8422931")
   );
-
   const [lng, setLng] = useState(
     parseFloat(coordinates?.longitude || "106.8061656")
   );
+
+  const [mapCenter, setMapCenter] = useState<any>([lat, lng]);
+
+  const [key, setKey] = useState(0);
 
   useEffect(() => {
     axios
@@ -86,30 +82,27 @@ const Location: React.FC = () => {
       },
     });
   }, [addressName, addPro, addWard, addDis, selectedData]);
+  useEffect(() => {
+    if (coordinates) {
+      setLat(parseFloat(coordinates?.latitude));
+      setLng(parseFloat(coordinates?.longitude));
+    }
+  }, [coordinates]);
 
-  const apiKey = "AIzaSyDKm7Jq04yAY0uFMM2GrcDDY-39lEez9e4";
   useEffect(() => {
     const fetchData = async () => {
       try {
         if (inputCompleted) {
           const addressSearch = `${addressName}, ${addWard?.full_name}, ${addDis?.full_name}, ${addPro?.full_name}, Việt Nam`;
           const response = await axios.get(
-            `https://maps.googleapis.com/maps/api/geocode/json?key=${apiKey}&address=${encodeURIComponent(
+            `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
               addressSearch
-            )}&sensor=flase`
+            )}`
           );
           console.log(response);
-          // Check if there is a valid result in the response
-          if (
-            response.data &&
-            response.data.results &&
-            response.data.results.length > 0 &&
-            response.data.results[0].geometry &&
-            response.data.results[0].geometry.location
-          ) {
-            const { lat, lng } = response.data.results[0].geometry.location;
-
-            // Set coordinates
+          if (response.data) {
+            const lat = response.data[0].lat;
+            const lng = response.data[0].lon;
             setCoordinates({
               latitude: lat,
               longitude: lng,
@@ -122,18 +115,17 @@ const Location: React.FC = () => {
     };
 
     fetchData();
-  }, [
-    addDis?.full_name,
-    addPro?.full_name,
-    addWard?.full_name,
-    addressName,
-    inputCompleted,
-  ]);
+  }, [inputCompleted]);
 
   useEffect(() => {
     setLat(parseFloat(coordinates?.latitude || "10.8422931"));
     setLng(parseFloat(coordinates?.longitude || "106.8061656"));
   }, [coordinates]);
+
+  useEffect(() => {
+    setMapCenter([lat, lng]);
+    setKey((prevKey) => prevKey + 1);
+  }, [lat, lng]);
 
   const handleFormChange = (value: string) => {
     setAddressName(value);
@@ -174,32 +166,11 @@ const Location: React.FC = () => {
   };
   const handleInputBlur = () => {
     setInputCompleted(true);
-    // Lưu trạng thái khi input đã nhập xong và thoát khỏi focus
   };
 
-  ElementCheckInput;
-
-  const defaultProps = {
-    center: {
-      lat: lat,
-      lng: lng,
-    },
-    zoom: 18,
-  };
-  console.log(defaultProps);
   if (currentStep !== 6) {
     return null;
   }
-
-  const createClusterCustomIcon = function (cluster: any) {
-    const divIconOptions: DivIconOptions = {
-      html: `<span class="cluster-icon">${cluster.getChildCount()}</span>`,
-      className: "custom-marker-cluster",
-      iconSize: point(33, 33, true),
-    };
-    return divIcon(divIconOptions);
-  };
-
   return (
     <BannerContainer className="global-scrollbar">
       <div className="flex flex-col items-center justify-center">
@@ -469,33 +440,12 @@ const Location: React.FC = () => {
                 </div>
               </div>
               <div className="bg-white">
-                <MapContainer
-                  center={[
-                    defaultProps?.center?.lat,
-                    defaultProps?.center?.lng,
-                  ]}
-                  zoom={defaultProps?.zoom}
-                >
+                <MapContainer key={key} center={mapCenter} zoom={15}>
                   <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                   />
-
-                  <MarkerClusterGroup
-                    chunkedLoading
-                    iconCreateFunction={createClusterCustomIcon}
-                  >
-                    {/* {markers.map((marker, index) => ( */}
-                    <Marker
-                      // key={index}
-                      position={[
-                        defaultProps?.center?.lat,
-                        defaultProps?.center?.lng,
-                      ]}
-                      icon={customIcon}
-                    ></Marker>
-                    {/* ))} */}
-                  </MarkerClusterGroup>
+                  <Marker position={mapCenter}></Marker>
                 </MapContainer>
               </div>
             </div>
