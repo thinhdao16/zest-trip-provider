@@ -51,6 +51,7 @@ const Capacity: React.FC = () => {
     Sun: [],
     Single: [],
   });
+
   const [startingTimeSingle, setStartingTimeSingle] = useState<any>([]);
 
   function formatTimeToHourAndMinute(date: any) {
@@ -541,7 +542,8 @@ const Capacity: React.FC = () => {
                   startingTimeCheckBox?.Thu?.length === 0 &&
                   startingTimeCheckBox?.Fri?.length === 0 &&
                   startingTimeCheckBox?.Sat?.length === 0 &&
-                  startingTimeCheckBox?.Sun?.length === 0 && (
+                  startingTimeCheckBox?.Sun?.length === 0 &&
+                  startingTimeSingle?.length === 0 && (
                     <span className="text-xs text-red-500">
                       * Choose at least 1 or Choose at least 1 special dates
                     </span>
