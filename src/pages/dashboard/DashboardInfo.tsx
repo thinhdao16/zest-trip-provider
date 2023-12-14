@@ -9,7 +9,7 @@ import "dayjs/locale/en";
 import dayjs from "dayjs";
 import LoadingFullScreen from "../../styles/loading/LoadingFullScreen";
 import SliceEmailToName from "../../utils/SliceEmailToName";
-import { Dropdown, Space } from "antd";
+import { Dropdown, Space, message } from "antd";
 import { IoChevronDown, IoPersonOutline } from "react-icons/io5";
 import { IoIosLogOut } from "react-icons/io";
 function DashboardInfo() {
@@ -24,6 +24,7 @@ function DashboardInfo() {
   const email = personalInfo?.email;
 
   const handleLogOut = () => {
+    message.success("Goodbye!");
     localStorage.clear();
     navigation("/login");
   };

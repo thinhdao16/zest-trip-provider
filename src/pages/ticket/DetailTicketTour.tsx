@@ -33,7 +33,6 @@ function DetailTicketTour() {
 
   const { loadingCreateTour } = useSelector((state: any) => state.tour);
   const tourDetail: any = useSelector((state: any) => state.tour.tourGetDetail);
-  console.log(tourDetail);
   const quantityTicketTrue = tourDetail?.TicketPricing?.filter(
     (ticket: { is_default: boolean }) => ticket.is_default === true
   );

@@ -71,7 +71,7 @@ export default function ModalCreateTicketSpecial() {
       </button>
       <Modal
         className="top-10"
-        title="Ticket pricing"
+        title="Ticket special "
         open={open}
         onCancel={() => handleClose()}
         width={1450}

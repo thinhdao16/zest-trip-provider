@@ -36,7 +36,6 @@ const ModalTicketAdult = ({
   useEffect(() => {
     setTicketData(filterTickets);
   }, [filterTickets]);
-  console.log(ticketData);
   const [open, setOpen] = useState(false);
   const [reloadNumber, setReloadNumber] = useState(0);
 

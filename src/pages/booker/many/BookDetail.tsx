@@ -136,7 +136,6 @@ function BookDetail() {
   const availableBookedDates = bookedDates?.filter(
     (bookedDate: any) => !availabilityDates?.includes(bookedDate)
   );
-  console.log(availableBookedDates);
   const [dateAvailability, setDateAvailability] = useState([
     ...allDates,
     ...allSingleDates,
@@ -147,7 +146,6 @@ function BookDetail() {
     const commonDates = dateAvailability.filter((date) =>
       book_date_fil.includes(date)
     );
-    setDateBookDontAvai(availableBookedDates);
     setDateAvailability([...commonDates, ...availableBookedDates]);
     setOpenField(true);
     setFieldBlock("normal");
@@ -169,9 +167,13 @@ function BookDetail() {
         dateChoose.includes(dayjs(booking.booked_date).format("YYYY-MM-DD"))
       );
     }
-    setDateAvailability([...allDates, ...allSingleDates, ...availabilityDates]);
     setFilteredBookings(filtered);
+    setDateBookDontAvai(availableBookedDates);
   }, [bookingDetail, selectedStatus, dateChoose, loading]);
+
+  useEffect(() => {
+    setDateAvailability([...allDates, ...allSingleDates, ...availabilityDates]);
+  }, [bookingDetail]);
 
   useEffect(() => {
     if (index) {
@@ -183,7 +185,6 @@ function BookDetail() {
     // Code xử lý sau khi reloadStatus thay đổi
     console.log("reloadStatus changed:", reloadStatus);
   }, [reloadStatus]);
-  console.log(reloadStatus);
   const availabilityIndex = 0;
 
   const handleAddSingleDate = (_index: number, selectedDate: any) => {
@@ -251,10 +252,22 @@ function BookDetail() {
     setFieldBlock("unBlock");
   };
   const handleContinueUnBlock = () => {
-    if (dateChooseUnclock.length > 0) {
-      setOpenModalUnblock(true);
+    const currentDate = new Date();
+    const isAnyDateBeforeCurrent = dateChooseUnclock?.some(
+      (selectedDate: any) => {
+        const chosenDate = new Date(selectedDate);
+        return chosenDate < currentDate;
+      }
+    );
+
+    if (isAnyDateBeforeCurrent) {
+      message.warning("There is at least one date before the current date");
     } else {
-      message.warning("Please choose day to unblock");
+      if (dateChooseUnclock.length > 0) {
+        setOpenModalUnblock(true);
+      } else {
+        message.warning("Please choose day to unblock");
+      }
     }
   };
   const handleClock = () => {
@@ -266,18 +279,27 @@ function BookDetail() {
     setFieldCancel("cancel");
   };
   const handleContinueCancel = () => {
+    const currentDate = new Date();
+    const isAnyDateBeforeCurrent = dateChoose.some((selectedDate: any) => {
+      const chosenDate = new Date(selectedDate);
+      return chosenDate < currentDate;
+    });
     const formattedBlockedDates = tourDetail?.blocked_dates.map((date: any) =>
       dayjs(date).format("YYYY-MM-DD")
     );
     const isDateBlocked = dateChoose?.some((date: any) =>
       formattedBlockedDates.includes(date)
     );
-    if (dateChoose.length === 1 && !isDateBlocked) {
-      setOpenModalCancel(true);
+    if (isAnyDateBeforeCurrent) {
+      message.warning("There is at least one date before the current date");
     } else {
-      message.warning(
-        "Please choose 1 day for cancel and dont choose date blocked"
-      );
+      if (dateChoose.length === 1 && !isDateBlocked) {
+        setOpenModalCancel(true);
+      } else {
+        message.warning(
+          "Please choose 1 day for cancel and dont choose date blocked"
+        );
+      }
     }
   };
   const handleCancalCancel = () => {
@@ -288,16 +310,27 @@ function BookDetail() {
     setFieldBlockTour("blockTour");
   };
   const handleContinueBlockTour = () => {
+    const currentDate = new Date();
+    const isAnyDateBeforeCurrent = dateChoose.some((selectedDate: any) => {
+      const chosenDate = new Date(selectedDate);
+      return chosenDate < currentDate;
+    });
+
     const formattedBlockedDates = tourDetail?.blocked_dates.map((date: any) =>
       dayjs(date).format("YYYY-MM-DD")
     );
     const isDateBlocked = dateChoose?.some((date: any) =>
       formattedBlockedDates.includes(date)
     );
-    if (dateChoose.length > 0 && !isDateBlocked) {
-      setOpenModalBlock(true);
+
+    if (isAnyDateBeforeCurrent) {
+      message.warning("There is at least one date before the current date");
     } else {
-      message.warning("Please choose day and dont choose  date blocked");
+      if (dateChoose.length > 0 && !isDateBlocked) {
+        setOpenModalBlock(true);
+      } else {
+        message.warning("Please choose day and dont choose  date blocked");
+      }
     }
   };
   const handleCanelBlockTour = () => {
@@ -311,6 +344,10 @@ function BookDetail() {
     setDateChooseUnclock([]);
     setFieldBlock("normal");
     setFieldCancel("normal");
+    setFieldBlockTour("normal");
+    setFieldCancel("normal");
+    setFieldBlock("normal");
+    setOpenField(false);
   };
   const handleToday = () => {
     setValueSelectCalendar(new Date());

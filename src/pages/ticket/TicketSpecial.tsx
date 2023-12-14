@@ -291,7 +291,6 @@ function TicketSpecial() {
     console.log(countryCode);
     setSelectedCountries([]);
   };
-  console.log(dataTicket);
   //select age
   const [quantityDefault, setQuantityDefault] = useState({
     max: 2,
@@ -841,7 +840,7 @@ function TicketSpecial() {
                   onClick={() => handleDeleteCountry("")}
                 />
                 <div className="flex items-center gap-1">
-                  <p className="font-medium text-lg">Default Ticket</p>
+                  <p className="font-medium text-lg">Ticket Children</p>
                 </div>
 
                 <div className="grid md:grid-cols-12">
@@ -1021,7 +1020,7 @@ function TicketSpecial() {
                   onClick={() => handleDeleteCountry("default")}
                 />
                 <div className="flex items-center gap-1">
-                  <p className="font-medium text-lg">Default Ticket</p>
+                  <p className="font-medium text-lg">Ticket Adult</p>
                 </div>
 
                 <div className="grid md:grid-cols-12">

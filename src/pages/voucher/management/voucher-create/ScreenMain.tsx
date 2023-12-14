@@ -119,10 +119,20 @@ function ScreenMain() {
                 <div className="relative">
                   <MdDiscount className="absolute top-3 left-3 " />
                   <input
-                    className="border border-gray-300 rounded-lg py-2 px-8 w-full"
-                    defaultValue={createDiscount}
-                    onChange={(e) => setCreateDiscount(e.target.value)}
-                    type="text"
+                    className="border border-gray-300 rounded-lg py-2 pl-8 w-full"
+                    value={createDiscount}
+                    onChange={(e) => {
+                      const inputValue = e.target.value;
+                      if (
+                        createDiscountType === "PERCENT" &&
+                        parseInt(inputValue, 10) > 100
+                      ) {
+                        setCreateDiscount("100");
+                      } else {
+                        setCreateDiscount(inputValue);
+                      }
+                    }}
+                    type="number"
                   />
                 </div>
               </div>{" "}
@@ -149,10 +159,10 @@ function ScreenMain() {
                 <div className="relative">
                   <MdProductionQuantityLimits className="absolute top-3 left-3 " />
                   <input
-                    className="border border-gray-300 rounded-lg py-2 px-8 w-full"
+                    className="border border-gray-300 rounded-lg py-2 pl-8 w-full"
                     defaultValue={createquantity}
                     onChange={(e) => setCreatequantity(e.target.value)}
-                    type="text"
+                    type="number"
                   />
                 </div>
               </div>
@@ -195,7 +205,7 @@ function ScreenMain() {
                       className=" rounded-lg py-2 px-8 bg-white border border-gray-300 border-solid w-full shadow-custom-card-mui"
                     >
                       <option value="">Choose type</option>
-                      <option value="minimum_price">Minimum_price</option>
+                      <option value="minimum_price">Minimum price</option>
                     </select>
                   </div>
                 </div>
@@ -204,10 +214,10 @@ function ScreenMain() {
                   <div className="relative">
                     <MdTitle className="absolute top-3 left-3 " />
                     <input
-                      className="border border-gray-300 rounded-lg py-2 px-8 w-full"
+                      className="border border-gray-300 rounded-lg py-2 pl-8 w-full"
                       defaultValue={createApplyCondition.value}
                       onChange={(e) => handleChange("value", e.target.value)}
-                      type="text"
+                      type="number"
                     />
                   </div>
                 </div>

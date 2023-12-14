@@ -185,13 +185,19 @@ const LocationStart: React.FC = () => {
   const handleTimeChange = (e: any) => {
     setValueDate(e.target.value);
   };
-
   const handleInputChange = (index: number, field: string, value: string) => {
-    setDeparture((prevDeparture: any) => {
-      const updatedDeparture = [...prevDeparture];
-      updatedDeparture[index][field] = value;
-      return updatedDeparture;
-    });
+    const fieldNull = departure?.filter(
+      (value: any) => value?.addressLocationStart === null
+    );
+    if (fieldNull?.length > 0) {
+      message.warning("Please enter a valid");
+    } else {
+      setDeparture((prevDeparture: any) => {
+        const updatedDeparture = [...prevDeparture];
+        updatedDeparture[index][field] = value;
+        return updatedDeparture;
+      });
+    }
   };
 
   const handleDeleteDeparture = (index: number) => {

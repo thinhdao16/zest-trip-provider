@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { CiWallet } from "react-icons/ci";
 import { formatNumber } from "../../utils/formatNumber";
 import { Link, useNavigate } from "react-router-dom";
-import { Dropdown, Space } from "antd";
+import { Dropdown, Space, message } from "antd";
 import { IoChevronDown, IoPersonOutline } from "react-icons/io5";
 import { IoIosLogOut } from "react-icons/io";
 
@@ -17,6 +17,7 @@ function Index(): JSX.Element {
   const personalInfo = useSelector((state: any) => state.auth.personalInfo);
 
   const handleLogOut = () => {
+    message.success("Goodbye!");
     localStorage.clear();
     navigation("/login");
   };

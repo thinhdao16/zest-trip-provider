@@ -20,7 +20,6 @@ export default function ModalBlockBooking({
   const { index } = useParams();
   const dispatch: AppDispatch = useDispatch();
   const [openConfirm, setOpenConfirm] = React.useState(false);
-  console.log(openConfirm);
   const { setLoading } = React.useContext(DataContext);
   const handleClose = () => {
     setOpenMoal(false);

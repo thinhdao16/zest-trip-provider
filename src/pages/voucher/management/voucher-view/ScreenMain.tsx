@@ -156,10 +156,22 @@ function ScreenMain() {
                 <div className="relative">
                   <MdDiscount className="absolute top-3 left-3 " />
                   <input
-                    className="border border-gray-300 rounded-lg py-2 px-8 w-full"
+                    className="border border-gray-300 rounded-lg py-2 pl-8 w-full"
                     defaultValue={createDiscountEdit}
-                    onChange={(e) => setCreateDiscountEdit(e.target.value)}
-                    type="text"
+                    // onChange={(e) => setCreateDiscountEdit(e.target.value)}
+                    // type="text"
+                    onChange={(e) => {
+                      const inputValue = e.target.value;
+                      if (
+                        createDiscountTypeEdit === "PERCENT" &&
+                        parseInt(inputValue, 10) > 100
+                      ) {
+                        setCreateDiscountEdit("100");
+                      } else {
+                        setCreateDiscountEdit(inputValue);
+                      }
+                    }}
+                    type="number"
                   />
                 </div>
               </div>{" "}

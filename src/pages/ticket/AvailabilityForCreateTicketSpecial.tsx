@@ -82,14 +82,10 @@ function AvailabilityForCreateTicketSpecial() {
         );
       })
     : [];
-
-  const allSingleDates = bookingDetail
-    ?.flatMap((tour: any) =>
-      tour?.BookingOnTour?.TourAvailability?.flatMap((availability: any) =>
-        availability?.special_dates?.map((specialDate: any) => specialDate.date)
-      )
-    )
-    ?.filter((date: any) => date !== undefined);
+  const allSingleDates = tourDetail?.TourAvailability?.flatMap(
+    (availability: any) =>
+      availability?.special_dates?.map((specialDate: any) => specialDate.date)
+  )?.filter((date: any) => date !== undefined);
   const [dateAvailability, setDateAvailability] = useState([
     ...allDates,
     ...allSingleDates,
