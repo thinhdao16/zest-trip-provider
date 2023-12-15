@@ -6,7 +6,10 @@ import { useSelector } from "react-redux";
 import { Rating } from "@mui/material";
 import { IoHomeOutline, IoTrash } from "react-icons/io5";
 import { AppDispatch } from "../../store/redux/store";
-import { getBookingDetail } from "../../store/redux/silce/booking";
+import {
+  getBookingDetail,
+  getTicketQuantity,
+} from "../../store/redux/silce/booking";
 import {
   deleteTicket,
   fetchTourDetail,
@@ -32,6 +35,8 @@ function DetailTicketTour() {
     useContext(DataContext);
 
   const { loadingCreateTour } = useSelector((state: any) => state.tour);
+  const { ticketQuantity } = useSelector((state: any) => state.booking);
+  console.log(ticketQuantity);
   const tourDetail: any = useSelector((state: any) => state.tour.tourGetDetail);
   const quantityTicketTrue = tourDetail?.TicketPricing?.filter(
     (ticket: { is_default: boolean }) => ticket.is_default === true
@@ -40,7 +45,6 @@ function DetailTicketTour() {
   const [selectedStatus, setSelectedStatus] = useState("");
 
   const handleStatusClick = (status: any) => {
-    console.log(status);
     setSelectedStatus(status);
   };
 
@@ -55,6 +59,7 @@ function DetailTicketTour() {
     if (index) {
       dispatch(getBookingDetail(index));
       dispatch(fetchTourDetail(index));
+      dispatch(getTicketQuantity(index));
     }
   }, [dispatch, index, loadingCreateTour, refreshTourDetail, reloadStatus]);
   useEffect(() => {
@@ -194,7 +199,39 @@ function DetailTicketTour() {
                 </div>
               </div>
             </div>
-            <div></div>
+            <div className="p-4">
+              <div className="p-3 rounded-lg bg-navy-blue grid grid-cols-7 shadow-custom-card-mui">
+                <span className="font-medium text-white">Date</span>
+                <span className="font-medium text-white">Adult left</span>{" "}
+                <span className="font-medium text-white">Children left</span>{" "}
+                <span className="font-medium text-white">Adult max</span>{" "}
+                <span className="font-medium text-white">Children max</span>{" "}
+                <span className="font-medium text-white">Adult book</span>{" "}
+                <span className="font-medium text-white">Children book</span>
+              </div>
+              <div className=" mt-3 flex flex-col gap-2 ">
+                {ticketQuantity && ticketQuantity.length > 0 ? (
+                  ticketQuantity.map((ticket: any, index: number) => (
+                    <div
+                      className="grid grid-cols-7 px-3 py-6 rounded-lg bg-white shadow-custom-card-mui"
+                      key={index}
+                    >
+                      <span>{dayjs(ticket?.date).format("YYYY-MM-DD")}</span>
+                      <span>{ticket?.adult_left}</span>
+                      <span>{ticket?.children_left}</span>
+                      <span>{ticket?.adult_max}</span>
+                      <span>{ticket?.children_max}</span>
+                      <span>{ticket?.booked_adult}</span>
+                      <span>{ticket?.booked_children}</span>
+                    </div>
+                  ))
+                ) : (
+                  <p className="px-3 py-6 rounded-lg bg-white shadow-custom-card-mui text-center">
+                    No ticket information available.
+                  </p>
+                )}
+              </div>
+            </div>
 
             <div className=" p-4 flex flex-col gap-3">
               {filterTickets && filterTickets?.length > 0 ? (

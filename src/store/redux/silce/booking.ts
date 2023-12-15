@@ -7,6 +7,7 @@ const initialState = {
   bookingDetail: [],
   loadingBooking: false,
   errorBooking: null as string | null,
+  ticketQuantity: [],
 };
 
 export const getBooking = createAsyncThunk(
@@ -292,14 +293,27 @@ export const unBlockTour = createAsyncThunk(
     }
   }
 );
+
+export const getTicketQuantity = createAsyncThunk(
+  "booking/getTicketQuantity",
+  async (data: any) => {
+    try {
+      const response = await axiosInstance.get(
+        `${BASE_URL}/booking/check-all-ticket-date/${data}`
+      );
+      if (response.status === 200) {
+        return response.data.data;
+      }
+    } catch (error: any) {
+      throw new Error("Failed to fetch other data");
+    }
+  }
+);
+
 const bookingSice = createSlice({
   name: "booking",
   initialState,
-  reducers: {
-    // profileProvider: (state, action) => {
-    //   state.booking = action.payload;
-    // },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getBooking.pending, (state) => {
@@ -365,7 +379,6 @@ const bookingSice = createSlice({
         state.loadingBooking = false;
         state.error = action.error.message;
       })
-
       .addCase(blockTour.pending, (state) => {
         state.loadingBooking = true;
         state.errorBooking = null;
@@ -375,6 +388,19 @@ const bookingSice = createSlice({
         state.errorBooking = null;
       })
       .addCase(blockTour.rejected, (state: any, action) => {
+        state.loadingBooking = false;
+        state.error = action.error.message;
+      })
+      .addCase(getTicketQuantity.pending, (state) => {
+        state.loadingBooking = true;
+        state.errorBooking = null;
+      })
+      .addCase(getTicketQuantity.fulfilled, (state, action) => {
+        state.loadingBooking = false;
+        state.ticketQuantity = action.payload;
+        state.errorBooking = null;
+      })
+      .addCase(getTicketQuantity.rejected, (state: any, action) => {
         state.loadingBooking = false;
         state.error = action.error.message;
       });

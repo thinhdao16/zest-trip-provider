@@ -463,9 +463,7 @@ function Review() {
                           ))
                         ) : (
                           <div className=" flex items-center justify-center p-6">
-                            <span className="bg-main border border-solid border-gray-300 p-2 rounded-lg shadow-custom-card-mui">
-                              No review tour
-                            </span>
+                            <span className="font-medium">No review tour</span>
                           </div>
                         )}
                       </div>

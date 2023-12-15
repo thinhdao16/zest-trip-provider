@@ -24,6 +24,7 @@ import { BsFiletypeAac } from "react-icons/bs";
 import { ConstructionTitletext } from "../voucher-create/voucher-create-const/Construction";
 import AutoResizableTextarea from "../voucher-create/voucher-create-const/AutoResizableTextarea";
 import { VehicleTag } from "../../../../components/icon/tour/vehicle";
+import { formatNumberWithCommas } from "../../../../utils/formatNumberFor";
 
 function ScreenMain() {
   const dispatch: AppDispatch = useDispatch();
@@ -54,7 +55,6 @@ function ScreenMain() {
     const parse = JSON.parse(getVoucherDetail || "{}"); // Provide a default empty object if null
     return parse;
   }, []);
-
   const { tours } = useSelector((state: any) => state.tour);
   const handleChange = (field: string, value: string) => {
     setCreateApplyConditionEdit((prevState: any) => ({
@@ -157,21 +157,21 @@ function ScreenMain() {
                   <MdDiscount className="absolute top-3 left-3 " />
                   <input
                     className="border border-gray-300 rounded-lg py-2 pl-8 w-full"
-                    defaultValue={createDiscountEdit}
-                    // onChange={(e) => setCreateDiscountEdit(e.target.value)}
-                    // type="text"
+                    value={formatNumberWithCommas(createDiscountEdit)}
+                    type="text"
                     onChange={(e) => {
                       const inputValue = e.target.value;
+                      const newValue = e.target.value.replace(/,/g, "");
+
                       if (
                         createDiscountTypeEdit === "PERCENT" &&
-                        parseInt(inputValue, 10) > 100
+                        parseInt(newValue, 10) > 100
                       ) {
                         setCreateDiscountEdit("100");
                       } else {
                         setCreateDiscountEdit(inputValue);
                       }
                     }}
-                    type="number"
                   />
                 </div>
               </div>{" "}
@@ -246,7 +246,7 @@ function ScreenMain() {
                       className=" rounded-lg py-2 px-8 bg-white border border-gray-300 border-solid w-full shadow-custom-card-mui"
                     >
                       <option value="">Choose type</option>
-                      <option value="minimum_price">Minimum_price</option>
+                      <option value="minimum_price">Minimum price</option>
                     </select>
                   </div>
                 </div>
@@ -255,9 +255,14 @@ function ScreenMain() {
                   <div className="relative">
                     <MdTitle className="absolute top-3 left-3 " />
                     <input
-                      className="border border-gray-300 rounded-lg py-2 px-8 w-full"
-                      defaultValue={createApplyConditionEdit.value}
-                      onChange={(e) => handleChange("value", e.target.value)}
+                      className="border border-gray-300 rounded-lg py-2 pl-8 w-full"
+                      value={formatNumberWithCommas(
+                        createApplyConditionEdit.value
+                      )}
+                      onChange={(e) => {
+                        const newValue = e.target.value.replace(/,/g, "");
+                        handleChange("value", newValue);
+                      }}
                       type="text"
                     />
                   </div>

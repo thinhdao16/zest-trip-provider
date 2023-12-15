@@ -295,7 +295,7 @@ function Booker() {
                               )
                             ) : (
                               <div className=" flex items-center justify-center p-6">
-                                <span className="bg-main border border-solid border-gray-300 p-2 rounded-lg shadow-custom-card-mui">
+                                <span className="font-medium">
                                   No one has booking this tour yet
                                 </span>
                               </div>

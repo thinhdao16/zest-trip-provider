@@ -66,19 +66,19 @@ const EditAvailability = (dataAvailability: any) => {
   function getDayName(day: number) {
     switch (day) {
       case 1:
-        return "Sun";
+        return "Sunday";
       case 2:
-        return "Mon";
+        return "Monday";
       case 3:
-        return "Tue";
+        return "Tuesday";
       case 4:
-        return "Wed";
+        return "Wednesday";
       case 5:
-        return "Thu";
+        return "Thursday";
       case 6:
-        return "Fri";
+        return "Friday";
       case 7:
-        return "Sat";
+        return "Saturday";
       default:
         return "Unknown";
     }
@@ -575,7 +575,6 @@ const EditAvailability = (dataAvailability: any) => {
                                       >
                                         <span>
                                           Add {getDayName(avaWeekday?.day)}
-                                          start
                                         </span>
                                       </div>
                                     </div>
@@ -584,7 +583,7 @@ const EditAvailability = (dataAvailability: any) => {
                             </div>
                           </div>
                           <div className="flex flex-col gap-2">
-                            <span className="font-medium">singleDates</span>
+                            <span className="font-medium">Special dates</span>
                             {availabilityItem?.special_dates?.map(
                               (
                                 specialDateItem: {
@@ -627,7 +626,7 @@ const EditAvailability = (dataAvailability: any) => {
                                     </LocalizationProvider>
                                     <input
                                       type="time"
-                                      className="border border-gray-300 rounded-lg px-2 text-gray-500"
+                                      className="border border-gray-300 rounded-md px-2 text-gray-500"
                                       value={specialDateItem?.timeSlot}
                                       onChange={(e) =>
                                         handleSingleDateTimeSlotChange(
@@ -650,7 +649,7 @@ const EditAvailability = (dataAvailability: any) => {
                               )
                             )}
                             <div className=" modal-ava-add-single-time flex justify-end ">
-                              <div className="flex items-center  w-44 rounded-lg pl-2 bg-gray-300">
+                              <div className="flex items-center  w-44 rounded-md pl-2 bg-gray-300">
                                 <span className="text-gray-500">
                                   Add single date
                                 </span>
@@ -686,6 +685,7 @@ const EditAvailability = (dataAvailability: any) => {
                               </div>
                             </div>
                           </div>
+                          <hr className="my-2 bg-black" />
                         </div>
                       )
                     )}
@@ -698,13 +698,13 @@ const EditAvailability = (dataAvailability: any) => {
                 style={{ marginBottom: "-1px" }}
               >
                 <button
-                  className="px-6 py-2 bg-gray-300 rounded-lg text-gray-600 font-medium"
+                  className="px-6 py-2 bg-gray-300 rounded-md text-gray-600 font-medium"
                   onClick={handleCloseCancel}
                 >
                   Cancel
                 </button>
                 <button
-                  className="px-6 py-2 bg-navy-blue rounded-lg text-white font-medium"
+                  className="px-6 py-2 bg-navy-blue rounded-md text-white font-medium"
                   onClick={handleEditAvailability}
                 >
                   Update

@@ -29,11 +29,9 @@ function Voucher() {
 
   const [selectedDiscountType, setSelectedDiscountType] = useState("");
 
-  console.log(scrollPosition);
   const { voucher, loadingProvider } = useSelector(
     (state: any) => state.provider
   );
-  console.log(voucher);
   const [filterVouchers, setFilterVouchers] = useState(voucher);
 
   const [searchTerm, setSearchTerm] = useState("");

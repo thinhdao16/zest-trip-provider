@@ -24,6 +24,7 @@ import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
 import { Pagination } from "antd";
 import { BsFiletypeAac } from "react-icons/bs";
 import { VehicleTag } from "../../../../components/icon/tour/vehicle";
+import { formatNumberWithCommas } from "../../../../utils/formatNumberFor";
 
 function ScreenMain() {
   const dispatch: AppDispatch = useDispatch();
@@ -120,19 +121,21 @@ function ScreenMain() {
                   <MdDiscount className="absolute top-3 left-3 " />
                   <input
                     className="border border-gray-300 rounded-lg py-2 pl-8 w-full"
-                    value={createDiscount}
+                    value={formatNumberWithCommas(createDiscount)}
                     onChange={(e) => {
                       const inputValue = e.target.value;
+                      const newValue = e.target.value.replace(/,/g, "");
+
                       if (
                         createDiscountType === "PERCENT" &&
-                        parseInt(inputValue, 10) > 100
+                        parseInt(newValue, 10) > 100
                       ) {
                         setCreateDiscount("100");
                       } else {
                         setCreateDiscount(inputValue);
                       }
                     }}
-                    type="number"
+                    type="text"
                   />
                 </div>
               </div>{" "}
@@ -215,9 +218,12 @@ function ScreenMain() {
                     <MdTitle className="absolute top-3 left-3 " />
                     <input
                       className="border border-gray-300 rounded-lg py-2 pl-8 w-full"
-                      defaultValue={createApplyCondition.value}
-                      onChange={(e) => handleChange("value", e.target.value)}
-                      type="number"
+                      value={formatNumberWithCommas(createApplyCondition.value)}
+                      onChange={(e) => {
+                        const newValue = e.target.value.replace(/,/g, "");
+                        handleChange("value", newValue);
+                      }}
+                      type="text"
                     />
                   </div>
                 </div>

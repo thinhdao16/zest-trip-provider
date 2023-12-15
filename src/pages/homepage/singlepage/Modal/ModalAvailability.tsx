@@ -66,19 +66,19 @@ const ModalAvailability = ({
   function getDayName(day: number) {
     switch (day) {
       case 1:
-        return "Sun";
+        return "Sunday";
       case 2:
-        return "Mon";
+        return "Monday";
       case 3:
-        return "Tue";
+        return "Tuesday";
       case 4:
-        return "Wed";
+        return "Wednesday";
       case 5:
-        return "Thu";
+        return "Thursday";
       case 6:
-        return "Fri";
+        return "Friday";
       case 7:
-        return "Sat";
+        return "Saturday";
       default:
         return "Unknown";
     }
@@ -404,7 +404,7 @@ const ModalAvailability = ({
                         >
                           <p className="font-medium">Valid of this season</p>
                           <div className="grid grid-cols-2 gap-4 ">
-                            <div className="flex gap-1 items-center">
+                            <div className="flex gap-1 items-center modal-ava-pick-time">
                               <span>From</span>
                               <LocalizationProvider dateAdapter={AdapterDayjs}>
                                 <DemoContainer
@@ -439,7 +439,7 @@ const ModalAvailability = ({
                                 </DemoContainer>
                               </LocalizationProvider>
                             </div>
-                            <div className="flex gap-1 items-center">
+                            <div className="flex gap-1 items-center modal-ava-pick-time">
                               <span>to</span>
                               <LocalizationProvider dateAdapter={AdapterDayjs}>
                                 <DemoContainer
@@ -544,7 +544,6 @@ const ModalAvailability = ({
                                       >
                                         <span>
                                           Add {getDayName(avaWeekday?.day)}
-                                          start
                                         </span>
                                       </div>
                                     </div>
