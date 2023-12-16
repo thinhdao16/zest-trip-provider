@@ -60,7 +60,7 @@ const DurationCheckIn: React.FC = () => {
   };
   const handleDecrement = (id: number) => {
     const updatedData = dataDuration.map((item) =>
-      item.id === id && item.no > 1 ? { ...item, no: item.no - 1 } : item
+      item.id === id && item.no > 0 ? { ...item, no: item.no - 1 } : item
     );
     setDataDuration(updatedData);
   };
@@ -159,6 +159,11 @@ const DurationCheckIn: React.FC = () => {
                   * Day and night cannot differ by more than 1
                 </span>
               )}
+              {dataDuration[0]?.no + dataDuration[1]?.no === 0 && (
+                <span className="text-xs text-red-500">
+                  * Please duration day or night cannot both be 0
+                </span>
+              )}
             </div>
 
             {dataDuration.map((data) => (
@@ -167,7 +172,7 @@ const DurationCheckIn: React.FC = () => {
                   <Typography>{data?.title}</Typography>
                   <div>
                     <CreateChooseContent key={data?.id}>
-                      {data?.no > 1 ? (
+                      {data?.no > 0 ? (
                         <CreateKnotPre onClick={() => handleDecrement(data.id)}>
                           <GoNoEntry />
                         </CreateKnotPre>

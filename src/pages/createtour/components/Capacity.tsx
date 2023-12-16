@@ -27,8 +27,8 @@ const Capacity: React.FC = () => {
   const currentMinute = currentDate.getMinutes();
 
   const [capacity, setCapacity] = useState("");
-  const [bookBefore, setBoookBefore] = useState<number>(0);
-  const [refundBefore, setRefundBefore] = useState<number>(0);
+  const [bookBefore, setBoookBefore] = useState<number>(1);
+  const [refundBefore, setRefundBefore] = useState<number>(1);
   const [startingTimes, setStartingTimes] = useState<any>({
     Mon: [new Date()],
     Tue: [new Date()],

@@ -189,7 +189,7 @@ function ScreenMain() {
       setDeparture(tourDetail?.departure_location?.location);
     }
   }, [tourDetail, refreshTourDetail]);
-
+  console.log(tourDetail);
   return (
     <>
       <div

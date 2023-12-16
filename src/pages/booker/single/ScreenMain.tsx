@@ -15,6 +15,7 @@ import { DragDropContext } from "react-beautiful-dnd";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import LoadingModal from "../../../styles/loading/LoadingModal";
 import { MdChevronLeft } from "react-icons/md";
+import { message } from "antd";
 
 function ScreenMain() {
   const dispatch: AppDispatch = useDispatch();
@@ -30,7 +31,7 @@ function ScreenMain() {
   );
 
   const [selectedImages, setSelectedImages] = useState<any[]>([]);
-  console.log(selectedImages);
+  console.log(filteredData);
   const [isDraggingOver, setIsDraggingOver] = useState<boolean>(false);
   const [reason, setReason] = useState("");
   const [moreRefund, setMoreRefund] = useState(false);
@@ -108,8 +109,17 @@ function ScreenMain() {
   };
 
   const handleMore = () => {
+    const currentDate = new Date();
+    const dateBook = filteredData?.[0]?.booked_date;
     if (moreRefund === false) {
-      setMoreRefund(true);
+      if (
+        dayjs(currentDate).format("YYYY-MM-DD") >= dateBook &&
+        filteredData[0]?.status === "ACCEPTED"
+      ) {
+        message.warning("Can not refund bookings in the past");
+      } else {
+        setMoreRefund(true);
+      }
     }
     if (moreRefund === true) {
       setMoreRefund(false);

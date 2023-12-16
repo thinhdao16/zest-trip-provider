@@ -59,7 +59,7 @@ const TourType: React.FC = () => {
                   selectedCard: selectedCard,
                 })}
                 onClick={() => handleCardClick(data, data.id)}
-                // className="shadow-custom-0"
+                className="transition-effect-hover"
               >
                 <CreateChooseContent sx={{ margin: 3 }}>
                   <div>

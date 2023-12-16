@@ -25,7 +25,7 @@ function Voucher() {
   const [expandedItems, setExpandedItems] = useState<any>({});
   const { setVoucherView } = useContext(DataContext);
 
-  const [scrollPosition, setScrollPosition] = useState<number>(0);
+  const [setScrollPosition] = useState<any>(0);
 
   const [selectedDiscountType, setSelectedDiscountType] = useState("");
 
@@ -187,7 +187,7 @@ function Voucher() {
                       <>
                         <div
                           key={index}
-                          className="shadow-custom-card-mui bg-white rounded-lg relative"
+                          className="shadow-custom-card-mui bg-white rounded-lg relative transition-effect-hover"
                         >
                           <div className=" px-4 py-6  mb-2  relative ">
                             {!expandedItems[index] ? (

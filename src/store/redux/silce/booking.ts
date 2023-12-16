@@ -8,6 +8,8 @@ const initialState = {
   loadingBooking: false,
   errorBooking: null as string | null,
   ticketQuantity: [],
+  dateAvaibilityTour: [],
+  dateTicketTour: [],
 };
 
 export const getBooking = createAsyncThunk(
@@ -310,6 +312,57 @@ export const getTicketQuantity = createAsyncThunk(
   }
 );
 
+export const getDateAvailabilityByTour = createAsyncThunk(
+  "booking/getDateAvailabilityByTour",
+  async (data: any) => {
+    try {
+      const response = await axiosInstance.get(
+        `${BASE_URL}/availability/get-date-availability/${data}`
+      );
+      if (response.status === 200) {
+        return response.data.data;
+      }
+    } catch (error: any) {
+      throw new Error("Failed to fetch other data");
+    }
+  }
+);
+
+export const getDateTicketByTour = createAsyncThunk(
+  "booking/getDateTicketByTour",
+  async (data: any) => {
+    try {
+      const response = await axiosInstance.get(
+        `${BASE_URL}/availability/get-special-ticket-date/${data}`
+      );
+      if (response.status === 200) {
+        return response.data.data;
+      }
+    } catch (error: any) {
+      throw new Error("Failed to fetch other data");
+    }
+  }
+);
+
+export const getTicketDate = createAsyncThunk(
+  "booking/getTicketDate",
+  async (data: any) => {
+    try {
+      const response = await axiosInstance.post(
+        `${BASE_URL}/booking/check-ticket-date-array`,
+        {
+          ...data,
+        }
+      );
+      if (response.status === 201) {
+        return response.data.data;
+      }
+    } catch (error: any) {
+      throw new Error("Failed to fetch other data");
+    }
+  }
+);
+
 const bookingSice = createSlice({
   name: "booking",
   initialState,
@@ -401,6 +454,45 @@ const bookingSice = createSlice({
         state.errorBooking = null;
       })
       .addCase(getTicketQuantity.rejected, (state: any, action) => {
+        state.loadingBooking = false;
+        state.error = action.error.message;
+      })
+      .addCase(getDateAvailabilityByTour.pending, (state) => {
+        state.loadingBooking = true;
+        state.errorBooking = null;
+      })
+      .addCase(getDateAvailabilityByTour.fulfilled, (state, action) => {
+        state.loadingBooking = false;
+        state.dateAvaibilityTour = action.payload;
+        state.errorBooking = null;
+      })
+      .addCase(getDateAvailabilityByTour.rejected, (state: any, action) => {
+        state.loadingBooking = false;
+        state.error = action.error.message;
+      })
+      .addCase(getDateTicketByTour.pending, (state) => {
+        state.loadingBooking = true;
+        state.errorBooking = null;
+      })
+      .addCase(getDateTicketByTour.fulfilled, (state, action) => {
+        state.loadingBooking = false;
+        state.dateTicketTour = action.payload;
+        state.errorBooking = null;
+      })
+      .addCase(getDateTicketByTour.rejected, (state: any, action) => {
+        state.loadingBooking = false;
+        state.error = action.error.message;
+      })
+      .addCase(getTicketDate.pending, (state) => {
+        state.loadingBooking = true;
+        state.errorBooking = null;
+      })
+      .addCase(getTicketDate.fulfilled, (state, action) => {
+        state.loadingBooking = false;
+        state.ticketQuantity = action.payload;
+        state.errorBooking = null;
+      })
+      .addCase(getTicketDate.rejected, (state: any, action) => {
         state.loadingBooking = false;
         state.error = action.error.message;
       });

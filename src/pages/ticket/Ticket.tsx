@@ -76,42 +76,37 @@ function Ticket() {
   };
 
   function searchTicketPricing(tours: any, searchTerm: any) {
-    // Kiểm tra nếu tours không phải là mảng hoặc mảng rỗng
     if (!Array.isArray(tours) || tours.length === 0) {
       return [];
     }
-
-    // Mảng chứa kết quả sau khi tìm kiếm
     const searchResults = [];
 
     for (const tour of tours) {
-      // Kiểm tra nếu tên tour chứa từ khóa tìm kiếm
       if (tour.name.toLowerCase().includes(searchTerm.toLowerCase())) {
-        // Thêm tour vào danh sách kết quả (nếu chưa có)
         searchResults.push({
           ...tour,
-          is_default: true, // Đặt is_default là true để đại diện cho thông tin tour chính
-          TicketPricing: [], // Không có thông tin TicketPricing vì đây là tìm kiếm theo tên
+          is_default: true,
+          TicketPricing: [],
         });
       } else {
-        // Lọc danh sách TicketPricing cho mỗi tour
         const filteredTicketPricing = tour.TicketPricing.filter(
           (ticketPricing: any) => {
             return (
-              ticketPricing.from_price.includes(searchTerm) ||
-              ticketPricing.to_price.includes(searchTerm)
+              ticketPricing?.from_price?.includes(searchTerm) ||
+              ticketPricing?.to_price?.includes(searchTerm)
             );
           }
         );
 
-        // Nếu có, thêm tour vào danh sách kết quả (nếu chưa có)
-        if (!filteredTicketPricing.some((tp: any) => tp.is_default)) {
+        if (
+          !filteredTicketPricing.some((tp: any) => tp?.is_default) &&
+          filteredTicketPricing.length > 0
+        ) {
           filteredTicketPricing.push({
-            is_default: true, // Đặt is_default là true để đại diện cho thông tin tour chính
+            is_default: true,
           });
         }
 
-        // Thêm kết quả tìm kiếm cho tour hiện tại vào mảng chứa kết quả
         searchResults.push({
           ...tour,
           TicketPricing: filteredTicketPricing,
@@ -231,7 +226,7 @@ function Ticket() {
                       <>
                         <div
                           key={index}
-                          className="shadow-custom-card-mui bg-white rounded-lg relative"
+                          className="shadow-custom-card-mui bg-white rounded-lg relative transition-effect-hover"
                         >
                           <Link to={`detail/${dataTour?.id}`}>
                             <div className="bg-white gap-2 p-4 rounded-lg grid grid-cols-12">

@@ -205,10 +205,9 @@ function ListBooking() {
               </div>
             </div>
           </div>
-          <div className="grid grid-cols-6 p-3 rounded-lg shadow-custom-card-mui bg-navy-blue text-white mb-4">
+          <div className="grid grid-cols-5 p-3 rounded-lg shadow-custom-card-mui bg-navy-blue text-white mb-4">
             <div className=" font-medium">Booker</div>
             <div className=" font-medium">Book time</div>
-            <div className=" font-medium">Original price</div>
             <div className=" font-medium">Paid price</div>
             <div className=" font-medium">Provider receive</div>
             <div className=" font-medium">Status</div>
@@ -237,7 +236,7 @@ function ListBooking() {
               indexBooking: number
             ) => (
               <div
-                className="rounded-lg shadow-custom-card-mui bg-white mb-3 relative"
+                className="rounded-lg shadow-custom-card-mui bg-white mb-3 relative transition-effect-hover"
                 key={indexBooking}
               >
                 {!expandedItems[indexBooking] ? (
@@ -261,15 +260,13 @@ function ListBooking() {
                     <IoEyeOutline />
                   </Link>
                 </button>
-                <div className=" grid grid-cols-6 px-4 py-6 ">
+                <div className=" grid grid-cols-5 px-4 py-6 ">
                   <div className="">{booking?.booker_email}</div>
                   <div className="">
                     {dayjs(booking?.booked_date).format("YYYY-MM-DD")}
                     <span className="text-gray-500"> {booking?.time_slot}</span>
                   </div>
-                  <div className="">
-                    {formatNumber(parseInt(booking?.original_price))}
-                  </div>
+
                   <div className="">
                     {formatNumber(parseInt(booking?.paid_price))}
                   </div>

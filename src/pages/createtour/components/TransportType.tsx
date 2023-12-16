@@ -6,7 +6,7 @@ import {
   TitleIconCardOptions,
 } from "../../../styles/createtour/createtour";
 import { useStepContext } from "../context/ui/useStepContext";
-import { Box, Card, Grid } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { DataSelectCard, StateTour } from "../types/index.t";
@@ -75,23 +75,19 @@ const TransportType: React.FC = () => {
                   md={4}
                   style={{ paddingTop: 0 }}
                 >
-                  <Card
+                  <div
                     style={CardOptionManyStyles({
                       index: data.id,
                       selectedCards: selectedCards,
                     })}
                     onClick={() => handleCardClick(data)}
+                    className="transition-effect-hover"
                   >
                     <Box sx={{ margin: 3 }}>
-                      {/* <img
-                    src="src\assets\tour\iconTag\airplane.svg"
-                    className="h-2"
-                    alt=""
-                  /> */}
                       <VehicleTag field={data?.name} style="w-8 h-8" />
                       <TitleIconCardOptions>{data?.name}</TitleIconCardOptions>
                     </Box>
-                  </Card>
+                  </div>
                 </Grid>
               ))}
             </Grid>

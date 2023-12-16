@@ -651,9 +651,14 @@ function BookDetail() {
                     );
 
                     const dateDont = dateBookDontAvai?.includes(formattedDate);
-
+                    const dateChooseColor =
+                      valueSelectCalendar?.includes(formattedDate);
                     const style = {
-                      backgroundColor: isBlocked
+                      backgroundColor: dateChooseColor
+                        ? "#0074d9"
+                        : isBlocked && dateDont
+                        ? "#4b0082"
+                        : isBlocked
                         ? "#ff6384"
                         : dateDont
                         ? "#ffc148"
@@ -775,6 +780,19 @@ function BookDetail() {
                     />
                     <span className="text-sm">Pick date</span>
                   </div>
+                  <div className="grid grid-cols-12 ">
+                    <div className="col-span-2">
+                      <GoDotFill
+                        className="w-5 h-5"
+                        style={{ color: " #4b0082" }}
+                      />
+                    </div>
+                    <div className="col-span-10">
+                      <span className="text-sm flex-wrap flex">
+                        Orphan & block date
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -783,100 +801,102 @@ function BookDetail() {
           <div className=" p-4 flex flex-col gap-3">
             {filteredBookings && filteredBookings.length > 0 ? (
               filteredBookings.map((booking: any, index: number) => (
-                <div
-                  className="bg-white grid grid-cols-5 gap-2 items-center shadow-custom-card-mui p-4 border border-solid border-gray-300 rounded-lg"
-                  key={index}
-                >
-                  <div className="">
-                    <div className="flex gap-2">
-                      <div>
-                        <span className="font-medium">
-                          {booking?.booker_name}
-                        </span>
-                        <p className="font-medium">{booking?.booker_email}</p>
-                        <p className="">{booking?.booker_phone}</p>
+                <Link to={`/booking/${booking?.id}`} key={booking?.id}>
+                  <div
+                    className="transition-effect-hover bg-white grid grid-cols-5 gap-2 items-center shadow-custom-card-mui p-4 border border-solid border-gray-300 rounded-lg"
+                    key={index}
+                  >
+                    <div className="">
+                      <div className="flex gap-2">
+                        <div>
+                          <span className="font-medium">
+                            {booking?.booker_name}
+                          </span>
+                          <p className="font-medium">{booking?.booker_email}</p>
+                          <p className="">{booking?.booker_phone}</p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="">
-                    <div className="flex flex-col">
-                      {booking?.TicketOnBooking?.map(
-                        (ticketQuantity: any, index: number) => (
-                          <div key={index} className="">
-                            <div className="flex">
-                              <span className="font-medium">
-                                {ticketQuantity?.ticket_type_id === 1
-                                  ? "Adult"
-                                  : "Children"}
-                                {": "}
-                              </span>
-                              <span>{ticketQuantity?.quantity}</span>
+                    <div className="">
+                      <div className="flex flex-col">
+                        {booking?.TicketOnBooking?.map(
+                          (ticketQuantity: any, index: number) => (
+                            <div key={index} className="">
+                              <div className="flex">
+                                <span className="font-medium">
+                                  {ticketQuantity?.ticket_type_id === 1
+                                    ? "Adult"
+                                    : "Children"}
+                                  {": "}
+                                </span>
+                                <span>{ticketQuantity?.quantity}</span>
+                              </div>
+                              <div className="flex text-sm gap-2">
+                                <Tooltip title="Original price">
+                                  <div className="flex items-center gap-1">
+                                    <GiPriceTag />
+                                    <span className="text-gray-500">
+                                      {formatNumber(
+                                        parseInt(ticketQuantity?.original_price)
+                                      )}
+                                    </span>
+                                  </div>
+                                </Tooltip>
+                                <Tooltip title="Paid price" placement="top">
+                                  <div className="flex items-center gap-1">
+                                    <FcPaid />
+                                    <span className="text-gray-500">
+                                      {formatNumber(
+                                        parseInt(ticketQuantity?.paid_price)
+                                      )}
+                                    </span>
+                                  </div>
+                                </Tooltip>
+                              </div>
                             </div>
-                            <div className="flex text-sm gap-2">
-                              <Tooltip title="Original price">
-                                <div className="flex items-center gap-1">
-                                  <GiPriceTag />
-                                  <span className="text-gray-500">
-                                    {formatNumber(
-                                      parseInt(ticketQuantity?.original_price)
-                                    )}
-                                  </span>
-                                </div>
-                              </Tooltip>
-                              <Tooltip title="Paid price" placement="top">
-                                <div className="flex items-center gap-1">
-                                  <FcPaid />
-                                  <span className="text-gray-500">
-                                    {formatNumber(
-                                      parseInt(ticketQuantity?.paid_price)
-                                    )}
-                                  </span>
-                                </div>
-                              </Tooltip>
-                            </div>
-                          </div>
-                        )
-                      )}
+                          )
+                        )}
+                      </div>
                     </div>
-                  </div>
-                  <div className="">
-                    <Tooltip title="Tour start" placement="top">
-                      <div className="flex items-center gap-1">
-                        <MdCreateNewFolder />
-                        <span className="font-medium">
-                          {dayjs(booking?.booked_date)?.format("YYYY-MM-DD")}:
-                        </span>
-                        <span className="font-medium text-gray-500">
-                          {booking?.time_slot}
-                        </span>
+                    <div className="">
+                      <Tooltip title="Tour start" placement="top">
+                        <div className="flex items-center gap-1">
+                          <MdCreateNewFolder />
+                          <span className="font-medium">
+                            {dayjs(booking?.booked_date)?.format("YYYY-MM-DD")}:
+                          </span>
+                          <span className="font-medium text-gray-500">
+                            {booking?.time_slot}
+                          </span>
+                        </div>
+                      </Tooltip>
+                    </div>
+                    <div className="">
+                      <div className="flex flex-col items-center">
+                        <div className="flex items-center gap-1">
+                          <span className="font-medium">Total original:</span>
+                          <span className="font-medium text-gray-500">
+                            {formatNumber(parseInt(booking?.original_price))}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <span className="font-medium">Total Paid:</span>
+                          <span className="font-medium text-gray-500">
+                            {formatNumber(parseInt(booking?.paid_price))}
+                          </span>
+                        </div>
                       </div>
-                    </Tooltip>
-                  </div>
-                  <div className="">
-                    <div className="flex flex-col items-center">
-                      <div className="flex items-center gap-1">
-                        <span className="font-medium">Total original:</span>
-                        <span className="font-medium text-gray-500">
-                          {formatNumber(parseInt(booking?.original_price))}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <span className="font-medium">Total Paid:</span>
-                        <span className="font-medium text-gray-500">
-                          {formatNumber(parseInt(booking?.paid_price))}
-                        </span>
+                    </div>
+                    <div className="">
+                      <div className="flex items-center gap-4 justify-end">
+                        <StatusBooking>{booking?.status}</StatusBooking>
+                        <Link to={`/booking/${booking?.id}`} key={booking?.id}>
+                          <HiOutlineDotsVertical />
+                        </Link>
                       </div>
                     </div>
                   </div>
-                  <div className="">
-                    <div className="flex items-center gap-4 justify-end">
-                      <StatusBooking>{booking?.status}</StatusBooking>
-                      <Link to={`/booking/${booking?.id}`} key={booking?.id}>
-                        <HiOutlineDotsVertical />
-                      </Link>
-                    </div>
-                  </div>
-                </div>
+                </Link>
               ))
             ) : (
               <div className="text-gray-500 text-center">No one booking.</div>

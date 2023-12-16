@@ -25,6 +25,7 @@ import { DataContext } from "../../store/dataContext/DataContext";
 import ModalTicketAdult from "./ModalTicketAdult";
 import { formatNumber } from "../../utils/formatNumber";
 import { CiCircleMore } from "react-icons/ci";
+import DateTicket from "./DateTicket";
 
 const { Option } = Select;
 
@@ -35,8 +36,7 @@ function DetailTicketTour() {
     useContext(DataContext);
 
   const { loadingCreateTour } = useSelector((state: any) => state.tour);
-  const { ticketQuantity } = useSelector((state: any) => state.booking);
-  console.log(ticketQuantity);
+
   const tourDetail: any = useSelector((state: any) => state.tour.tourGetDetail);
   const quantityTicketTrue = tourDetail?.TicketPricing?.filter(
     (ticket: { is_default: boolean }) => ticket.is_default === true
@@ -63,7 +63,6 @@ function DetailTicketTour() {
     }
   }, [dispatch, index, loadingCreateTour, refreshTourDetail, reloadStatus]);
   useEffect(() => {
-    // Code xử lý sau khi reloadStatus thay đổi
     console.log("reloadStatus changed:", reloadStatus);
   }, [reloadStatus]);
 
@@ -140,7 +139,10 @@ function DetailTicketTour() {
                     <div className="flex flex-col">
                       <div className="flex justify-between">
                         <span className="font-medium text-lg">
-                          {tourDetail?.name}
+                          <TruncatedText
+                            text={tourDetail?.name}
+                            maxLength={50}
+                          />
                         </span>
                       </div>
 
@@ -199,38 +201,8 @@ function DetailTicketTour() {
                 </div>
               </div>
             </div>
-            <div className="p-4">
-              <div className="p-3 rounded-lg bg-navy-blue grid grid-cols-7 shadow-custom-card-mui">
-                <span className="font-medium text-white">Date</span>
-                <span className="font-medium text-white">Adult left</span>{" "}
-                <span className="font-medium text-white">Children left</span>{" "}
-                <span className="font-medium text-white">Adult max</span>{" "}
-                <span className="font-medium text-white">Children max</span>{" "}
-                <span className="font-medium text-white">Adult book</span>{" "}
-                <span className="font-medium text-white">Children book</span>
-              </div>
-              <div className=" mt-3 flex flex-col gap-2 ">
-                {ticketQuantity && ticketQuantity.length > 0 ? (
-                  ticketQuantity.map((ticket: any, index: number) => (
-                    <div
-                      className="grid grid-cols-7 px-3 py-6 rounded-lg bg-white shadow-custom-card-mui"
-                      key={index}
-                    >
-                      <span>{dayjs(ticket?.date).format("YYYY-MM-DD")}</span>
-                      <span>{ticket?.adult_left}</span>
-                      <span>{ticket?.children_left}</span>
-                      <span>{ticket?.adult_max}</span>
-                      <span>{ticket?.children_max}</span>
-                      <span>{ticket?.booked_adult}</span>
-                      <span>{ticket?.booked_children}</span>
-                    </div>
-                  ))
-                ) : (
-                  <p className="px-3 py-6 rounded-lg bg-white shadow-custom-card-mui text-center">
-                    No ticket information available.
-                  </p>
-                )}
-              </div>
+            <div>
+              <DateTicket />
             </div>
 
             <div className=" p-4 flex flex-col gap-3">
@@ -252,7 +224,7 @@ function DetailTicketTour() {
                       )
                       ?.map((ticket: any, index: number) => (
                         <React.Fragment key={index}>
-                          <div className="flex flex-col gap-4 p-4 rounded-xl shadow-custom-card-mui pr-10 bg-white border border-solid border-gray-300 relative ">
+                          <div className=" transition-effect-hover flex flex-col gap-4 p-4 rounded-xl shadow-custom-card-mui pr-10 bg-white border border-solid border-gray-300 relative ">
                             {ticket?.is_default === true &&
                             ticket?.Ticket?.name === "ADULT" ? (
                               <></>
@@ -267,7 +239,7 @@ function DetailTicketTour() {
                                   okText="Yes"
                                   cancelText="No"
                                 >
-                                  <IoTrash className="w-5 h-5 text-red-500" />
+                                  <IoTrash className="w-5 h-5 text-red-500 " />
                                 </Popconfirm>
                               </div>
                             )}

@@ -18,7 +18,7 @@ function SidebarLogo({ text, toggle }: SidebarLogoProps) {
   };
 
   return (
-    <div className="relative flex  flex-row font-medium text-3xl md:items-center md:mx-auto text-navy-blue mb-5 p-4 justify-between">
+    <div className="relative flex  flex-row font-medium text-3xl md:items-center md:mx-auto text-navy-blue mb-5 py-4 pr-4 justify-between">
       <Link to="/" className="flex items-center font-family-sidebar-headers">
         <HomeIcon className="w-14 h-14" />
         {text}

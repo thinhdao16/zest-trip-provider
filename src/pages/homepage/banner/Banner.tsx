@@ -160,7 +160,7 @@ export default function Banner() {
                     <div>
                       <button
                         type="button"
-                        className="relative border border-gray-300 pl-0 py-1 w-24 rounded-md bg-white"
+                        className="relative border border-gray-300 pl-0 py-1 w-24 rounded-md bg-white "
                         onClick={handleClick}
                       >
                         <AiFillFilter className="absolute top-2 left-2" />
@@ -245,8 +245,11 @@ export default function Banner() {
                       );
                     })
                     .map((data: any, index: number) => (
-                      <div key={index} className="relative">
-                        <div className="bg-white shadow-custom-card-mui grid grid-cols-12 p-4 gap-3  rounded-lg relative">
+                      <div
+                        key={index}
+                        className="relative transition-effect-hover"
+                      >
+                        <div className="bg-white shadow-custom-card-mui grid grid-cols-12 p-4 gap-3  rounded-lg relative ">
                           <Link to={`/${data?.id}`}>
                             <IoEyeOutline className="absolute top-2 right-2" />
 

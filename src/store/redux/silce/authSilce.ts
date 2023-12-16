@@ -123,6 +123,26 @@ export const postWithDraw = createAsyncThunk(
     }
   }
 );
+export const editProfile = createAsyncThunk(
+  "auth/editProfile",
+  async (data: any) => {
+    console.log(data);
+    try {
+      const response = await axiosInstance.put(`${BASE_URL}/provider`, {
+        ...data,
+      });
+      console.log(response);
+      if (response.status === 200) {
+        message.success("Update profile successfully");
+      }
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      message.error("Fail withdraw");
+      throw new Error("Failed to fetch other data");
+    }
+  }
+);
 const authSlice = createSlice({
   name: "auth",
   initialState,

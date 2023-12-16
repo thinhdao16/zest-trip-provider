@@ -45,15 +45,14 @@ const LocationStart: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [defaultOpenMore, setDefaultOpenMore] = useState(false);
   const debounceDelay = 300; // Thời gian trì hoãn (milliseconds)
   let debounceTimer: any;
-
   useEffect(() => {
     if (addValueLocation) {
       setDeparture((prevData: any) => {
         const newData = [...prevData];
         newData.pop();
-
         return [
           ...newData,
           {
@@ -157,10 +156,14 @@ const LocationStart: React.FC = () => {
             lat,
             lng,
           });
+          setDefaultOpenMore(true);
         } else {
           setValueRecommend({
             address: searchQuery,
+            lat: "10.8422931",
+            lng: "106.8061656",
           });
+          setDefaultOpenMore(true);
         }
       } else {
         message.warning("Please input departure");
@@ -170,12 +173,14 @@ const LocationStart: React.FC = () => {
 
   const handleSuggestionSelect = (selectedSuggestion: any) => {
     const { lat, lon, display_name } = selectedSuggestion;
+    setSearchQuery(display_name);
     setValueRecommend({
       address: display_name,
       lat,
       lng: lon,
       status: "success",
     });
+    setDefaultOpenMore(true);
   };
 
   if (currentStep !== 7) {
@@ -185,6 +190,7 @@ const LocationStart: React.FC = () => {
   const handleTimeChange = (e: any) => {
     setValueDate(e.target.value);
   };
+
   const handleInputChange = (index: number, field: string, value: string) => {
     const fieldNull = departure?.filter(
       (value: any) => value?.addressLocationStart === null
@@ -224,11 +230,22 @@ const LocationStart: React.FC = () => {
     };
     return divIcon(divIconOptions);
   };
-
+  console.log(departure);
   const handleAddlocation = () => {
-    setValueDate("");
-    setAddValueLocation(false);
-    setSearchQuery("");
+    const emptyElement = departure?.find((item: any) => {
+      return (
+        !item?.addressLocationStart?.address?.length || !item?.time?.length
+      );
+    });
+    if (!emptyElement) {
+      setValueRecommend({ address: "", lat: "", lng: "" });
+      setValueDate("");
+      setSearchQuery("");
+      setSuggestions([]);
+      setAddValueLocation(false);
+    } else {
+      message.warning("Please input field full before add more");
+    }
   };
 
   const MapComponent = () => {
@@ -265,9 +282,9 @@ const LocationStart: React.FC = () => {
             >
               <div className="py-4 px-20 absolute top-2 z-50 w-full">
                 <div className="w-full">
-                  <div className="text-center">
+                  <div className="text-center ">
                     <input
-                      className="bg-white mb-2 p-2 rounded-lg border border-gray-300"
+                      className="bg-white mb-2 p-2 rounded-lg border border-gray-300 transition-effect-hover "
                       type="time"
                       value={valueDate}
                       onChange={handleTimeChange}
@@ -280,7 +297,7 @@ const LocationStart: React.FC = () => {
                         value={searchQuery}
                         onChange={handleInputChanges}
                         onKeyDown={handleKeyPress}
-                        className="w-full rounded-xl p-4 focus:outline-none focus:rounded-b-none focus:border-b focus:border-solid focus:border-gray-300"
+                        className="transition-effect-hover w-full rounded-xl p-4 focus:outline-none focus:rounded-b-none focus:border-b focus:border-solid focus:border-gray-300"
                       />
                       <div className="autocomplete-dropdown-container bg-white max-h-56 overflow-auto global-scrollbar rounded-b-xl ">
                         {loading && <div>Loading...</div>}
@@ -338,8 +355,18 @@ const LocationStart: React.FC = () => {
                 <MapComponent />
               </MapContainer>
             </div>
+            {addValueLocation && defaultOpenMore && (
+              <button
+                type="button"
+                className="button-transition-effect-hover bg-white  rounded-lg  px-4 py-1 mt-4 text-navy-blue border border-navy-blue"
+                onClick={() => handleAddlocation()}
+              >
+                Add more departure
+              </button>
+            )}
             <div className="flex flex-col gap-2 mt-5">
               {departure?.length > 0 &&
+                defaultOpenMore &&
                 departure?.map((departureScreen: any, index: number) => (
                   <div key={index} className="flex items-center gap-2">
                     <div className="bg-white rounded-lg p-2 shadow-custom-card-mui flex items-center gap-3">
@@ -372,16 +399,6 @@ const LocationStart: React.FC = () => {
                   </div>
                 ))}
             </div>
-
-            {addValueLocation && (
-              <button
-                type="button"
-                className="bg-white  rounded-lg  px-4 py-1 mt-4 text-navy-blue border border-navy-blue"
-                onClick={() => handleAddlocation()}
-              >
-                Add more departure
-              </button>
-            )}
           </BannerContent>
         </div>
       </BannerContainer>

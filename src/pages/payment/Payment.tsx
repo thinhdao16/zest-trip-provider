@@ -243,7 +243,7 @@ function Payment() {
                 dataBooking?.map((dataVoucher, index) => (
                   <div
                     key={index}
-                    className="shadow-custom-card-mui bg-white rounded-lg relative"
+                    className="shadow-custom-card-mui bg-white rounded-lg relative transition-effect-hover"
                     onClick={() => toggleContentVisibility(index)}
                   >
                     <div className=" px-4 py-6 relative ">

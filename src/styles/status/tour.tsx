@@ -44,38 +44,40 @@ export function StatusTour({ children, idtour }: any) {
   };
 
   return (
-    <Popover
-      content={
-        <div className=" text-center gap-2">
-          {children === "PUBLISHED" && (
-            <button
-              className="bg-red-300 text-red-900 py-1 px-3 rounded-md"
-              onClick={() => handleChangeStatus("HIDDEN")}
-            >
-              Hidden
-            </button>
-          )}
-          {children === "HIDDEN" && (
-            <button
-              className="bg-navy-blue-opacity-5 p-1 text-navy-blue rounded-md"
-              onClick={() => handleChangeStatus("PUBLISHED")}
-            >
-              Published
-            </button>
-          )}
-        </div>
-      }
-      title="Change satus"
-      trigger="click"
-    >
-      <button
-        className={`flex items-center gap-1 p-1 rounded-lg text-sm ${statusColorClass}`}
+    <div className="">
+      <Popover
+        content={
+          <div className=" text-center gap-2 ">
+            {children === "PUBLISHED" && (
+              <button
+                className="bg-red-300 text-red-900 py-1 px-3 rounded-md"
+                onClick={() => handleChangeStatus("HIDDEN")}
+              >
+                Hidden
+              </button>
+            )}
+            {children === "HIDDEN" && (
+              <button
+                className="bg-navy-blue-opacity-5 p-1 text-navy-blue rounded-md"
+                onClick={() => handleChangeStatus("PUBLISHED")}
+              >
+                Published
+              </button>
+            )}
+          </div>
+        }
+        title="Change satus"
+        trigger="click"
       >
-        <GoDotFill />
-        {normalizedStatus}
-        <MdKeyboardArrowDown />
-      </button>
-    </Popover>
+        <button
+          className={`flex items-center gap-1 p-1 rounded-lg text-sm ${statusColorClass} button-transition-effect-hover`}
+        >
+          <GoDotFill />
+          {normalizedStatus}
+          <MdKeyboardArrowDown />
+        </button>
+      </Popover>
+    </div>
   );
 }
 

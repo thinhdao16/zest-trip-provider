@@ -27,7 +27,6 @@ function ModalVehicle({
     setTourVehicle: any;
   };
 }) {
-  console.log(tourVehicle);
   const vehicleTour = useSelector((state: StateTour) => state.tour.vehicleTour);
   const [open, setOpen] = useState(false);
   const [dataVehicle, setDataVehicle] = useState<any>([]);
@@ -44,7 +43,6 @@ function ModalVehicle({
   }
 
   function removeItem(idToRemove: any) {
-    console.log(idToRemove);
     const updatedTourVehicle = tourVehicle.filter(
       (item: { id: number }) => item.id !== idToRemove.id
     );

@@ -15,7 +15,6 @@ import { AiOutlineDown } from "react-icons/ai";
 import { Dropdown, Pagination, Menu, Switch, Select } from "antd";
 import { DataContext } from "../../store/dataContext/DataContext";
 import LoadingFullScreen from "../../styles/loading/LoadingFullScreen";
-import { RiSearchLine } from "react-icons/ri";
 import DatePicker from "react-multi-date-picker";
 import { CiCircleMore } from "react-icons/ci";
 import { StatusAvailabilty } from "../../styles/status/availability";
@@ -365,16 +364,7 @@ function Availability() {
                       </button>
                     </div>
                   </DatePicker>
-                  <div className="relative">
-                    <RiSearchLine className="absolute top-2 left-2" />
-                    <input
-                      type="text"
-                      name=""
-                      id=""
-                      placeholder="Search"
-                      className="border border-gray-300 pl-8 py-1.5 w-24 rounded-md text-sm bg-white"
-                    />
-                  </div>
+
                   <Select
                     defaultValue=""
                     onChange={handleFilterTour}
@@ -419,7 +409,7 @@ function Availability() {
                       <>
                         <div
                           key={index}
-                          className="shadow-custom-card-mui bg-white rounded-lg relative"
+                          className="shadow-custom-card-mui bg-white rounded-lg relative transition-effect-hover"
                         >
                           <div className=" flex items-center gap-2 p-4 rounded-t-lg bg-stone-200">
                             <img
@@ -482,10 +472,10 @@ function Availability() {
                                 index: number
                               ) => (
                                 <div
-                                  className=" px-4  mb-2  relative "
+                                  className=" px-4  mb-2  relative  transition-effect-hover rounded-lg"
                                   key={index}
                                 >
-                                  <div className="grid grid-cols-12 gap-3 ">
+                                  <div className="grid grid-cols-12 gap-3  ">
                                     <div className="col-span-2 flex items-center ">
                                       <div className="">
                                         <span className="font-medium">

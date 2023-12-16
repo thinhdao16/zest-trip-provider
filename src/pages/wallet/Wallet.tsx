@@ -162,7 +162,7 @@ function Wallet() {
                 status: string;
                 metadata: { bankName: string; bankAccountNumber: string };
               }) => (
-                <div className="px-3 py-5 grid grid-cols-5 bg-white rounded-md  shadow-custom-card-mui">
+                <div className="px-3 py-5 grid grid-cols-5 bg-white rounded-md  shadow-custom-card-mui transition-effect-hover">
                   <div>
                     <span>
                       {dayjs(transaction?.updated_at).format("YYYY-MM-DD")}

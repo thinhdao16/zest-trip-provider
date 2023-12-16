@@ -167,7 +167,7 @@ function Booker() {
                       })
                       ?.map((dataManyBook: any, index: number) => (
                         <div
-                          className="bg-white  relative shadow-custom-card-mui rounded-lg flex flex-col"
+                          className="bg-white  relative shadow-custom-card-mui rounded-lg flex flex-col transition-effect-hover"
                           key={index}
                         >
                           <Link
@@ -214,7 +214,7 @@ function Booker() {
                               dataManyBook?.Booking.slice(0, visibleItems)?.map(
                                 (dataBook: any, indexdata: number) => (
                                   <div className="" key={indexdata}>
-                                    <div className="p-4 relative">
+                                    <div className="p-4 relative transition-effect-hover rounded-lg">
                                       <Link
                                         to={`/booking/${dataBook?.id}`}
                                         key={dataBook?.id}

@@ -304,20 +304,33 @@ function CreateTourNav() {
     }
     if (currentStep === 7) {
       const locationStart = formValues[9]?.LocationStart;
-      if (locationStart?.length > 0) {
-        const hasNonEmptyElement = locationStart.some((item: any) => {
-          return (
-            item.addressLocationStart?.address?.length > 0 &&
-            item.time.length > 0
-          );
-        });
-        if (hasNonEmptyElement) {
-          classSkip = "yes";
-        }
+      const emptyElement = locationStart?.find((item: any) => {
+        return (
+          !item?.addressLocationStart?.address?.length || !item?.time?.length
+        );
+      });
+
+      if (!emptyElement) {
+        classSkip = "yes";
       }
     }
 
     if (currentStep === 8) {
+      const schedule = formValues[4]?.DurationCheckIn?.[1];
+      const emptyElement = schedule?.find((item: any) => {
+        const findDescriptionEmpty = item?.boxes?.find(
+          (des: { data: string }) => {
+            return des?.data?.length < 1;
+          }
+        );
+        return (
+          item?.day?.length < 1 ||
+          item?.title?.length < 1 ||
+          item?.boxes?.length < 1 ||
+          findDescriptionEmpty
+        );
+      });
+      console.log(emptyElement);
       if (
         formValues[4]?.DurationCheckIn[1]?.length >=
           formValues[4]?.DurationCheckIn[0][0]?.no &&
@@ -330,14 +343,16 @@ function CreateTourNav() {
         Math.max(
           formValues[4]?.DurationCheckIn[0][0]?.no,
           formValues[4]?.DurationCheckIn[0][1]?.no
-        ) === formValues[4]?.DurationCheckIn[1]?.length
+        ) === formValues[4]?.DurationCheckIn[1]?.length &&
+        formValues[4]?.DurationCheckIn[1]?.length > 0 &&
+        !emptyElement
       ) {
-        classSkip = "yes"; // Nếu điều kiện thỏa mãn, thì set thành "yes"
+        classSkip = "yes";
       }
     }
     if (currentStep === 9) {
       const capacities = formValues[5].Capacity;
-      let hasNonEmptyArray = false; // Biến kiểm tra mặc định là false
+      let hasNonEmptyArray = false;
       if (
         (capacities.Mon.length > 0 ||
           capacities.Tue.length > 0 ||
@@ -349,13 +364,15 @@ function CreateTourNav() {
           capacities?.SingleTime?.length > 0) &&
         capacities.DateFrom.length > 0 &&
         capacities.DateTo.length > 0 &&
-        capacities.Title.length > 0
+        capacities.Title.length > 0 &&
+        capacities?.BookBefore > 0 &&
+        capacities?.RefundBefore > 0
       ) {
-        hasNonEmptyArray = true; // Nếu có ít nhất một mảng có độ dài > 0, đặt biến kiểm tra thành true
+        hasNonEmptyArray = true;
       }
 
       if (hasNonEmptyArray) {
-        classSkip = "yes"; // Nếu biến kiểm tra là true, đặt classSkip thành "yes"
+        classSkip = "yes";
       }
     }
     if (currentStep === 10) {

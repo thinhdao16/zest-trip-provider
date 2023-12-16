@@ -375,7 +375,7 @@ function Review() {
                 <div className="flex flex-col gap-3 ">
                   {dataTourReviews?.map((dataManyBook: any, index: number) => (
                     <div
-                      className="bg-white  relative shadow-custom-card-mui rounded-lg flex flex-col"
+                      className="bg-white  relative shadow-custom-card-mui rounded-lg flex flex-col transition-effect-hover"
                       key={index}
                     >
                       <div className=" flex items-center gap-2 p-4 rounded-t-lg bg-stone-200">
@@ -405,7 +405,10 @@ function Review() {
                             dataManyBook?.id
                           )?.map((dataReview: any, index: number) => (
                             <div>
-                              <div className="p-4 relative" key={index}>
+                              <div
+                                className="p-4 relative rounded-lg transition-effect-hover"
+                                key={index}
+                              >
                                 <div className="grid grid-cols-7 gap-2">
                                   <div className="col-span-1">
                                     <div className="flex flex-col ">

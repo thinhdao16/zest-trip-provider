@@ -56,8 +56,7 @@ export default function ModalCreateTicketSpecial() {
     };
     dispatch(postCreateTicketTour(data)).then((data) => {
       if (postCreateTicketTour.fulfilled.match(data)) {
-        console.log("create ticket success");
-        message.success("Create ticket success");
+        message.success("Create ticket special success");
       } else {
         console.log("ticket create failed");
       }

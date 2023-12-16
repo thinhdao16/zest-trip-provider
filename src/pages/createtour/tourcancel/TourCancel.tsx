@@ -262,7 +262,7 @@ export default function TourCancel() {
                           />
                         </div> */}
                         <Link to={`/booking/many/${data?.id}`} key={data?.id}>
-                          <div className="bg-white shadow-custom-card-mui grid grid-cols-12 p-4 gap-3  rounded-lg">
+                          <div className="bg-white shadow-custom-card-mui grid grid-cols-12 p-4 gap-3  rounded-lg transition-effect-hover">
                             <div className="col-span-1">
                               <Link to={`/${data?.id}`} key={data?.id}>
                                 <img
