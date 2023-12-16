@@ -20,9 +20,22 @@ function Review() {
   const [activeButton, setActiveButton] = useState(1);
   const [filterImg, setFilterImg] = useState(1);
   const [refeshReview, setRefeshReview] = useState(1);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [keyFilterTour, setKeyFilterTour] = useState("normal");
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const [reloadSearch, setReloadSearch] = useState<any>(null);
+  const { refeshTour } = React.useContext(DataContext);
+  const { tours } = useSelector((state: any) => state.tour);
+  const dataTours = tours?.tours;
+  const [dataTourReviews, setDataTourReviews] = useState(dataTours);
+  const countTours = tours?.total_count;
   React.useContext(DataContext);
   const dispatch: AppDispatch = useDispatch();
   const { review, loading } = useSelector((state: any) => state.review);
+  const [reloadKeyFilter, setReloadKeyFilter] = useState<any>(null);
 
   function filterReviewsByTourId(review: any, tourId: string) {
     return review?.filter(
@@ -91,18 +104,7 @@ function Review() {
     return content;
   };
   const renderedContentStar = renderComponentStar();
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
-  const [keyFilterTour, setKeyFilterTour] = useState("normal");
-  const [searchTerm, setSearchTerm] = useState("");
 
-  const [reloadSearch, setReloadSearch] = useState<any>(null);
-  const { refeshTour } = React.useContext(DataContext);
-  const { tours } = useSelector((state: any) => state.tour);
-  const dataTours = tours?.tours;
-  const [dataTourReviews, setDataTourReviews] = useState(dataTours);
-  const countTours = tours?.total_count;
-  console.log(dataTourReviews);
   useEffect(() => {
     const pagination = { pageSize, currentPage };
     dispatch(fetchTours(pagination));
@@ -112,12 +114,12 @@ function Review() {
       setDataTourReviews(dataTours);
     }
     if (keyFilterTour === "review") {
-      const toursWithReviews = dataTourReviews.filter(
+      const toursWithReviews = dataTours.filter(
         (tour: any) => tour.TourReview.length > 0
       );
       setDataTourReviews(toursWithReviews);
     }
-  }, [dataTourReviews, dataTours, keyFilterTour, reloadSearch]);
+  }, [dataTours, keyFilterTour, reloadSearch, reloadKeyFilter]);
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
@@ -126,15 +128,17 @@ function Review() {
     setPageSize(size);
     setCurrentPage(current);
   };
-
+  console.log(dataTours);
   const handleFilterTour = (value: string) => {
     if (value === "review") {
-      const pageSizeFil = 100;
+      const pageSizeFil = 50;
       const currentPageFil = 1;
       const pagination = { pageSizeFil, currentPageFil };
-      setPageSize(100);
+      setPageSize(50);
+
       dispatch(fetchTours(pagination));
       setKeyFilterTour("review");
+      setReloadKeyFilter((prev: any) => !prev);
     }
     if (value?.length === 0 || value === undefined) {
       setKeyFilterTour("normal");
