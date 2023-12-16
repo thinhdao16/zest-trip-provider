@@ -143,21 +143,35 @@ const LocationStart: React.FC = () => {
   const handleKeyPress = async (event: any) => {
     if (event.key === "Enter") {
       if (searchQuery?.length > 0) {
-        const response = await axios.get(
-          `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-            searchQuery
-          )}`
-        );
-        if (response.data && response.data.length > 0) {
-          const lat = response.data[0].lat;
-          const lng = response.data[0].lon;
-          setValueRecommend({
-            address: searchQuery,
-            lat,
-            lng,
-          });
-          setDefaultOpenMore(true);
-        } else {
+        try {
+          const response = await axios.get(
+            `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+              searchQuery
+            )}`
+          );
+
+          if (response.data && response.data.length > 0) {
+            const lat = response.data[0].lat;
+            const lng = response.data[0].lon;
+            setValueRecommend({
+              address: searchQuery,
+              lat,
+              lng,
+            });
+            setDefaultOpenMore(true);
+          } else {
+            setValueRecommend({
+              address: searchQuery,
+              lat: "10.8422931",
+              lng: "106.8061656",
+            });
+            setDefaultOpenMore(true);
+          }
+        } catch (error) {
+          // Handle the error here, e.g., log it or show a message to the user
+          console.error("Error fetching data:", error);
+
+          // Set default values or show an error message
           setValueRecommend({
             address: searchQuery,
             lat: "10.8422931",
