@@ -858,34 +858,39 @@ function BookDetail() {
                         )}
                       </div>
                     </div>
-                    <div className="">
+                    <div className="text-center">
                       <Tooltip title="Tour start" placement="top">
                         <div className="flex items-center gap-1">
                           <MdCreateNewFolder />
                           <span className="font-medium">
                             {dayjs(booking?.booked_date)?.format("YYYY-MM-DD")}:
                           </span>
-                          <span className="font-medium text-gray-500">
-                            {booking?.time_slot}
-                          </span>
+                          <span className="">{booking?.time_slot}</span>
                         </div>
                       </Tooltip>
-                    </div>
-                    <div className="">
-                      <div className="flex flex-col items-center">
+                      <div className="">
                         <div className="flex items-center gap-1">
                           <span className="font-medium">Total original:</span>
-                          <span className="font-medium text-gray-500">
+                          <span className="">
                             {formatNumber(parseInt(booking?.original_price))}
                           </span>
                         </div>
                         <div className="flex items-center gap-1">
                           <span className="font-medium">Total Paid:</span>
-                          <span className="font-medium text-gray-500">
+                          <span className=" ">
                             {formatNumber(parseInt(booking?.paid_price))}
                           </span>
                         </div>
                       </div>
+                    </div>
+                    <div className="">
+                      <span className="font-medium">Departure location:</span>
+                      <span className="block">
+                        <TruncatedText
+                          maxLength={60}
+                          text={booking?.departure_location}
+                        />
+                      </span>
                     </div>
                     <div className="">
                       <div className="flex items-center gap-4 justify-end">

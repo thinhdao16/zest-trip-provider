@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useContext, useState } from "react";
 import { Modal, Backdrop, Fade } from "@mui/material";
 import { Box } from "@mui/system";
 import { HiOutlineDocumentAdd } from "react-icons/hi";
@@ -12,6 +12,7 @@ import { AppDispatch } from "../../../store/redux/store";
 import { useDispatch } from "react-redux";
 import { postCreateAvailabilityTour } from "../../../store/redux/silce/tourSlice";
 import { message } from "antd";
+import { DataContext } from "../../../store/dataContext/DataContext";
 
 const style = {
   position: "absolute" as const,
@@ -33,11 +34,14 @@ function AddAvailability({
   dataDetailTour: any;
   setLoading: any;
 }) {
+  const { setRefeshTour } = useContext(DataContext);
+
   const dispatch: AppDispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [capacity, setCapacity] = useState("");
+
   const [startingTimeSingle, setStartingTimeSingle] = useState<any>([]);
   const [startingTimes, setStartingTimes] = useState<any>({
     Mon: [],
@@ -436,6 +440,7 @@ function AddAvailability({
         if (postCreateAvailabilityTour.fulfilled.match(response)) {
           setLoading((prev: any) => !prev);
           setOpen(false);
+          setRefeshTour((prev) => !prev);
           message.success("Add availability success");
         }
       }
@@ -1149,7 +1154,7 @@ function AddAvailability({
               >
                 <button
                   className="px-6 py-2 bg-gray-300 rounded-lg text-gray-600 font-medium"
-                  //   onClick={handleCloseCancel}
+                  onClick={handleClose}
                 >
                   Cancel
                 </button>

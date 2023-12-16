@@ -31,7 +31,6 @@ function ScreenMain() {
   );
 
   const [selectedImages, setSelectedImages] = useState<any[]>([]);
-  console.log(filteredData);
   const [isDraggingOver, setIsDraggingOver] = useState<boolean>(false);
   const [reason, setReason] = useState("");
   const [moreRefund, setMoreRefund] = useState(false);
@@ -230,6 +229,14 @@ function ScreenMain() {
                           Time slot{" "}
                         </span>
                         <span className=" ">{filteredData[0]?.time_slot}</span>
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="font-medium text-gray-700">
+                          Departure location
+                        </span>
+                        <span className=" ">
+                          {filteredData[0]?.departure_location}
+                        </span>
                       </div>
                     </div>
                   </div>

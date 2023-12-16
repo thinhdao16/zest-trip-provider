@@ -14,6 +14,7 @@ const initialState = {
   wallet: [],
   listBank: [],
   walletTransaction: [],
+  reporter: [],
 };
 
 export const getPersonalInfo = createAsyncThunk("auth/getInfo", async () => {
@@ -93,6 +94,16 @@ export const getListBank = createAsyncThunk("auth/getListBank", async () => {
     const response = await axiosInstance.get(`https://api.vietqr.io/v2/banks`);
     console.log(response);
     return response.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Failed to fetch other data");
+  }
+});
+
+export const getReporter = createAsyncThunk("auth/getReporter", async () => {
+  try {
+    const response = await axiosInstance.get(`${BASE_URL}/report`);
+    return response.data.data.providers;
   } catch (error) {
     console.log(error);
     throw new Error("Failed to fetch other data");
@@ -249,6 +260,19 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(getWalletTransactionMe.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || null;
+      })
+      .addCase(getReporter.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getReporter.fulfilled, (state, action) => {
+        state.loading = false;
+        state.reporter = action.payload;
+        state.error = null;
+      })
+      .addCase(getReporter.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || null;
       });

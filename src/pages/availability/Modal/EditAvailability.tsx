@@ -11,6 +11,7 @@ import { AppDispatch } from "../../../store/redux/store";
 import { useDispatch } from "react-redux";
 import { editTicketAvailability } from "../../../store/redux/silce/tourSlice";
 import { DataContext } from "../../../store/dataContext/DataContext";
+import { message } from "antd";
 const style = {
   position: "absolute" as const,
   top: "50%",
@@ -52,7 +53,6 @@ const EditAvailability = (dataAvailability: any) => {
   const [availability, setAvailability] = useState<any>(
     dataAvailability?.dataAvailability
   );
-  console.log(availability);
   const [open, setOpen] = useState(false);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [, setDataWeekChoose] = useState<any>([]);
@@ -275,6 +275,8 @@ const EditAvailability = (dataAvailability: any) => {
       dispatch(editTicketAvailability(availabilityItem)).then((response) => {
         if (editTicketAvailability.fulfilled.match(response)) {
           setRefeshTour((prev) => !prev);
+          message.success("Edit success!");
+          setOpen(false);
         }
       });
     });
@@ -311,7 +313,6 @@ const EditAvailability = (dataAvailability: any) => {
   // Hàm kiểm tra ngày có bị disable theo chỉ số currentIndex trong TourAvailability hay không
   const shouldDisableDateByIndex = (currentIndex: number) => (date: any) => {
     const disableDate = availability;
-    console.log(disableDate);
     if (disableDate && currentIndex >= 0 && currentIndex < disableDate.length) {
       const range = disableDate[currentIndex];
       const disabledStartDate = dayjs(range?.validity_date_range_from).format(
@@ -432,6 +433,11 @@ const EditAvailability = (dataAvailability: any) => {
                           key={availabilityIndex}
                           className="flex flex-col gap-3"
                         >
+                          <div>
+                            <span className="font-medium mr-2">Name:</span>
+                            <span>{availabilityItem?.name}</span>
+                          </div>
+
                           <p className="font-medium">Valid of this season</p>
                           <div className="grid grid-cols-2 gap-4 ">
                             <div className="flex gap-1 items-center create-tour-valid-date">

@@ -10,6 +10,7 @@ const initialState = {
   ticketQuantity: [],
   dateAvaibilityTour: [],
   dateTicketTour: [],
+  dateAvaibilityInactiveTour: [],
 };
 
 export const getBooking = createAsyncThunk(
@@ -328,6 +329,28 @@ export const getDateAvailabilityByTour = createAsyncThunk(
   }
 );
 
+export const getDateAvailabilityInactiveByTour = createAsyncThunk(
+  "booking/getDateAvailabilityInactiveByTour",
+  async (data: any) => {
+    try {
+      const response = await axiosInstance.get(
+        `${BASE_URL}/availability/get-date-availability/${data}`,
+        {
+          params: { status: "INACTIVE" },
+        }
+      );
+
+      if (response.status === 200) {
+        return response.data.data;
+      } else {
+        throw new Error("Failed to fetch data");
+      }
+    } catch (error) {
+      throw new Error("Failed to fetch other data");
+    }
+  }
+);
+
 export const getDateTicketByTour = createAsyncThunk(
   "booking/getDateTicketByTour",
   async (data: any) => {
@@ -470,6 +493,23 @@ const bookingSice = createSlice({
         state.loadingBooking = false;
         state.error = action.error.message;
       })
+
+      .addCase(getDateAvailabilityInactiveByTour.pending, (state) => {
+        state.loadingBooking = true;
+        state.errorBooking = null;
+      })
+      .addCase(getDateAvailabilityInactiveByTour.fulfilled, (state, action) => {
+        state.loadingBooking = false;
+        state.dateAvaibilityInactiveTour = action.payload;
+        state.errorBooking = null;
+      })
+      .addCase(
+        getDateAvailabilityInactiveByTour.rejected,
+        (state: any, action) => {
+          state.loadingBooking = false;
+          state.error = action.error.message;
+        }
+      )
       .addCase(getDateTicketByTour.pending, (state) => {
         state.loadingBooking = true;
         state.errorBooking = null;

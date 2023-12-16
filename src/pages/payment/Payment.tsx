@@ -86,10 +86,13 @@ function Payment() {
 
       const weeks = Array.from({ length: 7 }, (_, weekIndex) => {
         const weekStart = thisSunday.subtract(weekIndex, "week");
-        const weekEnd = weekStart.add(6, "day");
+        const weekEnd = weekStart.add(6, "day").endOf("day"); // Use endOf('day')
+
         return {
           start: weekStart.format("YYYY-MM-DD"),
-          end: weekEnd.format("YYYY-MM-DD"),
+          end: weekEnd.isAfter(currentDate)
+            ? currentDate.format("YYYY-MM-DD")
+            : weekEnd.format("YYYY-MM-DD"),
         };
       });
 

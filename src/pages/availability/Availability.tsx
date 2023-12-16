@@ -18,6 +18,7 @@ import LoadingFullScreen from "../../styles/loading/LoadingFullScreen";
 import DatePicker from "react-multi-date-picker";
 import { CiCircleMore } from "react-icons/ci";
 import { StatusAvailabilty } from "../../styles/status/availability";
+import { Link } from "react-router-dom";
 
 function Availability() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -317,13 +318,6 @@ function Availability() {
 
                       console.log(formattedBlockedDates);
 
-                      // const isBlocked = formattedBlockedDates?.includes(
-                      //   dayjs(formattedDate).format("YYYY-MM-DD")
-                      // );
-
-                      // const style = {
-                      //   backgroundColor: isBlocked ? "#ff6384" : "",
-                      // };
                       return {
                         disabled: !isDisabled,
                         // style: style,
@@ -411,23 +405,26 @@ function Availability() {
                           key={index}
                           className="shadow-custom-card-mui bg-white rounded-lg relative transition-effect-hover"
                         >
-                          <div className=" flex items-center gap-2 p-4 rounded-t-lg bg-stone-200">
-                            <img
-                              src={dataTour?.tour_images[0]}
-                              className="w-12 h-12 rounded-lg object-cover"
-                              alt="wait"
-                            />
-                            <div className="flex flex-col">
-                              <span className="font-medium">
-                                {dataTour?.name}
-                              </span>
-                              <span className="font-medium text-gray-500">
-                                {dataTour?.address_district},
-                                {dataTour?.address_province},{" "}
-                                {dataTour?.address_country}
-                              </span>
+                          <Link to={`/availability/detail/${dataTour?.id}`}>
+                            <div className=" flex items-center gap-2 p-4 rounded-t-lg bg-stone-200">
+                              <img
+                                src={dataTour?.tour_images[0]}
+                                className="w-12 h-12 rounded-lg object-cover"
+                                alt="wait"
+                              />
+                              <div className="flex flex-col">
+                                <span className="font-medium">
+                                  {dataTour?.name}
+                                </span>
+                                <span className="font-medium text-gray-500">
+                                  {dataTour?.address_district},
+                                  {dataTour?.address_province},{" "}
+                                  {dataTour?.address_country}
+                                </span>
+                              </div>
                             </div>
-                          </div>
+                          </Link>
+
                           <hr className="mb-2" />
                           <div className="absolute top-2 right-2 flex gap-2">
                             <Dropdown
@@ -463,7 +460,10 @@ function Availability() {
                                   status: string;
                                   validity_date_range_from: string;
                                   validity_date_range_to: string;
-                                  weekdays: { day: number; timeSlot: string }[];
+                                  weekdays: {
+                                    day: number;
+                                    timeSlot: string;
+                                  }[];
                                   special_dates: {
                                     date: string;
                                     timeSlot: string;

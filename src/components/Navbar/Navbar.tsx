@@ -2,7 +2,7 @@ import React from "react";
 import { AppstoreOutlined } from "@ant-design/icons";
 import { Menu } from "antd";
 import { Link } from "react-router-dom";
-import { MdManageAccounts } from "react-icons/md";
+import { MdManageAccounts, MdOutlineReport } from "react-icons/md";
 import { FaCalendarCheck } from "react-icons/fa6";
 import { SiGooglemarketingplatform } from "react-icons/si";
 import { CiWallet } from "react-icons/ci";
@@ -94,6 +94,11 @@ const items = [
       { key: "payment", label: "Payment" },
       { key: "payment/wallet", label: "Wallet" },
     ],
+  },
+  {
+    key: "reported",
+    icon: <MdOutlineReport />,
+    label: "Reported",
   },
 ];
 

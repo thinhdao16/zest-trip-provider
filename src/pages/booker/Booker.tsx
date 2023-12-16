@@ -40,7 +40,6 @@ function Booker() {
         ) ?? [],
     })) ?? [];
   const [dataTourBookings, setDataTourBookings] = useState(dataTours);
-  console.log(dataTourBookings);
   useEffect(() => {
     if (keyFilterTour === "normal") {
       setDataTourBookings(dataTourBookingDontReject);

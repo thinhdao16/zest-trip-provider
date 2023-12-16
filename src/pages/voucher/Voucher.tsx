@@ -154,28 +154,25 @@ function Voucher() {
               </div>
               <div className="container flex flex-col gap-4">
                 <div className="bg-navy-blue text-white p-3 rounded-lg shadow-custom-card-mui">
-                  <div className="grid grid-cols-12 gap-3">
-                    <div className="col-span-3">
-                      <span className="font-medium">Title</span>
+                  <div className="grid grid-cols-7 gap-3">
+                    <span className="font-medium">Title</span>
+                    <div className="">
+                      <span className="font-medium">Discount</span>
                     </div>
-                    <div className="col-span-9">
-                      <div className="grid grid-cols-5">
-                        <div className="text-center">
-                          <span className="font-medium">Discount</span>
-                        </div>
-                        <div className="text-center">
-                          <span className="font-medium">Quantity</span>
-                        </div>
-                        <div className="text-center">
-                          <span className="font-medium">Apply condition</span>
-                        </div>
-                        <div className="text-center">
-                          <span className="font-medium">Quanity tour</span>
-                        </div>
-                        <div className="text-center">
-                          <span className="font-medium"> Expired</span>
-                        </div>
-                      </div>
+                    <div className="">
+                      <span className="font-medium">Quantity</span>
+                    </div>
+                    <div className="">
+                      <span className="font-medium">Quantity rest</span>
+                    </div>
+                    <div className="">
+                      <span className="font-medium">Apply condition</span>
+                    </div>
+                    <div className="">
+                      <span className="font-medium">Quanity tour</span>
+                    </div>
+                    <div className="">
+                      <span className="font-medium"> Expired</span>
                     </div>
                   </div>
                 </div>
@@ -208,58 +205,59 @@ function Voucher() {
                                 <AiOutlineUp />
                               </div>
                             )}
-                            <div className="grid grid-cols-12 gap-3 ">
-                              <div className="col-span-3 flex items-center ">
-                                <div className="">
-                                  <span className="font-medium">
-                                    {dataVoucher?.name}
+                            <div className="grid grid-cols-7 gap-3 ">
+                              <div className="">
+                                <span className="font-medium">
+                                  {dataVoucher?.name}
+                                </span>
+                              </div>
+
+                              <div className="   ">
+                                <div className="flex gap-1">
+                                  <span>
+                                    {dataVoucher?.discount_type === "PERCENT"
+                                      ? `${dataVoucher?.discount} %`
+                                      : dataVoucher?.discount_type === "AMOUNT"
+                                      ? `${formatNumber(
+                                          parseInt(dataVoucher?.discount)
+                                        )}`
+                                      : ""}
                                   </span>
                                 </div>
                               </div>
-                              <div className="col-span-9">
-                                <div className="grid grid-cols-5">
-                                  <div className=" flex items-center justify-center  ">
-                                    <div className="flex gap-1">
-                                      <span>
-                                        {dataVoucher?.discount_type ===
-                                        "PERCENT"
-                                          ? `${dataVoucher?.discount} %`
-                                          : dataVoucher?.discount_type ===
-                                            "AMOUNT"
-                                          ? `${formatNumber(
-                                              parseInt(dataVoucher?.discount)
-                                            )}`
-                                          : ""}
-                                      </span>
-                                    </div>
-                                  </div>
-                                  <div className=" flex items-center justify-center">
-                                    <div className="flex flex-wrap gap-3">
-                                      <span>{dataVoucher?.quantity}</span>
-                                    </div>
-                                  </div>
-                                  <div className=" flex items-center justify-center">
-                                    <div className="flex flex-wrap gap-3">
-                                      <span>
-                                        {formatNumber(
-                                          dataVoucher?.apply_condition
-                                            ?.minimum_price
-                                        )}
-                                      </span>
-                                    </div>
-                                  </div>
-                                  <div className=" flex items-center justify-center">
-                                    <div className="flex flex-wrap gap-3">
-                                      <span>{dataVoucher?.tours?.length}</span>
-                                    </div>
-                                  </div>
-                                  <div className=" flex items-center justify-center">
-                                    <div>
-                                      {dayjs(dataVoucher?.expired_date).format(
-                                        "YYYY-MM-DD"
-                                      )}
-                                    </div>
-                                  </div>
+                              <div className=" ">
+                                <div className="flex flex-wrap gap-3">
+                                  <span>{dataVoucher?.quantity}</span>
+                                </div>
+                              </div>
+                              <div className=" ">
+                                <div className="flex flex-wrap gap-3">
+                                  <span>
+                                    {dataVoucher?.quantity -
+                                      dataVoucher?.quantity_used}
+                                  </span>
+                                </div>
+                              </div>
+                              <div className=" ">
+                                <div className="flex flex-wrap gap-3">
+                                  <span>
+                                    {formatNumber(
+                                      dataVoucher?.apply_condition
+                                        ?.minimum_price
+                                    )}
+                                  </span>
+                                </div>
+                              </div>
+                              <div className=" ">
+                                <div className="flex flex-wrap gap-3">
+                                  <span>{dataVoucher?.tours?.length}</span>
+                                </div>
+                              </div>
+                              <div className=" ">
+                                <div>
+                                  {dayjs(dataVoucher?.expired_date).format(
+                                    "YYYY-MM-DD"
+                                  )}
                                 </div>
                               </div>
                             </div>
