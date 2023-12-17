@@ -21,7 +21,6 @@ import { IoEyeOutline } from "react-icons/io5";
 
 export default function Banner() {
   const { refeshTour, reloadStatus } = React.useContext(DataContext);
-  console.log(reloadStatus);
   const dispatch: AppDispatch = useDispatch();
   const { tours, loading } = useSelector((state: any) => state.tour);
   const dataTours = tours?.tours;

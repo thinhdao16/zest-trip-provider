@@ -16,6 +16,7 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 import LoadingModal from "../../../styles/loading/LoadingModal";
 import { MdChevronLeft } from "react-icons/md";
 import { message } from "antd";
+import TruncatedText from "../../../utils/TruncatedText";
 
 function ScreenMain() {
   const dispatch: AppDispatch = useDispatch();
@@ -29,6 +30,7 @@ function ScreenMain() {
   const filteredData = booking.filter(
     (item: { id: string }) => item.id === index
   );
+  console.log(filteredData);
 
   const [selectedImages, setSelectedImages] = useState<any[]>([]);
   const [isDraggingOver, setIsDraggingOver] = useState<boolean>(false);
@@ -213,6 +215,16 @@ function ScreenMain() {
                           {filteredData[0]?.booker_phone}
                         </span>
                       </div>
+                      <div className="flex flex-col">
+                        <span className="font-medium text-gray-700">
+                          Create at
+                        </span>
+                        <span className=" ">
+                          {dayjs(filteredData[0]?.updated_at).format(
+                            "YYYY-MM-DD"
+                          )}
+                        </span>
+                      </div>
                     </div>
                     <div className="flex flex-col gap-2">
                       <div className="flex flex-col">
@@ -235,7 +247,10 @@ function ScreenMain() {
                           Departure location
                         </span>
                         <span className=" ">
-                          {filteredData[0]?.departure_location}
+                          <TruncatedText
+                            text={filteredData[0]?.departure_location}
+                            maxLength={50}
+                          />
                         </span>
                       </div>
                     </div>
