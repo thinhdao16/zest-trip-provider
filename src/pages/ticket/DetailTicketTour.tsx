@@ -26,6 +26,7 @@ import ModalTicketAdult from "./ModalTicketAdult";
 import { formatNumber } from "../../utils/formatNumber";
 import { CiCircleMore } from "react-icons/ci";
 import DateTicket from "./DateTicket";
+import { IoIosInfinite } from "react-icons/io";
 
 const { Option } = Select;
 
@@ -43,7 +44,7 @@ function DetailTicketTour() {
   );
   const [filterTickets, setFilterTickets] = useState<any>(tourDetail);
   const [selectedStatus, setSelectedStatus] = useState("");
-
+  console.log(filterTickets);
   const handleStatusClick = (status: any) => {
     setSelectedStatus(status);
   };
@@ -290,7 +291,12 @@ function DetailTicketTour() {
                                   Max quantity
                                 </span>
                                 <span className="text-gray-500">
-                                  {ticket?.maximum_ticket_count}
+                                  {ticket?.PricingType?.name ===
+                                  "FREE_NO_TICKET" ? (
+                                    <IoIosInfinite />
+                                  ) : (
+                                    <>{ticket?.maximum_ticket_count}</>
+                                  )}
                                 </span>
                               </div>{" "}
                               <div className="flex flex-col">
@@ -355,7 +361,14 @@ function DetailTicketTour() {
                                     >
                                       <div>{price?.from_amount}</div>
                                       <LuMoveRight />
-                                      <div>{price?.to_amount}</div>
+                                      <span className="text-gray-500">
+                                        {ticket?.PricingType?.name ===
+                                        "FREE_NO_TICKET" ? (
+                                          <IoIosInfinite />
+                                        ) : (
+                                          <>{price?.to_amount}</>
+                                        )}
+                                      </span>
                                       <div> {formatNumber(price?.price)}</div>
                                     </div>
                                   )

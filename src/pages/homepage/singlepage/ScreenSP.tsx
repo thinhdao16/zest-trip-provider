@@ -21,6 +21,7 @@ import {
 } from "../../../store/redux/silce/tourSlice";
 import { DataContext } from "../../../store/dataContext/DataContext";
 import { IoTrash } from "react-icons/io5";
+import { IoIosInfinite } from "react-icons/io";
 
 function ScreenSP() {
   const dispatch: AppDispatch = useDispatch();
@@ -215,7 +216,11 @@ function ScreenSP() {
                       <div className="flex flex-col">
                         <span className="font-medium">Max quantity</span>
                         <span className="text-gray-500">
-                          {ticket?.maximum_ticket_count}
+                          {ticket?.PricingType?.name === "FREE_NO_TICKET" ? (
+                            <IoIosInfinite />
+                          ) : (
+                            <>{ticket?.maximum_ticket_count}</>
+                          )}
                         </span>
                       </div>{" "}
                       <div className="flex flex-col">
@@ -274,7 +279,14 @@ function ScreenSP() {
                             >
                               <div>{price?.from_amount}</div>
                               <LuMoveRight />
-                              <div>{price?.to_amount}</div>
+                              <span className="text-gray-500">
+                                {ticket?.PricingType?.name ===
+                                "FREE_NO_TICKET" ? (
+                                  <IoIosInfinite />
+                                ) : (
+                                  <>{price?.to_amount}</>
+                                )}
+                              </span>
                               <div>vnđ {price?.price}</div>
                             </div>
                           )

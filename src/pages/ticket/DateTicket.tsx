@@ -45,7 +45,6 @@ function DateTicket() {
   const [openDataTicket, setOpenDataTicket] = useState(false);
 
   const uniqueDates = new Set();
-  console.log(dateTicketTour);
   const filteredBookingDetails: any = [];
   bookingDontReject?.forEach((booking: any) => {
     const bookedDate = dayjs(booking?.booked_date).format("YYYY-MM-DD");
