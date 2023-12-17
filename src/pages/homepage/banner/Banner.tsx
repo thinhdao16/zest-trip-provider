@@ -90,6 +90,7 @@ export default function Banner() {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value);
+    setPageSize(50);
   };
 
   const sendToServer = (valueSearch: string) => {
