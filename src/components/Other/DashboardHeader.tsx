@@ -27,14 +27,16 @@ function DashboardHeader({ toggle }: DashboardHeaderProps): JSX.Element {
           <h1 className="font-semibold  text-3xl text-black mb-1">
             {personalInfo?.full_name || <SliceEmailToName email={email} />}
           </h1>
-          <span className="text-gray-400">Welcome back</span>
+          <span className="text-gray-700 font-medium text-lg">
+            Welcome back
+          </span>
         </div>
       </div>
       <div className="avaterSection flex items-center gap-2 sm:gap-6 text-slate-400">
         <div className="hidden md:flex flex-row gap-4 text-xl">
-          <Link to="/">
+          {/* <Link to="/">
             <FontAwesomeIcon icon={faBell} />
-          </Link>
+          </Link> */}
         </div>
         <p
           className="cursor-pointer md:hidden text-2xl"

@@ -107,7 +107,7 @@ function DashboardChart() {
       <main className="h-full">
         <div className="text-xl font-medium check mb-4">Revenue analytics</div>
         <div className="grid grid-cols-5 gap-4">
-          <div className="col-span-4">
+          <div className="col-span-5">
             <div className="pb-8">
               <AppWebsiteVisits
                 title="Weekly Activity"
