@@ -260,12 +260,6 @@ function DateAvailability() {
             <GoDotFill className="w-5 h-5" style={{ color: " #f77c05" }} />
             <span className="text-sm">Availability inactive</span>
           </div>
-          <div className="flex items-center">
-            <GoDotFill className="w-5 h-5" style={{ color: " #918151" }} />
-            <span className="text-sm flex-wrap flex">
-              Orphan & Availability inactive
-            </span>
-          </div>
 
           <div className="flex items-center">
             <GoDotFill className="w-5 h-5" style={{ color: " #4b0082" }} />
@@ -276,12 +270,6 @@ function DateAvailability() {
 
             <span className="text-sm flex-wrap flex">
               Block & Availability inactive
-            </span>
-          </div>
-          <div className="flex items-center">
-            <GoDotFill className="w-5 h-5" style={{ color: "#adc0c7" }} />
-            <span className="text-sm flex-wrap flex">
-              Orphan & Block date & Availability inactive
             </span>
           </div>
         </div>
