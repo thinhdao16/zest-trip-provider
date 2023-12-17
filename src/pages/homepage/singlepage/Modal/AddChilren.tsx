@@ -80,14 +80,7 @@ function AddChildren({ data }: { data: any }) {
     {
       id: 0,
       numberOfPeople: 0,
-      numberOfPeopleAfter: 2,
-      retailPrice: 0,
-      payoutPerPerson: 0,
-    },
-    {
-      id: 1,
-      numberOfPeople: 3,
-      numberOfPeopleAfter: 4,
+      numberOfPeopleAfter: 1,
       retailPrice: 0,
       payoutPerPerson: 0,
     },
@@ -96,19 +89,15 @@ function AddChildren({ data }: { data: any }) {
     {
       id: 0,
       numberOfPeople: 1,
-      numberOfPeopleAfter: 2,
-      retailPrice: 0,
-      payoutPerPerson: 0,
-    },
-    {
-      id: 1,
-      numberOfPeople: 3,
-      numberOfPeopleAfter: 4,
+      numberOfPeopleAfter: 1,
       retailPrice: 0,
       payoutPerPerson: 0,
     },
   ];
-
+  const quantityFree = {
+    max: 2,
+    min: 1,
+  };
   const handleRadioChange = (groupName: string, selectedValue: string) => {
     setSelectedRadio((prevRadio) => ({
       ...prevRadio,
@@ -169,7 +158,7 @@ function AddChildren({ data }: { data: any }) {
         const object = {
           price_range,
           ...updatedFormListCheck,
-          ...quantityChildren,
+          ...quantityFree,
           ...updatedAgeForChildren,
         };
         dataChildren = object;
@@ -225,7 +214,7 @@ function AddChildren({ data }: { data: any }) {
         const object = {
           price_range,
           ...updatedFormListCheck,
-          ...quantityAdult,
+          ...quantityFree,
           ...updatedAgeForAdult,
         };
         dataAdult = object;
