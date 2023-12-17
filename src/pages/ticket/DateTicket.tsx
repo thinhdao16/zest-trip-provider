@@ -322,7 +322,7 @@ function DateTicket() {
                 backgroundColor: dateChooseColor
                   ? "#0074d9"
                   : isBlocked && dateDont && dateTicketSpecial
-                  ? "black"
+                  ? "#adc0c7"
                   : isBlocked && dateDont
                   ? "#4b0082"
                   : isBlocked && dateTicketSpecial
@@ -439,7 +439,7 @@ function DateTicket() {
             </div>
             <div className="grid grid-cols-12 ">
               <div className="col-span-2">
-                <GoDotFill className="w-5 h-5" style={{ color: " black" }} />
+                <GoDotFill className="w-5 h-5" style={{ color: "#adc0c7" }} />
               </div>
               <div className="col-span-10">
                 <span className="text-sm flex-wrap flex">

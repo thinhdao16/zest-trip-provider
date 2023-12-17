@@ -369,15 +369,15 @@ const LocationStart: React.FC = () => {
                 <MapComponent />
               </MapContainer>
             </div>
-            {addValueLocation && defaultOpenMore && (
-              <button
-                type="button"
-                className="button-transition-effect-hover bg-white  rounded-lg  px-4 py-1 mt-4 text-navy-blue border border-navy-blue"
-                onClick={() => handleAddlocation()}
-              >
-                Add more departure
-              </button>
-            )}
+            {/* {addValueLocation && defaultOpenMore && ( */}
+            <button
+              type="button"
+              className="button-transition-effect-hover bg-white  rounded-lg  px-4 py-1 mt-4 text-navy-blue border border-navy-blue"
+              onClick={() => handleAddlocation()}
+            >
+              Add more departure
+            </button>
+            {/* // )} */}
             <div className="flex flex-col gap-2 mt-5">
               {departure?.length > 0 &&
                 defaultOpenMore &&

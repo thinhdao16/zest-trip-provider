@@ -178,7 +178,7 @@ function DateAvailability() {
               backgroundColor: dateChooseColor
                 ? "#0074d9"
                 : isBlocked && dateDont && dateTicketSpecial
-                ? "black"
+                ? "#adc0c7"
                 : isBlocked && dateDont
                 ? "#4b0082"
                 : isBlocked && dateTicketSpecial
@@ -279,7 +279,7 @@ function DateAvailability() {
             </span>
           </div>
           <div className="flex items-center">
-            <GoDotFill className="w-5 h-5" style={{ color: " black" }} />
+            <GoDotFill className="w-5 h-5" style={{ color: "#adc0c7" }} />
             <span className="text-sm flex-wrap flex">
               Orphan & Block date & Availability inactive
             </span>
