@@ -64,7 +64,8 @@ export default function Banner() {
         searchValue === "" ||
         Object.values(booking).some(
           (field: any) =>
-            typeof field === "string" && field.includes(searchValue)
+            typeof field === "string" &&
+            field.toLowerCase().includes(searchValue.toLowerCase())
         );
 
       return isStatusMatch && isSearchMatch && isPriceMatch;
@@ -78,7 +79,6 @@ export default function Banner() {
   };
 
   const handlePageSizeChange = (current: number, size: number) => {
-    console.log(current);
     setPageSize(size);
     setCurrentPage(current);
   };

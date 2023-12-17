@@ -79,36 +79,36 @@ function Ticket() {
     if (!Array.isArray(tours) || tours.length === 0) {
       return [];
     }
+
     const searchResults = [];
 
     for (const tour of tours) {
-      if (tour.name.toLowerCase().includes(searchTerm.toLowerCase())) {
+      const isTourNameMatch = tour.name
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase());
+
+      const filteredTicketPricing = tour.TicketPricing.filter(
+        (ticketPricing: any) => {
+          return (
+            ticketPricing?.from_price?.includes(searchTerm) ||
+            ticketPricing?.to_price?.includes(searchTerm)
+          );
+        }
+      );
+
+      if (
+        !filteredTicketPricing.some((tp: any) => tp?.is_default) &&
+        filteredTicketPricing.length > 0
+      ) {
+        filteredTicketPricing.push({
+          is_default: true,
+        });
+      }
+
+      if (isTourNameMatch || filteredTicketPricing.length > 0) {
         searchResults.push({
           ...tour,
           is_default: true,
-          TicketPricing: [],
-        });
-      } else {
-        const filteredTicketPricing = tour.TicketPricing.filter(
-          (ticketPricing: any) => {
-            return (
-              ticketPricing?.from_price?.includes(searchTerm) ||
-              ticketPricing?.to_price?.includes(searchTerm)
-            );
-          }
-        );
-
-        if (
-          !filteredTicketPricing.some((tp: any) => tp?.is_default) &&
-          filteredTicketPricing.length > 0
-        ) {
-          filteredTicketPricing.push({
-            is_default: true,
-          });
-        }
-
-        searchResults.push({
-          ...tour,
           TicketPricing: filteredTicketPricing,
         });
       }
