@@ -75,14 +75,7 @@ const Price: React.FC = () => {
     {
       id: 0,
       numberOfPeople: 0,
-      numberOfPeopleAfter: 2,
-      retailPrice: 0,
-      payoutPerPerson: 0,
-    },
-    {
-      id: 1,
-      numberOfPeople: 3,
-      numberOfPeopleAfter: 4,
+      numberOfPeopleAfter: 1,
       retailPrice: 0,
       payoutPerPerson: 0,
     },
@@ -91,19 +84,11 @@ const Price: React.FC = () => {
     {
       id: 0,
       numberOfPeople: 1,
-      numberOfPeopleAfter: 2,
-      retailPrice: 0,
-      payoutPerPerson: 0,
-    },
-    {
-      id: 1,
-      numberOfPeople: 3,
-      numberOfPeopleAfter: 4,
+      numberOfPeopleAfter: 1,
       retailPrice: 0,
       payoutPerPerson: 0,
     },
   ];
-
   const ageDefault = { ageStart: "0", ageEnd: "99" };
   const handleRadioChange = (groupName: string, selectedValue: string) => {
     setSelectedRadio((prevRadio) => ({
@@ -172,7 +157,7 @@ const Price: React.FC = () => {
         const object = {
           price_range,
           ...updatedFormListCheck,
-          ...quantityChildren,
+          ...quantityFree,
           ...updatedAgeForChildren,
         };
         dataChildren = object;
@@ -228,7 +213,7 @@ const Price: React.FC = () => {
         const object = {
           price_range,
           ...updatedFormListCheck,
-          ...quantityAdult,
+          ...quantityFree,
           ...updatedAgeForAdult,
         };
         dataAdult = object;
@@ -266,10 +251,17 @@ const Price: React.FC = () => {
     max: 2,
     min: 1,
   });
+
   const [quantityChildren, setQuantityChildren] = useState({
     max: 2,
     min: 1,
   });
+
+  const quantityFree = {
+    max: 2,
+    min: 1,
+  };
+
   const handleInputChange = (e: any, field: string, type: string) => {
     const value = parseInt(e.target.value);
     if (type === "default") {

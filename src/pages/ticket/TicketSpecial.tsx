@@ -104,14 +104,7 @@ function TicketSpecial() {
     {
       id: 0,
       numberOfPeople: 0,
-      numberOfPeopleAfter: 2,
-      retailPrice: 0,
-      payoutPerPerson: 0,
-    },
-    {
-      id: 1,
-      numberOfPeople: 3,
-      numberOfPeopleAfter: 4,
+      numberOfPeopleAfter: 1,
       retailPrice: 0,
       payoutPerPerson: 0,
     },
@@ -120,19 +113,15 @@ function TicketSpecial() {
     {
       id: 0,
       numberOfPeople: 1,
-      numberOfPeopleAfter: 2,
-      retailPrice: 0,
-      payoutPerPerson: 0,
-    },
-    {
-      id: 1,
-      numberOfPeople: 3,
-      numberOfPeopleAfter: 4,
+      numberOfPeopleAfter: 1,
       retailPrice: 0,
       payoutPerPerson: 0,
     },
   ];
-
+  const quantityFree = {
+    max: 2,
+    min: 1,
+  };
   const ageDefault = { ageStart: "0", ageEnd: "99" };
   const handleRadioChange = (groupName: string, selectedValue: string) => {
     setSelectedRadio((prevRadio) => ({
@@ -204,7 +193,7 @@ function TicketSpecial() {
         const object = {
           price_range,
           ...updatedFormListCheck,
-          ...quantityChildren,
+          ...quantityFree,
           ...updatedAgeForChildren,
           apply_dates: selectDateChildren,
         };
@@ -264,7 +253,7 @@ function TicketSpecial() {
         const object = {
           price_range,
           ...updatedFormListCheck,
-          ...quantityAdult,
+          ...quantityFree,
           ...updatedAgeForAdult,
           apply_dates: selectDateAdult,
         };
