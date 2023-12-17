@@ -4,7 +4,7 @@ import { FaAngleDown } from "react-icons/fa6";
 
 export const Addons = () => {
   const handleSeeMoreClick = () => {
-    const newTabUrl = "https://zest-travel-policy.vercel.app/";
+    const newTabUrl = "https://teal-gumption-b98162.netlify.app/";
     window.open(newTabUrl, "_blank");
   };
 
