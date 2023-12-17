@@ -187,7 +187,7 @@ export const cancelTour = createAsyncThunk(
         }
       );
       if (response.status === 201) {
-        message.success("Cancell success");
+        message.success("Cancel success");
         return response.data.data;
       }
     } catch (error: any) {
