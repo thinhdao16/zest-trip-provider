@@ -63,10 +63,10 @@ function Ticket() {
   const handleFilterTour = (value: string) => {
     console.log(value);
     if (value === "ticket") {
-      const pageSizeFil = 100;
+      const pageSizeFil = 50;
       const currentPageFil = 1;
       const pagination = { pageSizeFil, currentPageFil };
-      setPageSize(100);
+      setPageSize(50);
       dispatch(fetchTours(pagination));
       setKeyFilterTour("ticket");
     }
