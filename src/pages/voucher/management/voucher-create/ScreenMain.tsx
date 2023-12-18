@@ -247,7 +247,7 @@ function ScreenMain() {
                         key={index}
                         className={`shadow-custom-card-mui rounded-lg border  border-solid ${
                           createTourId?.includes(data.id)
-                            ? " bg-gray-100 border-gray-300"
+                            ? " bg-gray-100 border-gray-500"
                             : "bg-white border-white" // Thêm border cho tour được chọn
                         }`}
                         onClick={() => handleTourClick(data.id)}

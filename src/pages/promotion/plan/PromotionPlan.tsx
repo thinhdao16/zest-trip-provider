@@ -236,7 +236,7 @@ function PromotionPlan() {
                           key={index}
                           className={`shadow-custom-card-mui rounded-lg border  border-solid ${
                             createTourId?.includes(data.id)
-                              ? " bg-zinc-100 border-gray-300"
+                              ? " bg-zinc-100 border-gray-500"
                               : "bg-white border-white" // Thêm border cho tour được chọn
                           }`}
                           onClick={() => handleTourClick(data.id)}
