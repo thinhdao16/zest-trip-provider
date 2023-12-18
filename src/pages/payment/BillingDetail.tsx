@@ -42,7 +42,6 @@ function BillingDetail() {
   const { setSaveDateChartChoose, setFieldSaveDateChartChoose } =
     useContext(DataContext);
   const [selectedDateRange, setSelectedDateRange] = useState<any>([null, null]);
-  console.log(selectedDateRange);
   function sumField(
     bookings: { [key: string]: string }[],
     field: string

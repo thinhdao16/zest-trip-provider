@@ -243,7 +243,7 @@ function Payment() {
             <div className="flex flex-col gap-3">
               {dataBooking?.length > 0 ? (
                 Array.isArray(dataBooking) &&
-                dataBooking?.map((dataVoucher, index) => (
+                dataBooking?.map((dataVoucher: any, index) => (
                   <div
                     key={index}
                     className="shadow-custom-card-mui bg-white rounded-lg relative transition-effect-hover"
@@ -346,65 +346,71 @@ function Payment() {
                               filteredBookings,
                               dataVoucher?.label?.start,
                               dataVoucher?.label?.end
-                            )?.map((dataBookingInWeek: any, index: number) => {
-                              console.log(dataBookingInWeek);
-                              return (
-                                <div
-                                  className=" px-4  mb-4  relative "
-                                  key={index}
-                                >
-                                  <div className="grid grid-cols-5">
-                                    <div>
-                                      <p className="">
-                                        {dataBookingInWeek?.booker_name}
-                                      </p>
-                                      <span>
-                                        {dayjs(
-                                          dataBookingInWeek?.updated_at
-                                        ).format("MM/DD/YYYY")}
-                                      </span>
-                                    </div>
-                                    <div>
-                                      <span>
-                                        {formatNumber(
-                                          dataBookingInWeek?.original_price
-                                        )}
-                                      </span>
-                                    </div>
-                                    <div>
-                                      <span>
-                                        {formatNumber(
-                                          dataBookingInWeek?.provider_receive
-                                        )}
-                                      </span>
-                                    </div>
-                                    <div>
-                                      <span>
-                                        {formatNumber(
-                                          dataBookingInWeek?.refund_ammount
-                                        )}
-                                      </span>
-                                    </div>
-                                    <div>
-                                      <button type="button">
-                                        {/* <StatusBooking>
+                            )
+                              ?.sort((a: any, b: any) => {
+                                const dateA = new Date(a.updated_at).getTime();
+                                const dateB = new Date(b.updated_at).getTime();
+                                return dateB - dateA;
+                              })
+                              .map((dataBookingInWeek: any, index: number) => {
+                                console.log(dataBookingInWeek);
+                                return (
+                                  <div
+                                    className=" px-4  mb-4  relative "
+                                    key={index}
+                                  >
+                                    <div className="grid grid-cols-5">
+                                      <div>
+                                        <p className="">
+                                          {dataBookingInWeek?.booker_name}
+                                        </p>
+                                        <span>
+                                          {dayjs(
+                                            dataBookingInWeek?.updated_at
+                                          ).format("MM/DD/YYYY")}
+                                        </span>
+                                      </div>
+                                      <div>
+                                        <span>
+                                          {formatNumber(
+                                            dataBookingInWeek?.original_price
+                                          )}
+                                        </span>
+                                      </div>
+                                      <div>
+                                        <span>
+                                          {formatNumber(
+                                            dataBookingInWeek?.provider_receive
+                                          )}
+                                        </span>
+                                      </div>
+                                      <div>
+                                        <span>
+                                          {formatNumber(
+                                            dataBookingInWeek?.refund_ammount
+                                          )}
+                                        </span>
+                                      </div>
+                                      <div>
+                                        <button type="button">
+                                          {/* <StatusBooking>
                                           {dataBookingInWeek?.status}
                                         </StatusBooking> */}
-                                      </button>
+                                        </button>
+                                      </div>
                                     </div>
-                                  </div>
 
-                                  {index <
-                                    // eslint-disable-next-line no-unsafe-optional-chaining
-                                    sumBookingInWeek(
-                                      booking,
-                                      dataVoucher?.label?.start,
-                                      dataVoucher?.label?.end
-                                    )?.length -
-                                      1 && <hr className="mt-4" />}
-                                </div>
-                              );
-                            })
+                                    {index <
+                                      // eslint-disable-next-line no-unsafe-optional-chaining
+                                      sumBookingInWeek(
+                                        booking,
+                                        dataVoucher?.label?.start,
+                                        dataVoucher?.label?.end
+                                      )?.length -
+                                        1 && <hr className="mt-4" />}
+                                  </div>
+                                );
+                              })
                           ) : (
                             <div className="flex items-center justify-center pb-6 pt-2">
                               <p className="bg-main p-1 rounded-lg shadow-custom-card-mui border border-gray-300 border-solid font-medium">
