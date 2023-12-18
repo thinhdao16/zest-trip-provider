@@ -178,151 +178,161 @@ function Voucher() {
                 </div>
 
                 <div className="flex flex-col gap-3">
-                  {filterVouchers?.length > 0 ? (
+                  {filterVouchers && filterVouchers.length > 0 ? (
                     Array.isArray(filterVouchers) &&
-                    filterVouchers?.map((dataVoucher: any, index: number) => (
-                      <>
-                        <div
-                          key={index}
-                          className="shadow-custom-card-mui bg-white rounded-lg relative transition-effect-hover"
-                        >
-                          <div className=" px-4 py-6  mb-2  relative ">
-                            {!expandedItems[index] ? (
-                              <div
-                                className="absolute bottom-2 right-2 text-xs flex items-center gap-1"
-                                onClick={() => toggleContentVisibility(index)}
-                              >
-                                <span>See tour</span>
-                                <AiOutlineDown />
-                              </div>
-                            ) : (
-                              <div className="absolute bottom-2 right-2 text-xs flex items-center gap-1">
-                                <span
+                    filterVouchers
+                      .slice() // Create a shallow copy of the array to avoid modifying the original
+                      .sort((a: any, b: any) => {
+                        const dateA = new Date(a.updated_at).getTime();
+                        const dateB = new Date(b.updated_at).getTime();
+                        return dateB - dateA;
+                      })
+                      .map((dataVoucher: any, index: number) => (
+                        <>
+                          <div
+                            key={index}
+                            className="shadow-custom-card-mui bg-white rounded-lg relative transition-effect-hover"
+                          >
+                            <div className=" px-4 py-6  mb-2  relative ">
+                              {!expandedItems[index] ? (
+                                <div
+                                  className="absolute bottom-2 right-2 text-xs flex items-center gap-1"
                                   onClick={() => toggleContentVisibility(index)}
                                 >
-                                  See less
-                                </span>
-                                <AiOutlineUp />
-                              </div>
-                            )}
-                            <div className="grid grid-cols-7 gap-3 ">
-                              <div className="">
-                                <span className="font-medium">
-                                  {dataVoucher?.name}
-                                </span>
-                              </div>
+                                  <span>See tour</span>
+                                  <AiOutlineDown />
+                                </div>
+                              ) : (
+                                <div className="absolute bottom-2 right-2 text-xs flex items-center gap-1">
+                                  <span
+                                    onClick={() =>
+                                      toggleContentVisibility(index)
+                                    }
+                                  >
+                                    See less
+                                  </span>
+                                  <AiOutlineUp />
+                                </div>
+                              )}
+                              <div className="grid grid-cols-7 gap-3 ">
+                                <div className="">
+                                  <span className="font-medium">
+                                    {dataVoucher?.name}
+                                  </span>
+                                </div>
 
-                              <div className="   ">
-                                <div className="flex gap-1">
-                                  <span>
-                                    {dataVoucher?.discount_type === "PERCENT"
-                                      ? `${dataVoucher?.discount} %`
-                                      : dataVoucher?.discount_type === "AMOUNT"
-                                      ? `${formatNumber(
-                                          parseInt(dataVoucher?.discount)
-                                        )}`
-                                      : ""}
-                                  </span>
+                                <div className="   ">
+                                  <div className="flex gap-1">
+                                    <span>
+                                      {dataVoucher?.discount_type === "PERCENT"
+                                        ? `${dataVoucher?.discount} %`
+                                        : dataVoucher?.discount_type ===
+                                          "AMOUNT"
+                                        ? `${formatNumber(
+                                            parseInt(dataVoucher?.discount)
+                                          )}`
+                                        : ""}
+                                    </span>
+                                  </div>
                                 </div>
-                              </div>
-                              <div className=" ">
-                                <div className="flex flex-wrap gap-3">
-                                  <span>{dataVoucher?.quantity}</span>
+                                <div className=" ">
+                                  <div className="flex flex-wrap gap-3">
+                                    <span>{dataVoucher?.quantity}</span>
+                                  </div>
                                 </div>
-                              </div>
-                              <div className=" ">
-                                <div className="flex flex-wrap gap-3">
-                                  <span>
-                                    {dataVoucher?.quantity -
-                                      dataVoucher?.quantity_used}
-                                  </span>
+                                <div className=" ">
+                                  <div className="flex flex-wrap gap-3">
+                                    <span>
+                                      {dataVoucher?.quantity -
+                                        dataVoucher?.quantity_used}
+                                    </span>
+                                  </div>
                                 </div>
-                              </div>
-                              <div className=" ">
-                                <div className="flex flex-wrap gap-3">
-                                  <span>
-                                    {formatNumber(
-                                      dataVoucher?.apply_condition
-                                        ?.minimum_price
+                                <div className=" ">
+                                  <div className="flex flex-wrap gap-3">
+                                    <span>
+                                      {formatNumber(
+                                        dataVoucher?.apply_condition
+                                          ?.minimum_price
+                                      )}
+                                    </span>
+                                  </div>
+                                </div>
+                                <div className=" ">
+                                  <div className="flex flex-wrap gap-3">
+                                    <span>{dataVoucher?.tours?.length}</span>
+                                  </div>
+                                </div>
+                                <div className=" ">
+                                  <div>
+                                    {dayjs(dataVoucher?.expired_date).format(
+                                      "YYYY-MM-DD"
                                     )}
-                                  </span>
-                                </div>
-                              </div>
-                              <div className=" ">
-                                <div className="flex flex-wrap gap-3">
-                                  <span>{dataVoucher?.tours?.length}</span>
-                                </div>
-                              </div>
-                              <div className=" ">
-                                <div>
-                                  {dayjs(dataVoucher?.expired_date).format(
-                                    "YYYY-MM-DD"
-                                  )}
+                                  </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
-                          {expandedItems[index] && (
-                            <Fade in={expandedItems[index]} timeout={700}>
-                              <div>
-                                {dataVoucher?.tours?.length > 0 && (
-                                  <hr className="mb-4" />
-                                )}
-                                {
-                                  // dataVoucher?.tours?.length > 0 ? (
-                                  dataVoucher?.tours?.map(
-                                    (voucherTour: any, index: number) => (
-                                      <div
-                                        className=" px-4  mb-4  relative "
-                                        key={index}
-                                      >
-                                        <div className="flex items-center gap-2">
-                                          <img
-                                            src={voucherTour?.tour_images[0]}
-                                            className="w-12 h-12 rounded-lg"
-                                            alt=""
-                                          />
-                                          <div>
-                                            <p className="">
-                                              {voucherTour?.name}
-                                            </p>
-                                            <p className="text-gray-500">
-                                              {voucherTour?.address_district},{" "}
-                                              {voucherTour?.address_province},{" "}
-                                              {voucherTour?.address_country}
-                                            </p>
+                            {expandedItems[index] && (
+                              <Fade in={expandedItems[index]} timeout={700}>
+                                <div>
+                                  {dataVoucher?.tours?.length > 0 && (
+                                    <hr className="mb-4" />
+                                  )}
+                                  {
+                                    // dataVoucher?.tours?.length > 0 ? (
+                                    dataVoucher?.tours?.map(
+                                      (voucherTour: any, index: number) => (
+                                        <div
+                                          className=" px-4  mb-4  relative "
+                                          key={index}
+                                        >
+                                          <div className="flex items-center gap-2">
+                                            <img
+                                              src={voucherTour?.tour_images[0]}
+                                              className="w-12 h-12 rounded-lg"
+                                              alt=""
+                                            />
+                                            <div>
+                                              <p className="">
+                                                {voucherTour?.name}
+                                              </p>
+                                              <p className="text-gray-500">
+                                                {voucherTour?.address_district},{" "}
+                                                {voucherTour?.address_province},{" "}
+                                                {voucherTour?.address_country}
+                                              </p>
+                                            </div>
                                           </div>
+
+                                          {index <
+                                            dataVoucher?.tours?.length - 1 && (
+                                            <hr className="mt-4" />
+                                          )}
                                         </div>
-
-                                        {index <
-                                          dataVoucher?.tours?.length - 1 && (
-                                          <hr className="mt-4" />
-                                        )}
-                                      </div>
+                                      )
                                     )
-                                  )
-                                  // ) : (
+                                    // ) : (
 
-                                  // )
-                                }
-                                <hr className="mb-4" />
-                                <div className="flex items-center justify-center pb-6 pt-2 ">
-                                  <button
-                                    type="button"
-                                    onClick={() =>
-                                      handleApplyVoucher(dataVoucher)
-                                    }
-                                    className="bg-main p-1 rounded-lg shadow-custom-card-mui border border-gray-300 border-solid font-medium"
-                                  >
-                                    Apply voucher for more tour
-                                  </button>
+                                    // )
+                                  }
+                                  <hr className="mb-4" />
+                                  <div className="flex items-center justify-center pb-6 pt-2 ">
+                                    <button
+                                      type="button"
+                                      onClick={() =>
+                                        handleApplyVoucher(dataVoucher)
+                                      }
+                                      className="bg-main p-1 rounded-lg shadow-custom-card-mui border border-gray-300 border-solid font-medium"
+                                    >
+                                      Apply voucher for more tour
+                                    </button>
+                                  </div>
                                 </div>
-                              </div>
-                            </Fade>
-                          )}
-                        </div>
-                      </>
-                    ))
+                              </Fade>
+                            )}
+                          </div>
+                        </>
+                      ))
                   ) : (
                     <button
                       type="button"

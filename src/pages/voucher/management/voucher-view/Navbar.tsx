@@ -60,7 +60,8 @@ function NavBar() {
     };
     const dataUpdateMapTour = {
       voucher_id: voucherView?.id,
-      ...tourIdPayload,
+      // ...tourIdPayload,
+      tour_id: createTourIdEdit,
     };
     dispatch(updateVoucher(dataValueCreate));
     dispatch(updateVoucherMapTour(dataUpdateMapTour)).then((response) => {

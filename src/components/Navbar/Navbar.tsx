@@ -41,7 +41,7 @@ const items = [
     items: [
       {
         key: "listtour management",
-        label: "ListTour",
+        label: "List Of Tour",
         items: [
           { key: "listtour", label: "List" },
           { key: "listtour/cancel", label: "Cancel" },

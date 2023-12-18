@@ -324,7 +324,7 @@ function Payment() {
                           <span>
                             {
                               sumBookingInWeek(
-                                booking,
+                                filteredBookings,
                                 dataVoucher?.label?.start,
                                 dataVoucher?.label?.end
                               )?.length
@@ -373,21 +373,21 @@ function Payment() {
                                       <div>
                                         <span>
                                           {formatNumber(
-                                            dataBookingInWeek?.original_price
+                                            +dataBookingInWeek?.original_price
                                           )}
                                         </span>
                                       </div>
                                       <div>
                                         <span>
                                           {formatNumber(
-                                            dataBookingInWeek?.provider_receive
+                                            +dataBookingInWeek?.provider_receive
                                           )}
                                         </span>
                                       </div>
                                       <div>
                                         <span>
                                           {formatNumber(
-                                            dataBookingInWeek?.refund_ammount
+                                            +dataBookingInWeek?.refund_ammount
                                           )}
                                         </span>
                                       </div>
