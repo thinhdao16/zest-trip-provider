@@ -139,7 +139,7 @@ function CreateTourNav() {
       refund_before: formValues[5]?.Capacity?.RefundBefore,
       address_ward: formValues[3]?.Location.address_ward?.full_name,
       address_name: formValues[3]?.Location?.address_name,
-      tour_location_type: "INTERNATIONAL",
+      tour_location_type: "DOMESTIC",
       address_province: formValues[3]?.Location?.address_province?.full_name,
       address_country: formValues[3]?.Location?.address_country,
       address_district: formValues[3]?.Location?.address_district?.full_name,

@@ -451,6 +451,11 @@ function AddChildren({ data }: { data: any }) {
       });
     }
   };
+  const dataTicketFreeNoTicket = dataTicketAdult?.filter(
+    (ticketFree: any) =>
+      ticketFree?.is_default === true &&
+      ticketFree?.PricingType?.name === "FREE_NO_TICKET"
+  );
   useEffect(() => {
     // Calculate max and min values
     const maxQuantity = Math.max(
@@ -465,35 +470,46 @@ function AddChildren({ data }: { data: any }) {
       max: maxQuantity || 0,
       min: minQuantity || 0,
     });
+    if (dataTicketFreeNoTicket?.length > 0) {
+      setFormListAdult([
+        {
+          id: 0,
+          numberOfPeople: 1,
+          numberOfPeopleAfter: 2,
+          retailPrice: 0,
+          payoutPerPerson: 0,
+        },
+      ]);
+    } else {
+      setFormListAdult((prevList: any) =>
+        dataTicketAdult
+          .map((ticket: any) => {
+            const existingForm = prevList.find(
+              (form: any) => form.id === ticket.id
+            );
+            const priceRanges = ticket.price_range || []; // Ensure price_range is an array
 
-    // Set formListAdult state
-    setFormListAdult((prevList: any) =>
-      dataTicketAdult
-        .map((ticket: any) => {
-          const existingForm = prevList.find(
-            (form: any) => form.id === ticket.id
-          );
-          const priceRanges = ticket.price_range || []; // Ensure price_range is an array
+            const updatedForms = priceRanges.map(
+              (priceRange: any, index: number) => {
+                return {
+                  id: index, // Assuming ticket has an id property
+                  numberOfPeople: priceRange.from_amount || 0,
+                  numberOfPeopleAfter: priceRange.to_amount || 0,
+                  retailPrice: priceRange.price || 0,
+                  payoutPerPerson: (priceRange.price || 0) * 0.8,
+                };
+              }
+            );
 
-          const updatedForms = priceRanges.map(
-            (priceRange: any, index: number) => {
-              return {
-                id: index, // Assuming ticket has an id property
-                numberOfPeople: priceRange.from_amount || 0,
-                numberOfPeopleAfter: priceRange.to_amount || 0,
-                retailPrice: priceRange.price || 0,
-                payoutPerPerson: (priceRange.price || 0) * 0.8,
-              };
+            if (existingForm) {
+              return updatedForms.length > 0 ? updatedForms : [existingForm];
             }
-          );
-
-          if (existingForm) {
-            return updatedForms.length > 0 ? updatedForms : [existingForm];
-          }
-          return updatedForms;
-        })
-        .flat()
-    );
+            return updatedForms;
+          })
+          .flat()
+      );
+    }
+    // Set formListAdult state
   }, [dataTicketAdult]);
 
   useEffect(() => {

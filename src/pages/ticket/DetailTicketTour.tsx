@@ -44,7 +44,6 @@ function DetailTicketTour() {
   );
   const [filterTickets, setFilterTickets] = useState<any>(tourDetail);
   const [selectedStatus, setSelectedStatus] = useState("");
-  console.log(filterTickets);
   const handleStatusClick = (status: any) => {
     setSelectedStatus(status);
   };
