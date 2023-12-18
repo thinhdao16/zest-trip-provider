@@ -41,7 +41,7 @@ const items = [
     items: [
       {
         key: "listtour management",
-        label: "List Of Tour",
+        label: "List of Tour",
         items: [
           { key: "listtour", label: "List" },
           { key: "listtour/cancel", label: "Cancel" },
@@ -96,9 +96,9 @@ const items = [
     ],
   },
   {
-    key: "reports",
+    key: "reported",
     icon: <MdOutlineReport />,
-    label: "Reported",
+    label: "Reportes",
   },
 ];
 
