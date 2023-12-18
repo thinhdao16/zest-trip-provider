@@ -323,7 +323,7 @@ function AddChildren({ data }: { data: any }) {
                 newNumberOfPeople >= form.numberOfPeople
                   ? newNumberOfPeople
                   : form.numberOfPeople,
-              payoutPerPerson: form.retailPrice * commision,
+              payoutPerPerson: Math.max(0, form.retailPrice * (1 - commision)),
             };
             return updatedForm;
           } else if (index === id + 1) {
@@ -349,7 +349,7 @@ function AddChildren({ data }: { data: any }) {
               newNumberOfPeople >= form.numberOfPeople
                 ? newNumberOfPeople
                 : form.numberOfPeople,
-            payoutPerPerson: form.retailPrice * commision,
+            payoutPerPerson: Math.max(0, form.retailPrice * (1 - commision)),
           };
           return updatedForm;
         } else if (index === id + 1) {
@@ -374,7 +374,7 @@ function AddChildren({ data }: { data: any }) {
           return {
             ...form,
             retailPrice: newRetailPrice,
-            payoutPerPerson: (newRetailPrice * 70) / 100,
+            payoutPerPerson: Math.max(0, newRetailPrice * (1 - commision)),
           };
         }
         return form;
@@ -387,7 +387,7 @@ function AddChildren({ data }: { data: any }) {
           return {
             ...form,
             retailPrice: newRetailPrice,
-            payoutPerPerson: (newRetailPrice * 70) / 100,
+            payoutPerPerson: Math.max(0, newRetailPrice * (1 - commision)),
           };
         }
         return form;

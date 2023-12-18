@@ -420,7 +420,7 @@ function TicketSpecial() {
               newNumberOfPeople >= form.numberOfPeople
                 ? newNumberOfPeople
                 : form.numberOfPeople,
-            payoutPerPerson: form.retailPrice * commision,
+            payoutPerPerson: Math.max(0, form.retailPrice * (1 - commision)),
           };
           return updatedForm;
         } else if (index === id + 1) {
@@ -445,7 +445,7 @@ function TicketSpecial() {
               newNumberOfPeople >= form.numberOfPeople
                 ? newNumberOfPeople
                 : form.numberOfPeople,
-            payoutPerPerson: form.retailPrice * commision,
+            payoutPerPerson: Math.max(0, form.retailPrice * (1 - commision)),
           };
           return updatedForm;
         } else if (index === id + 1) {
@@ -470,7 +470,7 @@ function TicketSpecial() {
               newNumberOfPeople >= form.numberOfPeople
                 ? newNumberOfPeople
                 : form.numberOfPeople,
-            payoutPerPerson: form.retailPrice * commision,
+            payoutPerPerson: Math.max(0, form.retailPrice * (1 - commision)),
           };
           return updatedForm;
         } else if (index === id + 1) {
@@ -494,7 +494,7 @@ function TicketSpecial() {
               newNumberOfPeople >= form.numberOfPeople
                 ? newNumberOfPeople
                 : form.numberOfPeople,
-            payoutPerPerson: form.retailPrice * commision,
+            payoutPerPerson: Math.max(0, form.retailPrice * (1 - commision)),
           };
           return updatedForm;
         } else if (index === id + 1) {
@@ -518,7 +518,7 @@ function TicketSpecial() {
           return {
             ...form,
             retailPrice: newRetailPrice,
-            payoutPerPerson: (newRetailPrice * 70) / 100,
+            payoutPerPerson: Math.max(0, newRetailPrice * (1 - commision)),
           };
         }
         return form;
@@ -531,7 +531,7 @@ function TicketSpecial() {
           return {
             ...form,
             retailPrice: newRetailPrice,
-            payoutPerPerson: (newRetailPrice * 70) / 100,
+            payoutPerPerson: Math.max(0, newRetailPrice * (1 - commision)),
           };
         }
         return form;
@@ -544,7 +544,7 @@ function TicketSpecial() {
           return {
             ...form,
             retailPrice: newRetailPrice,
-            payoutPerPerson: (newRetailPrice * 70) / 100,
+            payoutPerPerson: Math.max(0, newRetailPrice * (1 - commision)),
           };
         }
         return form;
@@ -557,7 +557,7 @@ function TicketSpecial() {
           return {
             ...form,
             retailPrice: newRetailPrice,
-            payoutPerPerson: (newRetailPrice * 70) / 100,
+            payoutPerPerson: Math.max(0, newRetailPrice * (1 - commision)),
           };
         }
         return form;
