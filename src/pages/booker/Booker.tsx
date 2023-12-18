@@ -8,12 +8,10 @@ import { fetchTours } from "../../store/redux/silce/tourSlice";
 import { AppDispatch } from "../../store/redux/store";
 import { StatusBooking } from "../../styles/status/booking";
 import LoadingFullScreen from "../../styles/loading/LoadingFullScreen";
-import { Input, Pagination, Select } from "antd";
+import { Pagination, Select } from "antd";
 import { formatNumber } from "../../utils/formatNumber";
 import { FaAngleDoubleDown, FaAngleDoubleUp } from "react-icons/fa";
 import { IoEyeOutline } from "react-icons/io5";
-
-const { Search } = Input;
 
 function Booker() {
   const [currentPage, setCurrentPage] = useState(1);
