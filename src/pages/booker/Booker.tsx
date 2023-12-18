@@ -107,14 +107,6 @@ function Booker() {
                   </span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <Search
-                    type="text"
-                    // defaultValue={searchTerm}
-                    placeholder="input search text"
-                    // onSearch={handleSearch}
-                    style={{ width: 200 }}
-                    // onChange={(e) => setSearchTerm(e.target.value)}
-                  />
                   <Select
                     defaultValue=""
                     onChange={handleFilterTour}
