@@ -88,7 +88,7 @@ function DateAvailability() {
 
   useEffect(() => {
     setDateAvailability([...dateAvaibilityTour]);
-  }, [bookingDetail]);
+  }, [bookingDetail, refeshTour]);
 
   useEffect(() => {
     if (index) {

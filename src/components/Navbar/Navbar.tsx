@@ -89,7 +89,7 @@ const items = [
   {
     key: "financial",
     icon: <CiWallet />,
-    label: "Financials",
+    label: "Financial",
     items: [
       { key: "payment", label: "Payment" },
       { key: "payment/wallet", label: "Wallet" },
@@ -98,7 +98,7 @@ const items = [
   {
     key: "reported",
     icon: <MdOutlineReport />,
-    label: "Reportes",
+    label: "Reports",
   },
 ];
 

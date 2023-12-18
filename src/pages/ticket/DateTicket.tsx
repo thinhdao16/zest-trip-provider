@@ -188,69 +188,78 @@ function DateTicket() {
     <div>
       <div className="grid grid-cols-12 gap-4 p-4 ">
         <div className="col-span-5 ">
-          <div className="bg-white rounded-lg shadow-custom-card-mui p-4 flex flex-col gap-2 h-96">
-            <div className="grid grid-cols-6 gap-4">
-              <div className="col-span-2">
-                <span className="font-medium">Total booking</span>
-              </div>
-              <div className="col-span-4">
-                <span>{ticketQuantity?.length}</span>
-              </div>
-            </div>
-            <div className="grid grid-cols-6 gap-4">
-              <div className="col-span-2">
-                <span className="font-medium">Adult left</span>
-              </div>
-              <div className="col-span-4">
-                <span>{totalAdultLeft}</span>{" "}
+          <div className="bg-white rounded-lg shadow-custom-card-mui p-4 flex flex-col gap-4 pt-8 h-96">
+            <div className="grid grid-cols-2">
+              <div className="grid grid-cols-6 gap-4">
+                <div className="col-span-3">
+                  <span className="font-medium">Total booking</span>
+                </div>
+                <div className="col-span-3">
+                  <span>{ticketQuantity?.length}</span>
+                </div>
               </div>
             </div>
-            <div className="grid grid-cols-6 gap-4">
-              <div className="col-span-2">
-                <span className="font-medium">Children left</span>
+            <div className="grid grid-cols-2">
+              <div className="grid grid-cols-6 gap-4">
+                <div className="col-span-3">
+                  <span className="font-medium">Adult left</span>
+                </div>
+                <div className="col-span-3 ">
+                  <span>{totalAdultLeft}</span>{" "}
+                </div>
               </div>
-              <div className="col-span-4">
-                <span>{totalChildrenLeft}</span>{" "}
-              </div>
-            </div>
-            <div className="grid grid-cols-6 gap-4">
-              <div className="col-span-2">
-                <span className="font-medium">Adult max</span>
-              </div>
-              <div className="col-span-4">
-                <span>{totalAdultMax}</span>
-              </div>
-            </div>
-            <div className="grid grid-cols-6 gap-4">
-              <div className="col-span-2">
-                <span className="font-medium">Children max</span>
-              </div>
-              <div className="col-span-4">
-                <span>{totalChildrenMax}</span>
+              <div className="grid grid-cols-6 gap-4">
+                <div className="col-span-3">
+                  <span className="font-medium">Children left</span>
+                </div>
+                <div className="col-span-3">
+                  <span>{totalChildrenLeft}</span>{" "}
+                </div>
               </div>
             </div>
-            <div className="grid grid-cols-6 gap-4">
-              <div className="col-span-2">
-                <span className="font-medium">Book adult</span>
+            <div className="grid grid-cols-2">
+              <div className="grid grid-cols-6 gap-4">
+                <div className="col-span-3">
+                  <span className="font-medium">Adult max</span>
+                </div>
+                <div className="col-span-3">
+                  <span>{totalAdultMax}</span>
+                </div>
               </div>
-              <div className="col-span-4">
-                <span>{totalAdultBook}</span>
-              </div>
-            </div>{" "}
-            <div className="grid grid-cols-6 gap-4">
-              <div className="col-span-2">
-                <span className="font-medium">Book children</span>
-              </div>
-              <div className="col-span-4">
-                <span>{totalChildrenBook}</span>
+              <div className="grid grid-cols-6 gap-4">
+                <div className="col-span-3">
+                  <span className="font-medium">Children max</span>
+                </div>
+                <div className="col-span-3">
+                  <span>{totalChildrenMax}</span>
+                </div>
               </div>
             </div>
+            <div className="grid grid-cols-2">
+              <div className="grid grid-cols-6 gap-4">
+                <div className="col-span-3">
+                  <span className="font-medium">Book adult</span>
+                </div>
+                <div className="col-span-3">
+                  <span>{totalAdultBook}</span>
+                </div>
+              </div>{" "}
+              <div className="grid grid-cols-6 gap-4">
+                <div className="col-span-3">
+                  <span className="font-medium">Book children</span>
+                </div>
+                <div className="col-span-3">
+                  <span>{totalChildrenBook}</span>
+                </div>
+              </div>
+            </div>
+
             <div className="grid grid-cols-6 gap-4">
               <div className="col-span-2">
                 <span className="font-medium">Date</span>
               </div>
 
-              <div className="col-span-4 h-12  overflow-auto global-scrollbar">
+              <div className="col-span-4 h-16  overflow-auto global-scrollbar">
                 {dateChoose?.length === 0 ? (
                   <span>
                     {dateChoose?.length === 0 && (

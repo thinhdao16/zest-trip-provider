@@ -133,15 +133,15 @@ function BookDetail() {
     bookingDontReject?.map((book: { booked_date: string }) =>
       dayjs(book.booked_date).format("YYYY-MM-DD")
     ) || [];
-  const availableBookedDates = bookedDates?.filter(
-    (bookedDate: any) => !availabilityDates?.includes(bookedDate)
-  );
+
   const [dateAvailability, setDateAvailability] = useState([
     ...allDates,
     ...allSingleDates,
     ...availabilityDates,
   ]);
-
+  const availableBookedDates = bookedDates?.filter(
+    (bookedDate: any) => !dateAvailability?.includes(bookedDate)
+  );
   const handleBookingHave = () => {
     const commonDates = dateAvailability.filter((date) =>
       book_date_fil.includes(date)
