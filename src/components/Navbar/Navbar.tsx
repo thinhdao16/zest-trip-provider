@@ -37,7 +37,7 @@ const items = [
   {
     key: "sub1",
     icon: <MdManageAccounts />,
-    label: "Management tour",
+    label: "Tour management",
     items: [
       {
         key: "listtour management",
@@ -66,7 +66,7 @@ const items = [
   {
     key: "sub2",
     icon: <FaCalendarCheck />,
-    label: "Management booking",
+    label: "Booking management",
     items: [
       { key: "review", label: "Review" },
       {
@@ -87,7 +87,7 @@ const items = [
     items: [{ key: "voucher", label: "Voucher" }],
   },
   {
-    key: "financials",
+    key: "financial",
     icon: <CiWallet />,
     label: "Financials",
     items: [
@@ -96,7 +96,7 @@ const items = [
     ],
   },
   {
-    key: "reported",
+    key: "reports",
     icon: <MdOutlineReport />,
     label: "Reported",
   },
